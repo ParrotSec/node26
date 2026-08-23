@@ -1,0 +1,8 @@
+# Build artifacts / bootstrap scratch created during the build; never let
+# dpkg-source mistake them for source content if the tree is dirty.
+extend-diff-ignore = "(^|/)debian/\.bootstrap(/|$)"
+tar-ignore = "debian/.bootstrap"
+tar-ignore = "out"
+extend-diff-ignore = "(^|/)out(/|$)"
+extend-diff-ignore = "(^|/)debian/fakehome(/|$)"
+tar-ignore = "debian/fakehome"

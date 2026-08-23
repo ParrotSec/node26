@@ -1,0 +1,22 @@
+node26 (26.7.0-0parrot1) unstable; urgency=medium
+
+  * Initial packaging of Node.js 26 (current upstream branch), built from
+    source.
+  * Built with bundled in-tree dependencies (V8, OpenSSL, libuv, llhttp,
+    nghttp2, sqlite, small-icu, npm) from the upstream source tarball; the
+    build is offline apart from fetching the per-arch bootstrap toolchain.
+  * The build is bootstrapped with a prebuilt Node.js binary downloaded at
+    build time (official nodejs.org tarballs for amd64/arm64, the
+    unofficial-builds.nodejs.org riscv64 tarball for riscv64); the bootstrap
+    is used only to drive the build and is not shipped.
+  * Provides `nodejs (= 26.7.0)` and Conflicts `nodejs`, so the package
+    satisfies other packages' `Depends: nodejs` while not being co-installable
+    with the distribution's own nodejs package.
+  * Interpreter and bundled npm/npx/corepack are installed under
+    /usr/lib/node26; bare commands (node, npm, npx, corepack) are managed via
+    update-alternatives, and versioned aliases (node26, npm26, npx26,
+    corepack26) are always present.
+  * Split packages: node26 (runtime), libnode147 (libnode.so.147 shared
+    library), libnode26-dev (headers + dev symlink), node26-doc (manpages).
+
+ -- Parrot Security <team@parrotsec.org>  Tue, 24 Aug 2026 00:30:00 +0200

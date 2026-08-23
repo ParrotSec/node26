@@ -1,0 +1,57 @@
+Source: node26
+Section: javascript
+Priority: optional
+Maintainer: Parrot Security <team@parrotsec.org>
+Build-Depends: debhelper-compat (= 13), python3, g++ (>= 12.2), make,
+ python3-pip, curl, ca-certificates, xz-utils, dpkg-dev
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+Homepage: https://nodejs.org
+Vcs-Browser: https://github.com/nodejs/node
+Vcs-Git: https://github.com/nodejs/node.git
+
+Package: node26
+Architecture: amd64 arm64 riscv64
+Provides: nodejs (= 26.7.0)
+Conflicts: nodejs
+Depends: ${misc:Depends}, ${shlibs:Depends}, libnode147 (= ${binary:Version})
+Suggests: libnode26-dev, node26-doc
+Description: Node.js 26 runtime (current branch) - provides nodejs
+ Node.js is a JavaScript runtime built on V8. This package ships Node.js 26
+ (the current upstream branch), built from source, and provides the `nodejs`
+ package name so it satisfies other packages' `Depends: nodejs`.
+ .
+ The interpreter and the bundled npm/npx/corepack live under
+ /usr/lib/node26. The bare commands (node, npm, npx, corepack) are managed
+ with update-alternatives, and versioned aliases (node26, npm26, npx26,
+ corepack26) are always available. This package conflicts with the
+ distribution's `nodejs` package.
+ .
+ Node.js is built with bundled dependencies (V8, OpenSSL, libuv, ICU
+ small-icu, etc.) from the upstream source tree.
+
+Package: libnode147
+Section: libs
+Architecture: amd64 arm64 riscv64
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Node.js 26 shared library (libnode.so.147)
+ Shared library for embedding Node.js 26 in other programs. This is the
+ libnode shared object with ABI version 147 (Node.js 26).
+
+Package: libnode26-dev
+Section: libdevel
+Architecture: amd64 arm64 riscv64
+Provides: libnode-dev
+Conflicts: libnode-dev
+Depends: libnode147 (= ${binary:Version}), ${misc:Depends}
+Description: Node.js 26 development headers
+ Headers (node_api.h, V8, libuv, etc.) and the libnode.so development symlink
+ needed to build native Node.js addons (node-gyp) and to link against
+ libnode. Provides `libnode-dev`.
+
+Package: node26-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Description: Node.js 26 documentation (manpages)
+ Manual pages for Node.js 26 (node, npm, npx, corepack).

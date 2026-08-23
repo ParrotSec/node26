@@ -1,0 +1,14 @@
+#!/bin/sh
+# Remove the update-alternatives registration for the bare Node.js command
+# names when the node26 package is removed (removing the master also removes
+# its slaves).
+set -e
+
+case "$1" in
+  remove|deconfigure)
+    update-alternatives --remove node /usr/lib/node26/bin/node
+    ;;
+esac
+
+#DEBHELPER#
+exit 0

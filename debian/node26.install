@@ -1,0 +1,2 @@
+debian/tmp/usr/lib/node26/bin usr/lib/node26
+debian/tmp/usr/lib/node26/lib/node_modules usr/lib/node26/lib

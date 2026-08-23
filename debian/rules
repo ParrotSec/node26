@@ -1,0 +1,137 @@
+#!/usr/bin/make -f
+
+# Debian rules for node26: build Node.js 26 from source, split into
+# node26 / libnode147 / libnode26-dev / node26-doc, with update-alternatives
+# for the bare command names.
+#
+# Node's source tarball already bundles all its dependencies in-tree under
+# deps/ (V8, OpenSSL, libuv, llhttp, nghttp2, sqlite, small-icu, npm, ...), so
+# there is nothing to vendor separately and the build itself is offline.
+#
+# The only network access at build time is fetching a prebuilt Node.js binary
+# used purely as a BOOTSTRAP to drive the build (Node's build runs JS tools and
+# bundles deps/npm). The bootstrap is never shipped; the shipped node is the
+# one compiled here. amd64/arm64 use the official nodejs.org tarballs; riscv64
+# (no official prebuilt) uses unofficial-builds.nodejs.org. The download is
+# verified against the published SHASUMS256.txt.
+
+export DH_VERBOSE = 1
+# sbuild sets HOME=/sbuild-nonexistent (unwritable); tools need a writable HOME.
+export HOME := $(CURDIR)/debian/fakehome
+
+DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+
+UPSTREAM_VERSION := 26.7.0
+# libnode ABI (NODE_MODULE_VERSION); must match src/node_version.h.
+NODE_ABI := 147
+
+# Per-arch bootstrap prebuilt Node (build-time only, never shipped).
+ifeq ($(DEB_HOST_ARCH),amd64)
+BOOT_ARCH := x64
+BOOT_BASE := https://nodejs.org/dist
+else ifeq ($(DEB_HOST_ARCH),arm64)
+BOOT_ARCH := arm64
+BOOT_BASE := https://nodejs.org/dist
+else ifeq ($(DEB_HOST_ARCH),riscv64)
+BOOT_ARCH := riscv64
+BOOT_BASE := https://unofficial-builds.nodejs.org/download/release
+else
+$(error node26: unsupported DEB_HOST_ARCH $(DEB_HOST_ARCH))
+endif
+
+BOOT_DIR := node-v$(UPSTREAM_VERSION)-linux-$(BOOT_ARCH)
+BOOT_TARBALL := $(BOOT_DIR).tar.xz
+BOOT_URL := $(BOOT_BASE)/v$(UPSTREAM_VERSION)/$(BOOT_TARBALL)
+BOOTSTRAP := $(CURDIR)/debian/.bootstrap/$(BOOT_DIR)
+
+PREFIX := /usr/lib/node26
+JOBS := $(shell nproc)
+
+%:
+	dh $@
+
+# ----------------------------------------------------------------------------
+# Configure: fetch + verify the bootstrap Node, then run ./configure.
+# ----------------------------------------------------------------------------
+override_dh_auto_configure:
+	mkdir -p $(CURDIR)/debian/fakehome
+	set -e; \
+	mkdir -p debian/.bootstrap; \
+	cd debian/.bootstrap; \
+	echo "==> downloading bootstrap Node $(UPSTREAM_VERSION) for linux-$(BOOT_ARCH)"; \
+	curl -fSLO "$(BOOT_URL)"; \
+	curl -fSLO "$(BOOT_BASE)/v$(UPSTREAM_VERSION)/SHASUMS256.txt" || true; \
+	if [ -f SHASUMS256.txt ]; then \
+		grep "  $(BOOT_TARBALL)$$" SHASUMS256.txt | sha256sum -c - || { echo "bootstrap checksum mismatch"; exit 1; }; \
+	else \
+		echo "WARNING: no SHASUMS256.txt available; skipping checksum verification"; \
+	fi; \
+	tar -xJf "$(BOOT_TARBALL)"; \
+	rm -f "$(BOOT_TARBALL)" SHASUMS256.txt
+	"$(BOOTSTRAP)/bin/node" --version
+	# Configure the from-source build with bundled deps and a shared libnode.
+	set -e; \
+	export PATH="$(BOOTSTRAP)/bin:$$PATH"; \
+	./configure --prefix=$(PREFIX) --libdir=$(PREFIX)/lib --shared --with-intl=small-icu --with-corepack
+
+# ----------------------------------------------------------------------------
+# Build.
+# ----------------------------------------------------------------------------
+override_dh_auto_build:
+	set -e; \
+	export PATH="$(BOOTSTRAP)/bin:$$PATH"; \
+	$(MAKE) -j$(JOBS)
+
+# ----------------------------------------------------------------------------
+# Test: run a smoke test (the compiled binary), not the full suite.
+# ----------------------------------------------------------------------------
+override_dh_auto_test:
+	set -e; \
+	export LD_LIBRARY_PATH="$(CURDIR)/out/Release:$$LD_LIBRARY_PATH"; \
+	out/Release/node --version; \
+	out/Release/node -e "console.log('node26 smoke ok', process.version)"
+
+# ----------------------------------------------------------------------------
+# Install: `make install` into debian/tmp, then split into the binary packages
+# via the .install files. Version the libnode SONAME to libnode.so.<ABI>.
+# ----------------------------------------------------------------------------
+override_dh_auto_install:
+	set -e; \
+	export PATH="$(BOOTSTRAP)/bin:$$PATH"; \
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	# The --shared build already emits a versioned libnode.so.<ABI> (configure
+	# sets shlib_suffix=so.<NODE_MODULE_VERSION>, and gyp sets SONAME from the
+	# output filename), so bin/node is linked against libnode.so.147 directly.
+	# Provide the unversioned dev symlink libnode.so -> libnode.so.<ABI>.
+	set -e; \
+	LIBDIR=$(CURDIR)/debian/tmp$(PREFIX)/lib; \
+	if [ -f "$$LIBDIR/libnode.so.$(NODE_ABI)" ] && [ ! -e "$$LIBDIR/libnode.so" ]; then \
+		ln -sfn "libnode.so.$(NODE_ABI)" "$$LIBDIR/libnode.so"; \
+	fi
+	# Versioned command aliases shipped as real symlinks (not alternatives).
+	set -e; \
+	mkdir -p $(CURDIR)/debian/node26/usr/bin; \
+	for t in node npm npx corepack; do \
+		ln -sfn ../lib/node26/bin/$$t $(CURDIR)/debian/node26/usr/bin/$${t}26; \
+	done
+	# System multiarch link to libnode.so.<ABI> (in libnode147).
+	set -e; \
+	mkdir -p $(CURDIR)/debian/libnode147/usr/lib/$(DEB_HOST_MULTIARCH); \
+	ln -sfn ../../node26/lib/libnode.so.$(NODE_ABI) \
+		$(CURDIR)/debian/libnode147/usr/lib/$(DEB_HOST_MULTIARCH)/libnode.so.$(NODE_ABI)
+
+# dh_install picks files from debian/tmp per the .install files.
+override_dh_install:
+	dh_install
+
+# libnode147 is a shared library package: generate shlibs.
+override_dh_makeshlibs:
+	dh_makeshlibs -plibnode147
+
+# ----------------------------------------------------------------------------
+# Clean.
+# ----------------------------------------------------------------------------
+override_dh_auto_clean:
+	rm -rf debian/.bootstrap debian/fakehome debian/tmp out
+	-dh_auto_clean

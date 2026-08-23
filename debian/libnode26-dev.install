@@ -1,0 +1,2 @@
+debian/tmp/usr/lib/node26/include usr/lib/node26
+debian/tmp/usr/lib/node26/lib/libnode.so usr/lib/node26/lib

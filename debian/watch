@@ -1,0 +1,14 @@
+version=4
+
+# Track the latest Node.js 26.x release on nodejs.org and download its source
+# tarball. The dist index links one directory per release with a relative href
+# (v26.x.y/); we match those v26 directories and rewrite the match to the
+# source tarball URL inside that directory. uscan picks the newest matching
+# version and repacks the download to the package's orig name.
+
+opts="\
+filenamemangle=s%^v?@ANY_VERSION@/?$%node26-@VERSION@.tar.xz%,\
+downloadurlmangle=s%^v?(26\.\d+\.\d+)/?$%https://nodejs.org/dist/v$1/node-v$1.tar.xz%\
+" \
+  https://nodejs.org/dist/ \
+  v?(26\.\d+\.\d+)/
