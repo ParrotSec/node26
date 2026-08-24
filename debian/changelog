@@ -1,3 +1,18 @@
+node26 (26.7.0-0parrot2) unstable; urgency=medium
+
+  * Pass a prefix-relative --libdir=lib to Node's configure script. The
+    previous absolute --libdir=/usr/lib/node26/lib bypassed DESTDIR in
+    tools/install.py, causing an unprivileged sbuild to write directly to
+    /usr/lib/node26 and fail with EACCES during `make install`.
+  * Fix the libnode147 multiarch compatibility symlink to resolve to
+    /usr/lib/node26/lib/libnode.so.147 and teach dh_shlibdeps where to find
+    the private shared library during package analysis.
+  * Bootstrap riscv64 with the available unofficial Node 25.9.0 binary;
+    unofficial Node 26 riscv64 binaries do not exist. Bootstrap downloads on
+    every architecture are now required to pass the published SHA256 check.
+
+ -- Parrot Security <team@parrotsec.org>  Tue, 24 Aug 2026 05:30:00 +0200
+
 node26 (26.7.0-0parrot1) unstable; urgency=medium
 
   * Initial packaging of Node.js 26 (current upstream branch), built from
