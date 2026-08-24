@@ -1,3 +1,60 @@
+node26 (26.7.0-0parrot4) unstable; urgency=medium
+
+  * Match Node 26's actual compiler requirements: GCC/G++ >= 13.2 on
+    amd64/arm64 and >= 14 on riscv64; add libatomic1 for the bootstrap and
+    built runtime, add the Perl/binutils/pkgconf/Python modules required by
+    bundled OpenSSL and Node/V8's generators, and remove the unused
+    python3-pip build dependency.
+  * Respect DEB_BUILD_OPTIONS=parallel=N and default to four jobs instead of
+    using every CPU, avoiding V8 build OOMs on high-core workers.
+  * Drop Corepack integration: Node 26's source tarball no longer contains
+    deps/corepack, so --with-corepack produced dangling commands and
+    alternatives. Keep the bundled npm/npx and conflict with/provide npm.
+  * Explicitly disable optional Temporal support so output does not vary with
+    an undeclared Rust toolchain in the build environment.
+  * Add standard /usr/include/node and multiarch libnode.so development
+    compatibility links, rename node.1 to node26.1 to avoid nodejs-doc file
+    conflicts, and smoke-test node/npm after the package split.
+  * Install npm26 and npx26 as wrappers pinned to /usr/lib/node26/bin/node;
+    upstream's npm/npx scripts use `#!/usr/bin/env node` and would otherwise
+    run under a different version selected by update-alternatives.
+  * Add the conventional V8/libnode development compatibility links and make
+    dh_dwz tolerant of Node/V8's very large DWARF graphs, matching Debian's
+    nodejs packaging behavior.
+  * Provide versioned libnode-dev plus libv8-dev compatibility metadata,
+    honor DEB_BUILD_OPTIONS=nocheck, keep debugger helper scripts
+    uncompressed, and exclude generated staging/configuration paths from
+    dirty-tree source packages.
+  * Pin each downloaded bootstrap binary to its exact SHA256 instead of
+    trusting a checksum manifest fetched from the same mutable endpoint.
+  * Conflict with the distribution's older nodejs/npm versions while letting
+    future versioned providers coexist through update-alternatives. Pin the
+    bare npm/npx wrappers to Node 26.
+  * Export Debian hardening/reproducibility build flags explicitly and retry
+    transient bootstrap download failures; propagate CPPFLAGS through
+    CXXFLAGS for GYP and ignore additional dirty-tree build/test artifacts.
+  * Derive the libnode ABI and bundled npm version from the source tree, then
+    substitute the virtual Provides versions during dh_gencontrol.
+  * Provide nodejs26 and a bare /usr/bin/nodejs alternatives slave (plus a
+    nodejs26.1 manpage alias) for compatibility with Debian's nodejs package.
+  * Make node26-doc architecture-specific so binary-arch (-B) builds process
+    every file emitted by the native build instead of failing dh_missing;
+    create the manpage symlink before dh_compress so debhelper can rewrite it.
+  * Run the pre-package npm smoke test through the staged Node binary directly
+    rather than an absolute installed-path wrapper.
+  * Run Node's distclean target and remove generated configure/ICU/staging
+    artifacts explicitly during package clean.
+
+ -- Parrot Security <team@parrotsec.org>  Tue, 24 Aug 2026 06:30:00 +0200
+
+node26 (26.7.0-0parrot3) unstable; urgency=medium
+
+  * Install Node's V8 debugger helper files (gdbinit and lldb_commands.py)
+    into /usr/share/doc/node26 in the node26-doc package. They were left in
+    debian/tmp by the previous split and caused dh_missing to abort.
+
+ -- Parrot Security <team@parrotsec.org>  Tue, 24 Aug 2026 06:00:00 +0200
+
 node26 (26.7.0-0parrot2) unstable; urgency=medium
 
   * Pass a prefix-relative --libdir=lib to Node's configure script. The

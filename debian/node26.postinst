@@ -1,5 +1,5 @@
 #!/bin/sh
-# Register the bare Node.js command names (node, npm, npx, corepack) with
+# Register the bare Node.js command names (node, npm, npx) with
 # update-alternatives, master + slaves so they switch together. Versioned
 # aliases (node26, npm26, ...) are shipped as real symlinks, not alternatives.
 set -e
@@ -7,9 +7,9 @@ set -e
 case "$1" in
   configure|reconfigure)
     update-alternatives --install /usr/bin/node node /usr/lib/node26/bin/node 26 \
+      --slave /usr/bin/nodejs nodejs /usr/lib/node26/bin/node \
       --slave /usr/bin/npm npm /usr/lib/node26/bin/npm \
-      --slave /usr/bin/npx npx /usr/lib/node26/bin/npx \
-      --slave /usr/bin/corepack corepack /usr/lib/node26/bin/corepack
+      --slave /usr/bin/npx npx /usr/lib/node26/bin/npx
     ;;
 esac
 

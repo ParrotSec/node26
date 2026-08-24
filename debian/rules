@@ -16,6 +16,11 @@
 # verified against the published SHASUMS256.txt.
 
 export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all reproducible=+all
+export CPPFLAGS := $(shell dpkg-buildflags --get CPPFLAGS)
+export CFLAGS := $(shell dpkg-buildflags --get CFLAGS)
+export CXXFLAGS := $(shell dpkg-buildflags --get CXXFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
+export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS)
 # sbuild sets HOME=/sbuild-nonexistent (unwritable); tools need a writable HOME.
 export HOME := $(CURDIR)/debian/fakehome
 
@@ -23,24 +28,29 @@ DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 UPSTREAM_VERSION := 26.7.0
-# libnode ABI (NODE_MODULE_VERSION); must match src/node_version.h.
-NODE_ABI := 147
+# Derive packaged component versions from the source tree to avoid silent
+# mismatches when updating within the Node 26 release line.
+NODE_ABI := $(shell awk '/^\#define NODE_MODULE_VERSION [0-9]+/ { print $$3 }' src/node_version.h)
+NPM_VERSION := $(shell python3 -c 'import json; print(json.load(open("deps/npm/package.json"))["version"])')
 
 # Per-arch bootstrap prebuilt Node (build-time only, never shipped).
 ifeq ($(DEB_HOST_ARCH),amd64)
 BOOT_ARCH := x64
 BOOT_VERSION := $(UPSTREAM_VERSION)
 BOOT_BASE := https://nodejs.org/dist
+BOOT_SHA256 := 982aa24dd8be4c889c6a8ab337ddff3b0896645b20f4239356e80552c16277ee
 else ifeq ($(DEB_HOST_ARCH),arm64)
 BOOT_ARCH := arm64
 BOOT_VERSION := $(UPSTREAM_VERSION)
 BOOT_BASE := https://nodejs.org/dist
+BOOT_SHA256 := afc7a004018485092ac8985b817b0d5684472bd9472e0b57d2ab88737e50090d
 else ifeq ($(DEB_HOST_ARCH),riscv64)
 BOOT_ARCH := riscv64
 # No unofficial Node 26 riscv64 binary currently exists. Node 25 is new
 # enough to drive Node 26's build tools and is used only as the bootstrap.
 BOOT_VERSION := 25.9.0
 BOOT_BASE := https://unofficial-builds.nodejs.org/download/release
+BOOT_SHA256 := ff8cdee0372ab93607fe596bd695340e050ca6794b3397d52115b9d8a74d04bb
 else
 $(error node26: unsupported DEB_HOST_ARCH $(DEB_HOST_ARCH))
 endif
@@ -51,10 +61,16 @@ BOOT_URL := $(BOOT_BASE)/v$(BOOT_VERSION)/$(BOOT_TARBALL)
 BOOTSTRAP := $(CURDIR)/debian/.bootstrap/$(BOOT_DIR)
 
 PREFIX := /usr/lib/node26
-JOBS := $(shell nproc)
+# Respect the build worker's DEB_BUILD_OPTIONS=parallel=N limit. A Node/V8
+# build can consume several GiB per job; default to a conservative four jobs.
+JOBS := $(or $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS))),4)
 
 %:
 	dh $@
+
+# Feed source-derived virtual package versions into debian/control.
+override_dh_gencontrol:
+	dh_gencontrol -- -Vnodejs:Version=$(UPSTREAM_VERSION) -Vnpm:Version=$(NPM_VERSION)
 
 # ----------------------------------------------------------------------------
 # Configure: fetch + verify the bootstrap Node, then run ./configure.
@@ -65,16 +81,15 @@ override_dh_auto_configure:
 	mkdir -p debian/.bootstrap; \
 	cd debian/.bootstrap; \
 	echo "==> downloading bootstrap Node $(BOOT_VERSION) for linux-$(BOOT_ARCH)"; \
-	curl -fSLO "$(BOOT_URL)"; \
-	curl -fSLO "$(BOOT_BASE)/v$(BOOT_VERSION)/SHASUMS256.txt"; \
-	grep "  $(BOOT_TARBALL)$$" SHASUMS256.txt | sha256sum -c -; \
+	curl --retry 5 --retry-all-errors -fSLO "$(BOOT_URL)"; \
+	printf '%s  %s\n' '$(BOOT_SHA256)' '$(BOOT_TARBALL)' | sha256sum -c -; \
 	tar -xJf "$(BOOT_TARBALL)"; \
-	rm -f "$(BOOT_TARBALL)" SHASUMS256.txt
+	rm -f "$(BOOT_TARBALL)"
 	"$(BOOTSTRAP)/bin/node" --version
 	# Configure the from-source build with bundled deps and a shared libnode.
 	set -e; \
 	export PATH="$(BOOTSTRAP)/bin:$$PATH"; \
-	./configure --prefix=$(PREFIX) --libdir=lib --shared --with-intl=small-icu --with-corepack
+	./configure --prefix=$(PREFIX) --libdir=lib --shared --with-intl=small-icu --v8-disable-temporal-support
 
 # ----------------------------------------------------------------------------
 # Build.
@@ -88,6 +103,10 @@ override_dh_auto_build:
 # Test: run a smoke test (the compiled binary), not the full suite.
 # ----------------------------------------------------------------------------
 override_dh_auto_test:
+	if echo " $(DEB_BUILD_OPTIONS) " | grep -q ' nocheck '; then \
+		echo "Skipping smoke test (DEB_BUILD_OPTIONS contains nocheck)."; \
+		exit 0; \
+	fi
 	set -e; \
 	export LD_LIBRARY_PATH="$(CURDIR)/out/Release:$$LD_LIBRARY_PATH"; \
 	out/Release/node --version; \
@@ -111,21 +130,65 @@ override_dh_auto_install:
 	if [ -f "$$LIBDIR/libnode.so.$(NODE_ABI)" ] && [ ! -e "$$LIBDIR/libnode.so" ]; then \
 		ln -sfn "libnode.so.$(NODE_ABI)" "$$LIBDIR/libnode.so"; \
 	fi
+	# Avoid colliding with nodejs-doc's unversioned node.1 manpage.
+	set -e; \
+	MANDIR=$(CURDIR)/debian/tmp$(PREFIX)/share/man/man1; \
+	if [ -f "$$MANDIR/node.1" ]; then mv "$$MANDIR/node.1" "$$MANDIR/node26.1"; fi
+	# Upstream npm/npx use `#!/usr/bin/env node`; replace the installed command
+	# symlinks with wrappers pinned to this package's interpreter so bare npm
+	# cannot accidentally run under /usr/local/bin/node or a future alternative.
+	set -e; \
+	BINDIR=$(CURDIR)/debian/tmp$(PREFIX)/bin; \
+	rm -f "$$BINDIR/npm" "$$BINDIR/npx"; \
+	printf '%s\n' '#!/bin/sh' 'exec /usr/lib/node26/bin/node /usr/lib/node26/lib/node_modules/npm/bin/npm-cli.js "$$@"' > "$$BINDIR/npm"; \
+	printf '%s\n' '#!/bin/sh' 'exec /usr/lib/node26/bin/node /usr/lib/node26/lib/node_modules/npm/bin/npx-cli.js "$$@"' > "$$BINDIR/npx"; \
+	chmod 0755 "$$BINDIR/npm" "$$BINDIR/npx"
 	# Versioned command aliases shipped as real symlinks (not alternatives).
 	set -e; \
 	mkdir -p $(CURDIR)/debian/node26/usr/bin; \
-	for t in node npm npx corepack; do \
-		ln -sfn ../lib/node26/bin/$$t $(CURDIR)/debian/node26/usr/bin/$${t}26; \
-	done
+	ln -sfn ../lib/node26/bin/node $(CURDIR)/debian/node26/usr/bin/node26; \
+	ln -sfn ../lib/node26/bin/node $(CURDIR)/debian/node26/usr/bin/nodejs26; \
+	printf '%s\n' '#!/bin/sh' 'exec /usr/lib/node26/bin/node /usr/lib/node26/lib/node_modules/npm/bin/npm-cli.js "$$@"' \
+		> $(CURDIR)/debian/node26/usr/bin/npm26; \
+	printf '%s\n' '#!/bin/sh' 'exec /usr/lib/node26/bin/node /usr/lib/node26/lib/node_modules/npm/bin/npx-cli.js "$$@"' \
+		> $(CURDIR)/debian/node26/usr/bin/npx26; \
+	chmod 0755 $(CURDIR)/debian/node26/usr/bin/npm26 $(CURDIR)/debian/node26/usr/bin/npx26
 	# System multiarch link to libnode.so.<ABI> (in libnode147).
 	set -e; \
 	mkdir -p $(CURDIR)/debian/libnode147/usr/lib/$(DEB_HOST_MULTIARCH); \
 	ln -sfn ../node26/lib/libnode.so.$(NODE_ABI) \
 		$(CURDIR)/debian/libnode147/usr/lib/$(DEB_HOST_MULTIARCH)/libnode.so.$(NODE_ABI)
+	# Standard compatibility paths expected by libnode-dev consumers and
+	# node-gyp. libnode26-dev conflicts with Debian's libnode-dev, so these
+	# unversioned paths are safe to provide.
+	set -e; \
+	mkdir -p $(CURDIR)/debian/libnode26-dev/usr/include \
+		$(CURDIR)/debian/libnode26-dev/usr/lib/$(DEB_HOST_MULTIARCH); \
+	ln -sfn ../lib/node26/include/node \
+		$(CURDIR)/debian/libnode26-dev/usr/include/node; \
+	ln -sfn node $(CURDIR)/debian/libnode26-dev/usr/include/v8; \
+	ln -sfn ../node26/lib/libnode.so \
+		$(CURDIR)/debian/libnode26-dev/usr/lib/$(DEB_HOST_MULTIARCH)/libnode.so; \
+	for l in libv8.so libv8_libplatform.so libv8_libbase.so libv8_libsampler.so; do \
+		ln -sfn libnode.so $(CURDIR)/debian/libnode26-dev/usr/lib/$(DEB_HOST_MULTIARCH)/$$l; \
+	done
 
 # dh_install picks files from debian/tmp per the .install files.
 override_dh_install:
 	dh_install
+	# Match Debian's nodejs compatibility command and provide a versioned
+	# nodejs.1 manpage alias alongside node26.1.
+	ln -sfn node26.1 $(CURDIR)/debian/node26-doc/usr/share/man/man1/nodejs26.1
+	# Smoke-test the split staging trees before shlib processing/package build.
+	env LD_LIBRARY_PATH=$(CURDIR)/debian/libnode147/usr/lib/node26/lib \
+		$(CURDIR)/debian/node26/usr/lib/node26/bin/node --version
+	env LD_LIBRARY_PATH=$(CURDIR)/debian/libnode147/usr/lib/node26/lib \
+		$(CURDIR)/debian/node26/usr/lib/node26/bin/node \
+		$(CURDIR)/debian/node26/usr/lib/node26/lib/node_modules/npm/bin/npm-cli.js --version
+	# Confirm the versioned wrappers are pinned to Node 26 rather than whichever
+	# bare `node` a future update-alternatives selection exposes.
+	grep -q '/usr/lib/node26/bin/node' $(CURDIR)/debian/node26/usr/bin/npm26
+	grep -q '/usr/lib/node26/bin/node' $(CURDIR)/debian/node26/usr/bin/npx26
 
 # libnode147 is a shared library package: generate shlibs.
 override_dh_makeshlibs:
@@ -136,9 +199,22 @@ override_dh_makeshlibs:
 override_dh_shlibdeps:
 	dh_shlibdeps -l$(CURDIR)/debian/libnode147/usr/lib/node26/lib
 
+# Node/V8 emits exceptionally large DWARF graphs. Debian's own nodejs package
+# raises the DIE limit and treats dwz failure as non-fatal, especially on
+# experimental architectures; mirror that behavior here.
+override_dh_dwz:
+	-dh_dwz -- --max-die-limit 100000000
+
+# These are executable debugger support files, not passive documentation.
+# Keep them directly usable instead of compressing them under /usr/share/doc.
+override_dh_compress:
+	dh_compress -Xgdbinit -Xlldb_commands.py
+
 # ----------------------------------------------------------------------------
 # Clean.
 # ----------------------------------------------------------------------------
 override_dh_auto_clean:
-	rm -rf debian/.bootstrap debian/fakehome debian/tmp out
 	-dh_auto_clean
+	-$(MAKE) distclean
+	rm -rf debian/.bootstrap debian/fakehome debian/tmp out deps/icu
+	rm -f config.gypi config.mk config.status node node_g

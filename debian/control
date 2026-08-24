@@ -2,8 +2,11 @@ Source: node26
 Section: javascript
 Priority: optional
 Maintainer: Parrot Security <team@parrotsec.org>
-Build-Depends: debhelper-compat (= 13), python3, g++ (>= 12.2), make,
- python3-pip, curl, ca-certificates, xz-utils, dpkg-dev
+Build-Depends: debhelper-compat (= 13), python3,
+ gcc (>= 13.2) [amd64 arm64], g++ (>= 13.2) [amd64 arm64],
+ gcc (>= 14) [riscv64], g++ (>= 14) [riscv64],
+ make, binutils, perl, pkgconf, python3-jinja2, python3-packaging,
+ libatomic1, curl, ca-certificates, xz-utils, dpkg-dev
 Standards-Version: 4.7.2
 Rules-Requires-Root: no
 Homepage: https://nodejs.org
@@ -12,8 +15,8 @@ Vcs-Git: https://github.com/nodejs/node.git
 
 Package: node26
 Architecture: amd64 arm64 riscv64
-Provides: nodejs (= 26.7.0)
-Conflicts: nodejs
+Provides: nodejs (= ${nodejs:Version}), npm (= ${npm:Version})
+Conflicts: nodejs (<< 26~), npm (<< 12~)
 Depends: ${misc:Depends}, ${shlibs:Depends}, libnode147 (= ${binary:Version})
 Suggests: libnode26-dev, node26-doc
 Description: Node.js 26 runtime (current branch) - provides nodejs
@@ -21,11 +24,11 @@ Description: Node.js 26 runtime (current branch) - provides nodejs
  (the current upstream branch), built from source, and provides the `nodejs`
  package name so it satisfies other packages' `Depends: nodejs`.
  .
- The interpreter and the bundled npm/npx/corepack live under
- /usr/lib/node26. The bare commands (node, npm, npx, corepack) are managed
- with update-alternatives, and versioned aliases (node26, npm26, npx26,
- corepack26) are always available. This package conflicts with the
- distribution's `nodejs` package.
+ The interpreter and bundled npm/npx live under /usr/lib/node26. The bare
+ commands (node, npm, npx) are managed with update-alternatives, and
+ versioned aliases (node26, npm26, npx26) are always available. This package
+ conflicts with the distribution's older `nodejs` and `npm` packages. Future
+ versioned providers can coexist through update-alternatives.
  .
  Node.js is built with bundled dependencies (V8, OpenSSL, libuv, ICU
  small-icu, etc.) from the upstream source tree.
@@ -41,17 +44,17 @@ Description: Node.js 26 shared library (libnode.so.147)
 Package: libnode26-dev
 Section: libdevel
 Architecture: amd64 arm64 riscv64
-Provides: libnode-dev
-Conflicts: libnode-dev
+Provides: libnode-dev (= 26.7.0), libv8-dev
+Conflicts: libnode-dev, libv8-dev
 Depends: libnode147 (= ${binary:Version}), ${misc:Depends}
 Description: Node.js 26 development headers
  Headers (node_api.h, V8, libuv, etc.) and the libnode.so development symlink
  needed to build native Node.js addons (node-gyp) and to link against
- libnode. Provides `libnode-dev`.
+ libnode. Provides versioned `libnode-dev` and `libv8-dev` compatibility.
 
 Package: node26-doc
 Section: doc
-Architecture: all
+Architecture: amd64 arm64 riscv64
 Depends: ${misc:Depends}
 Description: Node.js 26 documentation (manpages)
- Manual pages for Node.js 26 (node, npm, npx, corepack).
+ The Node.js 26 manual page and V8 debugger helper files for GDB and LLDB.
