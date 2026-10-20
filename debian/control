@@ -44,7 +44,7 @@ Description: Node.js 26 shared library (libnode.so.147)
 Package: libnode26-dev
 Section: libdevel
 Architecture: amd64 arm64 riscv64
-Provides: libnode-dev (= 26.7.0), libv8-dev
+Provides: libnode-dev (= ${nodejs:Version}), libv8-dev
 Conflicts: libnode-dev, libv8-dev
 Depends: libnode147 (= ${binary:Version}), ${misc:Depends}
 Description: Node.js 26 development headers

@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>C++ embedder API | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/embedding.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-embedding><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>C++ embedder API | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/embedding.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-embedding><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=embedding class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><a href=embedding.html#c-embedder-api>C++ embedder API</a>
 <ul>
@@ -117,6 +118,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -275,7 +277,12 @@ to as <code>node::Environment</code>. Each <code>node::Environment</code> is ass
 shared by multiple <code>node::Environment</code>s. The embedder should make sure
 that <code>node::IsolateData</code> is shared only among <code>node::Environment</code>s that
 use the same <code>v8::Isolate</code>, Node.js does not perform this check.</li>
-</ul><p>In order to set up a <code>v8::Isolate</code>, an <code>v8::ArrayBuffer::Allocator</code> needs
+</ul><p><code>node::Environment</code>s that share a <code>node::IsolateData</code> also share its
+<code>uv_loop_t</code>. <code>node::FreeEnvironment()</code> runs that loop until the handles of the
+<code>node::Environment</code> being freed have closed. Timers, I/O callbacks and thread
+pool completions of the other <code>node::Environment</code>s that become due in those
+loop iterations run normally, including their JavaScript; only the
+<code>node::Environment</code> being freed can no longer call into JavaScript.<p>In order to set up a <code>v8::Isolate</code>, an <code>v8::ArrayBuffer::Allocator</code> needs
 to be provided. One possible choice is the default Node.js allocator, which
 can be created through <code>node::ArrayBufferAllocator::Create()</code>. Using the Node.js
 allocator allows minor performance optimizations when addons use the Node.js

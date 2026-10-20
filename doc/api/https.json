@@ -291,10 +291,10 @@
               "desc": "<p>See <a href=\"http.html#serverheaderstimeout\"><code>server.headersTimeout</code></a> in the <code>node:http</code> module.</p>"
             },
             {
-              "textRaw": "Type: {number} **Default:** `2000`",
+              "textRaw": "Type: {number} **Default:** `1000`",
               "name": "maxHeadersCount",
               "type": "number",
-              "default": "`2000`",
+              "default": "`1000`",
               "desc": "<p>See <a href=\"http.html#servermaxheaderscount\"><code>server.maxHeadersCount</code></a> in the <code>node:http</code> module.</p>"
             },
             {

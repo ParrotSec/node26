@@ -3382,6 +3382,8 @@
                   }
                 ]
               },
+              "stability": 0,
+              "stabilityText": "Deprecated. Using `stream.addAbortSignal()` to destroy long-lived stream resources is documentation-only deprecated. See DEP0209.",
               "signatures": [
                 {
                   "params": [
@@ -3411,7 +3413,13 @@
                   "v19.9.0",
                   "v18.17.0"
                 ],
-                "changes": []
+                "changes": [
+                  {
+                    "version": "v22.0.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/52037",
+                    "description": "bump default highWaterMark."
+                  }
+                ]
               },
               "signatures": [
                 {
@@ -3429,7 +3437,7 @@
                   }
                 }
               ],
-              "desc": "<p>Returns the default highWaterMark used by streams.\nDefaults to <code>65536</code> (64 KiB), or <code>16</code> for <code>objectMode</code>.</p>"
+              "desc": "<p>Returns the default highWaterMark used by streams. Defaults to <code>16</code> for\n<code>objectMode</code>. For byte streams, it defaults to <code>65536</code> (64 KiB) on non-Windows\nplatforms and <code>16384</code> (16 KiB) on Windows.</p>"
             },
             {
               "textRaw": "`stream.setDefaultHighWaterMark(objectMode, value)`",
@@ -3531,10 +3539,10 @@
                       "type": "Object",
                       "options": [
                         {
-                          "textRaw": "`highWaterMark` {number} Buffer level when `stream.write()` starts returning `false`. **Default:** `65536` (64 KiB), or `16` for `objectMode` streams.",
+                          "textRaw": "`highWaterMark` {number} Buffer level when `stream.write()` starts returning `false`. **Default:** See `stream.getDefaultHighWaterMark()`.",
                           "name": "highWaterMark",
                           "type": "number",
-                          "default": "`65536` (64 KiB), or `16` for `objectMode` streams",
+                          "default": "See `stream.getDefaultHighWaterMark()`",
                           "desc": "Buffer level when `stream.write()` starts returning `false`."
                         },
                         {
@@ -3612,7 +3620,7 @@
                       "optional": true
                     }
                   ],
-                  "desc": "<pre><code class=\"language-js\">const { Writable } = require('node:stream');\n\nclass MyWritable extends Writable {\n  constructor(options) {\n    // Calls the stream.Writable() constructor.\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<p>Or, when using pre-ES6 style constructors:</p>\n<pre><code class=\"language-js\">const { Writable } = require('node:stream');\nconst util = require('node:util');\n\nfunction MyWritable(options) {\n  if (!(this instanceof MyWritable))\n    return new MyWritable(options);\n  Writable.call(this, options);\n}\nutil.inherits(MyWritable, Writable);\n</code></pre>\n<p>Or, using the simplified constructor approach:</p>\n<pre><code class=\"language-js\">const { Writable } = require('node:stream');\n\nconst myWritable = new Writable({\n  write(chunk, encoding, callback) {\n    // ...\n  },\n  writev(chunks, callback) {\n    // ...\n  },\n});\n</code></pre>\n<p>Calling <code>abort</code> on the <code>AbortController</code> corresponding to the passed\n<code>AbortSignal</code> will behave the same way as calling <code>.destroy(new AbortError())</code>\non the writable stream.</p>\n<pre><code class=\"language-js\">const { Writable } = require('node:stream');\n\nconst controller = new AbortController();\nconst myWritable = new Writable({\n  write(chunk, encoding, callback) {\n    // ...\n  },\n  writev(chunks, callback) {\n    // ...\n  },\n  signal: controller.signal,\n});\n// Later, abort the operation closing the stream\ncontroller.abort();\n</code></pre>"
+                  "desc": "<pre><code class=\"language-cjs\">const { Writable } = require('node:stream');\n\nclass MyWritable extends Writable {\n  constructor(options) {\n    // Calls the stream.Writable() constructor.\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<pre><code class=\"language-mjs\">import { Writable } from 'node:stream';\n\nclass MyWritable extends Writable {\n  constructor(options) {\n    // Calls the stream.Writable() constructor.\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<p>Or, using the simplified constructor approach:</p>\n<pre><code class=\"language-js\">const { Writable } = require('node:stream');\n\nconst myWritable = new Writable({\n  write(chunk, encoding, callback) {\n    // ...\n  },\n  writev(chunks, callback) {\n    // ...\n  },\n});\n</code></pre>\n<p>Calling <code>abort</code> on the <code>AbortController</code> corresponding to the passed\n<code>AbortSignal</code> will behave the same way as calling <code>.destroy(new AbortError())</code>\non the writable stream.</p>\n<pre><code class=\"language-js\">const { Writable } = require('node:stream');\n\nconst controller = new AbortController();\nconst myWritable = new Writable({\n  write(chunk, encoding, callback) {\n    // ...\n  },\n  writev(chunks, callback) {\n    // ...\n  },\n  signal: controller.signal,\n});\n// Later, abort the operation closing the stream\ncontroller.abort();\n</code></pre>"
                 }
               ],
               "methods": [
@@ -3841,10 +3849,10 @@
                       "type": "Object",
                       "options": [
                         {
-                          "textRaw": "`highWaterMark` {number} The maximum number of bytes to store in the internal buffer before ceasing to read from the underlying resource. **Default:** `65536` (64 KiB), or `16` for `objectMode` streams.",
+                          "textRaw": "`highWaterMark` {number} The maximum number of bytes to store in the internal buffer before ceasing to read from the underlying resource. **Default:** See `stream.getDefaultHighWaterMark()`.",
                           "name": "highWaterMark",
                           "type": "number",
-                          "default": "`65536` (64 KiB), or `16` for `objectMode` streams",
+                          "default": "See `stream.getDefaultHighWaterMark()`",
                           "desc": "The maximum number of bytes to store in the internal buffer before ceasing to read from the underlying resource."
                         },
                         {
@@ -3903,7 +3911,7 @@
                       "optional": true
                     }
                   ],
-                  "desc": "<pre><code class=\"language-js\">const { Readable } = require('node:stream');\n\nclass MyReadable extends Readable {\n  constructor(options) {\n    // Calls the stream.Readable(options) constructor.\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<p>Or, when using pre-ES6 style constructors:</p>\n<pre><code class=\"language-js\">const { Readable } = require('node:stream');\nconst util = require('node:util');\n\nfunction MyReadable(options) {\n  if (!(this instanceof MyReadable))\n    return new MyReadable(options);\n  Readable.call(this, options);\n}\nutil.inherits(MyReadable, Readable);\n</code></pre>\n<p>Or, using the simplified constructor approach:</p>\n<pre><code class=\"language-js\">const { Readable } = require('node:stream');\n\nconst myReadable = new Readable({\n  read(size) {\n    // ...\n  },\n});\n</code></pre>\n<p>Calling <code>abort</code> on the <code>AbortController</code> corresponding to the passed\n<code>AbortSignal</code> will behave the same way as calling <code>.destroy(new AbortError())</code>\non the readable created.</p>\n<pre><code class=\"language-js\">const { Readable } = require('node:stream');\nconst controller = new AbortController();\nconst read = new Readable({\n  read(size) {\n    // ...\n  },\n  signal: controller.signal,\n});\n// Later, abort the operation closing the stream\ncontroller.abort();\n</code></pre>"
+                  "desc": "<pre><code class=\"language-js\">const { Readable } = require('node:stream');\n\nclass MyReadable extends Readable {\n  constructor(options) {\n    // Calls the stream.Readable(options) constructor.\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<p>Or, using the simplified constructor approach:</p>\n<pre><code class=\"language-js\">const { Readable } = require('node:stream');\n\nconst myReadable = new Readable({\n  read(size) {\n    // ...\n  },\n});\n</code></pre>\n<p>Calling <code>abort</code> on the <code>AbortController</code> corresponding to the passed\n<code>AbortSignal</code> will behave the same way as calling <code>.destroy(new AbortError())</code>\non the readable created.</p>\n<pre><code class=\"language-js\">const { Readable } = require('node:stream');\nconst controller = new AbortController();\nconst read = new Readable({\n  read(size) {\n    // ...\n  },\n  signal: controller.signal,\n});\n// Later, abort the operation closing the stream\ncontroller.abort();\n</code></pre>"
                 }
               ],
               "methods": [
@@ -4129,7 +4137,7 @@
                       ]
                     }
                   ],
-                  "desc": "<pre><code class=\"language-js\">const { Duplex } = require('node:stream');\n\nclass MyDuplex extends Duplex {\n  constructor(options) {\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<p>Or, when using pre-ES6 style constructors:</p>\n<pre><code class=\"language-js\">const { Duplex } = require('node:stream');\nconst util = require('node:util');\n\nfunction MyDuplex(options) {\n  if (!(this instanceof MyDuplex))\n    return new MyDuplex(options);\n  Duplex.call(this, options);\n}\nutil.inherits(MyDuplex, Duplex);\n</code></pre>\n<p>Or, using the simplified constructor approach:</p>\n<pre><code class=\"language-js\">const { Duplex } = require('node:stream');\n\nconst myDuplex = new Duplex({\n  read(size) {\n    // ...\n  },\n  write(chunk, encoding, callback) {\n    // ...\n  },\n});\n</code></pre>\n<p>When using pipeline:</p>\n<pre><code class=\"language-js\">const { Transform, pipeline } = require('node:stream');\nconst fs = require('node:fs');\n\npipeline(\n  fs.createReadStream('object.json')\n    .setEncoding('utf8'),\n  new Transform({\n    decodeStrings: false, // Accept string input rather than Buffers\n    construct(callback) {\n      this.data = '';\n      callback();\n    },\n    transform(chunk, encoding, callback) {\n      this.data += chunk;\n      callback();\n    },\n    flush(callback) {\n      try {\n        // Make sure is valid json.\n        JSON.parse(this.data);\n        this.push(this.data);\n        callback();\n      } catch (err) {\n        callback(err);\n      }\n    },\n  }),\n  fs.createWriteStream('valid-object.json'),\n  (err) => {\n    if (err) {\n      console.error('failed', err);\n    } else {\n      console.log('completed');\n    }\n  },\n);\n</code></pre>"
+                  "desc": "<pre><code class=\"language-cjs\">const { Duplex } = require('node:stream');\n\nclass MyDuplex extends Duplex {\n  constructor(options) {\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<pre><code class=\"language-mjs\">import { Duplex } from 'node:stream';\n\nclass MyDuplex extends Duplex {\n  constructor(options) {\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<p>Or, using the simplified constructor approach:</p>\n<pre><code class=\"language-js\">const { Duplex } = require('node:stream');\n\nconst myDuplex = new Duplex({\n  read(size) {\n    // ...\n  },\n  write(chunk, encoding, callback) {\n    // ...\n  },\n});\n</code></pre>\n<p>When using pipeline:</p>\n<pre><code class=\"language-js\">const { Transform, pipeline } = require('node:stream');\nconst fs = require('node:fs');\n\npipeline(\n  fs.createReadStream('object.json')\n    .setEncoding('utf8'),\n  new Transform({\n    decodeStrings: false, // Accept string input rather than Buffers\n    construct(callback) {\n      this.data = '';\n      callback();\n    },\n    transform(chunk, encoding, callback) {\n      this.data += chunk;\n      callback();\n    },\n    flush(callback) {\n      try {\n        // Make sure is valid json.\n        JSON.parse(this.data);\n        this.push(this.data);\n        callback();\n      } catch (err) {\n        callback(err);\n      }\n    },\n  }),\n  fs.createWriteStream('valid-object.json'),\n  (err) => {\n    if (err) {\n      console.error('failed', err);\n    } else {\n      console.log('completed');\n    }\n  },\n);\n</code></pre>"
                 }
               ],
               "modules": [
@@ -4183,7 +4191,7 @@
                       "optional": true
                     }
                   ],
-                  "desc": "<pre><code class=\"language-js\">const { Transform } = require('node:stream');\n\nclass MyTransform extends Transform {\n  constructor(options) {\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<p>Or, when using pre-ES6 style constructors:</p>\n<pre><code class=\"language-js\">const { Transform } = require('node:stream');\nconst util = require('node:util');\n\nfunction MyTransform(options) {\n  if (!(this instanceof MyTransform))\n    return new MyTransform(options);\n  Transform.call(this, options);\n}\nutil.inherits(MyTransform, Transform);\n</code></pre>\n<p>Or, using the simplified constructor approach:</p>\n<pre><code class=\"language-js\">const { Transform } = require('node:stream');\n\nconst myTransform = new Transform({\n  transform(chunk, encoding, callback) {\n    // ...\n  },\n});\n</code></pre>"
+                  "desc": "<pre><code class=\"language-cjs\">const { Transform } = require('node:stream');\n\nclass MyTransform extends Transform {\n  constructor(options) {\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<pre><code class=\"language-mjs\">import { Transform } from 'node:stream';\n\nclass MyTransform extends Transform {\n  constructor(options) {\n    super(options);\n    // ...\n  }\n}\n</code></pre>\n<p>Or, using the simplified constructor approach:</p>\n<pre><code class=\"language-js\">const { Transform } = require('node:stream');\n\nconst myTransform = new Transform({\n  transform(chunk, encoding, callback) {\n    // ...\n  },\n});\n</code></pre>"
                 }
               ],
               "events": [
@@ -5237,6 +5245,8 @@
               }
             ]
           },
+          "stability": 0,
+          "stabilityText": "Deprecated. Using `stream.addAbortSignal()` to destroy long-lived stream resources is documentation-only deprecated. See DEP0209.",
           "signatures": [
             {
               "params": [
@@ -5266,7 +5276,13 @@
               "v19.9.0",
               "v18.17.0"
             ],
-            "changes": []
+            "changes": [
+              {
+                "version": "v22.0.0",
+                "pr-url": "https://github.com/nodejs/node/pull/52037",
+                "description": "bump default highWaterMark."
+              }
+            ]
           },
           "signatures": [
             {
@@ -5284,7 +5300,7 @@
               }
             }
           ],
-          "desc": "<p>Returns the default highWaterMark used by streams.\nDefaults to <code>65536</code> (64 KiB), or <code>16</code> for <code>objectMode</code>.</p>"
+          "desc": "<p>Returns the default highWaterMark used by streams. Defaults to <code>16</code> for\n<code>objectMode</code>. For byte streams, it defaults to <code>65536</code> (64 KiB) on non-Windows\nplatforms and <code>16384</code> (16 KiB) on Windows.</p>"
         },
         {
           "textRaw": "`stream.setDefaultHighWaterMark(objectMode, value)`",

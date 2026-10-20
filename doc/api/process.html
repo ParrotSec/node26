@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>Process | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/process.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-process><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>Process | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/process.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-process><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=process class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><a href=process.html#process>Process</a>
 <ul>
@@ -211,7 +212,7 @@
 <li><a href=process.html#processpid><code>process.pid</code></a></li>
 <li><a href=process.html#processplatform><code>process.platform</code></a></li>
 <li><a href=process.html#processppid><code>process.ppid</code></a></li>
-<li><span class=stability_1><a href=process.html#processrefmayberefable><code>process.ref(maybeRefable)</code></a></span></li>
+<li><a href=process.html#processrefmayberefable><code>process.ref(maybeRefable)</code></a></li>
 <li><a href=process.html#processrelease><code>process.release</code></a></li>
 <li><a href=process.html#processreport><code>process.report</code></a>
 <ul>
@@ -260,7 +261,7 @@
 <li><a href=process.html#processtraceprocesswarnings><code>process.traceProcessWarnings</code></a></li>
 <li><span class=stability_0><a href=process.html#processumask><code>process.umask()</code></a></span></li>
 <li><a href=process.html#processumaskmask><code>process.umask(mask)</code></a></li>
-<li><span class=stability_1><a href=process.html#processunrefmayberefable><code>process.unref(maybeRefable)</code></a></span></li>
+<li><a href=process.html#processunrefmayberefable><code>process.unref(maybeRefable)</code></a></li>
 <li><a href=process.html#processuptime><code>process.uptime()</code></a></li>
 <li><a href=process.html#processversion><code>process.version</code></a></li>
 <li><a href=process.html#processversions><code>process.versions</code></a></li>
@@ -273,6 +274,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -468,7 +470,7 @@
 <li><a href=process.html#processpid><code>process.pid</code></a></li>
 <li><a href=process.html#processplatform><code>process.platform</code></a></li>
 <li><a href=process.html#processppid><code>process.ppid</code></a></li>
-<li><span class=stability_1><a href=process.html#processrefmayberefable><code>process.ref(maybeRefable)</code></a></span></li>
+<li><a href=process.html#processrefmayberefable><code>process.ref(maybeRefable)</code></a></li>
 <li><a href=process.html#processrelease><code>process.release</code></a></li>
 <li><a href=process.html#processreport><code>process.report</code></a>
 <ul>
@@ -517,7 +519,7 @@
 <li><a href=process.html#processtraceprocesswarnings><code>process.traceProcessWarnings</code></a></li>
 <li><span class=stability_0><a href=process.html#processumask><code>process.umask()</code></a></span></li>
 <li><a href=process.html#processumaskmask><code>process.umask(mask)</code></a></li>
-<li><span class=stability_1><a href=process.html#processunrefmayberefable><code>process.unref(maybeRefable)</code></a></span></li>
+<li><a href=process.html#processunrefmayberefable><code>process.unref(maybeRefable)</code></a></li>
 <li><a href=process.html#processuptime><code>process.uptime()</code></a></li>
 <li><a href=process.html#processversion><code>process.version</code></a></li>
 <li><a href=process.html#processversions><code>process.versions</code></a></li>
@@ -930,7 +932,8 @@ install a listener but doing so might interfere with the debugger.</li>
 <li><code>'SIGTERM'</code> and <code>'SIGINT'</code> have default handlers on non-Windows platforms that
 reset the terminal mode before exiting with code <code>128 + signal number</code>. If one
 of these signals has a listener installed, its default behavior will be
-removed (Node.js will no longer exit).</li>
+removed. Signal events are emitted asynchronously, so Node.js may exit before
+the listener is called if the event loop is otherwise empty.</li>
 <li><code>'SIGPIPE'</code> is ignored by default. It can have a listener installed.</li>
 <li><code>'SIGHUP'</code> is generated on Windows when the console window is closed, and on
 other platforms under various similar conditions. See <a href=http://man7.org/linux/man-pages/man7/signal.7.html><code>signal(7)</code></a>. It can have a
@@ -1644,7 +1647,7 @@ Node.js is run with <code>--no-strip-types</code>.</section>
 redundant.</div><ul>
 <li>Type: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a></li>
 </ul><p>A boolean value that is <code>true</code> if the current Node.js build includes support for libuv.<p>Since it's not possible to build Node.js without libuv, this value is always <code>true</code>.</section>
-<section><h3><code>process.finalization.register(ref, callback)</code><span><a id=process_process_finalization_register_ref_callback></a></span><span><a class=mark id=processfinalizationregisterref-callback href=#processfinalizationregisterref-callback>#</a></span></h3><div class=api_metadata><span>Added in: v22.5.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active Development</div><ul>
+<section><h3><code>process.finalization.register(ref, callback)</code><span><a id=process_process_finalization_register_ref_callback></a></span><span><a class=mark id=processfinalizationregisterref-callback href=#processfinalizationregisterref-callback>#</a></span></h3><div class=api_metadata><span>Added in: v22.5.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.12.0<td><p>Marked as release candidate.</table></details></div><div class="api_stability api_stability_1"><p>Stability: 1.2 - Release candidate</div><ul>
 <li><code>ref</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a> The reference to the resource that is being tracked.</li>
 <li><code>callback</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a> The callback function to be called when the resource
 is finalized.
@@ -1722,7 +1725,7 @@ need to release the buffer, so in this case we just remove the callback from the
 <span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre><p>It is very unlikely (not impossible) that this object will be garbage collected,
 but if it is not, <code>dispose</code> will be called when <code>process.exit</code> is called.<p>Be careful and avoid relying on this feature for the disposal of critical resources,
 as it is not guaranteed that the callback will be called under all circumstances.</section>
-<section><h3><code>process.finalization.registerBeforeExit(ref, callback)</code><span><a id=process_process_finalization_registerbeforeexit_ref_callback></a></span><span><a class=mark id=processfinalizationregisterbeforeexitref-callback href=#processfinalizationregisterbeforeexitref-callback>#</a></span></h3><div class=api_metadata><span>Added in: v22.5.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active Development</div><ul>
+<section><h3><code>process.finalization.registerBeforeExit(ref, callback)</code><span><a id=process_process_finalization_registerbeforeexit_ref_callback></a></span><span><a class=mark id=processfinalizationregisterbeforeexitref-callback href=#processfinalizationregisterbeforeexitref-callback>#</a></span></h3><div class=api_metadata><span>Added in: v22.5.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.12.0<td><p>Marked as release candidate.</table></details></div><div class="api_stability api_stability_1"><p>Stability: 1.2 - Release candidate</div><ul>
 <li><code>ref</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a> The reference
 to the resource that is being tracked.</li>
 <li><code>callback</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a> The callback function to be called when the resource
@@ -1735,7 +1738,7 @@ is finalized.
 </ul><p>This function behaves exactly like the <code>register</code>, except that the callback will be called
 when the process emits the <code>beforeExit</code> event if <code>ref</code> object was not garbage collected.<p>Be aware that all limitations applied to the <code>beforeExit</code> event are also applied to the <code>callback</code> function,
 this means that there is a possibility that the callback will not be called under special circumstances.</section>
-<section><h3><code>process.finalization.unregister(ref)</code><span><a id=process_process_finalization_unregister_ref></a></span><span><a class=mark id=processfinalizationunregisterref href=#processfinalizationunregisterref>#</a></span></h3><div class=api_metadata><span>Added in: v22.5.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active Development</div><ul>
+<section><h3><code>process.finalization.unregister(ref)</code><span><a id=process_process_finalization_unregister_ref></a></span><span><a class=mark id=processfinalizationunregisterref href=#processfinalizationunregisterref>#</a></span></h3><div class=api_metadata><span>Added in: v22.5.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.12.0<td><p>Marked as release candidate.</table></details></div><div class="api_stability api_stability_1"><p>Stability: 1.2 - Release candidate</div><ul>
 <li><code>ref</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a> The reference
 to the resource that was registered previously.</li>
 </ul><p>This function remove the register of the object from the finalization
@@ -2295,31 +2298,37 @@ flag's behavior.</section>
 <a href=cli.html#--permission-audit><code>--permission-audit</code></a> flags.<p><code>process.permission</code> is an object whose methods are used to manage permissions
 for the current process. Additional documentation is available in the
 <a href=permissions.html#permission-model>Permission Model</a>.</section>
-<section><h4><code>process.permission.has(scope[, reference])</code><span><a id=process_process_permission_has_scope_reference></a></span><span><a class=mark id=processpermissionhasscope-reference href=#processpermissionhasscope-reference>#</a></span></h4><div class=api_metadata><span>Added in: v20.0.0</span></div><ul>
+<section><h4><code>process.permission.has(scope[, reference])</code><span><a id=process_process_permission_has_scope_reference></a></span><span><a class=mark id=processpermissionhasscope-reference href=#processpermissionhasscope-reference>#</a></span></h4><div class=api_metadata><span>Added in: v20.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.12.0<td><p>The <code>reference</code> argument can be a <code>URL</code> or a <code>Uint8Array</code>.</table></details></div><ul>
 <li><code>scope</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a></li>
-<li><code>reference</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a></li>
+<li><code>reference</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array><code>&lt;Uint8Array></code></a></li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a></li>
 </ul><p>Verifies that the process is able to access the given scope and reference.
 If no reference is provided, a global scope is assumed, for instance,
 <code>process.permission.has('fs.read')</code> will check if the process has ALL
 file system read permissions.<p>In audit mode (<a href=cli.html#--permission-audit><code>--permission-audit</code></a>), this method still returns the actual
 permission status, but denied operations will not throw <code>ERR_ACCESS_DENIED</code>.<p>The reference has a meaning based on the provided scope. For example,
-the reference when the scope is File System means files and folders.<p>The available scopes are:<ul>
+the reference when the scope is File System means files and folders.<p>For File System scopes, a <code>URL</code> reference must use the <code>file:</code> protocol and is
+converted to a path, while a <code>Uint8Array</code> reference is treated as the raw bytes
+of a path. Other scopes ignore the reference.<p>The available scopes are:<ul>
 <li><code>fs</code> - All File System</li>
 <li><code>fs.read</code> - File System read operations</li>
 <li><code>fs.write</code> - File System write operations</li>
 <li><code>child</code> - Child process spawning operations</li>
 <li><code>openssl.store</code> - Loading keys through OpenSSL STORE loaders</li>
 <li><code>worker</code> - Worker thread spawning operation</li>
+<li><code>net</code> - Network operations</li>
+<li><code>inspector</code> - Inspector operations</li>
+<li><code>wasi</code> - WASI operations</li>
+<li><code>addon</code> - Native addon operations</li>
 <li><code>ffi</code> - Foreign function interface operations</li>
 </ul><pre class="catppuccin-latte catppuccin-mocha language-js shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>// Check if the process has permission to read the README file</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>process</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>permission</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>has</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'fs.read'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> './README.md'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>// Check if the process has read permission operations</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>process</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>permission</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>has</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'fs.read'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre></section>
-<section><h4><code>process.permission.drop(scope[, reference])</code><span><a id=process_process_permission_drop_scope_reference></a></span><span><a class=mark id=processpermissiondropscope-reference href=#processpermissiondropscope-reference>#</a></span></h4><div class=api_metadata><span>Added in: v26.3.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active Development</div><ul>
+<section><h4><code>process.permission.drop(scope[, reference])</code><span><a id=process_process_permission_drop_scope_reference></a></span><span><a class=mark id=processpermissiondropscope-reference href=#processpermissiondropscope-reference>#</a></span></h4><div class=api_metadata><span>Added in: v26.3.0, v24.20.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.12.0<td><p>The <code>reference</code> argument can be a <code>URL</code> or a <code>Uint8Array</code>.</table></details></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active Development</div><ul>
 <li><code>scope</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a></li>
-<li><code>reference</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a></li>
+<li><code>reference</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array><code>&lt;Uint8Array></code></a></li>
 </ul><p>Drops the specified permission from the current process. This operation is
 <strong>irreversible</strong> — once a permission is dropped, it cannot be restored through
 any Node.js API.<p>In audit mode (<a href=cli.html#--permission-audit><code>--permission-audit</code></a>), dropping a permission takes effect,
@@ -2348,6 +2357,7 @@ that was granted. Any remaining grants continue to apply.</li>
 <li><code>inspector</code> - Inspector operations</li>
 <li><code>wasi</code> - WASI operations</li>
 <li><code>addon</code> - Native addon operations</li>
+<li><code>ffi</code> - Foreign function interface operations</li>
 </ul><pre class="catppuccin-latte catppuccin-mocha language-js shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> fs </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:fs'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span>
 <span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>// Read configuration during startup</span></span>
@@ -2398,7 +2408,7 @@ current process.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;colo
 <span class=line></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>console</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>log</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>`The parent process is pid </span><span style=color:#7C7F93;--shiki-dark:#9399B2>${</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>ppid</span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>`</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
-<section><h3><code>process.ref(maybeRefable)</code><span><a id=process_process_ref_mayberefable></a></span><span><a class=mark id=processrefmayberefable href=#processrefmayberefable>#</a></span></h3><div class=api_metadata><span>Added in: v23.6.0, v22.14.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><ul>
+<section><h3><code>process.ref(maybeRefable)</code><span><a id=process_process_ref_mayberefable></a></span><span><a class=mark id=processrefmayberefable href=#processrefmayberefable>#</a></span></h3><div class=api_metadata><span>Added in: v23.6.0, v22.14.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.11.0<td><p>This API is no longer experimental.</table></details></div><ul>
 <li><code>maybeRefable</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types><code>&lt;any></code></a> An object that may be "refable".</li>
 </ul><p>An object is "refable" if it implements the Node.js "Refable protocol".
 Specifically, this means that the object implements the <code>Symbol.for('nodejs.ref')</code>
@@ -3013,7 +3023,7 @@ processes inherit the mask from the parent process. Returns the previous mask.<p
 <span class=line><span style=color:#40A02B;--shiki-dark:#A6E3A1>  `Changed umask from </span><span style=color:#7C7F93;--shiki-dark:#9399B2>${</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>oldmask</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>toString</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>(</span><span style=color:#FE640B;--shiki-dark:#FAB387>8</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> to </span><span style=color:#7C7F93;--shiki-dark:#9399B2>${</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>newmask</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>toString</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>(</span><span style=color:#FE640B;--shiki-dark:#FAB387>8</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>`</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre><p>In <a href=worker_threads.html#class-worker><code>Worker</code></a> threads, <code>process.umask(mask)</code> will throw an exception.</section>
-<section><h3><code>process.unref(maybeRefable)</code><span><a id=process_process_unref_mayberefable></a></span><span><a class=mark id=processunrefmayberefable href=#processunrefmayberefable>#</a></span></h3><div class=api_metadata><span>Added in: v23.6.0, v22.14.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><ul>
+<section><h3><code>process.unref(maybeRefable)</code><span><a id=process_process_unref_mayberefable></a></span><span><a class=mark id=processunrefmayberefable href=#processunrefmayberefable>#</a></span></h3><div class=api_metadata><span>Added in: v23.6.0, v22.14.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.11.0<td><p>This API is no longer experimental.</table></details></div><ul>
 <li><code>maybeRefable</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types><code>&lt;any></code></a> An object that may be "unref'd".</li>
 </ul><p>An object is "unrefable" if it implements the Node.js "Refable protocol".
 Specifically, this means that the object implements the <code>Symbol.for('nodejs.ref')</code>
@@ -3121,6 +3131,8 @@ in the top-level code, but the passed <code>Promise</code> never settled.</li>
 <li><code>14</code> <strong>Snapshot Failure</strong>: Node.js was started to build a V8 startup
 snapshot and it failed because certain requirements of the state of
 the application were not met.</li>
+<li><code>124</code> <strong>Process Timeout</strong>: The process was still running when the duration
+set with <a href=cli.html#--process-timeoutduration><code>--process-timeout</code></a> elapsed.</li>
 <li><code>>128</code> <strong>Signal Exits</strong>: If Node.js receives a fatal signal such as
 <code>SIGKILL</code> or <code>SIGHUP</code>, then its exit code will be <code>128</code> plus the
 value of the signal code. This is a standard POSIX practice, since

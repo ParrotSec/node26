@@ -35,7 +35,7 @@
           "textRaw": "Rerunning failed tests",
           "name": "rerunning_failed_tests",
           "type": "module",
-          "desc": "<p>The test runner supports persisting the state of the run to a file, allowing\nthe test runner to rerun failed tests without having to re-run the entire test suite.\nUse the <a href=\"cli.html#--test-rerun-failures\"><code>--test-rerun-failures</code></a> command-line option to specify a file path where the\nstate of the run is stored. if the state file does not exist, the test runner will\ncreate it.\nthe state file is a JSON file that contains an array of run attempts.\nEach run attempt is an object mapping successful tests to the attempt they have passed in.\nThe key identifying a test in this map is the test file path, with the line and column where the test is defined.\nin a case where a test defined in a specific location is run multiple times,\nfor example within a function or a loop,\na counter will be appended to the key, to disambiguate the test runs.\nnote changing the order of test execution or the location of a test can lead the test runner\nto consider tests as passed on a previous attempt,\nmeaning <code>--test-rerun-failures</code> should be used when tests run in a deterministic order.</p>\n<p>example of a state file:</p>\n<pre><code class=\"language-json\">[\n  {\n    \"test.js:10:5\": { \"passed_on_attempt\": 0, \"name\": \"test 1\" }\n  },\n  {\n    \"test.js:10:5\": { \"passed_on_attempt\": 0, \"name\": \"test 1\" },\n    \"test.js:20:5\": { \"passed_on_attempt\": 1, \"name\": \"test 2\" }\n  }\n]\n</code></pre>\n<p>in this example, there are two run attempts, with two tests defined in <code>test.js</code>,\nthe first test succeeded on the first attempt, and the second test succeeded on the second attempt.</p>\n<p>When the <code>--test-rerun-failures</code> option is used, the test runner will only run tests that have not yet passed.</p>\n<pre><code class=\"language-bash\">node --test-rerun-failures /path/to/state/file\n</code></pre>",
+          "desc": "<p>The test runner supports persisting the state of the run to a file, allowing\nthe test runner to rerun failed tests without having to re-run the entire test suite.\nUse the <a href=\"cli.html#--test-rerun-failures\"><code>--test-rerun-failures</code></a> command-line option to specify a file path where the\nstate of the run is stored. if the state file does not exist, the test runner will\ncreate it.\nthe state file is a JSON file that contains an array of run attempts.\nEach run attempt is an object mapping successful tests to the attempt they have passed in.\nThe key identifying a test in this map is the test file path, with the line and column where the test is defined.\nin a case where a test defined in a specific location is run multiple times,\nfor example within a function or a loop,\na counter will be appended to the key, to disambiguate the test runs.\nnote changing the order of test execution or the location of a test can lead the test runner\nto consider tests as passed on a previous attempt,\nmeaning <code>--test-rerun-failures</code> should be used when tests run in a deterministic order.</p>\n<p>example of a state file:</p>\n<pre><code class=\"language-json\">[\n  {\n    \"test.js:10:5\": { \"passed_on_attempt\": 0, \"name\": \"test 1\" }\n  },\n  {\n    \"test.js:10:5\": { \"passed_on_attempt\": 0, \"name\": \"test 1\" },\n    \"test.js:20:5\": { \"passed_on_attempt\": 1, \"name\": \"test 2\" }\n  }\n]\n</code></pre>\n<p>in this example, there are two run attempts, with two tests defined in <code>test.js</code>,\nthe first test succeeded on the first attempt, and the second test succeeded on the second attempt.</p>\n<p>When the <code>--test-rerun-failures</code> option is used, the test runner will only run tests that have not yet passed.\nA <code>todo</code> test that fails counts as not yet passed and is rerun, even though its failure does not\ncause the test run to fail.</p>\n<pre><code class=\"language-bash\">node --test-rerun-failures /path/to/state/file\n</code></pre>",
           "displayName": "Rerunning failed tests"
         },
         {
@@ -99,35 +99,58 @@
           },
           "stability": 1,
           "stabilityText": "Early development",
-          "desc": "<p>Tags annotate tests and suites with arbitrary string labels. The\n<a href=\"cli.html#--experimental-test-tag-filtertag\"><code>--experimental-test-tag-filter</code></a> CLI flag (or the <code>testTagFilters</code>\noption on <a href=\"#runoptions\"><code>run()</code></a>) selects tests whose tag set contains every\nprovided filter value.</p>\n<p>Tags are an alternative to encoding metadata into test names. They are\nuseful for cross-cutting axes such as subsystem, speed bucket, flakiness,\nor environment, where a name pattern would be brittle.</p>",
+          "desc": "<p>Tags annotate tests and suites with arbitrary string labels. The\n<a href=\"cli.html#--experimental-test-tag-filtertag\"><code>--experimental-test-tag-filter</code></a> CLI flag (or the <code>testTagFilters</code>\noption on <a href=\"#runoptions\"><code>run()</code></a>) selects tests by a boolean expression over those\nlabels.</p>\n<p>Tags are an alternative to encoding metadata into test names. They are\nuseful for cross-cutting axes such as subsystem, speed bucket, flakiness,\nor environment, where a name pattern would be brittle.</p>",
           "modules": [
             {
               "textRaw": "Authoring tagged tests",
               "name": "authoring_tagged_tests",
               "type": "module",
-              "desc": "<p>Pass a <code>tags</code> array on any of <code>test()</code>, <code>it()</code>, <code>suite()</code>, or <code>describe()</code>.\nTags inherit from a suite to its child tests by union—a test inside a\nsuite tagged <code>['db']</code> that declares its own <code>tags: ['integration']</code>\neffectively has both tags.</p>\n<pre><code class=\"language-mjs\">import { describe, it } from 'node:test';\n\ndescribe('database', { tags: ['db'] }, () => {\n  it('reads a row');                                            // tags: ['db']\n  it('writes a row', { tags: ['integration'] });                // tags: ['db', 'integration']\n  it('reconnects after disconnect', { tags: ['flaky'] });       // tags: ['db', 'flaky']\n});\n</code></pre>\n<pre><code class=\"language-cjs\">const { describe, it } = require('node:test');\n\ndescribe('database', { tags: ['db'] }, () => {\n  it('reads a row');                                            // tags: ['db']\n  it('writes a row', { tags: ['integration'] });                // tags: ['db', 'integration']\n  it('reconnects after disconnect', { tags: ['flaky'] });       // tags: ['db', 'flaky']\n});\n</code></pre>\n<p>Tag values must be non-empty strings. Tags are matched case-insensitively;\nthe canonical form is lowercase. Duplicates within a single <code>tags</code> array\nare collapsed on the lowercased form, preserving the first-seen\ndeclaration order.</p>\n<p>Hooks (<code>before</code>, <code>after</code>, <code>beforeEach</code>, <code>afterEach</code>) do not declare their\nown tags. They run as part of their owning suite, which carries the\nsuite's tags.</p>",
+              "desc": "<p>Pass a <code>tags</code> array on any of <code>test()</code>, <code>it()</code>, <code>suite()</code>, or <code>describe()</code>.\nTags inherit from a suite to its child tests by union—a test inside a\nsuite tagged <code>['db']</code> that declares its own <code>tags: ['integration']</code>\neffectively has both tags.</p>\n<pre><code class=\"language-mjs\">import { describe, it } from 'node:test';\n\ndescribe('database', { tags: ['db'] }, () => {\n  it('reads a row');                                            // tags: ['db']\n  it('writes a row', { tags: ['integration'] });                // tags: ['db', 'integration']\n  it('reconnects after disconnect', { tags: ['flaky'] });       // tags: ['db', 'flaky']\n});\n</code></pre>\n<pre><code class=\"language-cjs\">const { describe, it } = require('node:test');\n\ndescribe('database', { tags: ['db'] }, () => {\n  it('reads a row');                                            // tags: ['db']\n  it('writes a row', { tags: ['integration'] });                // tags: ['db', 'integration']\n  it('reconnects after disconnect', { tags: ['flaky'] });       // tags: ['db', 'flaky']\n});\n</code></pre>\n<p>Tag values must be non-empty strings that contain no whitespace, no\noperator characters (<code>&#x26; | ! ( ) *</code>), and are not the reserved words\n<code>'and'</code>, <code>'or'</code>, or <code>'not'</code> in any casing. Tags are matched\ncase-insensitively; the canonical form is lowercase. Duplicates within a\nsingle <code>tags</code> array are collapsed on the lowercased form, preserving the\nfirst-seen declaration order.</p>\n<p>Hooks (<code>before</code>, <code>after</code>, <code>beforeEach</code>, <code>afterEach</code>) do not declare their\nown tags. They run as part of their owning suite, which carries the\nsuite's tags.</p>",
               "displayName": "Authoring tagged tests"
             },
             {
-              "textRaw": "Filtering by tag",
-              "name": "filtering_by_tag",
+              "textRaw": "Filtering syntax",
+              "name": "filtering_syntax",
               "type": "module",
-              "desc": "<p>Each <a href=\"cli.html#--experimental-test-tag-filtertag\"><code>--experimental-test-tag-filter</code></a> value is a literal tag name. A\ntest runs only when its tag set contains that name. The flag may be\nspecified more than once; tests must match <strong>every</strong> filter to run. The\nsame applies to the <code>testTagFilters</code> array on <a href=\"#runoptions\"><code>run()</code></a>. Filters are\ncase-insensitive and AND'd with <a href=\"cli.html#--test-name-pattern\"><code>--test-name-pattern</code></a>,\n<a href=\"cli.html#--test-skip-pattern\"><code>--test-skip-pattern</code></a>, and <code>.only</code> filtering.</p>\n<p>Untagged tests are excluded under any non-empty filter, since the filter\nrequires the tag to be present.</p>",
-              "displayName": "Filtering by tag"
-            },
-            {
-              "textRaw": "Reading tags from inside a test",
-              "name": "reading_tags_from_inside_a_test",
-              "type": "module",
-              "desc": "<p>The <a href=\"#class-testcontext\"><code>TestContext</code></a> object exposes the test's tags as a frozen array\nthrough <a href=\"#contexttags\"><code>context.tags</code></a>, so tests can branch on their own metadata.</p>",
-              "displayName": "Reading tags from inside a test"
-            },
-            {
-              "textRaw": "Errors",
-              "name": "errors",
-              "type": "module",
-              "desc": "<p>A tag value that violates the validation rules above throws\n<code>ERR_INVALID_ARG_VALUE</code> at the registration site, before any test runs.\nA non-array <code>tags</code> value throws <code>ERR_INVALID_ARG_TYPE</code>.</p>",
-              "displayName": "Errors"
+              "desc": "<p>The filter expression supports:</p>\n<ul>\n<li>Identifiers—any non-whitespace, non-operator characters. A literal\nidentifier matches a tag of the same value (case-insensitive).</li>\n<li><code>*</code> wildcards inside an identifier match any sequence of characters.\nA bare <code>*</code> matches any tagged test.</li>\n<li>Boolean operators with two equivalent forms:\n<ul>\n<li><code>and</code> / <code>&#x26;&#x26;</code></li>\n<li><code>or</code> / <code>||</code></li>\n<li><code>not</code> / <code>!</code></li>\n</ul>\n</li>\n<li>Parentheses for grouping.</li>\n</ul>\n<p>The word forms (<code>and</code>, <code>or</code>, <code>not</code>) require whitespace separation; the\npunctuation forms do not.</p>",
+              "modules": [
+                {
+                  "textRaw": "Operator precedence",
+                  "name": "operator_precedence",
+                  "type": "module",
+                  "desc": "<p>The expression is evaluated with the standard precedence\n<code>not > and > or</code>. Binary operators are left-associative.</p>\n<table>\n<thead>\n<tr>\n<th>Expression</th>\n<th>Equivalent grouping</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>a or b and c</code></td>\n<td><code>a or (b and c)</code></td>\n</tr>\n<tr>\n<td><code>not a and b</code></td>\n<td><code>(not a) and b</code></td>\n</tr>\n</tbody>\n</table>\n<p>Use parentheses to override:</p>\n<table>\n<thead>\n<tr>\n<th>Expression</th>\n<th>Selects</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>(unit or smoke) and not slow</code></td>\n<td>unit-or-smoke tests that are not also slow</td>\n</tr>\n<tr>\n<td><code>db &#x26;&#x26; !flaky</code></td>\n<td>db tests that are not flaky</td>\n</tr>\n<tr>\n<td><code>*</code></td>\n<td>every tagged test</td>\n</tr>\n</tbody>\n</table>",
+                  "displayName": "Operator precedence"
+                },
+                {
+                  "textRaw": "Untagged tests",
+                  "name": "untagged_tests",
+                  "type": "module",
+                  "desc": "<p>Untagged tests behave as if they have an empty tag set. As a result:</p>\n<table>\n<thead>\n<tr>\n<th>Filter expression</th>\n<th>Untagged test</th>\n<th>Why</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>db</code></td>\n<td>excluded</td>\n<td>Positive match against an empty tag set is false</td>\n</tr>\n<tr>\n<td><code>*</code></td>\n<td>excluded</td>\n<td>The bare wildcard requires at least one tag</td>\n</tr>\n<tr>\n<td><code>db or unit</code></td>\n<td>excluded</td>\n<td>Both branches are false against an empty tag set</td>\n</tr>\n<tr>\n<td><code>not flaky</code></td>\n<td>included</td>\n<td>Negation against an empty tag set is true</td>\n</tr>\n<tr>\n<td><code>not flaky and not slow</code></td>\n<td>included</td>\n<td>Both negations are true against an empty tag set</td>\n</tr>\n<tr>\n<td><code>db or not flaky</code></td>\n<td>included</td>\n<td>The negated branch is true</td>\n</tr>\n</tbody>\n</table>\n<p>For example, <code>--experimental-test-tag-filter='not flaky'</code> runs every test\nthat is not tagged <code>flaky</code>, including all untagged tests.</p>",
+                  "displayName": "Untagged tests"
+                },
+                {
+                  "textRaw": "Composing multiple filters",
+                  "name": "composing_multiple_filters",
+                  "type": "module",
+                  "desc": "<p><a href=\"cli.html#--experimental-test-tag-filtertag\"><code>--experimental-test-tag-filter</code></a> may be specified more than once on the\ncommand line. Multiple expressions compose by AND—a test must satisfy\nevery expression to run. The same applies to passing an array to\n<code>testTagFilters</code> on <a href=\"#runoptions\"><code>run()</code></a>. The tag filter is also AND'd with\n<a href=\"cli.html#--test-name-pattern\"><code>--test-name-pattern</code></a>, <a href=\"cli.html#--test-skip-pattern\"><code>--test-skip-pattern</code></a>, and <code>.only</code>\nfiltering.</p>",
+                  "displayName": "Composing multiple filters"
+                },
+                {
+                  "textRaw": "Reading tags from inside a test",
+                  "name": "reading_tags_from_inside_a_test",
+                  "type": "module",
+                  "desc": "<p>The <a href=\"#class-testcontext\"><code>TestContext</code></a> object exposes the test's tags as a frozen array\nthrough <a href=\"#contexttags\"><code>context.tags</code></a>, so tests can branch on their own metadata.</p>",
+                  "displayName": "Reading tags from inside a test"
+                },
+                {
+                  "textRaw": "Errors",
+                  "name": "errors",
+                  "type": "module",
+                  "desc": "<p>A tag value that violates the validation rules above throws\n<code>ERR_INVALID_ARG_VALUE</code> at the registration site, before any test runs.\nA non-array <code>tags</code> value throws <code>ERR_INVALID_ARG_TYPE</code>. A malformed\nfilter expression on the CLI causes the test runner to exit with a\nnon-zero status before running any test files.</p>",
+                  "displayName": "Errors"
+                }
+              ],
+              "displayName": "Filtering syntax"
             }
           ],
           "displayName": "Test tags"
@@ -201,7 +224,7 @@
                   "textRaw": "Child process option inheritance",
                   "name": "child_process_option_inheritance",
                   "type": "module",
-                  "desc": "<p>When running tests in process isolation mode (the default), spawned child processes\ninherit Node.js options from the parent process, including those specified in\n<a href=\"cli.html#--experimental-config-filepath---experimental-config-file\">configuration files</a>. However, certain flags are filtered out to enable proper\ntest runner functionality:</p>\n<ul>\n<li><code>--test</code> - Prevented to avoid recursive test execution</li>\n<li><code>--experimental-test-coverage</code> - Managed by the test runner</li>\n<li><code>--experimental-test-tag-filter</code> - Filter values are validated by the parent\nprocess and re-emitted to child processes</li>\n<li><code>--watch</code> - Watch mode is handled at the parent level</li>\n<li><code>--experimental-default-config-file</code> - Config file loading is handled by the parent</li>\n<li><code>--test-reporter</code> - Reporting is managed by the parent process</li>\n<li><code>--test-reporter-destination</code> - Output destinations are controlled by the parent</li>\n<li><code>--experimental-config-file</code> - Config file paths are managed by the parent</li>\n<li><code>--test-randomize</code> - Randomization is managed by the parent process and\npropagated to child processes</li>\n<li><code>--test-random-seed</code> - Randomization seed is managed by the parent process and\npropagated to child processes</li>\n</ul>\n<p>All other Node.js options from command line arguments, environment variables,\nand configuration files are inherited by the child processes.</p>",
+                  "desc": "<p>When running tests in process isolation mode (the default), spawned child processes\ninherit Node.js options from the parent process, including those specified in\n<a href=\"cli.html#--config-filepath---config-file\">configuration files</a>. However, certain flags are filtered out to enable proper\ntest runner functionality:</p>\n<ul>\n<li><code>--test</code> - Prevented to avoid recursive test execution</li>\n<li><code>--experimental-test-coverage</code> - Managed by the test runner</li>\n<li><code>--experimental-test-tag-filter</code> - Filter expressions are validated by the parent\nprocess and re-emitted to child processes</li>\n<li><code>--watch</code> - Watch mode is handled at the parent level</li>\n<li><code>--test-reporter</code> - Reporting is managed by the parent process</li>\n<li><code>--test-reporter-destination</code> - Output destinations are controlled by the parent</li>\n<li><code>--config-file</code> - Config file paths are managed by the parent</li>\n<li><code>--test-randomize</code> - Randomization is managed by the parent process and\npropagated to child processes</li>\n<li><code>--test-random-seed</code> - Randomization seed is managed by the parent process and\npropagated to child processes</li>\n</ul>\n<p>All other Node.js options from command line arguments, environment variables,\nand configuration files are inherited by the child processes.</p>",
                   "displayName": "Child process option inheritance"
                 }
               ],
@@ -647,11 +670,11 @@
                       "desc": "A String, RegExp or a RegExp Array, that can be used to exclude running tests whose name matches the provided pattern. Test name patterns are interpreted as JavaScript regular expressions. For each test that is executed, any corresponding test hooks, such as `beforeEach()`, are also run."
                     },
                     {
-                      "textRaw": "`testTagFilters` {string|string}[] A tag name, or an array of tag names, used to filter tests by their declared tags. Tests must contain every listed tag to run. Equivalent to passing `--experimental-test-tag-filter` on the command line. See Test tags. **Default:** `undefined`.",
+                      "textRaw": "`testTagFilters` {string|string}[] A boolean expression, or an array of boolean expressions, used to filter tests by their declared tags. Multiple expressions compose by AND. Equivalent to passing `--experimental-test-tag-filter` on the command line. See Test tags. **Default:** `undefined`.",
                       "name": "testTagFilters",
                       "type": "string|string",
                       "default": "`undefined`",
-                      "desc": "[] A tag name, or an array of tag names, used to filter tests by their declared tags. Tests must contain every listed tag to run. Equivalent to passing `--experimental-test-tag-filter` on the command line. See Test tags."
+                      "desc": "[] A boolean expression, or an array of boolean expressions, used to filter tests by their declared tags. Multiple expressions compose by AND. Equivalent to passing `--experimental-test-tag-filter` on the command line. See Test tags."
                     },
                     {
                       "textRaw": "`timeout` {number} A number of milliseconds the test execution will fail after. If unspecified, subtests inherit this value from their parent. **Default:** `Infinity`.",
@@ -2480,6 +2503,15 @@
             ]
           },
           "desc": "<ul>\n<li>Extends <a href=\"stream.html#class-streamreadable\"><code>&#x3C;Readable></code></a></li>\n</ul>\n<p>A successful call to <a href=\"#runoptions\"><code>run()</code></a> method will return a new <a href=\"test.html#class-testsstream\"><code>&#x3C;TestsStream></code></a>\nobject, streaming a series of events representing the execution of the tests. <code>TestsStream</code> will emit events, in the order of the tests definition</p>\n<p>Some of the events are guaranteed to be emitted in the same order as the tests\nare defined, while others are emitted in the order that the tests execute.</p>\n<p>The following tables summarize all events by scope.</p>\n<p>Test scoped events are emitted once per test or suite. Most of them come in\npairs: a declaration ordered event, buffered so that events are emitted in the\nsame order as the tests are defined, and one or more corresponding execution\nordered events, emitted immediately as the tests execute.</p>\n<table>\n<thead>\n<tr>\n<th>Declaration ordered (buffered)</th>\n<th>Execution ordered (immediate)</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><a href=\"#event-teststart\"><code>'test:start'</code></a></td>\n<td><a href=\"#event-testenqueue\"><code>'test:enqueue'</code></a> followed by <a href=\"#event-testdequeue\"><code>'test:dequeue'</code></a></td>\n</tr>\n<tr>\n<td><a href=\"#event-testpass\"><code>'test:pass'</code></a></td>\n<td><a href=\"#event-testcomplete\"><code>'test:complete'</code></a> (<code>details.passed</code> is <code>true</code>)</td>\n</tr>\n<tr>\n<td><a href=\"#event-testfail\"><code>'test:fail'</code></a></td>\n<td><a href=\"#event-testcomplete\"><code>'test:complete'</code></a> (<code>details.passed</code> is <code>false</code>)</td>\n</tr>\n<tr>\n<td><a href=\"#event-testplan\"><code>'test:plan'</code></a></td>\n<td></td>\n</tr>\n<tr>\n<td><a href=\"#event-testdiagnostic\"><code>'test:diagnostic'</code></a></td>\n<td></td>\n</tr>\n<tr>\n<td></td>\n<td><a href=\"#event-testlog\"><code>'test:log'</code></a></td>\n</tr>\n</tbody>\n</table>\n<p><a href=\"#event-testlog\"><code>'test:log'</code></a> is deliberately execution ordered only: it is the live\ncounterpart of <a href=\"#event-testdiagnostic\"><code>'test:diagnostic'</code></a>'s buffered reporting.</p>\n<p>File scoped and global events are always emitted immediately, in execution\norder.</p>\n<p>File scoped events are emitted once per test file:</p>\n<table>\n<thead>\n<tr>\n<th>Event</th>\n<th>Notes</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><a href=\"#event-teststderr\"><code>'test:stderr'</code></a></td>\n<td>Only emitted if the <code>--test</code> flag is passed.</td>\n</tr>\n<tr>\n<td><a href=\"#event-teststdout\"><code>'test:stdout'</code></a></td>\n<td>Only emitted if the <code>--test</code> flag is passed.</td>\n</tr>\n<tr>\n<td><a href=\"#event-testsummary\"><code>'test:summary'</code></a></td>\n<td>Per file, only when process isolation is used.</td>\n</tr>\n</tbody>\n</table>\n<p>Global events are emitted once per test run:</p>\n<table>\n<thead>\n<tr>\n<th>Event</th>\n<th>Notes</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><a href=\"#event-testsummary\"><code>'test:summary'</code></a></td>\n<td>The final cumulative summary.</td>\n</tr>\n<tr>\n<td><a href=\"#event-testcoverage\"><code>'test:coverage'</code></a></td>\n<td>Only when code coverage is enabled.</td>\n</tr>\n<tr>\n<td><a href=\"#event-testinterrupted\"><code>'test:interrupted'</code></a></td>\n<td>Only when the run receives <code>SIGINT</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#event-testwatchdrained\"><code>'test:watch:drained'</code></a></td>\n<td>Watch mode only.</td>\n</tr>\n<tr>\n<td><a href=\"#event-testwatchrestarted\"><code>'test:watch:restarted'</code></a></td>\n<td>Watch mode only.</td>\n</tr>\n</tbody>\n</table>\n<p>The root test also emits <a href=\"#event-testplan\"><code>'test:plan'</code></a> and <a href=\"#event-testdiagnostic\"><code>'test:diagnostic'</code></a> events\nat the end of the run to report run level totals.</p>",
+          "modules": [
+            {
+              "textRaw": "Event lifecycle",
+              "name": "event_lifecycle",
+              "type": "module",
+              "desc": "<p>The tables above group the events; the diagram below places them on a\ntimeline. The declaration ordered events form the main spine, buffered so that\na reporter sees them in source order, while each execution ordered twin is\nemitted immediately, when the work actually happens. In particular,\n<a href=\"#event-teststart\"><code>'test:start'</code></a> marks when a test begins <em>reporting</em> its own and its\nsubtests' status, not when its body begins executing; that moment is\n<a href=\"#event-testdequeue\"><code>'test:dequeue'</code></a>.</p>\n<pre><code class=\"language-text\">                     node:test reporter event lifecycle\n   main spine = DECLARATION order (buffered; matches source order)\n   right side = EXECUTION order (emitted immediately); ◄ marks each twin\n\n  LEAF TEST\n  ─────────\n   ┌──────────────┐                   test:enqueue\n   │ test:start   │ ◄──── twins ────  (queued for execution;\n   └──────────────┘                    type: 'suite' | 'test')\n        │  begins REPORTING           test:dequeue\n        │  (not the start of          (about to run; emitted right\n        │   the test body)             before the test body runs)\n        │\n        │     [ between the twins, on the execution timeline, the test\n        │       body runs: context.log() emits test:log live, and\n        │       test:stdout / test:stderr stream with --test ]\n        │\n        ▼\n   ┌───────────────────────┐\n   │ test:pass │ test:fail │ ◄──── twin ────  test:complete\n   └───────────────────────┘   result         (details.passed says which)\n        │\n        ▼\n   test:diagnostic    the test's own context.diagnostic() messages,\n                      buffered while it runs, flushed after its result\n\n\n  SUITE / PARENT TEST   (each subtest is the whole LEAF flow above)\n  ───────────────────\n   test:start ─► [ full flow of each subtest ... ] ─►\n        test:plan (count = subtests) ─► test:pass │ test:fail ─►\n        test:diagnostic\n\n\n  RUN-LEVEL FINALE   (root, after all top-level tests)\n  ────────────────\n   test:plan         top-level count\n        │\n        ▼\n   test:diagnostic   x N   tests, suites, pass, fail, cancelled,\n        │                  skipped, todo, duration_ms (+ coverage errors)\n        ▼\n   test:coverage     only if coverage is enabled\n        │\n        ▼\n   test:summary  ─►  stream ends\n\n\n  INTERRUPTION   (SIGINT, e.g. Ctrl+C, while tests are still running)\n  ────────────\n   test:interrupted   the innermost tests still running at that moment\n        │             (not emitted if none were running)\n        ▼\n   the run exits immediately — the buffered spine never flushes, so\n   neither the finale above nor those tests' own results are emitted\n</code></pre>",
+              "displayName": "Event lifecycle"
+            }
+          ],
           "events": [
             {
               "textRaw": "Event: `'test:coverage'`",
@@ -4369,6 +4401,74 @@
               "desc": "<p>An object containing assertion methods bound to <code>context</code>. The top-level\nfunctions from the <code>node:assert</code> module are exposed here for the purpose of\ncreating test plans.</p>\n<pre><code class=\"language-js\">test('test', (t) => {\n  t.plan(1);\n  t.assert.strictEqual(true, true);\n});\n</code></pre>",
               "methods": [
                 {
+                  "textRaw": "`context.assert.callCount(fn, times[, message])`",
+                  "name": "callCount",
+                  "type": "method",
+                  "meta": {
+                    "added": [
+                      "v26.12.0"
+                    ],
+                    "changes": []
+                  },
+                  "signatures": [
+                    {
+                      "params": [
+                        {
+                          "textRaw": "`fn` {Function} A mock function created by the test runner's mocking API.",
+                          "name": "fn",
+                          "type": "Function",
+                          "desc": "A mock function created by the test runner's mocking API."
+                        },
+                        {
+                          "textRaw": "`times` {integer} The expected number of calls.",
+                          "name": "times",
+                          "type": "integer",
+                          "desc": "The expected number of calls."
+                        },
+                        {
+                          "textRaw": "`message` {string} Optional error message.",
+                          "name": "message",
+                          "type": "string",
+                          "desc": "Optional error message.",
+                          "optional": true
+                        }
+                      ]
+                    }
+                  ],
+                  "desc": "<p>Asserts that the mock function <code>fn</code> has been called exactly <code>times</code> times.</p>\n<pre><code class=\"language-js\">test('mock was called twice', (t) => {\n  const fn = t.mock.fn();\n  fn();\n  fn();\n  t.assert.callCount(fn, 2);\n});\n</code></pre>"
+                },
+                {
+                  "textRaw": "`context.assert.called(fn[, message])`",
+                  "name": "called",
+                  "type": "method",
+                  "meta": {
+                    "added": [
+                      "v26.12.0"
+                    ],
+                    "changes": []
+                  },
+                  "signatures": [
+                    {
+                      "params": [
+                        {
+                          "textRaw": "`fn` {Function} A mock function created by the test runner's mocking API.",
+                          "name": "fn",
+                          "type": "Function",
+                          "desc": "A mock function created by the test runner's mocking API."
+                        },
+                        {
+                          "textRaw": "`message` {string} Optional error message.",
+                          "name": "message",
+                          "type": "string",
+                          "desc": "Optional error message.",
+                          "optional": true
+                        }
+                      ]
+                    }
+                  ],
+                  "desc": "<p>Asserts that the mock function <code>fn</code> has been called at least once.</p>\n<pre><code class=\"language-js\">test('mock was called', (t) => {\n  const fn = t.mock.fn();\n  fn();\n  t.assert.called(fn);\n});\n</code></pre>"
+                },
+                {
                   "textRaw": "`context.assert.fileSnapshot(value, path[, options])`",
                   "name": "fileSnapshot",
                   "type": "method",
@@ -4414,6 +4514,74 @@
                     }
                   ],
                   "desc": "<p>This function serializes <code>value</code> and writes it to the file specified by <code>path</code>.</p>\n<pre><code class=\"language-js\">test('snapshot test with default serialization', (t) => {\n  t.assert.fileSnapshot({ value1: 1, value2: 2 }, './snapshots/snapshot.json');\n});\n</code></pre>\n<p>This function differs from <code>context.assert.snapshot()</code> in the following ways:</p>\n<ul>\n<li>The snapshot file path is explicitly provided by the user.</li>\n<li>Each snapshot file is limited to a single snapshot value.</li>\n<li>No additional escaping is performed by the test runner.</li>\n</ul>\n<p>These differences allow snapshot files to better support features such as syntax\nhighlighting.</p>"
+                },
+                {
+                  "textRaw": "`context.assert.lastCalledWith(fn[, ...args])`",
+                  "name": "lastCalledWith",
+                  "type": "method",
+                  "meta": {
+                    "added": [
+                      "v26.12.0"
+                    ],
+                    "changes": []
+                  },
+                  "signatures": [
+                    {
+                      "params": [
+                        {
+                          "textRaw": "`fn` {Function} A mock function created by the test runner's mocking API.",
+                          "name": "fn",
+                          "type": "Function",
+                          "desc": "A mock function created by the test runner's mocking API."
+                        },
+                        {
+                          "textRaw": "`...args` {any} The expected arguments.",
+                          "name": "...args",
+                          "type": "any",
+                          "desc": "The expected arguments.",
+                          "optional": true
+                        }
+                      ]
+                    }
+                  ],
+                  "desc": "<p>Asserts that the most recent call to the mock function <code>fn</code> received arguments\ndeeply and strictly equal to <code>args</code>, using the same comparison as\n<a href=\"assert.html#assertdeepstrictequalactual-expected-message\"><code>assert.deepStrictEqual()</code></a>.</p>\n<pre><code class=\"language-js\">test('mock was last called with arguments', (t) => {\n  const fn = t.mock.fn();\n  fn(1);\n  fn(2);\n  t.assert.lastCalledWith(fn, 2);\n});\n</code></pre>"
+                },
+                {
+                  "textRaw": "`context.assert.nthCalledWith(fn, n[, ...args])`",
+                  "name": "nthCalledWith",
+                  "type": "method",
+                  "meta": {
+                    "added": [
+                      "v26.12.0"
+                    ],
+                    "changes": []
+                  },
+                  "signatures": [
+                    {
+                      "params": [
+                        {
+                          "textRaw": "`fn` {Function} A mock function created by the test runner's mocking API.",
+                          "name": "fn",
+                          "type": "Function",
+                          "desc": "A mock function created by the test runner's mocking API."
+                        },
+                        {
+                          "textRaw": "`n` {integer} The 1-based index of the call to check.",
+                          "name": "n",
+                          "type": "integer",
+                          "desc": "The 1-based index of the call to check."
+                        },
+                        {
+                          "textRaw": "`...args` {any} The expected arguments.",
+                          "name": "...args",
+                          "type": "any",
+                          "desc": "The expected arguments.",
+                          "optional": true
+                        }
+                      ]
+                    }
+                  ],
+                  "desc": "<p>Asserts that the <code>n</code>th call to the mock function <code>fn</code> received arguments\ndeeply and strictly equal to <code>args</code>, using the same comparison as\n<a href=\"assert.html#assertdeepstrictequalactual-expected-message\"><code>assert.deepStrictEqual()</code></a>. <code>n</code> starts at <code>1</code>, so\n<code>t.assert.nthCalledWith(fn, 1)</code> checks <code>fn.mock.calls[0]</code>.</p>\n<pre><code class=\"language-js\">test('mock was called with arguments on the second call', (t) => {\n  const fn = t.mock.fn();\n  fn(1);\n  fn(2);\n  t.assert.nthCalledWith(fn, 2, 2);\n});\n</code></pre>"
                 },
                 {
                   "textRaw": "`context.assert.snapshot(value[, options])`",
@@ -4560,7 +4728,7 @@
                 ],
                 "changes": []
               },
-              "desc": "<p>The unique identifier of the worker running the current test file. This value is\nderived from the <code>NODE_TEST_WORKER_ID</code> environment variable. When running tests\nwith <code>--test-isolation=process</code> (the default), each test file runs in a separate\nchild process and is assigned a worker ID from 1 to N, where N is the number of\nconcurrent workers. When running with <code>--test-isolation=none</code>, all tests run in\nthe same process and the worker ID is always 1. This value is <code>undefined</code> when\nnot running in a test context.</p>\n<p>This property is useful for splitting resources (like database connections or\nserver ports) across concurrent test files:</p>\n<pre><code class=\"language-mjs\">import { test } from 'node:test';\nimport { process } from 'node:process';\n\ntest('database operations', async (t) => {\n  // Worker ID is available via context\n  console.log(`Running in worker ${t.workerId}`);\n\n  // Or via environment variable (available at import time)\n  const workerId = process.env.NODE_TEST_WORKER_ID;\n  // Use workerId to allocate separate resources per worker\n});\n</code></pre>"
+              "desc": "<p>The unique identifier of the worker running the current test file. This value is\nderived from the <code>NODE_TEST_WORKER_ID</code> environment variable. When running tests\nwith <code>--test-isolation=process</code> (the default), each test file runs in a separate\nchild process and is assigned a worker ID from 1 to N, where N is the number of\nconcurrent workers. A worker ID is never shared by two test files running at the\nsame time. Once a test file finishes, its worker ID is reused by the next test\nfile that starts. When running with <code>--test-isolation=none</code>, all tests run in\nthe same process and the worker ID is always 1. This value is <code>undefined</code> when\nnot running in a test context.</p>\n<p>This property is useful for splitting resources (like database connections or\nserver ports) across concurrent test files:</p>\n<pre><code class=\"language-mjs\">import { test } from 'node:test';\nimport { process } from 'node:process';\n\ntest('database operations', async (t) => {\n  // Worker ID is available via context\n  console.log(`Running in worker ${t.workerId}`);\n\n  // Or via environment variable (available at import time)\n  const workerId = process.env.NODE_TEST_WORKER_ID;\n  // Use workerId to allocate separate resources per worker\n});\n</code></pre>"
             },
             {
               "textRaw": "Type: {AbortSignal}",

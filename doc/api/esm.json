@@ -657,7 +657,7 @@
               }
             ]
           },
-          "desc": "<p>Importing both WebAssembly module instances and WebAssembly source phase\nimports is supported.</p>\n<p>Both of these integrations are in line with the\n<a href=\"https://github.com/webassembly/esm-integration\">ES Module Integration Proposal for WebAssembly</a>.</p>",
+          "desc": "<p>Importing both WebAssembly module instances and WebAssembly source phase\nimports is supported.</p>\n<p>Both of these integrations are in line with the\n<a href=\"https://github.com/webassembly/esm-integration\">ES Module Integration Proposal for WebAssembly</a>.</p>\n<p>When WebAssembly is unavailable in the current environment, importing a Wasm\nmodule throws <a href=\"errors.html#err_webassembly_not_supported\"><code>ERR_WEBASSEMBLY_NOT_SUPPORTED</code></a>.\nThis also applies to source phase imports. Node.js does not provide an\nalternative implementation when WebAssembly is unavailable.</p>",
           "modules": [
             {
               "textRaw": "Wasm Source Phase Imports",

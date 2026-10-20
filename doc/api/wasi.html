@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>WebAssembly System Interface (WASI) | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/wasi.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-wasi><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>WebAssembly System Interface (WASI) | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/wasi.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-wasi><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=wasi class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><span class=stability_1><a href=wasi.html#webassembly-system-interface-wasi>WebAssembly System Interface (WASI)</a></span>
 <ul>
@@ -122,6 +123,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -340,8 +342,7 @@ mandatory.</li>
 </ul></section>
 <section><h4><code>wasi.getImportObject()</code><span><a id=wasi_wasi_getimportobject></a></span><span><a class=mark id=wasigetimportobject href=#wasigetimportobject>#</a></span></h4><div class=api_metadata><span>Added in: v19.8.0</span></div><p>Return an import object that can be passed to <code>WebAssembly.instantiate()</code> if
 no other WASM imports are needed beyond those provided by WASI.<p>If version <code>unstable</code> was passed into the constructor it will return:<pre class="catppuccin-latte catppuccin-mocha language-json shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>{</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> wasi_unstable</span><span style=color:#7C7F93;--shiki-dark:#9399B2>:</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> wasi.wasiImport </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>json</span><button class=copy-button>copy</button></div></pre><p>If version <code>preview1</code> was passed into the constructor or no version was
-specified it will return:<pre class="catppuccin-latte catppuccin-mocha language-json shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>{</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> wasi_snapshot_preview1</span><span style=color:#7C7F93;--shiki-dark:#9399B2>:</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> wasi.wasiImport </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>json</span><button class=copy-button>copy</button></div></pre><p>If version <code>preview1</code> was passed into the constructor it will return:<pre class="catppuccin-latte catppuccin-mocha language-json shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>{</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> wasi_snapshot_preview1</span><span style=color:#7C7F93;--shiki-dark:#9399B2>:</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> wasi.wasiImport </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>json</span><button class=copy-button>copy</button></div></pre></section>
 <section><h4><code>wasi.start(instance)</code><span><a id=wasi_wasi_start_instance></a></span><span><a class=mark id=wasistartinstance href=#wasistartinstance>#</a></span></h4><div class=api_metadata><span>Added in: v13.3.0, v12.16.0</span></div><ul>
 <li><code>instance</code> <a href=WebAssembly.html#class-webassemblyinstance><code>&lt;WebAssembly.Instance></code></a></li>

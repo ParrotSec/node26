@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>REPL | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/repl.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-repl><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>REPL | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/repl.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-repl><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=repl class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><span class=stability_2><a href=repl.html#repl>REPL</a></span>
 <ul>
@@ -116,6 +117,7 @@
 <li><a href=repl.html#await-keyword><code>await</code> keyword</a></li>
 </ul>
 </li>
+<li><a href=repl.html#error-handling>Error handling</a></li>
 <li><a href=repl.html#reverse-i-search>Reverse-i-search</a></li>
 <li><a href=repl.html#custom-evaluation-functions>Custom evaluation functions</a>
 <ul>
@@ -159,6 +161,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -259,6 +262,7 @@
 <li><a href=repl.html#await-keyword><code>await</code> keyword</a></li>
 </ul>
 </li>
+<li><a href=repl.html#error-handling>Error handling</a></li>
 <li><a href=repl.html#reverse-i-search>Reverse-i-search</a></li>
 <li><a href=repl.html#custom-evaluation-functions>Custom evaluation functions</a>
 <ul>
@@ -462,6 +466,12 @@ it will invalidate the lexical scoping of the <code>const</code> keywords.<p>For
 <span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>></span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> const m = await Promise.resolve(</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>345</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>Uncaught SyntaxError: Identifier 'm' has already been declared</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre><p><a href=cli.html#--no-experimental-repl-await><code>--no-experimental-repl-await</code></a> shall disable top-level await in REPL.</section>
+<section><h4>Error handling<span><a id=repl_error_handling></a></span><span><a class=mark id=error-handling href=#error-handling>#</a></span></h4><div class=api_metadata></div><p>By default, uncaught exceptions in the REPL are printed to the output stream
+(as with <code>Uncaught Error: REPL await</code> above). <code>uncaughtException</code> listeners
+can be added freely in both standalone and nested REPLs. The <code>handleError</code>
+option of <a href=#replstartoptions><code>repl.start()</code></a> can customize this behavior, including
+forwarding exceptions to <a href=process.html#event-uncaughtexception><code>'uncaughtException'</code></a> by returning
+<code>'unhandled'</code>.</section>
 <section><h4>Reverse-i-search<span><a id=repl_reverse_i_search></a></span><span><a class=mark id=reverse-i-search href=#reverse-i-search>#</a></span></h4><div class=api_metadata><span>Added in: v13.6.0, v12.17.0</span></div><p>The REPL supports bi-directional reverse-i-search similar to <a href=https://en.wikipedia.org/wiki/Z_shell>ZSH</a>. It is
 triggered with <kbd>Ctrl</kbd>+<kbd>R</kbd> to search backward
 and <kbd>Ctrl</kbd>+<kbd>S</kbd> to search forwards.<p>Duplicated history entries will be skipped.<p>Entries are accepted as soon as any key is pressed that doesn't correspond
@@ -592,7 +602,8 @@ or directly using the JavaScript <code>new</code> keyword.<pre style=background-
 <span class=line></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> firstInstance </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> repl</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>start</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(options)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> secondInstance </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#8839EF;--shiki-light-font-weight:bold;--shiki-dark:#CBA6F7;--shiki-dark-font-weight:bold> new</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> repl</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>REPLServer</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(options)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre><p>Calling <code>repl.REPLServer()</code> without the <code>new</code> keyword throws a <code>TypeError</code>
+(see <a href=deprecations.html#dep0185-instantiating-noderepl-classes-without-new>DEP0185</a>).</section>
 <section><h4>Event: <code>'exit'</code><span><a id=repl_event_exit></a></span><span><a class=mark id=event-exit href=#event-exit>#</a></span></h4><div class=api_metadata><span>Added in: v0.7.7</span></div><p>The <code>'exit'</code> event is emitted when the REPL is exited either by receiving the
 <code>.exit</code> command as input, the user pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> twice
 to signal <code>SIGINT</code>,

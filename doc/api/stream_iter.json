@@ -9,7 +9,7 @@
       "type": "module",
       "stability": 1,
       "stabilityText": "Experimental – Enable this API with the `--experimental-stream-iter` CLI flag.",
-      "desc": "<p>The <code>node:stream/iter</code> module provides a streaming API built on iterables\nrather than the event-driven <code>Readable</code>/<code>Writable</code>/<code>Transform</code> class hierarchy,\nor the Web Streams <code>ReadableStream</code>/<code>WritableStream</code>/<code>TransformStream</code> interfaces.</p>\n<p>Streams are represented as <a href=\"https://tc39.github.io/ecma262/#sec-asynciterable-interface\"><code>&#x3C;AsyncIterable></code></a> (async) or <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol\"><code>&#x3C;Iterable></code></a> (sync). There\nare no base classes to extend -- any\nobject implementing the iterable protocol can participate. Transforms are plain\nfunctions or objects with a <code>transform</code> method.</p>\n<p>Data flows in <strong>batches</strong> (<a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array\"><code>&#x3C;Uint8Array></code></a>[] per iteration) to amortize the cost\nof async operations.</p>\n<pre><code class=\"language-mjs\">import { from, pull, text } from 'node:stream/iter';\nimport { compressGzip, decompressGzip } from 'node:zlib/iter';\n\n// Compress and decompress a string\nconst compressed = pull(from('Hello, world!'), compressGzip());\nconst result = await text(pull(compressed, decompressGzip()));\nconsole.log(result); // 'Hello, world!'\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, pull, text } = require('node:stream/iter');\nconst { compressGzip, decompressGzip } = require('node:zlib/iter');\n\nasync function run() {\n  // Compress and decompress a string\n  const compressed = pull(from('Hello, world!'), compressGzip());\n  const result = await text(pull(compressed, decompressGzip()));\n  console.log(result); // 'Hello, world!'\n}\n\nrun().catch(console.error);\n</code></pre>\n<pre><code class=\"language-mjs\">import { open } from 'node:fs/promises';\nimport { text, pipeTo } from 'node:stream/iter';\nimport { compressGzip, decompressGzip } from 'node:zlib/iter';\n\n// Read a file, compress, write to another file\nconst src = await open('input.txt', 'r');\nconst dst = await open('output.gz', 'w');\nawait pipeTo(src.pull(), compressGzip(), dst.writer({ autoClose: true }));\nawait src.close();\n\n// Read it back\nconst gz = await open('output.gz', 'r');\nconsole.log(await text(gz.pull(decompressGzip(), { autoClose: true })));\n</code></pre>\n<pre><code class=\"language-cjs\">const { open } = require('node:fs/promises');\nconst { text, pipeTo } = require('node:stream/iter');\nconst { compressGzip, decompressGzip } = require('node:zlib/iter');\n\nasync function run() {\n  // Read a file, compress, write to another file\n  const src = await open('input.txt', 'r');\n  const dst = await open('output.gz', 'w');\n  await pipeTo(src.pull(), compressGzip(), dst.writer({ autoClose: true }));\n  await src.close();\n\n  // Read it back\n  const gz = await open('output.gz', 'r');\n  console.log(await text(gz.pull(decompressGzip(), { autoClose: true })));\n}\n\nrun().catch(console.error);\n</code></pre>",
+      "desc": "<p>The <code>node:stream/iter</code> module provides a streaming API built on iterables\nrather than the event-driven <code>Readable</code>/<code>Writable</code>/<code>Transform</code> class hierarchy,\nor the Web Streams <code>ReadableStream</code>/<code>WritableStream</code>/<code>TransformStream</code> interfaces.</p>\n<p>Streams are represented as <a href=\"https://tc39.github.io/ecma262/#sec-asynciterable-interface\"><code>&#x3C;AsyncIterable></code></a> (async) or <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol\"><code>&#x3C;Iterable></code></a> (sync). There\nare no base classes to extend -- any\nobject implementing the iterable protocol can participate. Transforms are plain\nfunctions or objects with a <code>transform</code> method.</p>\n<p>Data flows in <strong>batches</strong> (<a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array\"><code>&#x3C;Uint8Array></code></a>[] per iteration) to amortize the cost\nof async operations.</p>\n<p>The module implements the WinterTC <a href=\"https://iter-streams.proposal.wintertc.org/\">Iterable Streams API</a> draft. The\nclassic stream interop functions (<a href=\"#fromreadablereadable\"><code>fromReadable()</code></a>, <a href=\"#fromwritablewritable-options\"><code>fromWritable()</code></a>,\n<a href=\"#toreadablesource-options\"><code>toReadable()</code></a>, <a href=\"#toreadablesyncsource-options\"><code>toReadableSync()</code></a> and <a href=\"#towritablewriter\"><code>toWritable()</code></a>),\n<a href=\"#broadcastfrominput-options\"><code>Broadcast.from()</code></a>, <a href=\"#static-method-sharefrominput-options\"><code>Share.from()</code></a>, <a href=\"#static-method-syncsharefromsyncinput-options\"><code>SyncShare.fromSync()</code></a> and the\nprotocol symbols exported by <code>Stream</code> are Node.js extensions that are not part\nof the draft.</p>\n<pre><code class=\"language-mjs\">import { from, pull, text } from 'node:stream/iter';\nimport { compressGzip, decompressGzip } from 'node:zlib/iter';\n\n// Compress and decompress a string\nconst compressed = pull(from('Hello, world!'), compressGzip());\nconst result = await text(pull(compressed, decompressGzip()));\nconsole.log(result); // 'Hello, world!'\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, pull, text } = require('node:stream/iter');\nconst { compressGzip, decompressGzip } = require('node:zlib/iter');\n\nasync function run() {\n  // Compress and decompress a string\n  const compressed = pull(from('Hello, world!'), compressGzip());\n  const result = await text(pull(compressed, decompressGzip()));\n  console.log(result); // 'Hello, world!'\n}\n\nrun().catch(console.error);\n</code></pre>\n<pre><code class=\"language-mjs\">import { open } from 'node:fs/promises';\nimport { text, pipeTo } from 'node:stream/iter';\nimport { compressGzip, decompressGzip } from 'node:zlib/iter';\n\n// Read a file, compress, write to another file\nconst src = await open('input.txt', 'r');\nconst dst = await open('output.gz', 'w');\nawait pipeTo(src.pull(), compressGzip(), dst.writer({ autoClose: true }));\nawait src.close();\n\n// Read it back\nconst gz = await open('output.gz', 'r');\nconsole.log(await text(gz.pull(decompressGzip(), { autoClose: true })));\n</code></pre>\n<pre><code class=\"language-cjs\">const { open } = require('node:fs/promises');\nconst { text, pipeTo } = require('node:stream/iter');\nconst { compressGzip, decompressGzip } = require('node:zlib/iter');\n\nasync function run() {\n  // Read a file, compress, write to another file\n  const src = await open('input.txt', 'r');\n  const dst = await open('output.gz', 'w');\n  await pipeTo(src.pull(), compressGzip(), dst.writer({ autoClose: true }));\n  await src.close();\n\n  // Read it back\n  const gz = await open('output.gz', 'r');\n  console.log(await text(gz.pull(decompressGzip(), { autoClose: true })));\n}\n\nrun().catch(console.error);\n</code></pre>",
       "modules": [
         {
           "textRaw": "Concepts",
@@ -92,13 +92,13 @@
               "textRaw": "Writer interface",
               "name": "writer_interface",
               "type": "module",
-              "desc": "<p>A writer is any object conforming to the Writer interface. Only <code>write()</code> is\nrequired; all other methods are optional.</p>\n<p>Each async method has a synchronous <code>*Sync</code> counterpart designed for a\ntry-fallback pattern: attempt the fast synchronous path first, and fall back\nto the async version only when the synchronous call indicates it could not\ncomplete:</p>\n<pre><code class=\"language-mjs\">if (!writer.writeSync(chunk)) await writer.write(chunk);\nif (!writer.writevSync(chunks)) await writer.writev(chunks);\nif (writer.endSync() &#x3C; 0) await writer.end();\nwriter.fail(err);  // Always synchronous, no fallback needed\n</code></pre>",
+              "desc": "<p>A writer is any object conforming to the Writer interface. Only <code>write()</code> is\nrequired; all other methods are optional.</p>\n<p>Writer arguments use Web IDL conversion semantics. A non-<code>Uint8Array</code> chunk is\nconverted to a <code>USVString</code> and then UTF-8 encoded. <code>writev()</code> and\n<code>writevSync()</code> accept any iterable object whose values can be converted to\nchunks. Writer option dictionaries treat <code>null</code> as an empty dictionary and\nignore unknown members.</p>\n<p>Arguments are converted before the write itself starts. If the conversion runs\nuser code (for example a <code>toString()</code> method, or the iterator of a <code>writev()</code>\nargument) that writes to the same writer, those writes are ordered before the\nwrite whose argument is being converted, and they count against the same\nbackpressure limits.</p>\n<p>After <code>end()</code> or <code>endSync()</code> has been called, and until all buffered data has\nbeen consumed, the writer is <em>closing</em>. While closing, <code>canWrite</code> is <code>null</code>,\n<code>write()</code> and <code>writev()</code> reject with a <code>TypeError</code>, <code>writeSync()</code> and\n<code>writevSync()</code> return <code>false</code>, <code>endSync()</code> returns <code>-1</code>, and calling <code>end()</code>\nagain returns the same promise as the first call.</p>\n<p>Each async method has a synchronous <code>*Sync</code> counterpart designed for a\ntry-fallback pattern: attempt the fast synchronous path first, and fall back\nto the async version only when the synchronous call indicates it could not\ncomplete:</p>\n<pre><code class=\"language-mjs\">if (!writer.writeSync(chunk)) await writer.write(chunk);\nif (!writer.writevSync(chunks)) await writer.writev(chunks);\nif (writer.endSync() &#x3C; 0) await writer.end();\nwriter.fail(err);  // Always synchronous, no fallback needed\n</code></pre>",
               "properties": [
                 {
                   "textRaw": "{boolean|null}",
                   "name": "canWrite",
                   "type": "boolean|null",
-                  "desc": "<p>Returns <code>true</code> if the next write is likely to be accepted (buffered data is\nbelow capacity), <code>false</code> if backpressure is active, or <code>null</code> if the writer\nis closed or the consumer has disconnected.</p>\n<p>This is a hint, not a guarantee: the state can change between the check and\nthe write. Use <a href=\"#ondraindrainable\"><code>ondrain()</code></a> to wait for capacity rather than polling.</p>"
+                  "desc": "<p>Returns <code>true</code> if the slots buffer has physical capacity (buffered data is\nbelow the configured byte budget), <code>false</code> if the budget is exhausted, or\n<code>null</code> if the writer is closed or the consumer has disconnected.</p>\n<p>This reports physical capacity independently of the backpressure policy. With\n<code>'drop-oldest'</code> or <code>'drop-newest'</code>, writes still complete when this is <code>false</code>\nby evicting buffered data or discarding the incoming data, respectively.</p>\n<p>This is a hint, not a guarantee: the state can change between the check and\nthe write. Use <a href=\"#ondraindrainable\"><code>ondrain()</code></a> to wait for capacity rather than polling.</p>"
                 }
               ],
               "methods": [
@@ -132,7 +132,7 @@
                       }
                     }
                   ],
-                  "desc": "<p>Signal that no more data will be written.</p>"
+                  "desc": "<p>Signals that no more data will be written. Writes already waiting for buffer\nspace remain ordered before the end of the stream, while later writes fail. If\ndata is outstanding, the returned promise fulfills after the consumer pulls\n<code>done: true</code> beyond the final batch. If no data is buffered or pending, the\nwriter closes immediately.</p>"
                 },
                 {
                   "textRaw": "`writer.endSync()`",
@@ -142,17 +142,17 @@
                     {
                       "params": [],
                       "return": {
-                        "textRaw": "Returns: {number} Total bytes written, or `-1` if the writer is not open.",
+                        "textRaw": "Returns: {number} Total bytes written, or `-1` if ending cannot complete synchronously.",
                         "name": "return",
                         "type": "number",
-                        "desc": "Total bytes written, or `-1` if the writer is not open."
+                        "desc": "Total bytes written, or `-1` if ending cannot complete synchronously."
                       }
                     }
                   ],
-                  "desc": "<p>Synchronous variant of <code>writer.end()</code>. Returns <code>-1</code> if the writer is already\nclosed or errored. Can be used as a try-fallback pattern:</p>\n<pre><code class=\"language-cjs\">const result = writer.endSync();\nif (result &#x3C; 0) {\n  writer.end();\n}\n</code></pre>"
+                  "desc": "<p>Synchronous variant of <code>writer.end()</code>. A return value of <code>-1</code> only indicates\nthat the operation could not complete synchronously; no assumption can be made\nabout whether closing has started or why it could not complete. Use the\ntry-fallback pattern to await completion:</p>\n<pre><code class=\"language-cjs\">const result = writer.endSync();\nif (result &#x3C; 0) {\n  writer.end();\n}\n</code></pre>"
                 },
                 {
-                  "textRaw": "`writer.fail(reason)`",
+                  "textRaw": "`writer.fail([reason])`",
                   "name": "fail",
                   "type": "method",
                   "signatures": [
@@ -161,12 +161,24 @@
                         {
                           "textRaw": "`reason` {any}",
                           "name": "reason",
-                          "type": "any"
+                          "type": "any",
+                          "optional": true
                         }
                       ]
                     }
                   ],
-                  "desc": "<p>Put the writer into a terminal error state. If the writer is already closed\nor errored, this is a no-op. Unlike <code>write()</code> and <code>end()</code>, <code>fail()</code> is\nunconditionally synchronous because failing a writer is a pure state\ntransition with no async work to perform.</p>"
+                  "desc": "<p>Put the writer into a terminal error state. If the writer is already closed\nor errored, this is a no-op. Unlike <code>write()</code> and <code>end()</code>, <code>fail()</code> is\nunconditionally synchronous because failing a writer is a pure state\ntransition with no async work to perform. The reason is stored and propagated\nwithout modification. If omitted, the reason is <code>undefined</code>.</p>"
+                },
+                {
+                  "textRaw": "`writer[Symbol.asyncDispose]()`",
+                  "name": "[Symbol.asyncDispose]",
+                  "type": "method",
+                  "signatures": [
+                    {
+                      "params": []
+                    }
+                  ],
+                  "desc": "<p>If the writer is open, calls <code>writer.fail()</code>. If the writer is closing after\n<code>end()</code> or <code>endSync()</code>, waits for buffered data to drain. If the writer is\nalready closed or errored, resolves immediately.</p>"
                 },
                 {
                   "textRaw": "`writer.write(chunk[, options])`",
@@ -236,10 +248,10 @@
                     {
                       "params": [
                         {
-                          "textRaw": "`chunks` {Uint8Array}[] | {string}[]",
+                          "textRaw": "`chunks` {Iterable} of {Uint8Array|string} values",
                           "name": "chunks",
-                          "type": "Uint8Array",
-                          "desc": "[] | {string}[]"
+                          "type": "Iterable",
+                          "desc": "of {Uint8Array|string} values"
                         },
                         {
                           "textRaw": "`options` {Object}",
@@ -273,10 +285,10 @@
                     {
                       "params": [
                         {
-                          "textRaw": "`chunks` {Uint8Array}[] | {string}[]",
+                          "textRaw": "`chunks` {Iterable} of {Uint8Array|string} values",
                           "name": "chunks",
-                          "type": "Uint8Array",
-                          "desc": "[] | {string}[]"
+                          "type": "Iterable",
+                          "desc": "of {Uint8Array|string} values"
                         }
                       ],
                       "return": {
@@ -299,7 +311,7 @@
           "textRaw": "The `stream/iter` module",
           "name": "the_`stream/iter`_module",
           "type": "module",
-          "desc": "<p>All functions are available both as named exports and as properties of the\n<code>Stream</code> namespace object:</p>\n<pre><code class=\"language-mjs\">// Named exports\nimport { from, pull, bytes, Stream } from 'node:stream/iter';\n\n// Namespace access\nStream.from('hello');\n</code></pre>\n<pre><code class=\"language-cjs\">// Named exports\nconst { from, pull, bytes, Stream } = require('node:stream/iter');\n\n// Namespace access\nStream.from('hello');\n</code></pre>\n<p>Including the <code>node:</code> prefix on the module specifier is optional.</p>",
+          "desc": "<p>Most functions are available both as named exports and as properties of the\n<code>Stream</code> namespace object. The classic stream adapters (<code>fromReadable()</code>,\n<code>fromWritable()</code>, <code>toReadable()</code>, <code>toReadableSync()</code>, and <code>toWritable()</code>) and\nthe static helper objects (<code>Broadcast</code>, <code>Share</code>, and <code>SyncShare</code>) are named\nexports only.</p>\n<pre><code class=\"language-mjs\">// Named exports\nimport { from, pull, bytes, Stream } from 'node:stream/iter';\n\n// Namespace access\nStream.from('hello');\n</code></pre>\n<p>Options dictionaries defined by the Iterable Streams API use Web IDL\nconversion semantics. <code>null</code> is treated as an empty dictionary, unknown\nmembers are ignored, and known members are converted to their declared types\nbefore the operation runs. Conversion failures use Node.js error codes such as\n<code>ERR_INVALID_ARG_TYPE</code>, <code>ERR_INVALID_ARG_VALUE</code>, and <code>ERR_OUT_OF_RANGE</code>.</p>\n<pre><code class=\"language-cjs\">// Named exports\nconst { from, pull, bytes, Stream } = require('node:stream/iter');\n\n// Namespace access\nStream.from('hello');\n</code></pre>\n<p>Including the <code>node:</code> prefix on the module specifier is optional.</p>",
           "displayName": "The `stream/iter` module"
         },
         {
@@ -335,7 +347,7 @@
                   }
                 }
               ],
-              "desc": "<p>Create an async byte stream from the given input. Strings are UTF-8 encoded.\n<code>ArrayBuffer</code> and <code>ArrayBufferView</code> values are wrapped as <code>Uint8Array</code>. Arrays\nand iterables in <code>input</code> are recursively flattened and normalized.</p>\n<p>Objects implementing <code>Symbol.for('Stream.toAsyncStreamable')</code> or\n<code>Symbol.for('Stream.toStreamable')</code> are converted via those protocols. The\n<code>toAsyncStreamable</code> protocol takes precedence over <code>toStreamable</code>, which takes\nprecedence over the iteration protocols (<code>Symbol.asyncIterator</code>,\n<code>Symbol.iterator</code>).</p>\n<pre><code class=\"language-mjs\">import { Buffer } from 'node:buffer';\nimport { from, text } from 'node:stream/iter';\n\nconsole.log(await text(from('hello')));       // 'hello'\nconsole.log(await text(from(Buffer.from('hello')))); // 'hello'\n</code></pre>\n<pre><code class=\"language-cjs\">const { Buffer } = require('node:buffer');\nconst { from, text } = require('node:stream/iter');\n\nasync function run() {\n  console.log(await text(from('hello')));       // 'hello'\n  console.log(await text(from(Buffer.from('hello')))); // 'hello'\n}\n\nrun().catch(console.error);\n</code></pre>"
+              "desc": "<p>Create an async byte stream from the given input. Strings are UTF-8 encoded.\n<code>ArrayBuffer</code> and <code>ArrayBufferView</code> values are wrapped as <code>Uint8Array</code>. Arrays\nand iterables in <code>input</code> are recursively flattened and normalized. Flattened\nvalues may be split across implementation-defined bounded batches.</p>\n<p>Objects implementing <code>Symbol.for('Stream.toAsyncStreamable')</code> or\n<code>Symbol.for('Stream.toStreamable')</code> are converted via those protocols. The\n<code>toAsyncStreamable</code> protocol takes precedence over <code>toStreamable</code>, which takes\nprecedence over the iteration protocols (<code>Symbol.asyncIterator</code>,\n<code>Symbol.iterator</code>).</p>\n<pre><code class=\"language-mjs\">import { Buffer } from 'node:buffer';\nimport { from, text } from 'node:stream/iter';\n\nconsole.log(await text(from('hello')));       // 'hello'\nconsole.log(await text(from(Buffer.from('hello')))); // 'hello'\n</code></pre>\n<pre><code class=\"language-cjs\">const { Buffer } = require('node:buffer');\nconst { from, text } = require('node:stream/iter');\n\nasync function run() {\n  console.log(await text(from('hello')));       // 'hello'\n  console.log(await text(from(Buffer.from('hello')))); // 'hello'\n}\n\nrun().catch(console.error);\n</code></pre>"
             },
             {
               "textRaw": "`fromSync(input)`",
@@ -413,10 +425,10 @@
                       "type": "Object",
                       "options": [
                         {
-                          "textRaw": "`signal` {AbortSignal} Abort the pipeline.",
+                          "textRaw": "`signal` {AbortSignal} Abort the pipeline. Aborting fails the destination writer unless `preventFail` is `true`.",
                           "name": "signal",
                           "type": "AbortSignal",
-                          "desc": "Abort the pipeline."
+                          "desc": "Abort the pipeline. Aborting fails the destination writer unless `preventFail` is `true`."
                         },
                         {
                           "textRaw": "`preventClose` {boolean} If `true`, do not call `writer.end()` when the source ends. **Default:** `false`.",
@@ -484,6 +496,13 @@
                       "type": "Object",
                       "options": [
                         {
+                          "textRaw": "`failOnIncompleteClose` {boolean} If `true`, call `writer.fail()` when `writer.endSync()` cannot close the writer synchronously. Ignored when `preventFail` is `true`. This option is a Node.js extension. **Default:** `false`.",
+                          "name": "failOnIncompleteClose",
+                          "type": "boolean",
+                          "default": "`false`",
+                          "desc": "If `true`, call `writer.fail()` when `writer.endSync()` cannot close the writer synchronously. Ignored when `preventFail` is `true`. This option is a Node.js extension."
+                        },
+                        {
                           "textRaw": "`preventClose` {boolean} **Default:** `false`.",
                           "name": "preventClose",
                           "type": "boolean",
@@ -507,7 +526,7 @@
                   }
                 }
               ],
-              "desc": "<p>Synchronous version of <a href=\"#pipetosource-transforms-writer-options\"><code>pipeTo()</code></a>. The <code>source</code>, all transforms, and the\n<code>writer</code> must be synchronous. Cannot accept async iterables or promises.</p>\n<p>The <code>writer</code> must have the <code>*Sync</code> methods (<code>writeSync</code>, <code>writevSync</code>,\n<code>endSync</code>) and <code>fail()</code> for this to work.</p>"
+              "desc": "<p>Synchronous version of <a href=\"#pipetosource-transforms-writer-options\"><code>pipeTo()</code></a>. The <code>source</code>, all transforms, and the\n<code>writer</code> must be synchronous. Cannot accept async iterables or promises.</p>\n<p>The <code>writer</code> must have the <code>*Sync</code> methods (<code>writeSync</code>, <code>writevSync</code>,\n<code>endSync</code>) and <code>fail()</code> for this to work.</p>\n<p><code>pipeToSync()</code> never falls back to the asynchronous writer methods. If\n<code>writer.endSync()</code> returns <code>-1</code> because the writer cannot close synchronously\n(for example, a <code>push()</code> writer whose consumer has not read all of the data\nyet), <code>pipeToSync()</code> throws <code>ERR_INVALID_STATE</code>. All of the data was accepted\nby then, so by default the writer is not failed: it can still be closed, for\nexample with <code>await writer.end()</code>. If the writer cannot be closed any other\nway (for example, it has no <code>end()</code> method), or the caller will not close it,\nset <code>failOnIncompleteClose</code> to fail it with the thrown error instead.</p>"
             },
             {
               "textRaw": "`pull(source[, ...transforms][, options])`",
@@ -558,7 +577,7 @@
                   }
                 }
               ],
-              "desc": "<p>Create a lazy async pipeline. Data is not read from <code>source</code> until the\nreturned iterable is consumed. Transforms are applied in order.</p>\n<pre><code class=\"language-mjs\">import { from, pull, text } from 'node:stream/iter';\n\nconst asciiUpper = (chunks) => {\n  if (chunks === null) return null;\n  return chunks.map((c) => {\n    for (let i = 0; i &#x3C; c.length; i++) {\n      c[i] -= (c[i] >= 97 &#x26;&#x26; c[i] &#x3C;= 122) * 32;\n    }\n    return c;\n  });\n};\n\nconst result = pull(from('hello'), asciiUpper);\nconsole.log(await text(result)); // 'HELLO'\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, pull, text } = require('node:stream/iter');\n\nconst asciiUpper = (chunks) => {\n  if (chunks === null) return null;\n  return chunks.map((c) => {\n    for (let i = 0; i &#x3C; c.length; i++) {\n      c[i] -= (c[i] >= 97 &#x26;&#x26; c[i] &#x3C;= 122) * 32;\n    }\n    return c;\n  });\n};\n\nasync function run() {\n  const result = pull(from('hello'), asciiUpper);\n  console.log(await text(result)); // 'HELLO'\n}\n\nrun().catch(console.error);\n</code></pre>\n<p>Using an <code>AbortSignal</code>:</p>\n<pre><code class=\"language-mjs\">import { pull } from 'node:stream/iter';\n\nconst ac = new AbortController();\nconst result = pull(source, transform, { signal: ac.signal });\nac.abort(); // Pipeline throws AbortError on next iteration\n</code></pre>\n<pre><code class=\"language-cjs\">const { pull } = require('node:stream/iter');\n\nconst ac = new AbortController();\nconst result = pull(source, transform, { signal: ac.signal });\nac.abort(); // Pipeline throws AbortError on next iteration\n</code></pre>"
+              "desc": "<p>Create a lazy async pipeline. Source conversion and streamable protocol\ndispatch occur when <code>pull()</code> is called, but data is not read from <code>source</code>\nuntil the returned iterable is consumed. Transforms are applied in order.</p>\n<p>When <code>signal</code> aborts, the pending read (or the next one) rejects with\n<code>signal.reason</code>, and so does every later read. If <code>signal</code> is already aborted,\n<code>pull()</code> still returns an iterable; reading from it rejects with\n<code>signal.reason</code> without reading from <code>source</code>.</p>\n<pre><code class=\"language-mjs\">import { from, pull, text } from 'node:stream/iter';\n\nconst asciiUpper = (chunks) => {\n  if (chunks === null) return null;\n  return chunks.map((c) => {\n    for (let i = 0; i &#x3C; c.length; i++) {\n      c[i] -= (c[i] >= 97 &#x26;&#x26; c[i] &#x3C;= 122) * 32;\n    }\n    return c;\n  });\n};\n\nconst result = pull(from('hello'), asciiUpper);\nconsole.log(await text(result)); // 'HELLO'\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, pull, text } = require('node:stream/iter');\n\nconst asciiUpper = (chunks) => {\n  if (chunks === null) return null;\n  return chunks.map((c) => {\n    for (let i = 0; i &#x3C; c.length; i++) {\n      c[i] -= (c[i] >= 97 &#x26;&#x26; c[i] &#x3C;= 122) * 32;\n    }\n    return c;\n  });\n};\n\nasync function run() {\n  const result = pull(from('hello'), asciiUpper);\n  console.log(await text(result)); // 'HELLO'\n}\n\nrun().catch(console.error);\n</code></pre>\n<p>Using an <code>AbortSignal</code>:</p>\n<pre><code class=\"language-mjs\">import { pull } from 'node:stream/iter';\n\nconst ac = new AbortController();\nconst result = pull(source, transform, { signal: ac.signal });\nac.abort(); // Pipeline throws AbortError on next iteration\n</code></pre>\n<pre><code class=\"language-cjs\">const { pull } = require('node:stream/iter');\n\nconst ac = new AbortController();\nconst result = pull(source, transform, { signal: ac.signal });\nac.abort(); // Pipeline throws AbortError on next iteration\n</code></pre>"
             },
             {
               "textRaw": "`pullSync(source[, ...transforms])`",
@@ -595,7 +614,7 @@
                   }
                 }
               ],
-              "desc": "<p>Synchronous version of <a href=\"#pullsource-transforms-options\"><code>pull()</code></a>. All transforms must be synchronous.</p>"
+              "desc": "<p>Synchronous version of <a href=\"#pullsource-transforms-options\"><code>pull()</code></a>. Source conversion and streamable protocol\ndispatch occur when <code>pullSync()</code> is called. All transforms must be synchronous.</p>"
             }
           ],
           "displayName": "Pipelines"
@@ -631,11 +650,11 @@
                       "type": "Object",
                       "options": [
                         {
-                          "textRaw": "`budget` {number} Maximum number of buffered bytes before backpressure is applied. Must be >= 16384. **Default:** `16384`.",
+                          "textRaw": "`budget` {number} Maximum number of buffered bytes before backpressure is applied. Must be a positive integer. **Default:** `16384`.",
                           "name": "budget",
                           "type": "number",
                           "default": "`16384`",
-                          "desc": "Maximum number of buffered bytes before backpressure is applied. Must be >= 16384."
+                          "desc": "Maximum number of buffered bytes before backpressure is applied. Must be a positive integer."
                         },
                         {
                           "textRaw": "`backpressure` {string} Backpressure policy: `'strict'`, `'unbounded'`, `'drop-oldest'`, or `'drop-newest'`. **Default:** `'strict'`.",
@@ -645,10 +664,10 @@
                           "desc": "Backpressure policy: `'strict'`, `'unbounded'`, `'drop-oldest'`, or `'drop-newest'`."
                         },
                         {
-                          "textRaw": "`signal` {AbortSignal} Abort the stream.",
+                          "textRaw": "`signal` {AbortSignal} Abort the stream. The signal remains active while buffered data drains after `writer.end()`; aborting during that time fails the writer and rejects the pending `end()` promise.",
                           "name": "signal",
                           "type": "AbortSignal",
-                          "desc": "Abort the stream."
+                          "desc": "Abort the stream. The signal remains active while buffered data drains after `writer.end()`; aborting during that time fails the writer and rejects the pending `end()` promise."
                         }
                       ],
                       "optional": true
@@ -675,7 +694,7 @@
                   }
                 }
               ],
-              "desc": "<p>Create a push stream with backpressure. The writer pushes data in; the\nreadable side is consumed as an async iterable.</p>\n<pre><code class=\"language-mjs\">import { push, text } from 'node:stream/iter';\n\nconst { writer, readable } = push();\n\n// Producer and consumer must run concurrently. With strict backpressure\n// (the default), awaited writes block until the consumer reads.\nconst producing = (async () => {\n  await writer.write('hello');\n  await writer.write(' world');\n  await writer.end();\n})();\n\nconsole.log(await text(readable)); // 'hello world'\nawait producing;\n</code></pre>\n<pre><code class=\"language-cjs\">const { push, text } = require('node:stream/iter');\n\nasync function run() {\n  const { writer, readable } = push();\n\n  // Producer and consumer must run concurrently. With strict backpressure\n  // (the default), awaited writes block until the consumer reads.\n  const producing = (async () => {\n    await writer.write('hello');\n    await writer.write(' world');\n    await writer.end();\n  })();\n\n  console.log(await text(readable)); // 'hello world'\n  await producing;\n}\n\nrun().catch(console.error);\n</code></pre>\n<p>The writer returned by <code>push()</code> conforms to the [Writer interface][].</p>"
+              "desc": "<p>Create a push stream with backpressure. The writer pushes data in; the\nreadable side is consumed as an async iterable.</p>\n<pre><code class=\"language-mjs\">import { push, text } from 'node:stream/iter';\n\nconst { writer, readable } = push();\n\n// Producer and consumer must run concurrently. With strict backpressure\n// (the default), awaited writes block until the consumer reads.\nconst producing = (async () => {\n  await writer.write('hello');\n  await writer.write(' world');\n  await writer.end();\n})();\n\nconsole.log(await text(readable)); // 'hello world'\nawait producing;\n</code></pre>\n<pre><code class=\"language-cjs\">const { push, text } = require('node:stream/iter');\n\nasync function run() {\n  const { writer, readable } = push();\n\n  // Producer and consumer must run concurrently. With strict backpressure\n  // (the default), awaited writes block until the consumer reads.\n  const producing = (async () => {\n    await writer.write('hello');\n    await writer.write(' world');\n    await writer.end();\n  })();\n\n  console.log(await text(readable)); // 'hello world'\n  await producing;\n}\n\nrun().catch(console.error);\n</code></pre>\n<p>The writer returned by <code>push()</code> conforms to the [Writer interface][].</p>\n<p>Zero-length chunks are accepted without being buffered: they are not delivered\nto the consumer, and <code>writeSync()</code> and <code>write()</code> report success for them even\nwhen backpressure is active.</p>"
             }
           ],
           "displayName": "Push streams"
@@ -704,11 +723,11 @@
                       "type": "Object",
                       "options": [
                         {
-                          "textRaw": "`budget` {number} Buffer size in bytes for both directions. **Default:** `16384`.",
+                          "textRaw": "`budget` {number} Buffer size in bytes for both directions. Must be a positive integer. **Default:** `16384`.",
                           "name": "budget",
                           "type": "number",
                           "default": "`16384`",
-                          "desc": "Buffer size in bytes for both directions."
+                          "desc": "Buffer size in bytes for both directions. Must be a positive integer."
                         },
                         {
                           "textRaw": "`backpressure` {string} Policy for both directions. **Default:** `'strict'`.",
@@ -771,7 +790,7 @@
                   }
                 }
               ],
-              "desc": "<p>Create a pair of connected duplex channels for bidirectional communication,\nsimilar to <code>socketpair()</code>. Data written to one channel's writer appears in\nthe other channel's readable.</p>\n<p>Each channel has:</p>\n<ul>\n<li><code>writer</code> — a [Writer interface][] object for sending data to the peer.</li>\n<li><code>readable</code> — an <a href=\"https://tc39.github.io/ecma262/#sec-asynciterable-interface\"><code>&#x3C;AsyncIterable></code></a> for reading data from the peer.</li>\n<li><code>close()</code> — close this end of the channel (idempotent).</li>\n<li><code>[Symbol.asyncDispose]()</code> — async dispose support for <code>await using</code>.</li>\n</ul>\n<pre><code class=\"language-mjs\">import { duplex, text } from 'node:stream/iter';\n\nconst [client, server] = duplex();\n\n// Server echoes back\nconst serving = (async () => {\n  for await (const chunks of server.readable) {\n    await server.writer.writev(chunks);\n  }\n})();\n\nawait client.writer.write('hello');\nawait client.writer.end();\n\nconsole.log(await text(server.readable)); // handled by echo\nawait serving;\n</code></pre>\n<pre><code class=\"language-cjs\">const { duplex, text } = require('node:stream/iter');\n\nasync function run() {\n  const [client, server] = duplex();\n\n  // Server echoes back\n  const serving = (async () => {\n    for await (const chunks of server.readable) {\n      await server.writer.writev(chunks);\n    }\n  })();\n\n  await client.writer.write('hello');\n  await client.writer.end();\n\n  console.log(await text(server.readable)); // handled by echo\n  await serving;\n}\n\nrun().catch(console.error);\n</code></pre>"
+              "desc": "<p>Create a pair of connected duplex channels for bidirectional communication,\nsimilar to <code>socketpair()</code>. Data written to one channel's writer appears in\nthe other channel's readable.</p>\n<p>Each channel has:</p>\n<ul>\n<li><code>writer</code> — a [Writer interface][] object for sending data to the peer.</li>\n<li><code>readable</code> — an <a href=\"https://tc39.github.io/ecma262/#sec-asynciterable-interface\"><code>&#x3C;AsyncIterable></code></a> for reading data from the peer.</li>\n<li><code>close()</code> — close this end of the channel (idempotent).</li>\n<li><code>[Symbol.asyncDispose]()</code> — async dispose support for <code>await using</code>.</li>\n</ul>\n<pre><code class=\"language-mjs\">import { duplex, text } from 'node:stream/iter';\n\nconst [client, server] = duplex();\n\n// Server echoes back\nconst serving = (async () => {\n  for await (const chunks of server.readable) {\n    await server.writer.writev(chunks);\n  }\n  await server.writer.end();\n})();\n\nawait client.writer.write('hello');\nawait client.writer.end();\n\nconsole.log(await text(client.readable)); // 'hello'\nawait serving;\n</code></pre>\n<pre><code class=\"language-cjs\">const { duplex, text } = require('node:stream/iter');\n\nasync function run() {\n  const [client, server] = duplex();\n\n  // Server echoes back\n  const serving = (async () => {\n    for await (const chunks of server.readable) {\n      await server.writer.writev(chunks);\n    }\n    await server.writer.end();\n  })();\n\n  await client.writer.write('hello');\n  await client.writer.end();\n\n  console.log(await text(client.readable)); // 'hello'\n  await serving;\n}\n\nrun().catch(console.error);\n</code></pre>"
             }
           ],
           "displayName": "Duplex channels"
@@ -1059,6 +1078,98 @@
               "desc": "<p>Synchronous version of <a href=\"#bytessource-options\"><code>bytes()</code></a>.</p>"
             },
             {
+              "textRaw": "`dump(source[, options])`",
+              "name": "dump",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.12.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`source` {AsyncIterable|Iterable} whose chunks must be {Uint8Array}[]",
+                      "name": "source",
+                      "type": "AsyncIterable|Iterable",
+                      "desc": "whose chunks must be {Uint8Array}[]"
+                    },
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`signal` {AbortSignal}",
+                          "name": "signal",
+                          "type": "AbortSignal"
+                        },
+                        {
+                          "textRaw": "`limit` {number} Maximum number of bytes to consume. If the total bytes read exceeds limit, an `ERR_OUT_OF_RANGE` error is thrown",
+                          "name": "limit",
+                          "type": "number",
+                          "desc": "Maximum number of bytes to consume. If the total bytes read exceeds limit, an `ERR_OUT_OF_RANGE` error is thrown"
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfills with `undefined`.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfills with `undefined`."
+                  }
+                }
+              ],
+              "desc": "<p>Read a source to completion, discarding every chunk. Unlike the other\nconsumers, <code>dump()</code> retains nothing. Memory tops-out at a single batch no\nmatter how much data the source produces.</p>\n<p>Use this to consume a stream when the content doesn't matter. For example, A\nQUIC stream only returns flow-control credit to the peer as its data is\nconsumed, so a receiver that does not want the payload must still read it to\ncompletion.</p>\n<p>If the source errors part-way through, the returned promise rejects with that\nerror.</p>\n<p>There is no default <code>limit</code>. <code>dump()</code> reads until the source is exhausted\nunless a limit is specified. When a limit is configured and the source exceeds\nit, the promise rejects and the source is cancelled. A partial dump is never\nreported as success.</p>\n<pre><code class=\"language-mjs\">import { dump, from, pull, tap } from 'node:stream/iter';\n\n// Count the bytes flowing through a stream without retaining any of them.\nlet bytesSeen = 0;\nconst counter = tap((chunks) => {\n  for (const chunk of chunks) bytesSeen += chunk.byteLength;\n});\n\nawait dump(pull(from('hello world'), counter));\nconsole.log(bytesSeen); // 11\n</code></pre>\n<pre><code class=\"language-cjs\">const { dump, from, pull, tap } = require('node:stream/iter');\n\nasync function run() {\n  // Count the bytes flowing through a stream without retaining any of them.\n  let bytesSeen = 0;\n  const counter = tap((chunks) => {\n    for (const chunk of chunks) bytesSeen += chunk.byteLength;\n  });\n\n  await dump(pull(from('hello world'), counter));\n  console.log(bytesSeen); // 11\n}\n\nrun().catch(console.error);\n</code></pre>"
+            },
+            {
+              "textRaw": "`dumpSync(source[, options])`",
+              "name": "dumpSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.12.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`source` {Iterable} whose chunks must be {Uint8Array}[]",
+                      "name": "source",
+                      "type": "Iterable",
+                      "desc": "whose chunks must be {Uint8Array}[]"
+                    },
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`limit` {number} Maximum number of bytes to consume. If the total bytes read exceeds limit, an `ERR_OUT_OF_RANGE` error is thrown",
+                          "name": "limit",
+                          "type": "number",
+                          "desc": "Maximum number of bytes to consume. If the total bytes read exceeds limit, an `ERR_OUT_OF_RANGE` error is thrown"
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {undefined}",
+                    "name": "return",
+                    "type": "undefined"
+                  }
+                }
+              ],
+              "desc": "<p>Synchronous version of <a href=\"#drainsource-options\"><code>dump()</code></a>. Throws <code>ERR_INVALID_ARG_TYPE</code> if <code>source</code>\nis not synchronously iterable.</p>"
+            },
+            {
               "textRaw": "`text(source[, options])`",
               "name": "text",
               "type": "method",
@@ -1198,7 +1309,7 @@
                   }
                 }
               ],
-              "desc": "<p>Wait for a drainable writer's backpressure to clear. Returns <code>null</code> if\nthe object does not implement the drainable protocol, or a promise that\nfulfills with <code>true</code> when the writer can accept more data.</p>\n<pre><code class=\"language-mjs\">import { push, ondrain, text } from 'node:stream/iter';\n\nconst { writer, readable } = push({ budget: 16384 });\nconst chunk = new Uint8Array(8192);  // 8 KB\nwriter.writeSync(chunk);\nwriter.writeSync(chunk);  // 16 KB total -- buffer full\n\n// Start consuming so the buffer can actually drain\nconst consuming = text(readable);\n\n// Buffer is full -- wait for drain\nconst canWrite = await ondrain(writer);\nif (canWrite) {\n  await writer.write('c');\n}\nawait writer.end();\nawait consuming;\n</code></pre>\n<pre><code class=\"language-cjs\">const { push, ondrain, text } = require('node:stream/iter');\n\nasync function run() {\n  const { writer, readable } = push({ budget: 16384 });\n  const chunk = new Uint8Array(8192);  // 8 KB\n  writer.writeSync(chunk);\n  writer.writeSync(chunk);  // 16 KB total -- buffer full\n\n  // Start consuming so the buffer can actually drain\n  const consuming = text(readable);\n\n  // Buffer is full -- wait for drain\n  const canWrite = await ondrain(writer);\n  if (canWrite) {\n    await writer.write('c');\n  }\n  await writer.end();\n  await consuming;\n}\n\nrun().catch(console.error);\n</code></pre>"
+              "desc": "<p>Wait for a drainable writer to regain physical buffer capacity. Returns <code>null</code>\nif the object does not implement the drainable protocol, or a promise that\nfulfills with <code>true</code> when buffered data falls below the byte budget.</p>\n<p>For writers using <code>'drop-oldest'</code> or <code>'drop-newest'</code>, this waits for physical\ncapacity even though writes do not block. This allows producers to avoid data\nloss by waiting before writing.</p>\n<pre><code class=\"language-mjs\">import { push, ondrain, text } from 'node:stream/iter';\n\nconst { writer, readable } = push({ budget: 16384 });\nconst chunk = new Uint8Array(8192);  // 8 KB\nwriter.writeSync(chunk);\nwriter.writeSync(chunk);  // 16 KB total -- buffer full\n\n// Start consuming so the buffer can actually drain\nconst consuming = text(readable);\n\n// Buffer is full -- wait for drain\nconst canWrite = await ondrain(writer);\nif (canWrite) {\n  await writer.write('c');\n}\nawait writer.end();\nawait consuming;\n</code></pre>\n<pre><code class=\"language-cjs\">const { push, ondrain, text } = require('node:stream/iter');\n\nasync function run() {\n  const { writer, readable } = push({ budget: 16384 });\n  const chunk = new Uint8Array(8192);  // 8 KB\n  writer.writeSync(chunk);\n  writer.writeSync(chunk);  // 16 KB total -- buffer full\n\n  // Start consuming so the buffer can actually drain\n  const consuming = text(readable);\n\n  // Buffer is full -- wait for drain\n  const canWrite = await ondrain(writer);\n  if (canWrite) {\n    await writer.write('c');\n  }\n  await writer.end();\n  await consuming;\n}\n\nrun().catch(console.error);\n</code></pre>"
             },
             {
               "textRaw": "`merge(...sources[, options])`",
@@ -1241,7 +1352,7 @@
                   }
                 }
               ],
-              "desc": "<p>Merge multiple async iterables by yielding batches in temporal order\n(whichever source produces data first). All sources are consumed\nconcurrently.</p>\n<pre><code class=\"language-mjs\">import { from, merge, text } from 'node:stream/iter';\n\nconst merged = merge(from('hello '), from('world'));\nconsole.log(await text(merged)); // Order depends on timing\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, merge, text } = require('node:stream/iter');\n\nasync function run() {\n  const merged = merge(from('hello '), from('world'));\n  console.log(await text(merged)); // Order depends on timing\n}\n\nrun().catch(console.error);\n</code></pre>"
+              "desc": "<p>Merge multiple async iterables by yielding batches in temporal order\n(whichever source produces data first). All sources are consumed\nconcurrently, with at most one pending <code>next()</code> call per source.</p>\n<p>If a source fails, the returned iterable rejects with its error. <code>merge()</code>\ncalls <code>return()</code> on the other sources but does not wait for it to settle: an\nasync generator source that is suspended in an <code>await</code> only runs its cleanup\nonce that <code>await</code> completes.</p>\n<pre><code class=\"language-mjs\">import { from, merge, text } from 'node:stream/iter';\n\nconst merged = merge(from('hello '), from('world'));\nconsole.log(await text(merged)); // Order depends on timing\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, merge, text } = require('node:stream/iter');\n\nasync function run() {\n  const merged = merge(from('hello '), from('world'));\n  console.log(await text(merged)); // Order depends on timing\n}\n\nrun().catch(console.error);\n</code></pre>"
             },
             {
               "textRaw": "`tap(callback)`",
@@ -1257,10 +1368,10 @@
                 {
                   "params": [
                     {
-                      "textRaw": "`callback` {Function} `(chunks) => void` Called with each batch.",
+                      "textRaw": "`callback` {Function} `(chunks, options) => void` Called with each batch and with `null` when the source ends. `options.signal` is the pipeline's {AbortSignal}.",
                       "name": "callback",
                       "type": "Function",
-                      "desc": "`(chunks) => void` Called with each batch."
+                      "desc": "`(chunks, options) => void` Called with each batch and with `null` when the source ends. `options.signal` is the pipeline's {AbortSignal}."
                     }
                   ],
                   "return": {
@@ -1271,7 +1382,7 @@
                   }
                 }
               ],
-              "desc": "<p>Create a pass-through transform that observes batches without modifying them.\nUseful for logging, metrics, or debugging.</p>\n<pre><code class=\"language-mjs\">import { from, pull, text, tap } from 'node:stream/iter';\n\nconst result = pull(\n  from('hello'),\n  tap((chunks) => console.log('Batch size:', chunks.length)),\n);\nconsole.log(await text(result));\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, pull, text, tap } = require('node:stream/iter');\n\nasync function run() {\n  const result = pull(\n    from('hello'),\n    tap((chunks) => console.log('Batch size:', chunks.length)),\n  );\n  console.log(await text(result));\n}\n\nrun().catch(console.error);\n</code></pre>\n<p><code>tap()</code> intentionally does not prevent in-place modification of the\nchunks by the tapping callback; but return values are ignored.</p>"
+              "desc": "<p>Create a pass-through transform that observes batches without modifying them.\nUseful for logging, metrics, or debugging.</p>\n<pre><code class=\"language-mjs\">import { from, pull, text, tap } from 'node:stream/iter';\n\nconst result = pull(\n  from('hello'),\n  tap((chunks) => {\n    if (chunks !== null) console.log('Batch size:', chunks.length);\n  }),\n);\nconsole.log(await text(result));\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, pull, text, tap } = require('node:stream/iter');\n\nasync function run() {\n  const result = pull(\n    from('hello'),\n    tap((chunks) => {\n      if (chunks !== null) console.log('Batch size:', chunks.length);\n    }),\n  );\n  console.log(await text(result));\n}\n\nrun().catch(console.error);\n</code></pre>\n<p><code>tap()</code> intentionally does not prevent in-place modification of the\nchunks by the tapping callback; but return values are ignored.</p>"
             },
             {
               "textRaw": "`tapSync(callback)`",
@@ -1328,11 +1439,11 @@
                       "type": "Object",
                       "options": [
                         {
-                          "textRaw": "`budget` {number} Buffer size in bytes. Must be >= 16384. **Default:** `65536`.",
+                          "textRaw": "`budget` {number} Buffer size in bytes. Must be a positive integer. **Default:** `65536`.",
                           "name": "budget",
                           "type": "number",
                           "default": "`65536`",
-                          "desc": "Buffer size in bytes. Must be >= 16384."
+                          "desc": "Buffer size in bytes. Must be a positive integer."
                         },
                         {
                           "textRaw": "`backpressure` {string} `'strict'`, `'unbounded'`, `'drop-oldest'`, or `'drop-newest'`. **Default:** `'strict'`.",
@@ -1379,15 +1490,15 @@
                     {
                       "params": [
                         {
-                          "textRaw": "`reason` {Error}",
+                          "textRaw": "`reason` {any}",
                           "name": "reason",
-                          "type": "Error",
+                          "type": "any",
                           "optional": true
                         }
                       ]
                     }
                   ],
-                  "desc": "<p>Cancel the broadcast. All consumers receive an error.</p>"
+                  "desc": "<p>Cancel the broadcast. If <code>reason</code> is provided, all consumers reject with that\nexact reason. If it is omitted, consumers complete normally.</p>\n<p>Cancelling also closes the paired writer: afterwards its <code>canWrite</code> is <code>null</code>\nand <code>write()</code> rejects with a <code>TypeError</code>. This lets a <a href=\"#broadcastfrominput-options\"><code>Broadcast.from()</code></a>\npump stop pulling from its source.</p>"
                 },
                 {
                   "textRaw": "`broadcast.push([...transforms][, options])`",
@@ -1424,7 +1535,7 @@
                       }
                     }
                   ],
-                  "desc": "<p>Create a new consumer. Each consumer receives all data written to the\nbroadcast from the point of subscription onward. Optional transforms are\napplied to this consumer's view of the data.</p>"
+                  "desc": "<p>Create a new consumer. Optional transforms are applied to this consumer's view\nof the data.</p>"
                 },
                 {
                   "textRaw": "`broadcast[Symbol.dispose]()`",
@@ -1474,10 +1585,10 @@
                     }
                   ],
                   "return": {
-                    "textRaw": "Returns: {Object} `{ writer, broadcast }`",
+                    "textRaw": "Returns: {BroadcastChannel|Object} A `broadcastProtocol` input returns its {BroadcastChannel} directly. Other inputs return `{ writer, broadcast }`.",
                     "name": "return",
-                    "type": "Object",
-                    "desc": "`{ writer, broadcast }`"
+                    "type": "BroadcastChannel|Object",
+                    "desc": "A `broadcastProtocol` input returns its {BroadcastChannel} directly. Other inputs return `{ writer, broadcast }`."
                   }
                 }
               ],
@@ -1508,11 +1619,11 @@
                       "type": "Object",
                       "options": [
                         {
-                          "textRaw": "`budget` {number} Buffer size in bytes. Must be >= 16384. **Default:** `65536`.",
+                          "textRaw": "`budget` {number} Buffer size in bytes. Must be a positive integer. **Default:** `65536`.",
                           "name": "budget",
                           "type": "number",
                           "default": "`65536`",
-                          "desc": "Buffer size in bytes. Must be >= 16384."
+                          "desc": "Buffer size in bytes. Must be a positive integer."
                         },
                         {
                           "textRaw": "`backpressure` {string} `'strict'`, `'unbounded'`, `'drop-oldest'`, or `'drop-newest'`. **Default:** `'strict'`.",
@@ -1520,6 +1631,11 @@
                           "type": "string",
                           "default": "`'strict'`",
                           "desc": "`'strict'`, `'unbounded'`, `'drop-oldest'`, or `'drop-newest'`."
+                        },
+                        {
+                          "textRaw": "`signal` {AbortSignal}",
+                          "name": "signal",
+                          "type": "AbortSignal"
                         }
                       ],
                       "optional": true
@@ -1532,7 +1648,7 @@
                   }
                 }
               ],
-              "desc": "<p>Create a pull-model multi-consumer shared stream. Unlike <code>broadcast()</code>, the\nsource is only read when a consumer pulls. Multiple consumers share a single\nbuffer.</p>\n<pre><code class=\"language-mjs\">import { from, share, text } from 'node:stream/iter';\n\nconst shared = share(from('hello'));\n\nconst c1 = shared.pull();\nconst c2 = shared.pull();\n\n// Consume concurrently to avoid deadlock with small buffers.\nconst [r1, r2] = await Promise.all([text(c1), text(c2)]);\nconsole.log(r1); // 'hello'\nconsole.log(r2); // 'hello'\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, share, text } = require('node:stream/iter');\n\nasync function run() {\n  const shared = share(from('hello'));\n\n  const c1 = shared.pull();\n  const c2 = shared.pull();\n\n  // Consume concurrently to avoid deadlock with small buffers.\n  const [r1, r2] = await Promise.all([text(c1), text(c2)]);\n  console.log(r1); // 'hello'\n  console.log(r2); // 'hello'\n}\n\nrun().catch(console.error);\n</code></pre>"
+              "desc": "<p>Create a pull-model multi-consumer shared stream. Unlike <code>broadcast()</code>, the\nsource is only read when a consumer pulls. Multiple consumers share a single\nbuffer.</p>\n<p>A consumer created with <code>share.pull()</code> starts reading at the oldest entry still\nin the buffer. Entries are released once every consumer has read them. When\nevery consumer has detached, the buffered data is kept for consumers that\nattach later, and the source is not closed. Call <code>share.cancel()</code> (or dispose\nthe share) to release the source once it is no longer needed.</p>\n<p>With <code>'strict'</code> backpressure, a consumer that needs to pull from the source\nwhile the buffer is at or above <code>budget</code> is rejected with <code>ERR_OUT_OF_RANGE</code>\nand detached; further reads from that consumer complete with <code>{ done: true }</code>.\nDetaching keeps a consumer that is not retried (for example, one read with\n<code>for await...of</code>, which does not call <code>return()</code> when a read rejects) from\nholding buffered data and blocking the other consumers.</p>\n<p>With <code>'unbounded'</code>, such a consumer waits until the slowest consumer releases\nbudget. With <code>'drop-newest'</code>, the entry pulled from the source is discarded\nand the consumer then waits in the same way, so in both cases a stalled\nconsumer also stalls the consumers that are ahead of it. Only <code>'drop-oldest'</code>\nlets consumers that are ahead continue, by discarding the oldest buffered\nentries that the slowest consumer has not read yet. A batch pulled from the\nsource that is larger than <code>budget</code> is split into smaller entries first, so\neviction keeps the newest chunks that fit within the budget.</p>\n<pre><code class=\"language-mjs\">import { from, share, text } from 'node:stream/iter';\n\nconst shared = share(from('hello'));\n\nconst c1 = shared.pull();\nconst c2 = shared.pull();\n\n// Consume concurrently to avoid deadlock with small buffers.\nconst [r1, r2] = await Promise.all([text(c1), text(c2)]);\nconsole.log(r1); // 'hello'\nconsole.log(r2); // 'hello'\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, share, text } = require('node:stream/iter');\n\nasync function run() {\n  const shared = share(from('hello'));\n\n  const c1 = shared.pull();\n  const c2 = shared.pull();\n\n  // Consume concurrently to avoid deadlock with small buffers.\n  const [r1, r2] = await Promise.all([text(c1), text(c2)]);\n  console.log(r1); // 'hello'\n  console.log(r2); // 'hello'\n}\n\nrun().catch(console.error);\n</code></pre>"
             },
             {
               "textRaw": "`shareSync(source[, options])`",
@@ -1559,17 +1675,18 @@
                       "type": "Object",
                       "options": [
                         {
-                          "textRaw": "`budget` {number} Must be >= 16384. **Default:** `65536`.",
+                          "textRaw": "`budget` {number} Must be a positive integer. **Default:** `65536`.",
                           "name": "budget",
                           "type": "number",
                           "default": "`65536`",
-                          "desc": "Must be >= 16384."
+                          "desc": "Must be a positive integer."
                         },
                         {
-                          "textRaw": "`backpressure` {string} **Default:** `'strict'`.",
+                          "textRaw": "`backpressure` {string} `'strict'` or `'drop-oldest'`. **Default:** `'strict'`.",
                           "name": "backpressure",
                           "type": "string",
-                          "default": "`'strict'`"
+                          "default": "`'strict'`",
+                          "desc": "`'strict'` or `'drop-oldest'`."
                         }
                       ],
                       "optional": true
@@ -1582,7 +1699,7 @@
                   }
                 }
               ],
-              "desc": "<p>Synchronous version of <a href=\"#sharesource-options\"><code>share()</code></a>.</p>"
+              "desc": "<p>Synchronous version of <a href=\"#sharesource-options\"><code>share()</code></a>.</p>\n<p>A synchronous consumer cannot wait for the slowest consumer to release budget,\nand the slowest consumer cannot advance while another consumer's read is\nrunning. <code>'unbounded'</code> and <code>'drop-newest'</code> are therefore not supported and\nthrow <code>ERR_INVALID_ARG_VALUE</code>.</p>"
             }
           ],
           "classes": [
@@ -1636,15 +1753,15 @@
                     {
                       "params": [
                         {
-                          "textRaw": "`reason` {Error}",
+                          "textRaw": "`reason` {any}",
                           "name": "reason",
-                          "type": "Error",
+                          "type": "any",
                           "optional": true
                         }
                       ]
                     }
                   ],
-                  "desc": "<p>Cancel the share. All consumers receive an error.</p>"
+                  "desc": "<p>Cancel the share. If <code>reason</code> is provided, all consumers reject with that exact\nreason. If it is omitted, consumers complete normally.</p>"
                 },
                 {
                   "textRaw": "`share.pull([...transforms][, options])`",
@@ -1743,20 +1860,6 @@
                   ]
                 }
               ],
-              "properties": [
-                {
-                  "textRaw": "{number}",
-                  "name": "bufferSize",
-                  "type": "number",
-                  "desc": "<p>The number of chunks currently buffered.</p>"
-                },
-                {
-                  "textRaw": "{number}",
-                  "name": "consumerCount",
-                  "type": "number",
-                  "desc": "<p>The number of active consumers.</p>"
-                }
-              ],
               "methods": [
                 {
                   "textRaw": "`share.cancel([reason])`",
@@ -1766,18 +1869,18 @@
                     {
                       "params": [
                         {
-                          "textRaw": "`reason` {Error}",
+                          "textRaw": "`reason` {any}",
                           "name": "reason",
-                          "type": "Error",
+                          "type": "any",
                           "optional": true
                         }
                       ]
                     }
                   ],
-                  "desc": "<p>Cancel the share. All consumers receive an error.</p>"
+                  "desc": "<p>Cancel the share. If <code>reason</code> is provided, all consumers throw that exact\nreason. If it is omitted, consumers complete normally.</p>"
                 },
                 {
-                  "textRaw": "`share.pull([...transforms][, options])`",
+                  "textRaw": "`share.pull([...transforms])`",
                   "name": "pull",
                   "type": "method",
                   "signatures": [
@@ -1787,19 +1890,6 @@
                           "textRaw": "`...transforms` {Function|Object}",
                           "name": "...transforms",
                           "type": "Function|Object",
-                          "optional": true
-                        },
-                        {
-                          "textRaw": "`options` {Object}",
-                          "name": "options",
-                          "type": "Object",
-                          "options": [
-                            {
-                              "textRaw": "`signal` {AbortSignal}",
-                              "name": "signal",
-                              "type": "AbortSignal"
-                            }
-                          ],
                           "optional": true
                         }
                       ],
@@ -1823,6 +1913,14 @@
                     }
                   ],
                   "desc": "<p>Alias for <code>share.cancel()</code>.</p>"
+                }
+              ],
+              "properties": [
+                {
+                  "textRaw": "{number}",
+                  "name": "consumerCount",
+                  "type": "number",
+                  "desc": "<p>The number of active consumers.</p>"
                 }
               ]
             }
@@ -1888,10 +1986,10 @@
                 {
                   "params": [
                     {
-                      "textRaw": "`readable` {stream.Readable|Object} A classic Readable stream or any object with `read()`, `on()`, and `off()` methods.",
+                      "textRaw": "`readable` {stream.Readable|Object} A classic Readable stream or a compatible object with `read()`, `pipe()`, `destroy()`, `on()`, and `removeListener()` methods.",
                       "name": "readable",
                       "type": "stream.Readable|Object",
-                      "desc": "A classic Readable stream or any object with `read()`, `on()`, and `off()` methods."
+                      "desc": "A classic Readable stream or a compatible object with `read()`, `pipe()`, `destroy()`, `on()`, and `removeListener()` methods."
                     }
                   ],
                   "return": {
@@ -1902,7 +2000,7 @@
                   }
                 }
               ],
-              "desc": "<p>Converts a classic Readable stream (or duck-typed equivalent) into a\nstream/iter async iterable source that can be passed to <a href=\"#frominput\"><code>from()</code></a>,\n<a href=\"#pullsource-transforms-options\"><code>pull()</code></a>, <a href=\"#textsource-options\"><code>text()</code></a>, etc.</p>\n<p>If the object implements the <a href=\"#streamtoasyncstreamable\"><code>toAsyncStreamable</code></a> protocol (as\n<code>stream.Readable</code> does), that protocol is used. Otherwise, the function\nduck-types on <code>read()</code>, <code>on()</code>, and <code>off()</code> (EventEmitter) and wraps the\nstream with a batched async iterator.</p>\n<p>The result is cached per instance -- calling <code>fromReadable()</code> twice with the\nsame stream returns the same iterable.</p>\n<p>For object-mode or encoded Readable streams, chunks are automatically\nnormalized to <code>Uint8Array</code>.</p>\n<pre><code class=\"language-mjs\">import { Readable } from 'node:stream';\nimport { fromReadable, text } from 'node:stream/iter';\n\nconst readable = new Readable({\n  read() { this.push('hello world'); this.push(null); },\n});\n\nconst result = await text(fromReadable(readable));\nconsole.log(result); // 'hello world'\n</code></pre>\n<pre><code class=\"language-cjs\">const { Readable } = require('node:stream');\nconst { fromReadable, text } = require('node:stream/iter');\n\nconst readable = new Readable({\n  read() { this.push('hello world'); this.push(null); },\n});\n\nasync function run() {\n  const result = await text(fromReadable(readable));\n  console.log(result); // 'hello world'\n}\nrun();\n</code></pre>"
+              "desc": "<p>Converts a classic Readable stream (or duck-typed equivalent) into a\nstream/iter async iterable source that can be passed to <a href=\"#frominput\"><code>from()</code></a>,\n<a href=\"#pullsource-transforms-options\"><code>pull()</code></a>, <a href=\"#textsource-options\"><code>text()</code></a>, etc.</p>\n<p>If the object implements the <a href=\"#streamtoasyncstreamable\"><code>toAsyncStreamable</code></a> protocol (as\n<code>stream.Readable</code> does), that protocol is used. Otherwise, the function\nduck-types on <code>read()</code>, <code>pipe()</code>, <code>destroy()</code>, <code>on()</code>, and <code>removeListener()</code>\n(EventEmitter) and wraps the stream with a batched async iterator.</p>\n<p>The result is cached per instance -- calling <code>fromReadable()</code> twice with the\nsame stream returns the same iterable.</p>\n<p>For object-mode or encoded Readable streams, chunks are automatically\nnormalized to <code>Uint8Array</code>.</p>\n<pre><code class=\"language-mjs\">import { Readable } from 'node:stream';\nimport { fromReadable, text } from 'node:stream/iter';\n\nconst readable = new Readable({\n  read() { this.push('hello world'); this.push(null); },\n});\n\nconst result = await text(fromReadable(readable));\nconsole.log(result); // 'hello world'\n</code></pre>\n<pre><code class=\"language-cjs\">const { Readable } = require('node:stream');\nconst { fromReadable, text } = require('node:stream/iter');\n\nconst readable = new Readable({\n  read() { this.push('hello world'); this.push(null); },\n});\n\nasync function run() {\n  const result = await text(fromReadable(readable));\n  console.log(result); // 'hello world'\n}\nrun();\n</code></pre>"
             },
             {
               "textRaw": "`fromWritable(writable[, options])`",
@@ -1920,10 +2018,10 @@
                 {
                   "params": [
                     {
-                      "textRaw": "`writable` {stream.Writable|Object} A classic Writable stream or any object with `write()` and `on()` methods.",
+                      "textRaw": "`writable` {stream.Writable|Object} A classic Writable stream or a compatible object with `write()`, `end()`, `destroy()`, `on()`, and `removeListener()` methods.",
                       "name": "writable",
                       "type": "stream.Writable|Object",
-                      "desc": "A classic Writable stream or any object with `write()` and `on()` methods."
+                      "desc": "A classic Writable stream or a compatible object with `write()`, `end()`, `destroy()`, `on()`, and `removeListener()` methods."
                     },
                     {
                       "textRaw": "`options` {Object}",
@@ -1938,12 +2036,12 @@
                           "desc": "Backpressure policy.",
                           "options": [
                             {
-                              "textRaw": "`'strict'` -- writes are rejected when the buffer is full. Catches callers that ignore backpressure.",
-                              "desc": "`'strict'` -- writes are rejected when the buffer is full. Catches callers that ignore backpressure."
+                              "textRaw": "`'strict'` -- one write may wait while the buffer is full. Further writes are rejected until it is accepted or canceled.",
+                              "desc": "`'strict'` -- one write may wait while the buffer is full. Further writes are rejected until it is accepted or canceled."
                             },
                             {
-                              "textRaw": "`'unbounded'` -- writes wait for drain when the buffer is full. Recommended for use with `pipeTo()`.",
-                              "desc": "`'unbounded'` -- writes wait for drain when the buffer is full. Recommended for use with `pipeTo()`."
+                              "textRaw": "`'unbounded'` -- writes are queued while the buffer is full. Recommended for use with `pipeTo()`.",
+                              "desc": "`'unbounded'` -- writes are queued while the buffer is full. Recommended for use with `pipeTo()`."
                             },
                             {
                               "textRaw": "`'drop-newest'` -- writes are silently discarded when the buffer is full.",
@@ -1967,7 +2065,7 @@
                   }
                 }
               ],
-              "desc": "<p>Creates a stream/iter Writer adapter from a classic Writable stream (or\nduck-typed equivalent). The adapter can be passed to <a href=\"#pipetosource-transforms-writer-options\"><code>pipeTo()</code></a> as a\ndestination.</p>\n<p>Since all writes on a classic Writable are fundamentally asynchronous,\nthe synchronous Writer methods (<code>writeSync</code>, <code>writevSync</code>, <code>endSync</code>) always\nreturn <code>false</code> or <code>-1</code>, deferring to the async path. The per-write\n<code>options.signal</code> parameter from the Writer interface is also ignored.</p>\n<p>The result is cached per instance and backpressure policy -- calling\n<code>fromWritable()</code> twice with the same stream and <code>backpressure</code> option returns\nthe same Writer.</p>\n<p>For duck-typed streams that do not expose <code>writableHighWaterMark</code>,\n<code>writableLength</code>, or similar properties, sensible defaults are used.\nObject-mode writables (if detectable) are rejected since the Writer\ninterface is bytes-only.</p>\n<pre><code class=\"language-mjs\">import { Writable } from 'node:stream';\nimport { from, fromWritable, pipeTo } from 'node:stream/iter';\n\nconst writable = new Writable({\n  write(chunk, encoding, cb) { console.log(chunk.toString()); cb(); },\n});\n\nawait pipeTo(from('hello world'),\n             fromWritable(writable, { backpressure: 'unbounded' }));\n</code></pre>\n<pre><code class=\"language-cjs\">const { Writable } = require('node:stream');\nconst { from, fromWritable, pipeTo } = require('node:stream/iter');\n\nasync function run() {\n  const writable = new Writable({\n    write(chunk, encoding, cb) { console.log(chunk.toString()); cb(); },\n  });\n\n  await pipeTo(from('hello world'),\n               fromWritable(writable, { backpressure: 'unbounded' }));\n}\nrun();\n</code></pre>"
+              "desc": "<p>Creates a stream/iter Writer adapter from a classic Writable stream (or\nduck-typed equivalent). The adapter can be passed to <a href=\"#pipetosource-transforms-writer-options\"><code>pipeTo()</code></a> as a\ndestination.</p>\n<p>Since all writes on a classic Writable are fundamentally asynchronous,\nthe synchronous Writer methods (<code>writeSync</code>, <code>writevSync</code>, <code>endSync</code>) always\nreturn <code>false</code> or <code>-1</code>, deferring to the async path. A queued <code>write()</code> or\n<code>writev()</code> can be canceled with its <code>options.signal</code> before it reaches the\nclassic Writable.</p>\n<p>If <code>writer.fail(reason)</code> receives a non-Error reason, the classic Writable is\ndestroyed with an <code>ERR_FALSY_VALUE_REJECTION</code> or <code>ERR_OPERATION_FAILED</code> error.\nIts <code>reason</code> property contains the original value, which remains the Writer's\nstored failure reason.</p>\n<p>The result is cached per instance and backpressure policy -- calling\n<code>fromWritable()</code> twice with the same stream and <code>backpressure</code> option returns\nthe same Writer.</p>\n<p>For duck-typed streams that do not expose <code>writableHighWaterMark</code>,\n<code>writableLength</code>, or similar properties, sensible defaults are used.\nObject-mode writables (if detectable) are rejected since the Writer\ninterface is bytes-only.</p>\n<pre><code class=\"language-mjs\">import { Writable } from 'node:stream';\nimport { from, fromWritable, pipeTo } from 'node:stream/iter';\n\nconst writable = new Writable({\n  write(chunk, encoding, cb) { console.log(chunk.toString()); cb(); },\n});\n\nawait pipeTo(from('hello world'),\n             fromWritable(writable, { backpressure: 'unbounded' }));\n</code></pre>\n<pre><code class=\"language-cjs\">const { Writable } = require('node:stream');\nconst { from, fromWritable, pipeTo } = require('node:stream/iter');\n\nasync function run() {\n  const writable = new Writable({\n    write(chunk, encoding, cb) { console.log(chunk.toString()); cb(); },\n  });\n\n  await pipeTo(from('hello world'),\n               fromWritable(writable, { backpressure: 'unbounded' }));\n}\nrun();\n</code></pre>"
             },
             {
               "textRaw": "`toReadable(source[, options])`",
@@ -2019,7 +2117,7 @@
                   }
                 }
               ],
-              "desc": "<p>Creates a byte-mode <a href=\"stream.html#class-streamreadable\"><code>stream.Readable</code></a> from the <code>source</code>\n(the native batch format used by the stream/iter API). Each <code>Uint8Array</code> in a\nyielded batch is pushed as a separate chunk into the Readable.</p>\n<pre><code class=\"language-mjs\">import { createWriteStream } from 'node:fs';\nimport { from, pull, toReadable } from 'node:stream/iter';\nimport { compressGzip } from 'node:zlib/iter';\n\nconst source = pull(from('hello world'), compressGzip());\nconst readable = toReadable(source);\n\nreadable.pipe(createWriteStream('output.gz'));\n</code></pre>\n<pre><code class=\"language-cjs\">const { createWriteStream } = require('node:fs');\nconst { from, pull, toReadable } = require('node:stream/iter');\nconst { compressGzip } = require('node:zlib/iter');\n\nconst source = pull(from('hello world'), compressGzip());\nconst readable = toReadable(source);\n\nreadable.pipe(createWriteStream('output.gz'));\n</code></pre>"
+              "desc": "<p>Creates a byte-mode <a href=\"stream.html#class-streamreadable\"><code>stream.Readable</code></a> from the <code>source</code>\n(the native batch format used by the stream/iter API). Each <code>Uint8Array</code> in a\nyielded batch is pushed as a separate chunk into the Readable.</p>\n<p>Classic streams cannot represent arbitrary values as emitted errors. A\nnon-Error reason is wrapped in an <code>ERR_FALSY_VALUE_REJECTION</code> or\n<code>ERR_OPERATION_FAILED</code> error whose <code>reason</code> property contains the original\nvalue.</p>\n<pre><code class=\"language-mjs\">import { createWriteStream } from 'node:fs';\nimport { from, pull, toReadable } from 'node:stream/iter';\nimport { compressGzip } from 'node:zlib/iter';\n\nconst source = pull(from('hello world'), compressGzip());\nconst readable = toReadable(source);\n\nreadable.pipe(createWriteStream('output.gz'));\n</code></pre>\n<pre><code class=\"language-cjs\">const { createWriteStream } = require('node:fs');\nconst { from, pull, toReadable } = require('node:stream/iter');\nconst { compressGzip } = require('node:zlib/iter');\n\nconst source = pull(from('hello world'), compressGzip());\nconst readable = toReadable(source);\n\nreadable.pipe(createWriteStream('output.gz'));\n</code></pre>"
             },
             {
               "textRaw": "`toReadableSync(source[, options])`",
@@ -2096,7 +2194,7 @@
                   }
                 }
               ],
-              "desc": "<p>Creates a classic <a href=\"stream.html#class-streamwritable\"><code>stream.Writable</code></a> backed by a stream/iter Writer.</p>\n<p>Each <code>_write()</code> / <code>_writev()</code> call attempts the Writer's synchronous method\nfirst (<code>writeSync</code> / <code>writevSync</code>), falling back to the async method if the\nsync path returns <code>false</code>. Similarly, <code>_final()</code> tries <code>endSync()</code>\nbefore <code>end()</code>. When the sync path succeeds, the callback is deferred via\n<code>queueMicrotask</code> to preserve the async resolution contract.</p>\n<p>The Writable's <code>highWaterMark</code> is set to <code>Number.MAX_SAFE_INTEGER</code> to\neffectively disable its internal buffering, allowing the underlying Writer\nto manage backpressure directly.</p>\n<pre><code class=\"language-mjs\">import { push, toWritable } from 'node:stream/iter';\n\nconst { writer, readable } = push();\nconst writable = toWritable(writer);\n\nwritable.write('hello');\nwritable.end();\n</code></pre>\n<pre><code class=\"language-cjs\">const { push, toWritable } = require('node:stream/iter');\n\nconst { writer, readable } = push();\nconst writable = toWritable(writer);\n\nwritable.write('hello');\nwritable.end();\n</code></pre>"
+              "desc": "<p>Creates a classic <a href=\"stream.html#class-streamwritable\"><code>stream.Writable</code></a> backed by a stream/iter Writer.</p>\n<p>Each <code>_write()</code> / <code>_writev()</code> call attempts the Writer's synchronous method\nfirst (<code>writeSync</code> / <code>writevSync</code>), falling back to the async method if the\nsync path returns <code>false</code>. Similarly, <code>_final()</code> tries <code>endSync()</code>\nbefore <code>end()</code>. When the sync path succeeds, the callback is deferred via\n<code>queueMicrotask</code> to preserve the async resolution contract.</p>\n<p>Classic stream callbacks cannot represent arbitrary values as errors. A\nnon-Error reason is wrapped in an <code>ERR_FALSY_VALUE_REJECTION</code> or\n<code>ERR_OPERATION_FAILED</code> error before it is passed to the callback. The error's\n<code>reason</code> property contains the original value.</p>\n<p>Destroying the Writable before successful completion calls <code>writer.fail()</code>.\nIf <code>fail()</code> is unavailable, <code>Symbol.dispose</code> or <code>Symbol.asyncDispose</code> is used\nwhen implemented by the Writer.</p>\n<p>The Writable uses the default classic stream <code>highWaterMark</code>. Classic stream\nbackpressure bounds writes waiting to reach the underlying Writer, while the\nWriter controls completion of the active <code>_write()</code> or <code>_writev()</code> operation.</p>\n<pre><code class=\"language-mjs\">import { push, toWritable } from 'node:stream/iter';\n\nconst { writer, readable } = push();\nconst writable = toWritable(writer);\n\nwritable.write('hello');\nwritable.end();\n</code></pre>\n<pre><code class=\"language-cjs\">const { push, toWritable } = require('node:stream/iter');\n\nconst { writer, readable } = push();\nconst writable = toWritable(writer);\n\nwritable.write('hello');\nwritable.end();\n</code></pre>"
             }
           ],
           "displayName": "Classic stream interop"
@@ -2111,7 +2209,7 @@
               "textRaw": "`Stream.broadcastProtocol`",
               "name": "broadcastProtocol",
               "type": "property",
-              "desc": "<ul>\n<li>Value: <code>Symbol.for('Stream.broadcastProtocol')</code></li>\n</ul>\n<p>The value must be a function. When called by <code>Broadcast.from()</code>, it receives\nthe options passed to <code>Broadcast.from()</code> and must return an object conforming\nto the <a href=\"worker_threads.html#class-broadcastchannel-extends-eventtarget\"><code>&#x3C;BroadcastChannel></code></a> interface. The implementation is fully custom -- it can\nmanage consumers, buffering, and backpressure however it wants.</p>\n<pre><code class=\"language-mjs\">import { Broadcast, text } from 'node:stream/iter';\n\n// This example defers to the built-in Broadcast, but a custom\n// implementation could use any mechanism.\nclass MessageBus {\n  #broadcast;\n  #writer;\n\n  constructor() {\n    const { writer, broadcast } = Broadcast();\n    this.#writer = writer;\n    this.#broadcast = broadcast;\n  }\n\n  [Symbol.for('Stream.broadcastProtocol')](options) {\n    return this.#broadcast;\n  }\n\n  send(data) {\n    this.#writer.write(new TextEncoder().encode(data));\n  }\n\n  close() {\n    this.#writer.end();\n  }\n}\n\nconst bus = new MessageBus();\nconst { broadcast } = Broadcast.from(bus);\nconst consumer = broadcast.push();\nbus.send('hello');\nbus.close();\nconsole.log(await text(consumer)); // 'hello'\n</code></pre>\n<pre><code class=\"language-cjs\">const { Broadcast, text } = require('node:stream/iter');\n\n// This example defers to the built-in Broadcast, but a custom\n// implementation could use any mechanism.\nclass MessageBus {\n  #broadcast;\n  #writer;\n\n  constructor() {\n    const { writer, broadcast } = Broadcast();\n    this.#writer = writer;\n    this.#broadcast = broadcast;\n  }\n\n  [Symbol.for('Stream.broadcastProtocol')](options) {\n    return this.#broadcast;\n  }\n\n  send(data) {\n    this.#writer.write(new TextEncoder().encode(data));\n  }\n\n  close() {\n    this.#writer.end();\n  }\n}\n\nconst bus = new MessageBus();\nconst { broadcast } = Broadcast.from(bus);\nconst consumer = broadcast.push();\nbus.send('hello');\nbus.close();\ntext(consumer).then(console.log); // 'hello'\n</code></pre>"
+              "desc": "<ul>\n<li>Value: <code>Symbol.for('Stream.broadcastProtocol')</code></li>\n</ul>\n<p>The value must be a function. When called by <code>Broadcast.from()</code>, it receives\nthe options passed to <code>Broadcast.from()</code> and must return an object conforming\nto the <a href=\"worker_threads.html#class-broadcastchannel-extends-eventtarget\"><code>&#x3C;BroadcastChannel></code></a> interface. The implementation is fully custom -- it can\nmanage consumers, buffering, and backpressure however it wants.</p>\n<pre><code class=\"language-mjs\">import {\n  broadcast as createBroadcast,\n  Broadcast,\n  text,\n} from 'node:stream/iter';\n\n// This example defers to the built-in Broadcast, but a custom\n// implementation could use any mechanism.\nclass MessageBus {\n  #broadcast;\n  #writer;\n\n  constructor() {\n    const { writer, broadcast } = createBroadcast();\n    this.#writer = writer;\n    this.#broadcast = broadcast;\n  }\n\n  [Symbol.for('Stream.broadcastProtocol')](options) {\n    return this.#broadcast;\n  }\n\n  send(data) {\n    this.#writer.write(new TextEncoder().encode(data));\n  }\n\n  close() {\n    this.#writer.end();\n  }\n}\n\nconst bus = new MessageBus();\nconst broadcast = Broadcast.from(bus);\nconst consumer = broadcast.push();\nbus.send('hello');\nbus.close();\nconsole.log(await text(consumer)); // 'hello'\n</code></pre>\n<pre><code class=\"language-cjs\">const {\n  broadcast: createBroadcast,\n  Broadcast,\n  text,\n} = require('node:stream/iter');\n\n// This example defers to the built-in Broadcast, but a custom\n// implementation could use any mechanism.\nclass MessageBus {\n  #broadcast;\n  #writer;\n\n  constructor() {\n    const { writer, broadcast } = createBroadcast();\n    this.#writer = writer;\n    this.#broadcast = broadcast;\n  }\n\n  [Symbol.for('Stream.broadcastProtocol')](options) {\n    return this.#broadcast;\n  }\n\n  send(data) {\n    this.#writer.write(new TextEncoder().encode(data));\n  }\n\n  close() {\n    this.#writer.end();\n  }\n}\n\nconst bus = new MessageBus();\nconst broadcast = Broadcast.from(bus);\nconst consumer = broadcast.push();\nbus.send('hello');\nbus.close();\ntext(consumer).then(console.log); // 'hello'\n</code></pre>"
             },
             {
               "textRaw": "`Stream.drainableProtocol`",
@@ -2135,13 +2233,13 @@
               "textRaw": "`Stream.toAsyncStreamable`",
               "name": "toAsyncStreamable",
               "type": "property",
-              "desc": "<ul>\n<li>Value: <code>Symbol.for('Stream.toAsyncStreamable')</code></li>\n</ul>\n<p>The value must be a function that converts the object into a streamable value.\nWhen the object is encountered anywhere in the streaming pipeline (as a source\npassed to <code>from()</code>, or as a value returned from a transform), this method is\ncalled to produce the actual data. It may return any value that resolves to:\na string, <code>Uint8Array</code>, <code>AsyncIterable</code>, <code>Iterable</code>, or another streamable\nobject.</p>\n<pre><code class=\"language-mjs\">import { from, text } from 'node:stream/iter';\n\nclass Greeting {\n  #name;\n\n  constructor(name) {\n    this.#name = name;\n  }\n\n  [Symbol.for('Stream.toAsyncStreamable')]() {\n    return `hello ${this.#name}`;\n  }\n}\n\nconst stream = from(new Greeting('world'));\nconsole.log(await text(stream)); // 'hello world'\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, text } = require('node:stream/iter');\n\nclass Greeting {\n  #name;\n\n  constructor(name) {\n    this.#name = name;\n  }\n\n  [Symbol.for('Stream.toAsyncStreamable')]() {\n    return `hello ${this.#name}`;\n  }\n}\n\nconst stream = from(new Greeting('world'));\ntext(stream).then(console.log); // 'hello world'\n</code></pre>"
+              "desc": "<ul>\n<li>Value: <code>Symbol.for('Stream.toAsyncStreamable')</code></li>\n</ul>\n<p>The value must be a function that converts the object into a streamable value.\nWhen the object is passed to <code>from()</code>, this method is called to produce the\nactual data. It may return any value that resolves to a string, <code>Uint8Array</code>,\n<code>AsyncIterable</code>, <code>Iterable</code>, or another streamable object.</p>\n<pre><code class=\"language-mjs\">import { from, text } from 'node:stream/iter';\n\nclass Greeting {\n  #name;\n\n  constructor(name) {\n    this.#name = name;\n  }\n\n  [Symbol.for('Stream.toAsyncStreamable')]() {\n    return `hello ${this.#name}`;\n  }\n}\n\nconst stream = from(new Greeting('world'));\nconsole.log(await text(stream)); // 'hello world'\n</code></pre>\n<pre><code class=\"language-cjs\">const { from, text } = require('node:stream/iter');\n\nclass Greeting {\n  #name;\n\n  constructor(name) {\n    this.#name = name;\n  }\n\n  [Symbol.for('Stream.toAsyncStreamable')]() {\n    return `hello ${this.#name}`;\n  }\n}\n\nconst stream = from(new Greeting('world'));\ntext(stream).then(console.log); // 'hello world'\n</code></pre>"
             },
             {
               "textRaw": "`Stream.toStreamable`",
               "name": "toStreamable",
               "type": "property",
-              "desc": "<ul>\n<li>Value: <code>Symbol.for('Stream.toStreamable')</code></li>\n</ul>\n<p>The value must be a function that synchronously converts the object into a\nstreamable value. When the object is encountered anywhere in the streaming\npipeline (as a source passed to <code>fromSync()</code>, or as a value returned from a\nsync transform), this method is called to produce the actual data. It must\nsynchronously return a streamable value: a string, <code>Uint8Array</code>, or <code>Iterable</code>.</p>\n<pre><code class=\"language-mjs\">import { fromSync, textSync } from 'node:stream/iter';\n\nclass Greeting {\n  #name;\n\n  constructor(name) {\n    this.#name = name;\n  }\n\n  [Symbol.for('Stream.toStreamable')]() {\n    return `hello ${this.#name}`;\n  }\n}\n\nconst stream = fromSync(new Greeting('world'));\nconsole.log(textSync(stream)); // 'hello world'\n</code></pre>\n<pre><code class=\"language-cjs\">const { fromSync, textSync } = require('node:stream/iter');\n\nclass Greeting {\n  #name;\n\n  constructor(name) {\n    this.#name = name;\n  }\n\n  [Symbol.for('Stream.toStreamable')]() {\n    return `hello ${this.#name}`;\n  }\n}\n\nconst stream = fromSync(new Greeting('world'));\nconsole.log(textSync(stream)); // 'hello world'\n</code></pre>"
+              "desc": "<ul>\n<li>Value: <code>Symbol.for('Stream.toStreamable')</code></li>\n</ul>\n<p>The value must be a function that synchronously converts the object into a\nstreamable value. When the object is passed to <code>fromSync()</code>, this method is\ncalled to produce the actual data. It must synchronously return a streamable\nvalue: a string, <code>Uint8Array</code>, or <code>Iterable</code>.</p>\n<pre><code class=\"language-mjs\">import { fromSync, textSync } from 'node:stream/iter';\n\nclass Greeting {\n  #name;\n\n  constructor(name) {\n    this.#name = name;\n  }\n\n  [Symbol.for('Stream.toStreamable')]() {\n    return `hello ${this.#name}`;\n  }\n}\n\nconst stream = fromSync(new Greeting('world'));\nconsole.log(textSync(stream)); // 'hello world'\n</code></pre>\n<pre><code class=\"language-cjs\">const { fromSync, textSync } = require('node:stream/iter');\n\nclass Greeting {\n  #name;\n\n  constructor(name) {\n    this.#name = name;\n  }\n\n  [Symbol.for('Stream.toStreamable')]() {\n    return `hello ${this.#name}`;\n  }\n}\n\nconst stream = fromSync(new Greeting('world'));\nconsole.log(textSync(stream)); // 'hello world'\n</code></pre>"
             }
           ],
           "displayName": "Protocol symbols"

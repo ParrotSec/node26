@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>Errors | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/errors.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-errors><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>Errors | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/errors.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-errors><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=errors class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><a href=errors.html#errors>Errors</a>
 <ul>
@@ -116,6 +117,7 @@
 </ul>
 </li>
 <li><a href=errors.html#class-assertionerror>Class: <code>AssertionError</code></a></li>
+<li><a href=errors.html#class-domexception>Class: <code>DOMException</code></a></li>
 <li><a href=errors.html#class-rangeerror>Class: <code>RangeError</code></a></li>
 <li><a href=errors.html#class-referenceerror>Class: <code>ReferenceError</code></a></li>
 <li><a href=errors.html#class-syntaxerror>Class: <code>SyntaxError</code></a></li>
@@ -192,6 +194,7 @@
 <li><a href=errors.html#err_crypto_invalid_keypair><code>ERR_CRYPTO_INVALID_KEYPAIR</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_keytype><code>ERR_CRYPTO_INVALID_KEYTYPE</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_key_object_type><code>ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE</code></a></li>
+<li><a href=errors.html#err_crypto_invalid_mac><code>ERR_CRYPTO_INVALID_MAC</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_messagelen><code>ERR_CRYPTO_INVALID_MESSAGELEN</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_scrypt_params><code>ERR_CRYPTO_INVALID_SCRYPT_PARAMS</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_state><code>ERR_CRYPTO_INVALID_STATE</code></a></li>
@@ -200,6 +203,9 @@
 <li><a href=errors.html#err_crypto_jwk_unsupported_curve><code>ERR_CRYPTO_JWK_UNSUPPORTED_CURVE</code></a></li>
 <li><a href=errors.html#err_crypto_jwk_unsupported_key_type><code>ERR_CRYPTO_JWK_UNSUPPORTED_KEY_TYPE</code></a></li>
 <li><a href=errors.html#err_crypto_kem_not_supported><code>ERR_CRYPTO_KEM_NOT_SUPPORTED</code></a></li>
+<li><a href=errors.html#err_crypto_mac_finalized><code>ERR_CRYPTO_MAC_FINALIZED</code></a></li>
+<li><a href=errors.html#err_crypto_mac_not_supported><code>ERR_CRYPTO_MAC_NOT_SUPPORTED</code></a></li>
+<li><a href=errors.html#err_crypto_mac_update_failed><code>ERR_CRYPTO_MAC_UPDATE_FAILED</code></a></li>
 <li><a href=errors.html#err_crypto_operation_failed><code>ERR_CRYPTO_OPERATION_FAILED</code></a></li>
 <li><a href=errors.html#err_crypto_pbkdf2_error><code>ERR_CRYPTO_PBKDF2_ERROR</code></a></li>
 <li><a href=errors.html#err_crypto_scrypt_not_supported><code>ERR_CRYPTO_SCRYPT_NOT_SUPPORTED</code></a></li>
@@ -406,6 +412,7 @@
 <li><a href=errors.html#err_require_cycle_module><code>ERR_REQUIRE_CYCLE_MODULE</code></a></li>
 <li><span class=stability_0><a href=errors.html#err_require_esm><code>ERR_REQUIRE_ESM</code></a></span></li>
 <li><span class=stability_1><a href=errors.html#err_require_esm_race_condition><code>ERR_REQUIRE_ESM_RACE_CONDITION</code></a></span></li>
+<li><a href=errors.html#err_rx_memory_not_supported><code>ERR_RX_MEMORY_NOT_SUPPORTED</code></a></li>
 <li><a href=errors.html#err_script_execution_interrupted><code>ERR_SCRIPT_EXECUTION_INTERRUPTED</code></a></li>
 <li><a href=errors.html#err_script_execution_timeout><code>ERR_SCRIPT_EXECUTION_TIMEOUT</code></a></li>
 <li><a href=errors.html#err_server_already_listen><code>ERR_SERVER_ALREADY_LISTEN</code></a></li>
@@ -443,6 +450,7 @@
 <li><a href=errors.html#err_synthetic><code>ERR_SYNTHETIC</code></a></li>
 <li><a href=errors.html#err_system_error><code>ERR_SYSTEM_ERROR</code></a></li>
 <li><a href=errors.html#err_test_failure><code>ERR_TEST_FAILURE</code></a></li>
+<li><a href=errors.html#err_throttled><code>ERR_THROTTLED</code></a></li>
 <li><a href=errors.html#err_tls_alpn_callback_invalid_result><code>ERR_TLS_ALPN_CALLBACK_INVALID_RESULT</code></a></li>
 <li><a href=errors.html#err_tls_alpn_callback_with_protocols><code>ERR_TLS_ALPN_CALLBACK_WITH_PROTOCOLS</code></a></li>
 <li><a href=errors.html#err_tls_cert_altname_format><code>ERR_TLS_CERT_ALTNAME_FORMAT</code></a></li>
@@ -483,6 +491,7 @@
 <li><a href=errors.html#err_unsupported_typescript_syntax><code>ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX</code></a></li>
 <li><a href=errors.html#err_use_after_close><code>ERR_USE_AFTER_CLOSE</code></a></li>
 <li><a href=errors.html#err_valid_performance_entry_type><code>ERR_VALID_PERFORMANCE_ENTRY_TYPE</code></a></li>
+<li><a href=errors.html#err_vfs_invalid_target><code>ERR_VFS_INVALID_TARGET</code></a></li>
 <li><a href=errors.html#err_vm_dynamic_import_callback_missing><code>ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING</code></a></li>
 <li><a href=errors.html#err_vm_dynamic_import_callback_missing_flag><code>ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG</code></a></li>
 <li><a href=errors.html#err_vm_module_already_linked><code>ERR_VM_MODULE_ALREADY_LINKED</code></a></li>
@@ -508,6 +517,13 @@
 <li><a href=errors.html#err_worker_path><code>ERR_WORKER_PATH</code></a></li>
 <li><a href=errors.html#err_worker_unserializable_error><code>ERR_WORKER_UNSERIALIZABLE_ERROR</code></a></li>
 <li><a href=errors.html#err_worker_unsupported_operation><code>ERR_WORKER_UNSUPPORTED_OPERATION</code></a></li>
+<li><a href=errors.html#err_zip_archive_too_large><code>ERR_ZIP_ARCHIVE_TOO_LARGE</code></a></li>
+<li><a href=errors.html#err_zip_entry_corrupt><code>ERR_ZIP_ENTRY_CORRUPT</code></a></li>
+<li><a href=errors.html#err_zip_entry_not_found><code>ERR_ZIP_ENTRY_NOT_FOUND</code></a></li>
+<li><a href=errors.html#err_zip_entry_too_large><code>ERR_ZIP_ENTRY_TOO_LARGE</code></a></li>
+<li><a href=errors.html#err_zip_invalid_archive><code>ERR_ZIP_INVALID_ARCHIVE</code></a></li>
+<li><a href=errors.html#err_zip_not_writable><code>ERR_ZIP_NOT_WRITABLE</code></a></li>
+<li><a href=errors.html#err_zip_unsupported_feature><code>ERR_ZIP_UNSUPPORTED_FEATURE</code></a></li>
 <li><a href=errors.html#err_zlib_initialization_failed><code>ERR_ZLIB_INITIALIZATION_FAILED</code></a></li>
 <li><a href=errors.html#err_zstd_invalid_param><code>ERR_ZSTD_INVALID_PARAM</code></a></li>
 <li><a href=errors.html#hpe_chunk_extensions_overflow><code>HPE_CHUNK_EXTENSIONS_OVERFLOW</code></a></li>
@@ -640,6 +656,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -740,6 +757,7 @@
 </ul>
 </li>
 <li><a href=errors.html#class-assertionerror>Class: <code>AssertionError</code></a></li>
+<li><a href=errors.html#class-domexception>Class: <code>DOMException</code></a></li>
 <li><a href=errors.html#class-rangeerror>Class: <code>RangeError</code></a></li>
 <li><a href=errors.html#class-referenceerror>Class: <code>ReferenceError</code></a></li>
 <li><a href=errors.html#class-syntaxerror>Class: <code>SyntaxError</code></a></li>
@@ -816,6 +834,7 @@
 <li><a href=errors.html#err_crypto_invalid_keypair><code>ERR_CRYPTO_INVALID_KEYPAIR</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_keytype><code>ERR_CRYPTO_INVALID_KEYTYPE</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_key_object_type><code>ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE</code></a></li>
+<li><a href=errors.html#err_crypto_invalid_mac><code>ERR_CRYPTO_INVALID_MAC</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_messagelen><code>ERR_CRYPTO_INVALID_MESSAGELEN</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_scrypt_params><code>ERR_CRYPTO_INVALID_SCRYPT_PARAMS</code></a></li>
 <li><a href=errors.html#err_crypto_invalid_state><code>ERR_CRYPTO_INVALID_STATE</code></a></li>
@@ -824,6 +843,9 @@
 <li><a href=errors.html#err_crypto_jwk_unsupported_curve><code>ERR_CRYPTO_JWK_UNSUPPORTED_CURVE</code></a></li>
 <li><a href=errors.html#err_crypto_jwk_unsupported_key_type><code>ERR_CRYPTO_JWK_UNSUPPORTED_KEY_TYPE</code></a></li>
 <li><a href=errors.html#err_crypto_kem_not_supported><code>ERR_CRYPTO_KEM_NOT_SUPPORTED</code></a></li>
+<li><a href=errors.html#err_crypto_mac_finalized><code>ERR_CRYPTO_MAC_FINALIZED</code></a></li>
+<li><a href=errors.html#err_crypto_mac_not_supported><code>ERR_CRYPTO_MAC_NOT_SUPPORTED</code></a></li>
+<li><a href=errors.html#err_crypto_mac_update_failed><code>ERR_CRYPTO_MAC_UPDATE_FAILED</code></a></li>
 <li><a href=errors.html#err_crypto_operation_failed><code>ERR_CRYPTO_OPERATION_FAILED</code></a></li>
 <li><a href=errors.html#err_crypto_pbkdf2_error><code>ERR_CRYPTO_PBKDF2_ERROR</code></a></li>
 <li><a href=errors.html#err_crypto_scrypt_not_supported><code>ERR_CRYPTO_SCRYPT_NOT_SUPPORTED</code></a></li>
@@ -1030,6 +1052,7 @@
 <li><a href=errors.html#err_require_cycle_module><code>ERR_REQUIRE_CYCLE_MODULE</code></a></li>
 <li><span class=stability_0><a href=errors.html#err_require_esm><code>ERR_REQUIRE_ESM</code></a></span></li>
 <li><span class=stability_1><a href=errors.html#err_require_esm_race_condition><code>ERR_REQUIRE_ESM_RACE_CONDITION</code></a></span></li>
+<li><a href=errors.html#err_rx_memory_not_supported><code>ERR_RX_MEMORY_NOT_SUPPORTED</code></a></li>
 <li><a href=errors.html#err_script_execution_interrupted><code>ERR_SCRIPT_EXECUTION_INTERRUPTED</code></a></li>
 <li><a href=errors.html#err_script_execution_timeout><code>ERR_SCRIPT_EXECUTION_TIMEOUT</code></a></li>
 <li><a href=errors.html#err_server_already_listen><code>ERR_SERVER_ALREADY_LISTEN</code></a></li>
@@ -1067,6 +1090,7 @@
 <li><a href=errors.html#err_synthetic><code>ERR_SYNTHETIC</code></a></li>
 <li><a href=errors.html#err_system_error><code>ERR_SYSTEM_ERROR</code></a></li>
 <li><a href=errors.html#err_test_failure><code>ERR_TEST_FAILURE</code></a></li>
+<li><a href=errors.html#err_throttled><code>ERR_THROTTLED</code></a></li>
 <li><a href=errors.html#err_tls_alpn_callback_invalid_result><code>ERR_TLS_ALPN_CALLBACK_INVALID_RESULT</code></a></li>
 <li><a href=errors.html#err_tls_alpn_callback_with_protocols><code>ERR_TLS_ALPN_CALLBACK_WITH_PROTOCOLS</code></a></li>
 <li><a href=errors.html#err_tls_cert_altname_format><code>ERR_TLS_CERT_ALTNAME_FORMAT</code></a></li>
@@ -1107,6 +1131,7 @@
 <li><a href=errors.html#err_unsupported_typescript_syntax><code>ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX</code></a></li>
 <li><a href=errors.html#err_use_after_close><code>ERR_USE_AFTER_CLOSE</code></a></li>
 <li><a href=errors.html#err_valid_performance_entry_type><code>ERR_VALID_PERFORMANCE_ENTRY_TYPE</code></a></li>
+<li><a href=errors.html#err_vfs_invalid_target><code>ERR_VFS_INVALID_TARGET</code></a></li>
 <li><a href=errors.html#err_vm_dynamic_import_callback_missing><code>ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING</code></a></li>
 <li><a href=errors.html#err_vm_dynamic_import_callback_missing_flag><code>ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG</code></a></li>
 <li><a href=errors.html#err_vm_module_already_linked><code>ERR_VM_MODULE_ALREADY_LINKED</code></a></li>
@@ -1132,6 +1157,13 @@
 <li><a href=errors.html#err_worker_path><code>ERR_WORKER_PATH</code></a></li>
 <li><a href=errors.html#err_worker_unserializable_error><code>ERR_WORKER_UNSERIALIZABLE_ERROR</code></a></li>
 <li><a href=errors.html#err_worker_unsupported_operation><code>ERR_WORKER_UNSUPPORTED_OPERATION</code></a></li>
+<li><a href=errors.html#err_zip_archive_too_large><code>ERR_ZIP_ARCHIVE_TOO_LARGE</code></a></li>
+<li><a href=errors.html#err_zip_entry_corrupt><code>ERR_ZIP_ENTRY_CORRUPT</code></a></li>
+<li><a href=errors.html#err_zip_entry_not_found><code>ERR_ZIP_ENTRY_NOT_FOUND</code></a></li>
+<li><a href=errors.html#err_zip_entry_too_large><code>ERR_ZIP_ENTRY_TOO_LARGE</code></a></li>
+<li><a href=errors.html#err_zip_invalid_archive><code>ERR_ZIP_INVALID_ARCHIVE</code></a></li>
+<li><a href=errors.html#err_zip_not_writable><code>ERR_ZIP_NOT_WRITABLE</code></a></li>
+<li><a href=errors.html#err_zip_unsupported_feature><code>ERR_ZIP_UNSUPPORTED_FEATURE</code></a></li>
 <li><a href=errors.html#err_zlib_initialization_failed><code>ERR_ZLIB_INITIALIZATION_FAILED</code></a></li>
 <li><a href=errors.html#err_zstd_invalid_param><code>ERR_ZSTD_INVALID_PARAM</code></a></li>
 <li><a href=errors.html#hpe_chunk_extensions_overflow><code>HPE_CHUNK_EXTENSIONS_OVERFLOW</code></a></li>
@@ -1542,6 +1574,16 @@ error object, such as a <a href=https://developer.mozilla.org/docs/Web/JavaScrip
 <li>Extends: <a href=errors.html#class-errorserror><code>&lt;errors.Error></code></a></li>
 </ul><p>Indicates the failure of an assertion. For details, see
 <a href=assert.html#class-assertassertionerror><code>Class: assert.AssertionError</code></a>.</section>
+<section><h3>Class: <code>DOMException</code><span><a id=errors_class_domexception></a></span><span><a class=mark id=class-domexception href=#class-domexception>#</a></span></h3><div class=api_metadata><span>Added in: v17.0.0</span></div><ul>
+<li>Extends: <a href=errors.html#class-errorserror><code>&lt;errors.Error></code></a></li>
+</ul><p>The Web IDL <a href=https://developer.mozilla.org/docs/Web/API/DOMException><code>&lt;DOMException></code></a> class. These errors are thrown by web-platform APIs
+in Node.js such as <a href=globals.html#fetch><code>fetch()</code></a>, <a href=globals.html#class-abortcontroller><code>&lt;AbortController></code></a>, <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a>, and Web
+Streams. For details, see also <a href=globals.html#class-domexception><code>Class: DOMException</code></a> on the Globals page.<p>The <a href=https://developer.mozilla.org/en-US/docs/Web/API/DOMException/name><code>domException.name</code></a> property identifies the type of the exception (for
+example, <code>'AbortError'</code>). Unlike most errors in Node.js, the
+<a href=https://developer.mozilla.org/en-US/docs/Web/API/DOMException/code><code>domException.code</code></a> property is a number that corresponds to a
+<a href=https://webidl.spec.whatwg.org/#dfn-error-names-table>legacy error code name</a> (for example, <code>20</code> for
+<code>ABORT_ERR</code>).<p>Node.js-specific APIs that support <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a> (such as <a href=events.html#eventsonceemitter-name-options><code>events.once()</code></a>) throw a Node.js <code>AbortError</code> (a native <a href=errors.html#class-errorserror><code>&lt;errors.Error></code></a> with <code>name</code> of <code>'AbortError'</code> and <code>code</code> of <a href=#abort_err><code>'ABORT_ERR'</code></a>) rather than a
+<a href=https://developer.mozilla.org/docs/Web/API/DOMException><code>&lt;DOMException></code></a>. To identify abort errors in either case, checking <code>err?.name === 'AbortError'</code> is sufficient.<p>See also <a href=#abort_err><code>ABORT_ERR</code></a>.</section>
 <section><h3>Class: <code>RangeError</code><span><a id=errors_class_rangeerror></a></span><span><a class=mark id=class-rangeerror href=#class-rangeerror>#</a></span></h3><div class=api_metadata></div><ul>
 <li>Extends: <a href=errors.html#class-errorserror><code>&lt;errors.Error></code></a></li>
 </ul><p>Indicates that a provided argument was not within the set or range of
@@ -1784,7 +1826,7 @@ to enable or disable FIPS mode in the <code>node:crypto</code> module.<p><a id=E
 available.<p><a id=ERR_CRYPTO_HASH_FINALIZED></a></section>
 <section><h4><code>ERR_CRYPTO_HASH_FINALIZED</code><span><a id=errors_err_crypto_hash_finalized></a></span><span><a class=mark id=err_crypto_hash_finalized href=#err_crypto_hash_finalized>#</a></span></h4><div class=api_metadata></div><p><a href=crypto.html#hashdigestencoding><code>hash.digest()</code></a> was called multiple times. The <code>hash.digest()</code> method must
 be called no more than one time per instance of a <code>Hash</code> object.<p><a id=ERR_CRYPTO_HASH_UPDATE_FAILED></a></section>
-<section><h4><code>ERR_CRYPTO_HASH_UPDATE_FAILED</code><span><a id=errors_err_crypto_hash_update_failed></a></span><span><a class=mark id=err_crypto_hash_update_failed href=#err_crypto_hash_update_failed>#</a></span></h4><div class=api_metadata></div><p><a href=crypto.html#hashupdatedata-inputencoding><code>hash.update()</code></a> failed for any reason. This should rarely, if ever, happen.<p><a id=ERR_CRYPTO_INCOMPATIBLE_KEY></a></section>
+<section><h4><code>ERR_CRYPTO_HASH_UPDATE_FAILED</code><span><a id=errors_err_crypto_hash_update_failed></a></span><span><a class=mark id=err_crypto_hash_update_failed href=#err_crypto_hash_update_failed>#</a></span></h4><div class=api_metadata></div><p><a href=crypto.html#hashupdatedata-inputencoding><code>hash.update()</code></a> failed for an unspecified reason.<p><a id=ERR_CRYPTO_INCOMPATIBLE_KEY></a></section>
 <section><h4><code>ERR_CRYPTO_INCOMPATIBLE_KEY</code><span><a id=errors_err_crypto_incompatible_key></a></span><span><a class=mark id=err_crypto_incompatible_key href=#err_crypto_incompatible_key>#</a></span></h4><div class=api_metadata></div><p>The given crypto keys are incompatible with the attempted operation.<p><a id=ERR_CRYPTO_INCOMPATIBLE_KEY_OPTIONS></a></section>
 <section><h4><code>ERR_CRYPTO_INCOMPATIBLE_KEY_OPTIONS</code><span><a id=errors_err_crypto_incompatible_key_options></a></span><span><a class=mark id=err_crypto_incompatible_key_options href=#err_crypto_incompatible_key_options>#</a></span></h4><div class=api_metadata></div><p>The selected public or private key encoding is incompatible with other options.<p><a id=ERR_CRYPTO_INITIALIZATION_FAILED></a></section>
 <section><h4><code>ERR_CRYPTO_INITIALIZATION_FAILED</code><span><a id=errors_err_crypto_initialization_failed></a></span><span><a class=mark id=err_crypto_initialization_failed href=#err_crypto_initialization_failed>#</a></span></h4><div class=api_metadata><span>Added in: v15.0.0</span></div><p>Initialization of the crypto subsystem failed.<p><a id=ERR_CRYPTO_INVALID_AUTH_TAG></a></section>
@@ -1797,7 +1839,8 @@ be called no more than one time per instance of a <code>Hash</code> object.<p><a
 <section><h4><code>ERR_CRYPTO_INVALID_KEYLEN</code><span><a id=errors_err_crypto_invalid_keylen></a></span><span><a class=mark id=err_crypto_invalid_keylen href=#err_crypto_invalid_keylen>#</a></span></h4><div class=api_metadata><span>Added in: v15.0.0</span></div><p>An invalid key length was provided.<p><a id=ERR_CRYPTO_INVALID_KEYPAIR></a></section>
 <section><h4><code>ERR_CRYPTO_INVALID_KEYPAIR</code><span><a id=errors_err_crypto_invalid_keypair></a></span><span><a class=mark id=err_crypto_invalid_keypair href=#err_crypto_invalid_keypair>#</a></span></h4><div class=api_metadata><span>Added in: v15.0.0</span></div><p>An invalid key pair was provided.<p><a id=ERR_CRYPTO_INVALID_KEYTYPE></a></section>
 <section><h4><code>ERR_CRYPTO_INVALID_KEYTYPE</code><span><a id=errors_err_crypto_invalid_keytype></a></span><span><a class=mark id=err_crypto_invalid_keytype href=#err_crypto_invalid_keytype>#</a></span></h4><div class=api_metadata><span>Added in: v15.0.0</span></div><p>An invalid key type was provided.<p><a id=ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE></a></section>
-<section><h4><code>ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE</code><span><a id=errors_err_crypto_invalid_key_object_type></a></span><span><a class=mark id=err_crypto_invalid_key_object_type href=#err_crypto_invalid_key_object_type>#</a></span></h4><div class=api_metadata></div><p>The given crypto key object's type is invalid for the attempted operation.<p><a id=ERR_CRYPTO_INVALID_MESSAGELEN></a></section>
+<section><h4><code>ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE</code><span><a id=errors_err_crypto_invalid_key_object_type></a></span><span><a class=mark id=err_crypto_invalid_key_object_type href=#err_crypto_invalid_key_object_type>#</a></span></h4><div class=api_metadata></div><p>The given crypto key object's type is invalid for the attempted operation.<p><a id=ERR_CRYPTO_INVALID_MAC></a></section>
+<section><h4><code>ERR_CRYPTO_INVALID_MAC</code><span><a id=errors_err_crypto_invalid_mac></a></span><span><a class=mark id=err_crypto_invalid_mac href=#err_crypto_invalid_mac>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><p>An invalid MAC algorithm was specified.<p><a id=ERR_CRYPTO_INVALID_MESSAGELEN></a></section>
 <section><h4><code>ERR_CRYPTO_INVALID_MESSAGELEN</code><span><a id=errors_err_crypto_invalid_messagelen></a></span><span><a class=mark id=err_crypto_invalid_messagelen href=#err_crypto_invalid_messagelen>#</a></span></h4><div class=api_metadata><span>Added in: v15.0.0</span></div><p>An invalid message length was provided.<p><a id=ERR_CRYPTO_INVALID_SCRYPT_PARAMS></a></section>
 <section><h4><code>ERR_CRYPTO_INVALID_SCRYPT_PARAMS</code><span><a id=errors_err_crypto_invalid_scrypt_params></a></span><span><a class=mark id=err_crypto_invalid_scrypt_params href=#err_crypto_invalid_scrypt_params>#</a></span></h4><div class=api_metadata><span>Added in: v15.0.0</span></div><p>One or more <a href=crypto.html#cryptoscryptpassword-salt-keylen-options-callback><code>crypto.scrypt()</code></a> or <a href=crypto.html#cryptoscryptsyncpassword-salt-keylen-options><code>crypto.scryptSync()</code></a> parameters are
 outside their legal range.<p><a id=ERR_CRYPTO_INVALID_STATE></a></section>
@@ -1810,7 +1853,11 @@ instance, calling <a href=crypto.html#ciphergetauthtag><code>cipher.getAuthTag()
 <section><h4><code>ERR_CRYPTO_JWK_UNSUPPORTED_KEY_TYPE</code><span><a id=errors_err_crypto_jwk_unsupported_key_type></a></span><span><a class=mark id=err_crypto_jwk_unsupported_key_type href=#err_crypto_jwk_unsupported_key_type>#</a></span></h4><div class=api_metadata></div><p>Key's Asymmetric Key Type is not registered for use in the
 <a href=https://www.iana.org/assignments/jose/jose.xhtml#web-key-types>JSON Web Key Types Registry</a>.<p><a id=ERR_CRYPTO_KEM_NOT_SUPPORTED></a></section>
 <section><h4><code>ERR_CRYPTO_KEM_NOT_SUPPORTED</code><span><a id=errors_err_crypto_kem_not_supported></a></span><span><a class=mark id=err_crypto_kem_not_supported href=#err_crypto_kem_not_supported>#</a></span></h4><div class=api_metadata><span>Added in: v24.7.0</span></div><p>Attempted to use KEM operations while Node.js was not compiled with
-OpenSSL with KEM support.<p><a id=ERR_CRYPTO_OPERATION_FAILED></a></section>
+OpenSSL with KEM support.<p><a id=ERR_CRYPTO_MAC_FINALIZED></a></section>
+<section><h4><code>ERR_CRYPTO_MAC_FINALIZED</code><span><a id=errors_err_crypto_mac_finalized></a></span><span><a class=mark id=err_crypto_mac_finalized href=#err_crypto_mac_finalized>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><p>An operation was attempted on a <code>Mac</code> object after finalization was attempted
+or an underlying MAC update failed.<p><a id=ERR_CRYPTO_MAC_NOT_SUPPORTED></a></section>
+<section><h4><code>ERR_CRYPTO_MAC_NOT_SUPPORTED</code><span><a id=errors_err_crypto_mac_not_supported></a></span><span><a class=mark id=err_crypto_mac_not_supported href=#err_crypto_mac_not_supported>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><p>Node.js was built without support for the OpenSSL <code>EVP_MAC</code> API.<p><a id=ERR_CRYPTO_MAC_UPDATE_FAILED></a></section>
+<section><h4><code>ERR_CRYPTO_MAC_UPDATE_FAILED</code><span><a id=errors_err_crypto_mac_update_failed></a></span><span><a class=mark id=err_crypto_mac_update_failed href=#err_crypto_mac_update_failed>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><p><a href=crypto.html#macupdatedata-inputencoding><code>mac.update()</code></a> failed for an unspecified reason.<p><a id=ERR_CRYPTO_OPERATION_FAILED></a></section>
 <section><h4><code>ERR_CRYPTO_OPERATION_FAILED</code><span><a id=errors_err_crypto_operation_failed></a></span><span><a class=mark id=err_crypto_operation_failed href=#err_crypto_operation_failed>#</a></span></h4><div class=api_metadata><span>Added in: v15.0.0</span></div><p>A crypto operation failed for an otherwise unspecified reason.<p><a id=ERR_CRYPTO_PBKDF2_ERROR></a></section>
 <section><h4><code>ERR_CRYPTO_PBKDF2_ERROR</code><span><a id=errors_err_crypto_pbkdf2_error></a></span><span><a class=mark id=err_crypto_pbkdf2_error href=#err_crypto_pbkdf2_error>#</a></span></h4><div class=api_metadata></div><p>The PBKDF2 algorithm failed for unspecified reasons. OpenSSL does not provide
 more details and therefore neither does Node.js.<p><a id=ERR_CRYPTO_SCRYPT_NOT_SUPPORTED></a></section>
@@ -2224,7 +2271,12 @@ module, and should be done lazily in an inner function.<p><a id=ERR_REQUIRE_ESM>
 ES modules. When <code>require()</code> encounters an ES module that contains top-level
 <code>await</code>, it will throw <a href=#err_require_async_module><code>ERR_REQUIRE_ASYNC_MODULE</code></a> instead.<p><a id=ERR_REQUIRE_ESM_RACE_CONDITION></a></section>
 <section><h4><code>ERR_REQUIRE_ESM_RACE_CONDITION</code><span><a id=errors_err_require_esm_race_condition></a></span><span><a class=mark id=err_require_esm_race_condition href=#err_require_esm_race_condition>#</a></span></h4><div class=api_metadata><span>Added in: v26.1.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental.</div><p>An attempt was made to <code>require()</code> an <a href=esm.html>ES Module</a> while another <code>import()</code> call
-was already in progress to load it asynchronously.<p><a id=ERR_SCRIPT_EXECUTION_INTERRUPTED></a></section>
+was already in progress to load it asynchronously.<p><a id=ERR_RX_MEMORY_NOT_SUPPORTED></a></section>
+<section><h4><code>ERR_RX_MEMORY_NOT_SUPPORTED</code><span><a id=errors_err_rx_memory_not_supported></a></span><span><a class=mark id=err_rx_memory_not_supported href=#err_rx_memory_not_supported>#</a></span></h4><div class=api_metadata><span>Added in: v26.12.0</span></div><p>A feature requiring runtime allocation of executable memory was used in an
+environment where that capability is unavailable. This includes creating an
+otherwise eligible FFI Fast API function, or allocating an FFI callback when
+libffi cannot provide a closure and executable memory is unavailable.<p>Node.js does not guarantee a non-generated-code fallback for these operations.
+This error can be caught without terminating the process.<p><a id=ERR_SCRIPT_EXECUTION_INTERRUPTED></a></section>
 <section><h4><code>ERR_SCRIPT_EXECUTION_INTERRUPTED</code><span><a id=errors_err_script_execution_interrupted></a></span><span><a class=mark id=err_script_execution_interrupted href=#err_script_execution_interrupted>#</a></span></h4><div class=api_metadata></div><p>Script execution was interrupted by <code>SIGINT</code> (For
 example, <kbd>Ctrl</kbd>+<kbd>C</kbd> was pressed.)<p><a id=ERR_SCRIPT_EXECUTION_TIMEOUT></a></section>
 <section><h4><code>ERR_SCRIPT_EXECUTION_TIMEOUT</code><span><a id=errors_err_script_execution_timeout></a></span><span><a class=mark id=err_script_execution_timeout href=#err_script_execution_timeout>#</a></span></h4><div class=api_metadata></div><p>Script execution timed out, possibly due to bugs in the script being executed.<p><a id=ERR_SERVER_ALREADY_LISTEN></a></section>
@@ -2254,8 +2306,9 @@ allowed timeout when using the family autoselection algorithm.<p><a id=ERR_SOCKE
 disconnected socket.<p><a id=ERR_SOCKET_DGRAM_NOT_RUNNING></a></section>
 <section><h4><code>ERR_SOCKET_DGRAM_NOT_RUNNING</code><span><a id=errors_err_socket_dgram_not_running></a></span><span><a class=mark id=err_socket_dgram_not_running href=#err_socket_dgram_not_running>#</a></span></h4><div class=api_metadata></div><p>A call was made and the UDP subsystem was not running.<p><a id=ERR_SOCKET_HANDLE_ADOPTED></a></section>
 <section><h4><code>ERR_SOCKET_HANDLE_ADOPTED</code><span><a id=errors_err_socket_handle_adopted></a></span><span><a class=mark id=err_socket_handle_adopted href=#err_socket_handle_adopted>#</a></span></h4><div class=api_metadata></div><p>An operation was attempted on a <a href=net.html#class-netboundsocket><code>BoundSocket</code></a> that had already been adopted
-by a <a href=net.html#class-netserver><code>net.Server</code></a> or <a href=net.html#class-netsocket><code>net.Socket</code></a>. Once a bound socket is adopted, its
-<code>address()</code> and <code>close()</code> methods can no longer be used.<p><a id=ERR_SOURCE_MAP_CORRUPT></a></section>
+by a <a href=net.html#class-netserver><code>net.Server</code></a> or <a href=net.html#class-netsocket><code>net.Socket</code></a>, or transferred to another thread.
+Once a bound socket is adopted or transferred, its <code>address()</code> and <code>close()</code>
+methods can no longer be used.<p><a id=ERR_SOURCE_MAP_CORRUPT></a></section>
 <section><h4><code>ERR_SOURCE_MAP_CORRUPT</code><span><a id=errors_err_source_map_corrupt></a></span><span><a class=mark id=err_source_map_corrupt href=#err_source_map_corrupt>#</a></span></h4><div class=api_metadata></div><p>The source map could not be parsed because it does not exist, or is corrupt.<p><a id=ERR_SOURCE_MAP_MISSING_SOURCE></a></section>
 <section><h4><code>ERR_SOURCE_MAP_MISSING_SOURCE</code><span><a id=errors_err_source_map_missing_source></a></span><span><a class=mark id=err_source_map_missing_source href=#err_source_map_missing_source>#</a></span></h4><div class=api_metadata></div><p>A file imported from a source map was not found.<p><a id=ERR_SOURCE_PHASE_NOT_DEFINED></a></section>
 <section><h4><code>ERR_SOURCE_PHASE_NOT_DEFINED</code><span><a id=errors_err_source_phase_not_defined></a></span><span><a class=mark id=err_source_phase_not_defined href=#err_source_phase_not_defined>#</a></span></h4><div class=api_metadata><span>Added in: v24.0.0</span></div><p>The provided module import does not provide a source phase imports representation for source phase
@@ -2296,7 +2349,9 @@ process. The error object will have an <code>err.info</code> object property wit
 additional details.<p><a id=ERR_TEST_FAILURE></a></section>
 <section><h4><code>ERR_TEST_FAILURE</code><span><a id=errors_err_test_failure></a></span><span><a class=mark id=err_test_failure href=#err_test_failure>#</a></span></h4><div class=api_metadata></div><p>This error represents a failed test. Additional information about the failure
 is available via the <code>cause</code> property. The <code>failureType</code> property specifies
-what the test was doing when the failure occurred.<p><a id=ERR_TLS_ALPN_CALLBACK_INVALID_RESULT></a></section>
+what the test was doing when the failure occurred.<p><a id=ERR_THROTTLED></a></section>
+<section><h4><code>ERR_THROTTLED</code><span><a id=errors_err_throttled></a></span><span><a class=mark id=err_throttled href=#err_throttled>#</a></span></h4><div class=api_metadata></div><p>A call was dropped because a throttled function could not invoke it immediately
+or its pending queue was full.<p><a id=ERR_TLS_ALPN_CALLBACK_INVALID_RESULT></a></section>
 <section><h4><code>ERR_TLS_ALPN_CALLBACK_INVALID_RESULT</code><span><a id=errors_err_tls_alpn_callback_invalid_result></a></span><span><a class=mark id=err_tls_alpn_callback_invalid_result href=#err_tls_alpn_callback_invalid_result>#</a></span></h4><div class=api_metadata></div><p>This error is thrown when an <code>ALPNCallback</code> returns a value that is not in the
 list of ALPN protocols offered by the client.<p><a id=ERR_TLS_ALPN_CALLBACK_WITH_PROTOCOLS></a></section>
 <section><h4><code>ERR_TLS_ALPN_CALLBACK_WITH_PROTOCOLS</code><span><a id=errors_err_tls_alpn_callback_with_protocols></a></span><span><a class=mark id=err_tls_alpn_callback_with_protocols href=#err_tls_alpn_callback_with_protocols>#</a></span></h4><div class=api_metadata></div><p>This error is thrown when creating a <code>TLSServer</code> if the TLS options include
@@ -2335,7 +2390,8 @@ socket, which is only valid from a client.<p><a id=ERR_TRACE_EVENTS_CATEGORY_REQ
 <section><h4><code>ERR_TRACE_EVENTS_CATEGORY_REQUIRED</code><span><a id=errors_err_trace_events_category_required></a></span><span><a class=mark id=err_trace_events_category_required href=#err_trace_events_category_required>#</a></span></h4><div class=api_metadata></div><p>The <code>trace_events.createTracing()</code> method requires at least one trace event
 category.<p><a id=ERR_TRACE_EVENTS_UNAVAILABLE></a></section>
 <section><h4><code>ERR_TRACE_EVENTS_UNAVAILABLE</code><span><a id=errors_err_trace_events_unavailable></a></span><span><a class=mark id=err_trace_events_unavailable href=#err_trace_events_unavailable>#</a></span></h4><div class=api_metadata></div><p>The <code>node:trace_events</code> module could not be loaded because Node.js was compiled
-with the <code>--without-v8-platform</code> flag.<p><a id=ERR_TRAILING_JUNK_AFTER_STREAM_END></a></section>
+with the <code>--without-v8-platform</code> flag, or because the process was initialized by
+an embedder that provides its own V8 platform.<p><a id=ERR_TRAILING_JUNK_AFTER_STREAM_END></a></section>
 <section><h4><code>ERR_TRAILING_JUNK_AFTER_STREAM_END</code><span><a id=errors_err_trailing_junk_after_stream_end></a></span><span><a class=mark id=err_trailing_junk_after_stream_end href=#err_trailing_junk_after_stream_end>#</a></span></h4><div class=api_metadata></div><p>Trailing junk found after the end of the compressed stream.
 This error is thrown when extra, unexpected data is detected
 after the end of a compressed stream (for example, in zlib
@@ -2386,7 +2442,9 @@ This could happen when using TypeScript syntax that requires
 transformation with <a href=typescript.html#type-stripping>type-stripping</a>.<p><a id=ERR_USE_AFTER_CLOSE></a></section>
 <section><h4><code>ERR_USE_AFTER_CLOSE</code><span><a id=errors_err_use_after_close></a></span><span><a class=mark id=err_use_after_close href=#err_use_after_close>#</a></span></h4><div class=api_metadata></div><p>An attempt was made to use something that was already closed.<p><a id=ERR_VALID_PERFORMANCE_ENTRY_TYPE></a></section>
 <section><h4><code>ERR_VALID_PERFORMANCE_ENTRY_TYPE</code><span><a id=errors_err_valid_performance_entry_type></a></span><span><a class=mark id=err_valid_performance_entry_type href=#err_valid_performance_entry_type>#</a></span></h4><div class=api_metadata></div><p>While using the Performance Timing API (<code>perf_hooks</code>), no valid performance
-entry types are found.<p><a id=ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING></a></section>
+entry types are found.<p><a id=ERR_VFS_INVALID_TARGET></a></section>
+<section><h4><code>ERR_VFS_INVALID_TARGET</code><span><a id=errors_err_vfs_invalid_target></a></span><span><a class=mark id=err_vfs_invalid_target href=#err_vfs_invalid_target>#</a></span></h4><div class=api_metadata></div><p>A <code>--vfs-load</code> source does not exist, is neither a regular file nor a
+directory, or is a source no provider claims.<p><a id=ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING></a></section>
 <section><h4><code>ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING</code><span><a id=errors_err_vm_dynamic_import_callback_missing></a></span><span><a class=mark id=err_vm_dynamic_import_callback_missing href=#err_vm_dynamic_import_callback_missing>#</a></span></h4><div class=api_metadata></div><p>A dynamic import callback was not specified.<p><a id=ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG></a></section>
 <section><h4><code>ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG</code><span><a id=errors_err_vm_dynamic_import_callback_missing_flag></a></span><span><a class=mark id=err_vm_dynamic_import_callback_missing_flag href=#err_vm_dynamic_import_callback_missing_flag>#</a></span></h4><div class=api_metadata></div><p>A dynamic import callback was invoked without <code>--experimental-vm-modules</code>.<p><a id=ERR_VM_MODULE_ALREADY_LINKED></a></section>
 <section><h4><code>ERR_VM_MODULE_ALREADY_LINKED</code><span><a id=errors_err_vm_module_already_linked></a></span><span><a class=mark id=err_vm_module_already_linked href=#err_vm_module_already_linked>#</a></span></h4><div class=api_metadata></div><p>The module attempted to be linked is not eligible for linking, because of one of
@@ -2407,12 +2465,16 @@ meaning of the error depends on the specific function.<p><a id=ERR_WASI_ALREADY_
 <section><h4><code>ERR_WASI_NOT_STARTED</code><span><a id=errors_err_wasi_not_started></a></span><span><a class=mark id=err_wasi_not_started href=#err_wasi_not_started>#</a></span></h4><div class=api_metadata></div><p>The WASI instance has not been started.<p><a id=ERR_WEBASSEMBLY_NOT_SUPPORTED></a></section>
 <section><h4><code>ERR_WEBASSEMBLY_NOT_SUPPORTED</code><span><a id=errors_err_webassembly_not_supported></a></span><span><a class=mark id=err_webassembly_not_supported href=#err_webassembly_not_supported>#</a></span></h4><div class=api_metadata></div><p>A feature requiring WebAssembly was used, but WebAssembly is not supported or
 has been disabled in the current environment (for example, when running with
-<code>--jitless</code>).<p><a id=ERR_WEBASSEMBLY_RESPONSE></a></section>
+<code>--jitless</code>).<p>TypeScript parsing and WebAssembly module imports, including source phase
+imports, report this error when WebAssembly is unavailable. Node.js does not
+provide an alternative implementation for these operations. This error can be
+caught without terminating the process.<p><a id=ERR_WEBASSEMBLY_RESPONSE></a></section>
 <section><h4><code>ERR_WEBASSEMBLY_RESPONSE</code><span><a id=errors_err_webassembly_response></a></span><span><a class=mark id=err_webassembly_response href=#err_webassembly_response>#</a></span></h4><div class=api_metadata><span>Added in: v18.1.0</span></div><p>The <code>Response</code> that has been passed to <code>WebAssembly.compileStreaming</code> or to
 <code>WebAssembly.instantiateStreaming</code> is not a valid WebAssembly response.<p><a id=ERR_WORKER_HANDLE_NOT_TRANSFERABLE></a></section>
-<section><h4><code>ERR_WORKER_HANDLE_NOT_TRANSFERABLE</code><span><a id=errors_err_worker_handle_not_transferable></a></span><span><a class=mark id=err_worker_handle_not_transferable href=#err_worker_handle_not_transferable>#</a></span></h4><div class=api_metadata></div><p>An attempt was made to transfer a <code>net.Socket</code> or <code>net.Server</code> to another thread
-via a <code>worker_threads</code> <code>postMessage()</code> call while it was not in a transferable
-state, for example because it had already started reading or had buffered data.<p><a id=ERR_WORKER_INIT_FAILED></a></section>
+<section><h4><code>ERR_WORKER_HANDLE_NOT_TRANSFERABLE</code><span><a id=errors_err_worker_handle_not_transferable></a></span><span><a class=mark id=err_worker_handle_not_transferable href=#err_worker_handle_not_transferable>#</a></span></h4><div class=api_metadata></div><p>An attempt was made to transfer a <code>net.Socket</code>, <code>net.Server</code> or
+<code>net.BoundSocket</code> to another thread via a <code>worker_threads</code> <code>postMessage()</code> call
+while it was not in a transferable state, for example because it had already
+started reading, had buffered data, or had already been adopted.<p><a id=ERR_WORKER_INIT_FAILED></a></section>
 <section><h4><code>ERR_WORKER_INIT_FAILED</code><span><a id=errors_err_worker_init_failed></a></span><span><a class=mark id=err_worker_init_failed href=#err_worker_init_failed>#</a></span></h4><div class=api_metadata></div><p>The <code>Worker</code> initialization failed.<p><a id=ERR_WORKER_INVALID_EXEC_ARGV></a></section>
 <section><h4><code>ERR_WORKER_INVALID_EXEC_ARGV</code><span><a id=errors_err_worker_invalid_exec_argv></a></span><span><a class=mark id=err_worker_invalid_exec_argv href=#err_worker_invalid_exec_argv>#</a></span></h4><div class=api_metadata></div><p>The <code>execArgv</code> option passed to the <code>Worker</code> constructor contains
 invalid flags.<p><a id=ERR_WORKER_MESSAGING_ERRORED></a></section>
@@ -2425,7 +2487,24 @@ invalid flags.<p><a id=ERR_WORKER_MESSAGING_ERRORED></a></section>
 <section><h4><code>ERR_WORKER_PATH</code><span><a id=errors_err_worker_path></a></span><span><a class=mark id=err_worker_path href=#err_worker_path>#</a></span></h4><div class=api_metadata></div><p>The path for the main script of a worker is neither an absolute path
 nor a relative path starting with <code>./</code> or <code>../</code>.<p><a id=ERR_WORKER_UNSERIALIZABLE_ERROR></a></section>
 <section><h4><code>ERR_WORKER_UNSERIALIZABLE_ERROR</code><span><a id=errors_err_worker_unserializable_error></a></span><span><a class=mark id=err_worker_unserializable_error href=#err_worker_unserializable_error>#</a></span></h4><div class=api_metadata></div><p>All attempts at serializing an uncaught exception from a worker thread failed.<p><a id=ERR_WORKER_UNSUPPORTED_OPERATION></a></section>
-<section><h4><code>ERR_WORKER_UNSUPPORTED_OPERATION</code><span><a id=errors_err_worker_unsupported_operation></a></span><span><a class=mark id=err_worker_unsupported_operation href=#err_worker_unsupported_operation>#</a></span></h4><div class=api_metadata></div><p>The requested functionality is not supported in worker threads.<p><a id=ERR_ZLIB_INITIALIZATION_FAILED></a></section>
+<section><h4><code>ERR_WORKER_UNSUPPORTED_OPERATION</code><span><a id=errors_err_worker_unsupported_operation></a></span><span><a class=mark id=err_worker_unsupported_operation href=#err_worker_unsupported_operation>#</a></span></h4><div class=api_metadata></div><p>The requested functionality is not supported in worker threads.<p><a id=ERR_ZIP_ARCHIVE_TOO_LARGE></a></section>
+<section><h4><code>ERR_ZIP_ARCHIVE_TOO_LARGE</code><span><a id=errors_err_zip_archive_too_large></a></span><span><a class=mark id=err_zip_archive_too_large href=#err_zip_archive_too_large>#</a></span></h4><div class=api_metadata></div><p>An archive-level structure exceeds a limit: the archive comment exceeds the
+65,535-byte encoded length that the ZIP format allows, or the archive's
+central directory is too large to buffer in memory.<p><a id=ERR_ZIP_ENTRY_CORRUPT></a></section>
+<section><h4><code>ERR_ZIP_ENTRY_CORRUPT</code><span><a id=errors_err_zip_entry_corrupt></a></span><span><a class=mark id=err_zip_entry_corrupt href=#err_zip_entry_corrupt>#</a></span></h4><div class=api_metadata></div><p>A ZIP archive entry failed CRC-32 verification, or produced more or fewer
+bytes than its declared uncompressed size, while being read.<p><a id=ERR_ZIP_ENTRY_NOT_FOUND></a></section>
+<section><h4><code>ERR_ZIP_ENTRY_NOT_FOUND</code><span><a id=errors_err_zip_entry_not_found></a></span><span><a class=mark id=err_zip_entry_not_found href=#err_zip_entry_not_found>#</a></span></h4><div class=api_metadata></div><p>A named entry was requested from a <a href=zlib.html#class-zlibzipfile><code>ZipFile</code></a> or <a href=zlib.html#class-zlibzipbuffer><code>ZipBuffer</code></a> that does
+not contain an entry with that name.<p><a id=ERR_ZIP_ENTRY_TOO_LARGE></a></section>
+<section><h4><code>ERR_ZIP_ENTRY_TOO_LARGE</code><span><a id=errors_err_zip_entry_too_large></a></span><span><a class=mark id=err_zip_entry_too_large href=#err_zip_entry_too_large>#</a></span></h4><div class=api_metadata></div><p>A ZIP archive entry's declared size exceeds the configured limit, or a
+provided entry name or comment exceeds the 65,535-byte encoded length that
+the ZIP format allows.<p><a id=ERR_ZIP_INVALID_ARCHIVE></a></section>
+<section><h4><code>ERR_ZIP_INVALID_ARCHIVE</code><span><a id=errors_err_zip_invalid_archive></a></span><span><a class=mark id=err_zip_invalid_archive href=#err_zip_invalid_archive>#</a></span></h4><div class=api_metadata></div><p>Data that was expected to be a ZIP archive, or a structure within one, is
+missing, out of bounds, or otherwise inconsistent with the ZIP format.<p><a id=ERR_ZIP_NOT_WRITABLE></a></section>
+<section><h4><code>ERR_ZIP_NOT_WRITABLE</code><span><a id=errors_err_zip_not_writable></a></span><span><a class=mark id=err_zip_not_writable href=#err_zip_not_writable>#</a></span></h4><div class=api_metadata></div><p>A mutating method (such as <code>zipFile.addEntry()</code> or <code>zipFile.delete()</code>) was
+called on a <a href=zlib.html#class-zlibzipfile><code>ZipFile</code></a> that was not opened with <code>{ writable: true }</code>.<p><a id=ERR_ZIP_UNSUPPORTED_FEATURE></a></section>
+<section><h4><code>ERR_ZIP_UNSUPPORTED_FEATURE</code><span><a id=errors_err_zip_unsupported_feature></a></span><span><a class=mark id=err_zip_unsupported_feature href=#err_zip_unsupported_feature>#</a></span></h4><div class=api_metadata></div><p>A ZIP archive uses a feature outside of what this implementation supports,
+such as entry encryption, an unsupported compression method, or a multi-disk
+archive.<p><a id=ERR_ZLIB_INITIALIZATION_FAILED></a></section>
 <section><h4><code>ERR_ZLIB_INITIALIZATION_FAILED</code><span><a id=errors_err_zlib_initialization_failed></a></span><span><a class=mark id=err_zlib_initialization_failed href=#err_zlib_initialization_failed>#</a></span></h4><div class=api_metadata></div><p>Creation of a <a href=zlib.html><code>zlib</code></a> object failed due to incorrect configuration.<p><a id=ERR_ZSTD_INVALID_PARAM></a></section>
 <section><h4><code>ERR_ZSTD_INVALID_PARAM</code><span><a id=errors_err_zstd_invalid_param></a></span><span><a class=mark id=err_zstd_invalid_param href=#err_zstd_invalid_param>#</a></span></h4><div class=api_metadata></div><p>An invalid parameter key was passed during construction of a Zstd stream.<p><a id=HPE_CHUNK_EXTENSIONS_OVERFLOW></a></section>
 <section><h4><code>HPE_CHUNK_EXTENSIONS_OVERFLOW</code><span><a id=errors_hpe_chunk_extensions_overflow></a></span><span><a class=mark id=hpe_chunk_extensions_overflow href=#hpe_chunk_extensions_overflow>#</a></span></h4><div class=api_metadata><span>Added in: v21.6.2, v20.11.1, v18.19.1</span></div><p>Too much data was received for a chunk extensions. In order to protect against

@@ -85,6 +85,86 @@
               "desc": "<p>Adds a rule to block the given IP address.</p>"
             },
             {
+              "textRaw": "`blockList.addAddresses(addresses[, type])`",
+              "name": "addAddresses",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`addresses` {string}[] | {net.SocketAddress}[] An array of IPv4 or IPv6 addresses.",
+                      "name": "addresses",
+                      "type": "string",
+                      "desc": "[] | {net.SocketAddress}[] An array of IPv4 or IPv6 addresses."
+                    },
+                    {
+                      "textRaw": "`type` {string} Either `'ipv4'` or `'ipv6'`. **Default:** `'ipv4'`.",
+                      "name": "type",
+                      "type": "string",
+                      "default": "`'ipv4'`",
+                      "desc": "Either `'ipv4'` or `'ipv6'`.",
+                      "optional": true
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Adds multiple address rules to the block list in a single operation.\nThis is more efficient than calling <code>blockList.addAddress()</code> repeatedly\nwhen adding a large number of individual addresses, as the addresses\nare inserted under a single internal lock acquisition.</p>"
+            },
+            {
+              "textRaw": "`blockList.addCIDR(cidr)`",
+              "name": "addCIDR",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`cidr` {string} An IPv4 or IPv6 subnet in CIDR notation (e.g. `'10.0.0.0/8'` or `'2001:db8::/32'`).",
+                      "name": "cidr",
+                      "type": "string",
+                      "desc": "An IPv4 or IPv6 subnet in CIDR notation (e.g. `'10.0.0.0/8'` or `'2001:db8::/32'`)."
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Adds a subnet rule using CIDR notation. The address family is automatically\ndetected from the address (IPv6 if the address contains <code>':'</code>, IPv4\notherwise). This is equivalent to calling <code>blockList.addSubnet()</code> with\nthe parsed network address, prefix length, and family.</p>"
+            },
+            {
+              "textRaw": "`blockList.addCIDRs(cidrs)`",
+              "name": "addCIDRs",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`cidrs` {string}[] An array of IPv4 or IPv6 subnets in CIDR notation.",
+                      "name": "cidrs",
+                      "type": "string",
+                      "desc": "[] An array of IPv4 or IPv6 subnets in CIDR notation."
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Adds multiple subnet rules using CIDR notation in a single call. The address\nfamily for each entry is automatically detected. This is equivalent to\ncalling <code>blockList.addCIDR()</code> for each element of the array.</p>"
+            },
+            {
               "textRaw": "`blockList.addRange(start, end[, type])`",
               "name": "addRange",
               "type": "method",
@@ -201,6 +281,34 @@
               "desc": "<p>Returns <code>true</code> if the given IP address matches any of the rules added to the\n<code>BlockList</code>.</p>\n<pre><code class=\"language-js\">const blockList = new net.BlockList();\nblockList.addAddress('123.123.123.123');\nblockList.addRange('10.0.0.1', '10.0.0.10');\nblockList.addSubnet('8592:757c:efae:4e45::', 64, 'ipv6');\n\nconsole.log(blockList.check('123.123.123.123'));  // Prints: true\nconsole.log(blockList.check('10.0.0.3'));  // Prints: true\nconsole.log(blockList.check('222.111.111.222'));  // Prints: false\n\n// IPv6 notation for IPv4 addresses works:\nconsole.log(blockList.check('::ffff:7b7b:7b7b', 'ipv6')); // Prints: true\nconsole.log(blockList.check('::ffff:123.123.123.123', 'ipv6')); // Prints: true\n</code></pre>"
             },
             {
+              "textRaw": "`blockList.clear()`",
+              "name": "clear",
+              "type": "method",
+              "signatures": [
+                {
+                  "params": []
+                }
+              ],
+              "desc": "<!--\nadded: v26.8.0\n-->\n<p>Clears all rules from the <code>BlockList</code>.</p>"
+            },
+            {
+              "textRaw": "`blockList.fromJSON(value)`",
+              "name": "fromJSON",
+              "type": "method",
+              "stability": 1.2,
+              "stabilityText": "Release candidate",
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "name": "value"
+                    }
+                  ]
+                }
+              ],
+              "desc": " <!-- YAML\nadded:\n - v24.5.0\n - v22.19.0\n-->\n<pre><code class=\"language-js\">const blockList = new net.BlockList();\nconst data = [\n  'Subnet: IPv4 192.168.1.0/24',\n  'Address: IPv4 10.0.0.5',\n  'Range: IPv4 192.168.2.1-192.168.2.10',\n  'Range: IPv4 10.0.0.1-10.0.0.10',\n];\nblockList.fromJSON(data);\nblockList.fromJSON(JSON.stringify(data));\n</code></pre>\n<ul>\n<li><code>value</code> Blocklist.rules</li>\n</ul>"
+            },
+            {
               "textRaw": "`BlockList.isBlockList(value)`",
               "name": "isBlockList",
               "type": "method",
@@ -222,29 +330,145 @@
                     }
                   ],
                   "return": {
-                    "textRaw": "Returns `true` if the `value` is a `net.BlockList`.",
+                    "textRaw": "Returns {boolean} `true` if the `value` is a `net.BlockList`.",
                     "name": "return",
+                    "type": "boolean",
                     "desc": "`true` if the `value` is a `net.BlockList`."
                   }
                 }
               ]
             },
             {
-              "textRaw": "`blockList.fromJSON(value)`",
-              "name": "fromJSON",
+              "textRaw": "`blockList.removeAddress(address[, type])`",
+              "name": "removeAddress",
               "type": "method",
-              "stability": 1.2,
-              "stabilityText": "Release candidate",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
               "signatures": [
                 {
                   "params": [
                     {
-                      "name": "value"
+                      "textRaw": "`address` {string|net.SocketAddress} An IPv4 or IPv6 address.",
+                      "name": "address",
+                      "type": "string|net.SocketAddress",
+                      "desc": "An IPv4 or IPv6 address."
+                    },
+                    {
+                      "textRaw": "`type` {string} Either `'ipv4'` or `'ipv6'`. **Default:** `'ipv4'`.",
+                      "name": "type",
+                      "type": "string",
+                      "default": "`'ipv4'`",
+                      "desc": "Either `'ipv4'` or `'ipv6'`.",
+                      "optional": true
                     }
                   ]
                 }
               ],
-              "desc": " <!-- YAML\nadded:\n - v24.5.0\n - v22.19.0\n-->\n<pre><code class=\"language-js\">const blockList = new net.BlockList();\nconst data = [\n  'Subnet: IPv4 192.168.1.0/24',\n  'Address: IPv4 10.0.0.5',\n  'Range: IPv4 192.168.2.1-192.168.2.10',\n  'Range: IPv4 10.0.0.1-10.0.0.10',\n];\nblockList.fromJSON(data);\nblockList.fromJSON(JSON.stringify(data));\n</code></pre>\n<ul>\n<li><code>value</code> Blocklist.rules</li>\n</ul>"
+              "desc": "<p>Removes a rule that was previously added with <code>blockList.addAddress()</code>. The\naddress must match exactly the value used when the rule was added. If the\nspecified address does not exist, this is a no-op.</p>"
+            },
+            {
+              "textRaw": "`blockList.removeCIDR(cidr)`",
+              "name": "removeCIDR",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`cidr` {string} An IPv4 or IPv6 subnet in CIDR notation (e.g. `'10.0.0.0/8'` or `'2001:db8::/32'`).",
+                      "name": "cidr",
+                      "type": "string",
+                      "desc": "An IPv4 or IPv6 subnet in CIDR notation (e.g. `'10.0.0.0/8'` or `'2001:db8::/32'`)."
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Removes a subnet rule using CIDR notation. The address family is automatically\ndetected from the address. This is equivalent to calling\n<code>blockList.removeSubnet()</code> with the parsed network address, prefix length,\nand family. If the specified subnet does not exist, this is a no-op.</p>"
+            },
+            {
+              "textRaw": "`blockList.removeRange(start, end[, type])`",
+              "name": "removeRange",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`start` {string|net.SocketAddress} The starting IPv4 or IPv6 address in the range.",
+                      "name": "start",
+                      "type": "string|net.SocketAddress",
+                      "desc": "The starting IPv4 or IPv6 address in the range."
+                    },
+                    {
+                      "textRaw": "`end` {string|net.SocketAddress} The ending IPv4 or IPv6 address in the range.",
+                      "name": "end",
+                      "type": "string|net.SocketAddress",
+                      "desc": "The ending IPv4 or IPv6 address in the range."
+                    },
+                    {
+                      "textRaw": "`type` {string} Either `'ipv4'` or `'ipv6'`. **Default:** `'ipv4'`.",
+                      "name": "type",
+                      "type": "string",
+                      "default": "`'ipv4'`",
+                      "desc": "Either `'ipv4'` or `'ipv6'`.",
+                      "optional": true
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Removes a rule that was previously added with <code>blockList.addRange()</code>. The <code>start</code>\nand <code>end</code> addresses must match exactly the values used when the rule was added.\nIf the specified range does not exist, this is a no-op.</p>"
+            },
+            {
+              "textRaw": "`blockList.removeSubnet(net, prefix[, type])`",
+              "name": "removeSubnet",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`net` {string|net.SocketAddress} The network IPv4 or IPv6 address.",
+                      "name": "net",
+                      "type": "string|net.SocketAddress",
+                      "desc": "The network IPv4 or IPv6 address."
+                    },
+                    {
+                      "textRaw": "`prefix` {number} The number of CIDR prefix bits. For IPv4, this must be a value between `0` and `32`. For IPv6, this must be between `0` and `128`.",
+                      "name": "prefix",
+                      "type": "number",
+                      "desc": "The number of CIDR prefix bits. For IPv4, this must be a value between `0` and `32`. For IPv6, this must be between `0` and `128`."
+                    },
+                    {
+                      "textRaw": "`type` {string} Either `'ipv4'` or `'ipv6'`. **Default:** `'ipv4'`.",
+                      "name": "type",
+                      "type": "string",
+                      "default": "`'ipv4'`",
+                      "desc": "Either `'ipv4'` or `'ipv6'`.",
+                      "optional": true
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Removes a rule that was previously added with <code>blockList.addSubnet()</code>. The\nnetwork address and prefix must match exactly the values used when the rule was\nadded. If the specified subnet does not exist, this is a no-op.</p>"
             },
             {
               "textRaw": "`blockList.toJSON()`",
@@ -268,6 +492,19 @@
           "properties": [
             {
               "textRaw": "Type: {string}[]",
+              "name": "PRIVATE_RANGES",
+              "type": "string",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>A frozen array of CIDR strings representing private, loopback, and link-local\nIP address ranges. This can be passed to <code>blockList.addCIDRs()</code> to quickly\npopulate a blocklist with all non-routable address ranges.</p>\n<p>The included ranges are:</p>\n<ul>\n<li><code>10.0.0.0/8</code> — RFC 1918 private IPv4</li>\n<li><code>172.16.0.0/12</code> — RFC 1918 private IPv4</li>\n<li><code>192.168.0.0/16</code> — RFC 1918 private IPv4</li>\n<li><code>127.0.0.0/8</code> — IPv4 loopback</li>\n<li><code>::1/128</code> — IPv6 loopback</li>\n<li><code>169.254.0.0/16</code> — IPv4 link-local</li>\n<li><code>fe80::/10</code> — IPv6 link-local</li>\n<li><code>fc00::/7</code> — IPv6 unique local (ULA)</li>\n</ul>\n<pre><code class=\"language-js\">const blockList = new net.BlockList();\nblockList.addCIDRs(net.BlockList.PRIVATE_RANGES);\n\nconsole.log(blockList.check('10.0.0.1'));      // Prints: true\nconsole.log(blockList.check('127.0.0.1'));     // Prints: true\nconsole.log(blockList.check('8.8.8.8'));       // Prints: false\n</code></pre>",
+              "shortDesc": "[]"
+            },
+            {
+              "textRaw": "Type: {string}[]",
               "name": "rules",
               "type": "string",
               "meta": {
@@ -279,6 +516,18 @@
               },
               "desc": "<p>The list of rules added to the blocklist.</p>",
               "shortDesc": "[]"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "size",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The number of rules in the blocklist. This is equivalent to\n<code>blockList.rules.length</code> but does not allocate the rules array.</p>"
             }
           ]
         },
@@ -882,7 +1131,7 @@
                       }
                     }
                   ],
-                  "desc": "<p>If <code>handle</code> is specified, the server adopts that pre-bound socket. Otherwise, if\n<code>port</code> is specified, it behaves the same as\n<a href=\"#serverlistenport-host-backlog-callback\"><code>server.listen([port[, host[, backlog]]][, callback])</code></a>.\nOtherwise, if <code>path</code> is specified, it behaves the same as\n<a href=\"#serverlistenpath-backlog-callback\"><code>server.listen(path[, backlog][, callback])</code></a>.\nIf none of them is specified, an error will be thrown.</p>\n<p>If <code>exclusive</code> is <code>false</code> (default), then cluster workers will use the same\nunderlying handle, allowing connection handling duties to be shared. When\n<code>exclusive</code> is <code>true</code>, the handle is not shared, and attempted port sharing\nresults in an error. An example which listens on an exclusive port is\nshown below.</p>\n<pre><code class=\"language-js\">server.listen({\n  host: 'localhost',\n  port: 80,\n  exclusive: true,\n});\n</code></pre>\n<p>When <code>exclusive</code> is <code>true</code> and the underlying handle is shared, it is\npossible that several workers query a handle with different backlogs.\nIn this case, the first <code>backlog</code> passed to the master process will be used.</p>\n<p>Starting an IPC server as root may cause the server path to be inaccessible for\nunprivileged users. Using <code>readableAll</code> and <code>writableAll</code> will make the server\naccessible for all users.</p>\n<p>If the <code>signal</code> option is enabled, calling <code>.abort()</code> on the corresponding\n<code>AbortController</code> is similar to calling <code>.close()</code> on the server:</p>\n<pre><code class=\"language-js\">const controller = new AbortController();\nserver.listen({\n  host: 'localhost',\n  port: 80,\n  signal: controller.signal,\n});\n// Later, when you want to close the server.\ncontroller.abort();\n</code></pre>"
+                  "desc": "<p>If <code>handle</code> is specified, the server adopts that pre-bound socket. Otherwise, if\n<code>port</code> is specified, it behaves the same as\n<a href=\"#serverlistenport-host-backlog-callback\"><code>server.listen([port[, host[, backlog]]][, callback])</code></a>.\nOtherwise, if <code>path</code> is specified, it behaves the same as\n<a href=\"#serverlistenpath-backlog-callback\"><code>server.listen(path[, backlog][, callback])</code></a>.\nIf none of them is specified, an error will be thrown.</p>\n<blockquote>\n<p>Using the <code>signal</code> option to destroy a long-lived server as a resource cleanup\nmechanism is deprecated. The <code>signal</code> option remains appropriate for\ncancellation, externally propagated aborts, and timeouts. See\n<a href=\"deprecations.html#dep0209-using-abortsignal-to-dispose-of-resources\">DEP0209</a>.</p>\n</blockquote>\n<p>If <code>exclusive</code> is <code>false</code> (default), then cluster workers will use the same\nunderlying handle, allowing connection handling duties to be shared. When\n<code>exclusive</code> is <code>true</code>, the handle is not shared, and attempted port sharing\nresults in an error. An example which listens on an exclusive port is\nshown below.</p>\n<pre><code class=\"language-js\">server.listen({\n  host: 'localhost',\n  port: 80,\n  exclusive: true,\n});\n</code></pre>\n<p>When <code>exclusive</code> is <code>true</code> and the underlying handle is shared, it is\npossible that several workers query a handle with different backlogs.\nIn this case, the first <code>backlog</code> passed to the master process will be used.</p>\n<p>Starting an IPC server as root may cause the server path to be inaccessible for\nunprivileged users. Using <code>readableAll</code> and <code>writableAll</code> will make the server\naccessible for all users.</p>\n<p>If the <code>signal</code> option is enabled, calling <code>.abort()</code> on the corresponding\n<code>AbortController</code> is similar to calling <code>.close()</code> on the server:</p>\n<pre><code class=\"language-js\">const controller = new AbortController();\nserver.listen({\n  host: 'localhost',\n  port: 80,\n  signal: controller.signal,\n});\n// Later, when you want to close the server.\ncontroller.abort();\n</code></pre>"
                 },
                 {
                   "textRaw": "`server.listen(path[, backlog][, callback])`",
@@ -1085,7 +1334,7 @@
               "textRaw": "Transferring TCP handles to other threads",
               "name": "transferring_tcp_handles_to_other_threads",
               "type": "module",
-              "desc": "<p>A connected TCP <code>net.Socket</code> can be moved to another thread by listing it in the\n<code>transferList</code> of a <a href=\"worker_threads.html\"><code>worker_threads</code></a> <code>postMessage()</code> call. After the\ntransfer, the source socket is destroyed on the sending thread (further use\nfails with <code>ERR_STREAM_DESTROYED</code> rather than silently dropping data), and the\nsocket continues to work on the receiving thread. This makes it possible to\naccept connections on one thread and distribute them across a pool of worker\nthreads, for example to build a <code>node:cluster</code>-like model on top of worker\nthreads.</p>\n<p>The socket must be a freshly accepted or created TCP connection: it must still\nbe attached to a live handle, must not be connecting or destroyed, and must not\nhave started reading or have buffered data. Otherwise <code>postMessage()</code> throws\n<code>ERR_WORKER_HANDLE_NOT_TRANSFERABLE</code>. Only TCP sockets are supported.</p>\n<pre><code class=\"language-cjs\">const net = require('node:net');\nconst { Worker } = require('node:worker_threads');\n\n// worker.js receives `{ socket }` messages and handles each connection.\nconst worker = new Worker('./worker.js');\n\nconst server = net.createServer((socket) => {\n  // Hand the freshly accepted connection off to the worker thread.\n  worker.postMessage({ socket }, [socket]);\n});\nserver.listen(8000);\n</code></pre>\n<p>A listening <a href=\"#class-netserver\"><code>net.Server</code></a> can be transferred the same way, which moves the\nlistening socket itself (and its pending accept queue) to the receiving thread.</p>",
+              "desc": "<p>A connected TCP <code>net.Socket</code> can be moved to another thread by listing it in the\n<code>transferList</code> of a <a href=\"worker_threads.html\"><code>worker_threads</code></a> <code>postMessage()</code> call. After the\ntransfer, the source socket is destroyed on the sending thread (further use\nfails with <code>ERR_STREAM_DESTROYED</code> rather than silently dropping data), and the\nsocket continues to work on the receiving thread. This makes it possible to\naccept connections on one thread and distribute them across a pool of worker\nthreads, for example to build a <code>node:cluster</code>-like model on top of worker\nthreads.</p>\n<p>The socket must be a freshly accepted or created TCP connection: it must still\nbe attached to a live handle, must not be connecting or destroyed, and must not\nhave started reading or have buffered data. Otherwise <code>postMessage()</code> throws\n<code>ERR_WORKER_HANDLE_NOT_TRANSFERABLE</code>. Only TCP sockets are supported.</p>\n<pre><code class=\"language-cjs\">const net = require('node:net');\nconst { Worker } = require('node:worker_threads');\n\n// worker.js receives `{ socket }` messages and handles each connection.\nconst worker = new Worker('./worker.js');\n\nconst server = net.createServer((socket) => {\n  // Hand the freshly accepted connection off to the worker thread.\n  worker.postMessage({ socket }, [socket]);\n});\nserver.listen(8000);\n</code></pre>\n<p>A listening <a href=\"#class-netserver\"><code>net.Server</code></a> can be transferred the same way, which moves the\nlistening socket itself (and its pending accept queue) to the receiving thread.</p>\n<p>An un-adopted TCP <a href=\"#class-netboundsocket\"><code>BoundSocket</code></a> can also be transferred, which moves the\nbound (but not yet listening or connected) socket. This allows a port to be\nreserved synchronously on one thread and adopted by a server or outgoing\nconnection on another. Pipe binds are not transferable. After the transfer, the\nsource <code>BoundSocket</code> behaves as if it had been adopted: <code>address()</code>, <code>fd()</code> and\n<code>close()</code> throw <a href=\"errors.html#err_socket_handle_adopted\"><code>ERR_SOCKET_HANDLE_ADOPTED</code></a>.</p>",
               "displayName": "Transferring TCP handles to other threads"
             }
           ],
@@ -1726,7 +1975,7 @@
                   }
                 }
               ],
-              "desc": "<p>Ensures that no more I/O activity happens on this socket.\nDestroys the stream and closes the connection.</p>\n<p>See <a href=\"stream.html#writabledestroyerror\"><code>writable.destroy()</code></a> for further details.</p>"
+              "desc": "<p>Ensures that no more I/O activity happens on the current connection.\nDestroys the stream and closes the connection.</p>\n<p>See <a href=\"stream.html#writabledestroyerror\"><code>writable.destroy()</code></a> for further details.</p>"
             },
             {
               "textRaw": "`socket.destroySoon()`",
@@ -1909,7 +2158,7 @@
                   "params": []
                 }
               ],
-              "desc": "<p>Enable/disable keep-alive functionality, and optionally configure the\nkeepalive probe timing. Returns the socket itself.</p>\n<p>Possible signatures:</p>\n<ul>\n<li><a href=\"#socketsetkeepaliveoptions\"><code>socket.setKeepAlive([options])</code></a></li>\n<li><a href=\"#socketsetkeepaliveenable-initialdelay-interval-count\"><code>socket.setKeepAlive([enable][, initialDelay][, interval][, count])</code></a></li>\n</ul>\n<p>Enabling keep-alive sets the initial delay before the first keepalive probe is\nsent on an idle socket.</p>\n<p>Set <code>initialDelay</code> (in milliseconds) to set the delay between the last\ndata packet received and the first keepalive probe. Setting <code>0</code> for\n<code>initialDelay</code> will leave the value unchanged from the default\n(or previous) setting.</p>\n<p>Set <code>interval</code> (in milliseconds) to set the delay between successive\nkeepalive probes once they begin (<code>TCP_KEEPINTVL</code>). Set <code>count</code> to the\nnumber of unacknowledged probes sent before the connection is dropped\n(<code>TCP_KEEPCNT</code>). Both are only applied when keep-alive is enabled.\nOmitting <code>interval</code> or <code>count</code> uses the defaults of <code>1000</code> ms and <code>10</code>.\nAs with <code>initialDelay</code>, a non-positive <code>interval</code> or <code>count</code> leaves the\ncorresponding system default unchanged.</p>\n<p><code>initialDelay</code> and <code>interval</code> are specified in milliseconds but the\nunderlying socket options are configured in whole seconds; the values are\ndivided by <code>1000</code> and rounded down before being applied.</p>\n<p>Enabling the keep-alive functionality will set the following socket options:</p>\n<ul>\n<li><code>SO_KEEPALIVE=1</code></li>\n<li><code>TCP_KEEPIDLE=initialDelay / 1000</code></li>\n<li><code>TCP_KEEPCNT=count</code></li>\n<li><code>TCP_KEEPINTVL=interval / 1000</code></li>\n</ul>\n<p>On Windows versions older than build 1709, keep-alive is configured through\n<code>SIO_KEEPALIVE_VALS</code>, which has no probe-count field, so <code>count</code> is ignored on\nthose platforms.</p>",
+              "desc": "<p>Enable/disable keep-alive functionality, and optionally configure the\nkeepalive probe timing. Returns the socket itself.</p>\n<p>Possible signatures:</p>\n<ul>\n<li><a href=\"#socketsetkeepaliveoptions\"><code>socket.setKeepAlive([options])</code></a></li>\n<li><a href=\"#socketsetkeepaliveenable-initialdelay-interval-count\"><code>socket.setKeepAlive([enable][, initialDelay][, interval][, count])</code></a></li>\n</ul>\n<p>Enabling keep-alive sets the initial delay before the first keepalive probe is\nsent on an idle socket.</p>\n<p>Set <code>initialDelay</code> (in milliseconds) to set the delay between the last\ndata packet received and the first keepalive probe. Setting <code>0</code> for\n<code>initialDelay</code> will leave the value unchanged from the default\n(or previous) setting.</p>\n<p>Set <code>interval</code> (in milliseconds) to set the delay between successive\nkeepalive probes once they begin (<code>TCP_KEEPINTVL</code>). Set <code>count</code> to the\nnumber of unacknowledged probes sent before the connection is dropped\n(<code>TCP_KEEPCNT</code>). Both are only applied when keep-alive is enabled.\nOmitting <code>interval</code> or <code>count</code> uses the defaults of <code>1000</code> ms and <code>10</code>.\nAs with <code>initialDelay</code>, a non-positive <code>interval</code> or <code>count</code> leaves the\ncorresponding system default unchanged.</p>\n<p><code>initialDelay</code> and <code>interval</code> are specified in milliseconds but the\nunderlying socket options are configured in whole seconds; the values are\ndivided by <code>1000</code> and rounded down before being applied. For example,\nsetting <code>initialDelay</code> to <code>400</code> will result in a <code>TCP_KEEPIDLE</code> of <code>0</code>\nseconds (since <code>400 / 1000</code> rounds down to <code>0</code>).</p>\n<p>Enabling the keep-alive functionality will set the following socket options:</p>\n<ul>\n<li><code>SO_KEEPALIVE=1</code></li>\n<li><code>TCP_KEEPIDLE=initialDelay / 1000</code></li>\n<li><code>TCP_KEEPCNT=count</code></li>\n<li><code>TCP_KEEPINTVL=interval / 1000</code></li>\n</ul>\n<p>On Windows versions older than build 1709, keep-alive is configured through\n<code>SIO_KEEPALIVE_VALS</code>, which has no probe-count field, so <code>count</code> is ignored on\nthose platforms.</p>",
               "methods": [
                 {
                   "textRaw": "`socket.setKeepAlive([options])`",
@@ -2295,11 +2544,11 @@
               "desc": "<p>If <code>true</code>,\n<a href=\"#socketconnectoptions-connectlistener\"><code>socket.connect(options[, connectListener])</code></a> was\ncalled and has not yet finished. It will stay <code>true</code> until the socket becomes\nconnected, then it is set to <code>false</code> and the <code>'connect'</code> event is emitted. Note\nthat the\n<a href=\"#socketconnectoptions-connectlistener\"><code>socket.connect(options[, connectListener])</code></a>\ncallback is a listener for the <code>'connect'</code> event.</p>"
             },
             {
-              "textRaw": "Type: {boolean} Indicates if the connection is destroyed or not. Once a connection is destroyed no further data can be transferred using it.",
+              "textRaw": "Type: {boolean} Indicates if the connection is destroyed or not. No further data can be transferred using a destroyed connection.",
               "name": "destroyed",
               "type": "boolean",
               "desc": "<p>See <a href=\"stream.html#writabledestroyed\"><code>writable.destroyed</code></a> for further details.</p>",
-              "shortDesc": "Indicates if the connection is destroyed or not. Once a connection is destroyed no further data can be transferred using it."
+              "shortDesc": "Indicates if the connection is destroyed or not. No further data can be transferred using a destroyed connection."
             },
             {
               "textRaw": "Type: {string}",
@@ -2435,7 +2684,7 @@
             ],
             "changes": []
           },
-          "desc": "<p>Allows for the synchronous creation of a pre-bound socket, that can be passed\nto <code>listen()</code> or <code>new net.Socket()</code> later on. For <code>listen()</code> this enables\nsynchronous port reservation, while for <code>new net.Socket()</code>, it allows control\nover the local egress port/IP, via <code>bind(2)</code> semantics.</p>\n<p>A <code>BoundSocket</code> binds either a TCP endpoint (<code>host</code> or <code>port</code>) or a\nUnix domain/named-pipe endpoint (<code>path</code>); the two are mutually exclusive. For a\n<code>path</code>, the file system entry is reserved in the constructor, so conflicts such\nas <code>EADDRINUSE</code> throw synchronously exactly as a TCP bind does. On Linux a\nleading <code>'\\0'</code> in <code>path</code> selects the abstract namespace (no file system entry);\nan abstract path on any other platform throws <a href=\"errors.html#err_invalid_arg_value\"><code>ERR_INVALID_ARG_VALUE</code></a>.</p>\n<p>Adoption transfers ownership of the socket; afterwards <code>address()</code> and <code>close()</code>\nthrow <a href=\"errors.html#err_socket_handle_adopted\"><code>ERR_SOCKET_HANDLE_ADOPTED</code></a>. A handle that is never adopted must be\nclosed to avoid leaking the socket. Closing a pipe <code>BoundSocket</code> removes its\nfile system entry; abstract and TCP binds have none to remove.</p>\n<p>When a pipe <code>BoundSocket</code> bound to a source <code>path</code> is adopted as a client, that\npath is reported as the socket's <code>localAddress</code> once it connects.</p>\n<p>When an adopted <code>BoundSocket</code> connects to a numeric IP literal, <code>connect(2)</code> is\nissued synchronously, so <a href=\"#socketlocaladdress\"><code>socket.localAddress</code></a> is resolved once\n<a href=\"#socketconnect\"><code>socket.connect()</code></a> returns. Connection failures are still reported via a\ndeferred <code>'error'</code> event.</p>\n<pre><code class=\"language-mjs\">import net from 'node:net';\n\nconst bound = new net.BoundSocket();\nconst { port } = bound.address();\nconsole.log(`Reserved port ${port} for server`);\n\nconst server = net.createServer();\nserver.listen(bound); // Adopt as a server, or pass to new net.Socket() instead.\n</code></pre>",
+          "desc": "<p>Allows for the synchronous creation of a pre-bound socket, that can be passed\nto <code>listen()</code> or <code>new net.Socket()</code> later on. For <code>listen()</code> this enables\nsynchronous port reservation, while for <code>new net.Socket()</code>, it allows control\nover the local egress port/IP, via <code>bind(2)</code> semantics.</p>\n<p>A <code>BoundSocket</code> binds either a TCP endpoint (<code>host</code> or <code>port</code>) or a\nUnix domain/named-pipe endpoint (<code>path</code>); the two are mutually exclusive. For a\n<code>path</code>, the file system entry is reserved in the constructor, so conflicts such\nas <code>EADDRINUSE</code> throw synchronously exactly as a TCP bind does. On Linux a\nleading <code>'\\0'</code> in <code>path</code> selects the abstract namespace (no file system entry);\nan abstract path on any other platform throws <a href=\"errors.html#err_invalid_arg_value\"><code>ERR_INVALID_ARG_VALUE</code></a>.</p>\n<p>Adoption transfers ownership of the socket; afterwards <code>address()</code> and <code>close()</code>\nthrow <a href=\"errors.html#err_socket_handle_adopted\"><code>ERR_SOCKET_HANDLE_ADOPTED</code></a>. A handle that is never adopted must be\nclosed to avoid leaking the socket. Closing a pipe <code>BoundSocket</code> removes its\nfile system entry; abstract and TCP binds have none to remove.</p>\n<p>When a pipe <code>BoundSocket</code> bound to a source <code>path</code> is adopted as a client, that\npath is reported as the socket's <code>localAddress</code> once it connects.</p>\n<p>An un-adopted TCP <code>BoundSocket</code> can be moved to another thread by listing it in\nthe <code>transferList</code> of a <a href=\"worker_threads.html\"><code>worker_threads</code></a> <code>postMessage()</code> call, see\n<a href=\"#transferring-tcp-handles-to-other-threads\">Transferring TCP handles to other threads</a>. It can likewise be sent to a\nchild process as the <code>sendHandle</code> argument of <a href=\"child_process.html#subprocesssendmessage-sendhandle-options-callback\"><code>subprocess.send()</code></a>. In both\ncases the source is left in the adopted state. Pipe binds cannot be moved\neither way.</p>\n<p>When an adopted <code>BoundSocket</code> connects to a numeric IP literal, <code>connect(2)</code> is\nissued synchronously, so <a href=\"#socketlocaladdress\"><code>socket.localAddress</code></a> is resolved once\n<a href=\"#socketconnect\"><code>socket.connect()</code></a> returns. Connection failures are still reported via a\ndeferred <code>'error'</code> event.</p>\n<pre><code class=\"language-mjs\">import net from 'node:net';\n\nconst bound = new net.BoundSocket();\nconst { port } = bound.address();\nconsole.log(`Reserved port ${port} for server`);\n\nconst server = net.createServer();\nserver.listen(bound); // Adopt as a server, or pass to new net.Socket() instead.\n</code></pre>",
           "signatures": [
             {
               "textRaw": "`new net.BoundSocket([options])`",
@@ -3082,7 +3331,7 @@
               }
             }
           ],
-          "desc": "<p>Returns <code>6</code> if <code>input</code> is an IPv6 address. Returns <code>4</code> if <code>input</code> is an IPv4\naddress in <a href=\"https://en.wikipedia.org/wiki/Dot-decimal_notation\">dot-decimal notation</a> with no leading zeroes. Otherwise, returns\n<code>0</code>.</p>\n<pre><code class=\"language-js\">net.isIP('::1'); // returns 6\nnet.isIP('127.0.0.1'); // returns 4\nnet.isIP('127.000.000.001'); // returns 0\nnet.isIP('127.0.0.1/24'); // returns 0\nnet.isIP('fhqwhgads'); // returns 0\n</code></pre>"
+          "desc": "<p>Returns <code>6</code> if <code>input</code> is an IPv6 address, including an IPv4-mapped IPv6 address.\nReturns <code>4</code> if <code>input</code> is an IPv4 address in <a href=\"https://en.wikipedia.org/wiki/Dot-decimal_notation\">dot-decimal notation</a> with no\nleading zeroes. Otherwise, returns <code>0</code>.</p>\n<pre><code class=\"language-js\">net.isIP('::1'); // returns 6\nnet.isIP('::ffff:127.0.0.1'); // returns 6\nnet.isIP('127.0.0.1'); // returns 4\nnet.isIP('127.000.000.001'); // returns 0\nnet.isIP('127.0.0.1/24'); // returns 0\nnet.isIP('fhqwhgads'); // returns 0\n</code></pre>"
         },
         {
           "textRaw": "`net.isIPv4(input)`",
@@ -3138,7 +3387,7 @@
               }
             }
           ],
-          "desc": "<p>Returns <code>true</code> if <code>input</code> is an IPv6 address. Otherwise, returns <code>false</code>.</p>\n<pre><code class=\"language-js\">net.isIPv6('::1'); // returns true\nnet.isIPv6('fhqwhgads'); // returns false\n</code></pre>"
+          "desc": "<p>Returns <code>true</code> if <code>input</code> is an IPv6 address, including an IPv4-mapped IPv6 address.\nOtherwise, returns <code>false</code>.</p>\n<pre><code class=\"language-js\">net.isIPv6('::1'); // returns true\nnet.isIPv6('::ffff:127.0.0.1'); // returns true\nnet.isIPv6('fhqwhgads'); // returns false\n</code></pre>"
         }
       ],
       "displayName": "Net"

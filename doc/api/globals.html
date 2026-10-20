@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>Global objects | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/globals.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-globals><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>Global objects | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/globals.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-globals><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=globals class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><span class=stability_2><a href=globals.html#global-objects>Global objects</a></span>
 <ul>
@@ -210,6 +211,13 @@
 <li><a href=globals.html#class-urlsearchparams>Class: <code>URLSearchParams</code></a></li>
 <li><a href=globals.html#class-webassembly>Class: <code>WebAssembly</code></a></li>
 <li><a href=globals.html#class-websocket>Class: <code>WebSocket</code></a></li>
+<li><span class=stability_1><a href=globals.html#class-worker>Class: <code>Worker</code></a></span>
+<ul>
+<li><a href=globals.html#loading-worker-scripts>Loading worker scripts</a></li>
+<li><a href=globals.html#differences-from-the-html-standard>Differences from the HTML Standard</a></li>
+<li><a href=globals.html#web-workers-and-nodeworker_threads>Web Workers and <code>node:worker_threads</code></a></li>
+</ul>
+</li>
 <li><a href=globals.html#class-writablestream>Class: <code>WritableStream</code></a></li>
 <li><a href=globals.html#class-writablestreamdefaultcontroller>Class: <code>WritableStreamDefaultController</code></a></li>
 <li><a href=globals.html#class-writablestreamdefaultwriter>Class: <code>WritableStreamDefaultWriter</code></a></li>
@@ -221,6 +229,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -415,6 +424,13 @@
 <li><a href=globals.html#class-urlsearchparams>Class: <code>URLSearchParams</code></a></li>
 <li><a href=globals.html#class-webassembly>Class: <code>WebAssembly</code></a></li>
 <li><a href=globals.html#class-websocket>Class: <code>WebSocket</code></a></li>
+<li><span class=stability_1><a href=globals.html#class-worker>Class: <code>Worker</code></a></span>
+<ul>
+<li><a href=globals.html#loading-worker-scripts>Loading worker scripts</a></li>
+<li><a href=globals.html#differences-from-the-html-standard>Differences from the HTML Standard</a></li>
+<li><a href=globals.html#web-workers-and-nodeworker_threads>Web Workers and <code>node:worker_threads</code></a></li>
+</ul>
+</li>
 <li><a href=globals.html#class-writablestream>Class: <code>WritableStream</code></a></li>
 <li><a href=globals.html#class-writablestreamdefaultcontroller>Class: <code>WritableStreamDefaultController</code></a></li>
 <li><a href=globals.html#class-writablestreamdefaultwriter>Class: <code>WritableStreamDefaultWriter</code></a></li>
@@ -465,7 +481,8 @@ the <code>'abort'</code> event.</section>
 the AbortSignal.</li>
 </ul><p>Returns a new <code>AbortSignal</code> which will be aborted in <code>delay</code> milliseconds.</section>
 <section><h4>Static method: <code>AbortSignal.any(signals)</code><span><a id=globals_static_method_abortsignal_any_signals></a></span><span><a class=mark id=static-method-abortsignalanysignals href=#static-method-abortsignalanysignals>#</a></span></h4><div class=api_metadata><span>Added in: v20.3.0, v18.17.0</span></div><ul>
-<li><code>signals</code> <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a>[] The <code>AbortSignal</code>s of which to compose a new <code>AbortSignal</code>.</li>
+<li><code>signals</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol><code>&lt;Iterable></code></a> An iterable of <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a>s from which to compose a new
+<a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a>.</li>
 </ul><p>Returns a new <code>AbortSignal</code> which will be aborted if any of the provided
 signals are aborted. Its <a href=#abortsignalreason><code>abortSignal.reason</code></a> will be set to whichever
 one of the <code>signals</code> caused it to be aborted.</section>
@@ -723,6 +740,82 @@ only if the Node.js binary was compiled with including support for the <code>no
 <a href=https://developer.mozilla.org/en-US/docs/WebAssembly>Mozilla Developer Network</a> for usage and compatibility.</section>
 <section><h3>Class: <code>WebSocket</code><span><a id=globals_class_websocket></a></span><span><a class=mark id=class-websocket href=#class-websocket>#</a></span></h3><div class=api_metadata><span>Added in: v21.0.0, v20.10.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.4.0<td><p>No longer experimental.<tr><td>v22.0.0<td><p>No longer behind <code>--experimental-websocket</code> CLI flag.</table></details></div><p>A browser-compatible implementation of <a href=https://developer.mozilla.org/docs/Web/API/WebSocket><code>&lt;WebSocket></code></a>. Disable this API
 with the <a href=cli.html#--no-experimental-websocket><code>--no-experimental-websocket</code></a> CLI flag.</section>
+<section><h3>Class: <code>Worker</code><span><a id=globals_class_worker></a></span><span><a class=mark id=class-worker href=#class-worker>#</a></span></h3><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental. Enable this API with the
+<a href=cli.html#--experimental-web-worker><code>--experimental-web-worker</code></a> CLI flag.</div><p>A mostly browser-compatible implementation of Web Workers of the <a href=https://html.spec.whatwg.org/multipage/workers.html>HTML Standard</a>,
+implemented on top of <a href=worker_threads.html><code>node:worker_threads</code></a>. Threads created with it
+are given the <a href=https://developer.mozilla.org/docs/Web/API/DedicatedWorkerGlobalScope><code>&lt;DedicatedWorkerGlobalScope></code></a> API (<code>self</code>,
+<code>name</code>, <code>location</code>, <code>navigator</code>, <code>postMessage()</code>, <code>close()</code>, and
+<code>importScripts()</code>), in addition to the usual Node.js globals, such as <code>process</code>.<pre class="catppuccin-latte catppuccin-mocha language-js shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>// worker.js</span></span>
+<span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>addEventListener</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'message'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#7C7F93;--shiki-dark:#9399B2> (</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic>event</span><span style=color:#7C7F93;--shiki-dark:#9399B2>)</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> =></span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span></span>
+<span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>  postMessage</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>`</span><span style=color:#7C7F93;--shiki-dark:#9399B2>${</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>event</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>data</span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> from </span><span style=color:#7C7F93;--shiki-dark:#9399B2>${</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>name</span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>!`</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre><pre class="catppuccin-latte catppuccin-mocha language-js shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>// main.js</span></span>
+<span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> worker </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#8839EF;--shiki-light-font-weight:bold;--shiki-dark:#CBA6F7;--shiki-dark-font-weight:bold> new</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> Worker</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'./worker.js'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> name</span><span style=color:#179299;--shiki-dark:#94E2D5>:</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'greeter'</span><span style=color:#7C7F93;--shiki-dark:#9399B2> }</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>worker</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>addEventListener</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'message'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#7C7F93;--shiki-dark:#9399B2> (</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic>event</span><span style=color:#7C7F93;--shiki-dark:#9399B2>)</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> =></span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>  console</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>log</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(event</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>data)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic> // Prints: Hello from greeter!</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>  worker</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>terminate</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>worker</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>postMessage</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'Hello'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre><p>Because their lifetime and sharing model depend on origins and
+browsing contexts, Node.js does not currently implement <code>SharedWorker</code>.</section>
+<section><h4>Loading worker scripts<span><a id=globals_loading_worker_scripts></a></span><span><a class=mark id=loading-worker-scripts href=#loading-worker-scripts>#</a></span></h4><div class=api_metadata></div><p>Worker scripts are read synchronously from the local file system or from
+memory rather than fetched over the network, which changes which URLs are
+accepted and how failures are reported:<ul>
+<li><code>new Worker()</code> and <code>importScripts()</code> accept only <code>file:</code>, <code>data:</code>, and
+<code>blob:</code> URLs. Any other scheme makes <code>new Worker()</code> throw a
+<code>NotSupportedError</code> and <code>importScripts()</code> throw a <code>NetworkError</code>.</li>
+<li>A script that cannot be read makes <code>importScripts()</code> throw a <code>NetworkError</code>;
+for <code>new Worker()</code> it fires an <code>error</code> event at the <code>Worker</code> object.</li>
+<li>Redirects, the <code>nosniff</code> check, and HTTP MIME type validation do not apply.
+MIME types are validated only for <code>data:</code> and <code>blob:</code> URLs. The
+<code>credentials</code> option is validated for API compatibility but has no effect,
+since no network request is made.</li>
+<li>On the main thread, relative script URLs are resolved against the current
+working directory, because there is no document base URL. Within a worker
+they are resolved against the worker's own URL (as is done in the spec).</li>
+<li>For <code>blob:</code> URLs, the script must be held in memory, so blobs backed by a file,
+such as those returned by <a href=fs.html#fsopenasblobpath-options><code>fs.openAsBlob()</code></a>, cannot be used.</li>
+</ul><p><a href=typescript.html#type-stripping>Type stripping</a> only applies to module workers loaded from
+<code>file:</code> URLs. The <code>type</code> option, not the file extension, decides how an entry is
+run, so a <code>.cts</code> entry is still evaluated as an ES module.</section>
+<section><h4>Differences from the HTML Standard<span><a id=globals_differences_from_the_html_standard></a></span><span><a class=mark id=differences-from-the-html-standard href=#differences-from-the-html-standard>#</a></span></h4><div class=api_metadata></div><p>Besides script loading, mentioned above:<ul>
+<li>Node.js has no origin model, so same-origin and cross-origin distinctions do
+not exist and <code>location.origin</code> is <code>'null'</code> for every supported scheme.</li>
+<li><code>close()</code> terminates the worker immediately instead of following the
+specification's "closing flag" algorithm, so code remaining in the current
+task after <code>close()</code> is not executed.</li>
+<li>The worker global is the normal Node.js global object with
+<code>DedicatedWorkerGlobalScope</code> inserted into its prototype chain, rather than
+a fresh global created from the interface. Node.js globals such as
+<code>process</code>, <code>Buffer</code>, and <code>require()</code> remain available to worker scripts.</li>
+<li><code>ErrorEvent</code>s dispatched at <code>Worker</code> instances include <code>message</code> and
+<code>error</code>, but <code>filename</code>, <code>lineno</code>, and <code>colno</code> are always <code>''</code>, <code>0</code>, and
+<code>0</code>. An uncaught exception terminates the worker thread, and an unhandled
+<code>error</code> event is not propagated further: it neither reaches the parent's
+global scope nor affects the exit code of the process.</li>
+<li>The following <a href=https://developer.mozilla.org/docs/Web/API/WorkerGlobalScope><code>&lt;WorkerGlobalScope></code></a> events are never dispatched, although
+their handler properties exist: <code>languagechange</code>, <code>online</code>, and <code>offline</code>,
+since these concepts do not exist in Node.js; <code>rejectionhandled</code> and
+<code>unhandledrejection</code>, since Node.js exposes the equivalent does not
+implement the <code>PromiseRejectionEvent</code> interface or the per-rejection
+<code>preventDefault()</code> behavior required by the HTML Standard.</li>
+<li>Module workers loaded from <code>file:</code> URLs support <a href=typescript.html#type-stripping>type stripping</a>.</li>
+</ul></section>
+<section><h4>Web Workers and <code>node:worker_threads</code><span><a id=globals_web_workers_and_node_worker_threads></a></span><span><a class=mark id=web-workers-and-nodeworker_threads href=#web-workers-and-nodeworker_threads>#</a></span></h4><div class=api_metadata></div><p>Every Web Worker is backed by a <a href=worker_threads.html><code>node:worker_threads</code></a> <a href=worker_threads.html#class-worker><code>&lt;Worker></code></a>, so the
+two APIs share their threading, structured clone, and transfer semantics.
+Inside a worker, [<code>worker_threads.parentPort</code>][] is the port behind
+<code>self.postMessage()</code> and the worker's <code>message</code> events, <code>isMainThread</code> is
+<code>false</code>, and <code>workerData</code> is <code>undefined</code>.<p>Web Workers, like <code>node:worker_threads</code> workers, keep the event loop alive by
+default. In Node.js, Web Workers implement the <a href=process.html#processrefmayberefable>Refable protocol</a>, and can be
+ref'd and unref'd using <code>process.ref(worker)</code> and <code>process.unref(worker)</code>.<p>As a rule of thumb, use <a href=worker_threads.html><code>node:worker_threads</code></a> directly when a program
+needs <code>workerData</code>, a custom <code>env</code> or <code>execArgv</code>, resource limits, stdio
+redirection, the <code>'online'</code> and <code>'exit'</code> events, or <code>worker.threadId</code>;
+<code>Worker</code> accepts only the <code>name</code>, <code>type</code>, and <code>credentials</code> options and,
+per the specification, its <code>terminate()</code> returns <code>undefined</code>, rather than
+a promise. Threads started through <a href=worker_threads.html><code>node:worker_threads</code></a> are ordinary
+Node.js threads and do not get the worker global scope APIs.</section>
 <section><h3>Class: <code>WritableStream</code><span><a id=globals_class_writablestream></a></span><span><a class=mark id=class-writablestream href=#class-writablestream>#</a></span></h3><div class=api_metadata><span>Added in: v18.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v23.11.0, v22.15.0<td><p>Marking the API stable.</table></details></div><p>A browser-compatible implementation of <a href=webstreams.html#class-writablestream><code>WritableStream</code></a>.</section>
 <section><h3>Class: <code>WritableStreamDefaultController</code><span><a id=globals_class_writablestreamdefaultcontroller></a></span><span><a class=mark id=class-writablestreamdefaultcontroller href=#class-writablestreamdefaultcontroller>#</a></span></h3><div class=api_metadata><span>Added in: v18.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v23.11.0, v22.15.0<td><p>Marking the API stable.</table></details></div><p>A browser-compatible implementation of <a href=webstreams.html#class-writablestreamdefaultcontroller><code>WritableStreamDefaultController</code></a>.</section>
 <section><h3>Class: <code>WritableStreamDefaultWriter</code><span><a id=globals_class_writablestreamdefaultwriter></a></span><span><a class=mark id=class-writablestreamdefaultwriter href=#class-writablestreamdefaultwriter>#</a></span></h3><div class=api_metadata><span>Added in: v18.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v23.11.0, v22.15.0<td><p>Marking the API stable.</table></details></div><p>A browser-compatible implementation of <a href=webstreams.html#class-writablestreamdefaultwriter><code>WritableStreamDefaultWriter</code></a>.</section>

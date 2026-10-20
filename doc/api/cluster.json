@@ -182,7 +182,12 @@
               },
               "signatures": [
                 {
-                  "params": []
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {boolean}",
+                    "name": "return",
+                    "type": "boolean"
+                  }
                 }
               ],
               "desc": "<p>This function returns <code>true</code> if the worker is connected to its primary via its\nIPC channel, <code>false</code> otherwise. A worker is connected to its primary after it\nhas been created. It is disconnected after the <code>'disconnect'</code> event is emitted.</p>"
@@ -199,7 +204,12 @@
               },
               "signatures": [
                 {
-                  "params": []
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {boolean}",
+                    "name": "return",
+                    "type": "boolean"
+                  }
                 }
               ],
               "desc": "<p>This function returns <code>true</code> if the worker's process has terminated (either\nbecause of exiting or being signaled). Otherwise, it returns <code>false</code>.</p>\n<pre><code class=\"language-mjs\">import cluster from 'node:cluster';\nimport http from 'node:http';\nimport { availableParallelism } from 'node:os';\nimport process from 'node:process';\n\nconst numCPUs = availableParallelism();\n\nif (cluster.isPrimary) {\n  console.log(`Primary ${process.pid} is running`);\n\n  // Fork workers.\n  for (let i = 0; i &#x3C; numCPUs; i++) {\n    cluster.fork();\n  }\n\n  cluster.on('fork', (worker) => {\n    console.log('worker is dead:', worker.isDead());\n  });\n\n  cluster.on('exit', (worker, code, signal) => {\n    console.log('worker is dead:', worker.isDead());\n  });\n} else {\n  // Workers can share any TCP connection. In this case, it is an HTTP server.\n  http.createServer((req, res) => {\n    res.writeHead(200);\n    res.end(`Current process\\n ${process.pid}`);\n    process.kill(process.pid);\n  }).listen(8000);\n}\n</code></pre>\n<pre><code class=\"language-cjs\">const cluster = require('node:cluster');\nconst http = require('node:http');\nconst numCPUs = require('node:os').availableParallelism();\n\nif (cluster.isPrimary) {\n  console.log(`Primary ${process.pid} is running`);\n\n  // Fork workers.\n  for (let i = 0; i &#x3C; numCPUs; i++) {\n    cluster.fork();\n  }\n\n  cluster.on('fork', (worker) => {\n    console.log('worker is dead:', worker.isDead());\n  });\n\n  cluster.on('exit', (worker, code, signal) => {\n    console.log('worker is dead:', worker.isDead());\n  });\n} else {\n  // Workers can share any TCP connection. In this case, it is an HTTP server.\n  http.createServer((req, res) => {\n    res.writeHead(200);\n    res.end(`Current process\\n ${process.pid}`);\n    process.kill(process.pid);\n  }).listen(8000);\n}\n</code></pre>"

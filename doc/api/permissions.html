@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>Permissions | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/permissions.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-permissions><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>Permissions | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/permissions.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-permissions><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=permissions class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><a href=permissions.html#permissions>Permissions</a>
 <ul>
@@ -132,6 +133,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -291,8 +293,8 @@ SIGUSR1 won't be created).<pre class="catppuccin-latte catppuccin-mocha language
 using the <a href=cli.html#--allow-child-process><code>--allow-child-process</code></a> and <a href=cli.html#--allow-worker><code>--allow-worker</code></a> respectively.<p>To allow network access, use <a href=cli.html#--allow-net><code>--allow-net</code></a> and for allowing native addons
 when using permission model, use the <a href=cli.html#--allow-addons><code>--allow-addons</code></a>
 flag. For WASI, use the <a href=cli.html#--allow-wasi><code>--allow-wasi</code></a> flag. For FFI, use the
-<a href=cli.html#--allow-ffi><code>--allow-ffi</code></a> flag. The <a href=ffi.html><code>node:ffi</code></a> module also requires the
-<code>--experimental-ffi</code> flag and is only available in builds with FFI support.<p>To allow use of OpenSSL STORE loaders, for example to load a private key
+<a href=cli.html#--allow-ffi><code>--allow-ffi</code></a> flag. The <a href=ffi.html><code>node:ffi</code></a> module is only available in
+builds with FFI support.<p>To allow use of OpenSSL STORE loaders, for example to load a private key
 from a <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a> passed to <a href=crypto.html#cryptocreateprivatekeykey><code>crypto.createPrivateKey()</code></a>, use the
 <a href=cli.html#--allow-openssl-store><code>--allow-openssl-store</code></a> flag.
 This flag grants broad authority to configured OpenSSL STORE loaders, which may
@@ -326,7 +328,7 @@ inside it - you must drop the same directory that was originally granted.<pre cl
 <span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>// Drop read access to /etc/myapp after initialization</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>process</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>permission</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>drop</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'fs.read'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> '/etc/myapp'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span>
-<span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>// This will now throw ERR_ACCESS_DENIED</span></span>
+<span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>// This will now return false</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>process</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>permission</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>has</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'fs.read'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> '/etc/myapp/config.json'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic> // false</span></span>
 <span class=line></span>
 <span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>// Drop child process permission entirely</span></span>
@@ -377,7 +379,7 @@ such as through the <code>node:sqlite</code> module.<p>To allow access to the fi
 in the allowed file system read list. For example:<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --permission index.js</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre><ul>
 <li><code>index.js</code> will be included in the allowed file system read list</li>
-</ul><pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node -r /path/to/custom-require.js --permission index.js.</span></span>
+</ul><pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node -r /path/to/custom-require.js --permission index.js</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre><ul>
 <li><code>/path/to/custom-require.js</code> will be included in the allowed file system read
 list.</li>
@@ -404,11 +406,17 @@ exists, it will be treated as <code>/home/test/files/*</code>. However, if the d
 does not exist, the wildcard will not be added, and access will be limited to
 <code>/home/test/files</code>. If you want to allow access to a folder that does not exist
 yet, make sure to explicitly include the wildcard:
-<code>/my-path/folder-do-not-exist/*</code>.</section>
+<code>/my-path/folder-do-not-exist/*</code>.<p>Some <code>node:fs</code> operations act on an already-open file descriptor rather than a
+path, so they cannot be tied to a <code>--allow-fs-read</code> or <code>--allow-fs-write</code> grant.
+When the permission model is enabled these operations are disabled and throw
+<code>ERR_ACCESS_DENIED</code>, regardless of how the descriptor was obtained. This applies
+both to the top-level <code>node:fs</code> functions and to the equivalent
+<code>FileHandle</code> methods, and currently includes <code>fsync</code>/<code>fdatasync</code>,
+<code>fchmod</code>, <code>fchown</code>, and <code>futimes</code> (and their synchronous variants).</section>
 <section><h5>Configuration file support<span><a id=permissions_configuration_file_support></a></span><span><a class=mark id=configuration-file-support href=#configuration-file-support>#</a></span></h5><div class=api_metadata></div><p>In addition to passing permission flags on the command line, they can also be
-declared in a Node.js configuration file when using the experimental
-[<code>--experimental-config-file</code>][] flag. Permission options must be placed inside
-the <code>permission</code> top-level object.<p>Example <code>node.config.json</code>:<pre class="catppuccin-latte catppuccin-mocha language-json shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>{</span></span>
+declared in a Node.js configuration file when using the <a href=cli.html#--config-filepath---config-file><code>--config-file</code></a>
+flag. Permission options must be placed inside the <code>permission</code> top-level
+object.<p>Example <code>node.config.json</code>:<pre class="catppuccin-latte catppuccin-mocha language-json shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>{</span></span>
 <span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>  "</span><span style=color:#1E66F5;--shiki-dark:#89B4FA>permission</span><span style=color:#7C7F93;--shiki-dark:#9399B2>"</span><span style=color:#7C7F93;--shiki-dark:#9399B2>:</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span></span>
 <span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>    "</span><span style=color:#1E66F5;--shiki-dark:#89B4FA>allow-fs-read</span><span style=color:#7C7F93;--shiki-dark:#9399B2>"</span><span style=color:#7C7F93;--shiki-dark:#9399B2>:</span><span style=color:#7C7F93;--shiki-dark:#9399B2> [</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>"./foo"</span><span style=color:#7C7F93;--shiki-dark:#9399B2>],</span></span>
 <span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>    "</span><span style=color:#1E66F5;--shiki-dark:#89B4FA>allow-fs-write</span><span style=color:#7C7F93;--shiki-dark:#9399B2>"</span><span style=color:#7C7F93;--shiki-dark:#9399B2>:</span><span style=color:#7C7F93;--shiki-dark:#9399B2> [</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>"./bar"</span><span style=color:#7C7F93;--shiki-dark:#9399B2>],</span></span>
@@ -421,7 +429,7 @@ the <code>permission</code> top-level object.<p>Example <code>node.config.json</
 <span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>  }</span></span>
 <span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>json</span><button class=copy-button>copy</button></div></pre><p>When the <code>permission</code> namespace is present in the configuration file, Node.js
-automatically enables the <code>--permission</code> flag. Run with:<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --experimental-default-config-file app.js</span></span>
+automatically enables the <code>--permission</code> flag. Run with:<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --config-file app.js</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre></section>
 <section><h5>Using the Permission Model with <code>npx</code><span><a id=permissions_using_the_permission_model_with_npx></a></span><span><a class=mark id=using-the-permission-model-with-npx href=#using-the-permission-model-with-npx>#</a></span></h5><div class=api_metadata></div><p>If you're using <a href=https://docs.npmjs.com/cli/commands/npx><code>npx</code></a> to execute a Node.js script, you can enable the
 Permission Model by passing the <code>--node-options</code> flag. For example:<pre class="catppuccin-latte catppuccin-mocha language-bash shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>npx</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --node-options="--permission"</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> package-name</span></span>
@@ -446,7 +454,13 @@ grant read access to the npm cache directory:</p>
 also be passed through the <code>--node-options</code> flag. This flexibility makes it
 easy to configure permissions as needed when using <code>npx</code>.</section>
 <section><h5>Permission Model constraints<span><a id=permissions_permission_model_constraints></a></span><span><a class=mark id=permission-model-constraints href=#permission-model-constraints>#</a></span></h5><div class=api_metadata></div><p>There are constraints you need to know before using this system:<ul>
-<li>The model does not inherit to a worker thread.</li>
+<li>The model does not inherit to a worker thread. A default
+<code>worker_threads.Worker</code> (no <code>execArgv</code> option) still receives the parent
+process CLI flags, including <code>--permission</code> and <code>--allow-*</code> if those were
+passed to the parent. Setting <code>execArgv</code> explicitly, including
+<code>execArgv: []</code>, replaces the inherited flags. The worker then does not keep
+the parent's Permission Model grants unless those flags are listed again in
+<code>execArgv</code>. That difference is intended, not a bypass.</li>
 <li>When using the Permission Model the following features will be restricted:
 <ul>
 <li>Native modules</li>
@@ -465,6 +479,14 @@ However, certain flags such as <code>--env-file</code> or <code>--openssl-config
 to read files before environment initialization. As a result, such flags are
 not subject to the rules of the Permission Model. The same applies for V8
 flags that can be set via runtime through <code>v8.setFlagsFromString</code>.</li>
+<li>Files that Node.js itself creates, writes, or reads at a location selected
+by an operator flag may not be consistently checked against the Permission
+Model, in particular when the flag accepts a template or pattern that
+expands to several paths. For example, trace files rotated by
+<code>--trace-event-file-pattern</code> (<code>${rotation}</code>) can be written even when the
+expanded path is not covered by <code>--allow-fs-write</code>. Because the location is
+chosen by the operator, gaps like this are treated as regular bugs rather
+than vulnerabilities. Please report them through the regular issue tracker.</li>
 <li>OpenSSL engines cannot be requested at runtime when the Permission
 Model is enabled, affecting the built-in crypto, https, and tls modules.</li>
 <li>Run-Time Loadable Extensions cannot be loaded when the Permission Model is

@@ -1,3 +1,20 @@
+node26 (26.12.0-0parrot1) unstable; urgency=medium
+
+  * New upstream release, updating from 26.7.0 to pick up upstream fixes.
+    The reported intermittent segfault still needs reproducer-based testing.
+  * Refresh the amd64/arm64 build-time bootstrap SHA256 pins from the signed
+    26.12.0 release manifest; retain the pinned riscv64 bootstrap. Continue
+    compiling the shipped runtime and libnode from source with the existing
+    build configuration. The libnode ABI remains 147.
+  * Substitute the upstream version in libnode-dev's virtual Provides, as
+    already done for nodejs and the source-derived bundled npm version.
+  * Fix watch URL/filename mangles to handle absolute release-directory URLs
+    so uscan downloads the source archive rather than the directory index.
+  * Preserve vendored Cargo.toml.orig source files during dh_clean instead
+    of treating them as disposable patch backups.
+
+ -- Parrot Security <team@parrotsec.org>  Tue, 20 Oct 2026 15:25:00 +0200
+
 node26 (26.7.0-0parrot4) unstable; urgency=medium
 
   * Match Node 26's actual compiler requirements: GCC/G++ >= 13.2 on

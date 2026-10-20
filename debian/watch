@@ -4,11 +4,12 @@ version=4
 # tarball. The dist index links one directory per release with a relative href
 # (v26.x.y/); we match those v26 directories and rewrite the match to the
 # source tarball URL inside that directory. uscan picks the newest matching
-# version and repacks the download to the package's orig name.
+# version and links the pristine download to the package's orig name.
+# uscan resolves the href to an absolute URL before applying the mangles.
 
 opts="\
-filenamemangle=s%^v?@ANY_VERSION@/?$%node26-@VERSION@.tar.xz%,\
-downloadurlmangle=s%^v?(26\.\d+\.\d+)/?$%https://nodejs.org/dist/v$1/node-v$1.tar.xz%\
+filenamemangle=s%.*/v?(26\.\d+\.\d+)/?$%node-v$1.tar.xz%,\
+downloadurlmangle=s%/v?(26\.\d+\.\d+)/?$%/v$1/node-v$1.tar.xz%\
 " \
   https://nodejs.org/dist/ \
   v?(26\.\d+\.\d+)/

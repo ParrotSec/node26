@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>Child process | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/child_process.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-child_process><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>Child process | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/child_process.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-child_process><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=child_process class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><span class=stability_2><a href=child_process.html#child-process>Child process</a></span>
 <ul>
@@ -174,6 +175,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -498,7 +500,12 @@ stdout and stderr output of the child process. By default, Node.js will decode
 the output as UTF-8 and pass strings to the callback. The <code>encoding</code> option
 can be used to specify the character encoding used to decode the stdout and
 stderr output. If <code>encoding</code> is <code>'buffer'</code>, or an unrecognized character
-encoding, <code>Buffer</code> objects will be passed to the callback instead.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox checked><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> exec </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:child_process'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+encoding, <code>Buffer</code> objects will be passed to the callback instead.<blockquote>
+<p>Using the <code>signal</code> option to destroy a long-lived child process as a resource
+cleanup mechanism is deprecated. The <code>signal</code> option remains appropriate for
+cancellation, externally propagated aborts, and timeouts. See
+<a href=deprecations.html#dep0209-using-abortsignal-to-dispose-of-resources>DEP0209</a>.</p>
+</blockquote><pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox checked><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> exec </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:child_process'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>exec</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'cat *.js missing_file | wc -l'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#7C7F93;--shiki-dark:#9399B2> (</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic>error</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic> stdout</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic> stderr</span><span style=color:#7C7F93;--shiki-dark:#9399B2>)</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> =></span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>  if</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> (error) </span><span style=color:#7C7F93;--shiki-dark:#9399B2>{</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>    console</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>error</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>`exec error: </span><span style=color:#7C7F93;--shiki-dark:#9399B2>${</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>error</span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>`</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
@@ -599,7 +606,12 @@ AbortSignal.</li>
 </ul><p>The <code>child_process.execFile()</code> function is similar to <a href=#child_processexeccommand-options-callback><code>child_process.exec()</code></a>
 except that it does not spawn a shell by default. Rather, the specified
 executable <code>file</code> is spawned directly as a new process making it slightly more
-efficient than <a href=#child_processexeccommand-options-callback><code>child_process.exec()</code></a>.<p>The same options as <a href=#child_processexeccommand-options-callback><code>child_process.exec()</code></a> are supported. Since a shell is
+efficient than <a href=#child_processexeccommand-options-callback><code>child_process.exec()</code></a>.<blockquote>
+<p>Using the <code>signal</code> option to destroy a long-lived child process as a resource
+cleanup mechanism is deprecated. The <code>signal</code> option remains appropriate for
+cancellation, externally propagated aborts, and timeouts. See
+<a href=deprecations.html#dep0209-using-abortsignal-to-dispose-of-resources>DEP0209</a>.</p>
+</blockquote><p>The same options as <a href=#child_processexeccommand-options-callback><code>child_process.exec()</code></a> are supported. Since a shell is
 not spawned, behaviors such as I/O redirection and file globbing are not
 supported.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox checked><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> execFile </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:child_process'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> child </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> execFile</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> [</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'--version'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>]</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#7C7F93;--shiki-dark:#9399B2> (</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic>error</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic> stdout</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic> stderr</span><span style=color:#7C7F93;--shiki-dark:#9399B2>)</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> =></span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span></span>
@@ -688,6 +700,8 @@ When this option is provided, it overrides <code>silent</code>. If the array var
 is used, it must contain exactly one item with value <code>'ipc'</code> or an error
 will be thrown. For instance <code>[0, 1, 2, 'ipc']</code>.</li>
 <li><code>uid</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> Sets the user identity of the process (see <a href=http://man7.org/linux/man-pages/man2/setuid.2.html><code>setuid(2)</code></a>).</li>
+<li><code>windowsHide</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> Hide the subprocess console window that would
+normally be created on Windows systems. <strong>Default:</strong> <code>false</code>.</li>
 <li><code>windowsVerbatimArguments</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> No quoting or escaping of arguments is
 done on Windows. Ignored on Unix. <strong>Default:</strong> <code>false</code>.</li>
 <li><code>timeout</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> In milliseconds the maximum amount of time the process
@@ -711,7 +725,12 @@ recommended.<p>By default, <code>child_process.fork()</code> will spawn new Node
 parent process using the file descriptor (fd) identified using the
 environment variable <code>NODE_CHANNEL_FD</code> on the child process.<p>Unlike the <a href=http://man7.org/linux/man-pages/man2/fork.2.html><code>fork(2)</code></a> POSIX system call, <code>child_process.fork()</code> does not clone the
 current process.<p>The <code>shell</code> option available in <a href=#child_processspawncommand-args-options><code>child_process.spawn()</code></a> is not supported by
-<code>child_process.fork()</code> and will be ignored if set.<p>If the <code>signal</code> option is enabled, calling <code>.abort()</code> on the corresponding
+<code>child_process.fork()</code> and will be ignored if set.<blockquote>
+<p>Using the <code>signal</code> option to destroy a long-lived child process as a resource
+cleanup mechanism is deprecated. The <code>signal</code> option remains appropriate for
+cancellation, externally propagated aborts, and timeouts. See
+<a href=deprecations.html#dep0209-using-abortsignal-to-dispose-of-resources>DEP0209</a>.</p>
+</blockquote><p>If the <code>signal</code> option is enabled, calling <code>.abort()</code> on the corresponding
 <code>AbortController</code> is similar to calling <code>.kill()</code> on the child process except
 the error passed to the callback will be an <code>AbortError</code>:<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox checked><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> fork </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:child_process'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span>
@@ -793,7 +812,12 @@ If not given, the default is to inherit the current working directory. If given,
 but the path does not exist, the child process emits an <code>ENOENT</code> error
 and exits immediately. <code>ENOENT</code> is also emitted when the command
 does not exist.<p>Use <code>env</code> to specify environment variables that will be visible to the new
-process, the default is <a href=process.html#processenv><code>process.env</code></a>.<p><code>undefined</code> values in <code>env</code> will be ignored.<p>Example of running <code>ls -lh /usr</code>, capturing <code>stdout</code>, <code>stderr</code>, and the
+process, the default is <a href=process.html#processenv><code>process.env</code></a>.<p><code>undefined</code> values in <code>env</code> will be ignored.<blockquote>
+<p>Using the <code>signal</code> option to destroy a long-lived child process as a resource
+cleanup mechanism is deprecated. The <code>signal</code> option remains appropriate for
+cancellation, externally propagated aborts, and timeouts. See
+<a href=deprecations.html#dep0209-using-abortsignal-to-dispose-of-resources>DEP0209</a>.</p>
+</blockquote><p>Example of running <code>ls -lh /usr</code>, capturing <code>stdout</code>, <code>stderr</code>, and the
 exit code:<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox checked><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> spawn </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:child_process'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> ls </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> spawn</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'ls'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> [</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'-lh'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> '/usr'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>])</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span>
@@ -1048,7 +1072,12 @@ expected) can lead to unexpected results or errors. This practice is discouraged
 as it may result in undefined behavior or dropped callbacks if the stream
 encounters errors. Always ensure that <code>stdin</code> is used as readable and
 <code>stdout</code>/<code>stderr</code> as writable to maintain the intended flow of data between
-the parent and child processes.</p>
+the parent and child processes. The stream passed in the <code>stdin</code> position
+is the source from which the child process reads its input, and the
+streams in the <code>stdout</code>/<code>stderr</code> positions receive the output the child
+writes. This is the opposite of <a href=#subprocessstdin><code>subprocess.stdin</code></a> (writable) and
+<a href=#subprocessstdout><code>subprocess.stdout</code></a> (readable), which are the parent's ends of the
+pipes created by <code>'pipe'</code>.</p>
 </li>
 <li>
 <p>Positive integer: The integer value is interpreted as a file descriptor
@@ -1129,7 +1158,8 @@ shell can be specified as a string. See <a href=#shell-requirements>Shell requir
 <a href=#default-windows-shell>Default Windows shell</a>. <strong>Default:</strong> <code>false</code> (no shell).</li>
 </ul>
 </li>
-<li>Returns: <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> The stdout from the command.</li>
+<li>Returns: <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> If <code>stdio</code> is <code>'pipe'</code>, the stdout from the
+command, otherwise null.</li>
 </ul><p>The <code>child_process.execFileSync()</code> method is generally identical to
 <a href=#child_processexecfilefile-args-options-callback><code>child_process.execFile()</code></a> with the exception that the method will not
 return until the child process has fully closed. When a timeout has been
@@ -1221,7 +1251,8 @@ truncated. See caveat at <a href=#maxbuffer-and-unicode><code>maxBuffer</code> 
 normally be created on Windows systems. <strong>Default:</strong> <code>false</code>.</li>
 </ul>
 </li>
-<li>Returns: <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> The stdout from the command.</li>
+<li>Returns: <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> If <code>stdio</code> is <code>'pipe'</code>, the stdout from the
+command, otherwise null.</li>
 </ul><p>The <code>child_process.execSync()</code> method is generally identical to
 <a href=#child_processexeccommand-options-callback><code>child_process.exec()</code></a> with the exception that the method will not return
 until the child process has fully closed. When a timeout has been encountered
@@ -1272,8 +1303,10 @@ normally be created on Windows systems. <strong>Default:</strong> <code>false</
 <ul>
 <li><code>pid</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> Pid of the child process.</li>
 <li><code>output</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array><code>&lt;Array></code></a> Array of results from stdio output.</li>
-<li><code>stdout</code> <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> The contents of <code>output[1]</code>.</li>
-<li><code>stderr</code> <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> The contents of <code>output[2]</code>.</li>
+<li><code>stdout</code> <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> If <code>stdio</code> is <code>'pipe'</code>, the contents of
+<code>output[1]</code>, otherwise null.</li>
+<li><code>stderr</code> <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> If <code>stdio</code> is <code>'pipe'</code>, the contents of
+<code>output[2]</code>, otherwise null.</li>
 <li><code>status</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> The exit code of the subprocess, or <code>null</code> if the
 subprocess terminated due to a signal.</li>
 <li><code>signal</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> The signal used to kill the subprocess, or <code>null</code> if
@@ -1365,12 +1398,12 @@ open.<p>Node.js establishes signal handlers for <code>SIGINT</code> and <code>SI
 processes will not terminate immediately due to receipt of those signals.
 Rather, Node.js will perform a sequence of cleanup actions and then will
 re-raise the handled signal.<p>See <a href=http://man7.org/linux/man-pages/man2/waitpid.2.html><code>waitpid(2)</code></a>.<p>When <code>code</code> is <code>null</code> due to signal termination, you can use
-<a href=util.html#utilconvertprocesssignaltoexitcodesignalcode><code>util.convertProcessSignalToExitCode()</code></a> to convert the signal to a POSIX
+<a href=util.html#utilconvertprocesssignaltoexitcodesignal><code>util.convertProcessSignalToExitCode()</code></a> to convert the signal to a POSIX
 exit code.</section>
 <section><h4>Event: <code>'message'</code><span><a id=child_process_event_message></a></span><span><a class=mark id=event-message href=#event-message>#</a></span></h4><div class=api_metadata><span>Added in: v0.5.9</span></div><ul>
 <li><code>message</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a> A parsed JSON object or primitive value.</li>
 <li><code>sendHandle</code> <a href=net.html#serverlistenhandle-backlog-callback><code>&lt;Handle></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#undefined_type><code>&lt;undefined></code></a> <code>undefined</code> or a <a href=net.html#class-netsocket><code>net.Socket</code></a>,
-<a href=net.html#class-netserver><code>net.Server</code></a>, or <a href=dgram.html#class-dgramsocket><code>dgram.Socket</code></a> object.</li>
+<a href=net.html#class-netserver><code>net.Server</code></a>, <a href=net.html#class-netboundsocket><code>net.BoundSocket</code></a>, or <a href=dgram.html#class-dgramsocket><code>dgram.Socket</code></a> object.</li>
 </ul><p>The <code>'message'</code> event is triggered when a child process uses
 <a href=process.html#processsendmessage-sendhandle-options-callback><code>process.send()</code></a> to send messages.<p>The message goes through serialization and parsing. The resulting
 message might not be the same as what is originally sent.<p>If the <code>serialization</code> option was set to <code>'advanced'</code> used when spawning the
@@ -1413,7 +1446,7 @@ within the child process to close the IPC channel as well.</section>
 If the child process is still running, the field will be <code>null</code>.<p>When the child process is terminated by a signal, <code>subprocess.exitCode</code> will be
 <code>null</code> and <a href=#subprocesssignalcode><code>subprocess.signalCode</code></a> will be set. To get the corresponding
 POSIX exit code, use
-<a href=util.html#utilconvertprocesssignaltoexitcodesignalcode><code>util.convertProcessSignalToExitCode(subprocess.signalCode)</code></a>.</section>
+<a href=util.html#utilconvertprocesssignaltoexitcodesignal><code>util.convertProcessSignalToExitCode(subprocess.signalCode)</code></a>.</section>
 <section><h4><code>subprocess.kill([signal])</code><span><a id=child_process_subprocess_kill_signal></a></span><span><a class=mark id=subprocesskillsignal href=#subprocesskillsignal>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.90</span></div><ul>
 <li><code>signal</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a></li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a></li>
@@ -1445,10 +1478,14 @@ cannot be delivered. Sending a signal to a child process that has already exited
 is not an error but may have unforeseen consequences. Specifically, if the
 process identifier (PID) has been reassigned to another process, the signal will
 be delivered to that process instead which can have unexpected results.<p>While the function is called <code>kill</code>, the signal delivered to the child process
-may not actually terminate the process.<p>See <a href=http://man7.org/linux/man-pages/man2/kill.2.html><code>kill(2)</code></a> for reference.<p>On Windows, where POSIX signals do not exist, the <code>signal</code> argument will be
-ignored except for <code>'SIGKILL'</code>, <code>'SIGTERM'</code>, <code>'SIGINT'</code> and <code>'SIGQUIT'</code>, and the
-process will always be killed forcefully and abruptly (similar to <code>'SIGKILL'</code>).
-See <a href=process.html#signal-events>Signal Events</a> for more details.<p>On Linux, child processes of child processes will not be terminated
+may not actually terminate the process.<p>See <a href=http://man7.org/linux/man-pages/man2/kill.2.html><code>kill(2)</code></a> for reference.<p>On Windows, where POSIX signals do not exist, signals are handled as follows.
+<code>'SIGKILL'</code>, <code>'SIGTERM'</code>, <code>'SIGINT'</code> and <code>'SIGQUIT'</code> terminate the process
+forcefully and abruptly (similar to <code>'SIGKILL'</code>); any other signal whose name is
+known on Windows (such as <code>'SIGHUP'</code>) does the same. <code>'SIGWINCH'</code> is not
+terminal and is not coerced: <code>subprocess.kill()</code> throws an <code>ENOSYS</code> error and
+the child keeps running. A signal name that does not exist on Windows (such as
+<code>'SIGSTOP'</code>) throws an <code>ERR_UNKNOWN_SIGNAL</code> error. See <a href=process.html#signal-events>Signal Events</a> for more
+details.<p>On Linux, child processes of child processes will not be terminated
 when attempting to kill their parent. This is likely to happen when running a
 new process in a shell or with the use of the <code>shell</code> option of <code>ChildProcess</code>:<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox checked><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> spawn </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:child_process'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span>
@@ -1529,10 +1566,10 @@ process to wait for the child process to exit before exiting itself.<pre style=b
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>subprocess</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>unref</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>subprocess</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>ref</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
-<section><h4><code>subprocess.send(message[, sendHandle[, options]][, callback])</code><span><a id=child_process_subprocess_send_message_sendhandle_options_callback></a></span><span><a class=mark id=subprocesssendmessage-sendhandle-options-callback href=#subprocesssendmessage-sendhandle-options-callback>#</a></span></h4><div class=api_metadata><span>Added in: v0.5.9</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v5.8.0<td><p>The <code>options</code> parameter, and the <code>keepOpen</code> option in particular, is supported now.<tr><td>v5.0.0<td><p>This method returns a boolean for flow control now.<tr><td>v4.0.0<td><p>The <code>callback</code> parameter is supported now.</table></details></div><ul>
+<section><h4><code>subprocess.send(message[, sendHandle[, options]][, callback])</code><span><a id=child_process_subprocess_send_message_sendhandle_options_callback></a></span><span><a class=mark id=subprocesssendmessage-sendhandle-options-callback href=#subprocesssendmessage-sendhandle-options-callback>#</a></span></h4><div class=api_metadata><span>Added in: v0.5.9</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.10.0<td><p><code>net.BoundSocket</code> instances can now be sent.<tr><td>v5.8.0<td><p>The <code>options</code> parameter, and the <code>keepOpen</code> option in particular, is supported now.<tr><td>v5.0.0<td><p>This method returns a boolean for flow control now.<tr><td>v4.0.0<td><p>The <code>callback</code> parameter is supported now.</table></details></div><ul>
 <li><code>message</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a></li>
 <li><code>sendHandle</code> <a href=net.html#serverlistenhandle-backlog-callback><code>&lt;Handle></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#undefined_type><code>&lt;undefined></code></a> <code>undefined</code>, or a <a href=net.html#class-netsocket><code>net.Socket</code></a>,
-<a href=net.html#class-netserver><code>net.Server</code></a>, or <a href=dgram.html#class-dgramsocket><code>dgram.Socket</code></a> object.</li>
+<a href=net.html#class-netserver><code>net.Server</code></a>, <a href=net.html#class-netboundsocket><code>net.BoundSocket</code></a>, or <a href=dgram.html#class-dgramsocket><code>dgram.Socket</code></a> object.</li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a> The <code>options</code> argument, if present, is an object used to
 parameterize the sending of certain types of handles. <code>options</code> supports
 the following properties:
@@ -1579,11 +1616,15 @@ event. Rather, such messages are emitted using the
 <code>'internalMessage'</code> event and are consumed internally by Node.js.
 Applications should avoid using such messages or listening for
 <code>'internalMessage'</code> events as it is subject to change without notice.<p>The optional <code>sendHandle</code> argument that may be passed to <code>subprocess.send()</code> is
-for passing a TCP server or socket object to the child process. The child process will
+for passing a TCP server, socket or <a href=net.html#class-netboundsocket><code>net.BoundSocket</code></a> object to the child
+process. The child process will
 receive the object as the second argument passed to the callback function
 registered on the <a href=process.html#event-message><code>'message'</code></a> event. Any data that is received
 and buffered in the socket will not be sent to the child. Sending IPC sockets is
-not supported on Windows.<p>The optional <code>callback</code> is a function that is invoked after the message is
+not supported on Windows.<p>Sending a <code>net.BoundSocket</code> moves its underlying TCP handle to the child
+process, leaving the source instance in the adopted state as if it had been
+adopted by a server or socket. The bound socket must not have been adopted or
+closed, and pipe (<code>path</code>) binds cannot be sent.<p>The optional <code>callback</code> is a function that is invoked after the message is
 sent but before the child process may have received it. The function is called with a
 single argument: <code>null</code> on success, or an <a href=errors.html#class-error><code>Error</code></a> object on failure.<p>If no <code>callback</code> function is provided and the message cannot be sent, an
 <code>'error'</code> event will be emitted by the <a href=#class-childprocess><code>ChildProcess</code></a> object. This can
@@ -1693,7 +1734,7 @@ connection to the child.</section>
 </ul><p>The <code>subprocess.signalCode</code> property indicates the signal received by
 the child process if any, else <code>null</code>.<p>When the child process is terminated by a signal, <a href=#subprocessexitcode><code>subprocess.exitCode</code></a> will be <code>null</code>.
 To get the corresponding POSIX exit code, use
-<a href=util.html#utilconvertprocesssignaltoexitcodesignalcode><code>util.convertProcessSignalToExitCode(subprocess.signalCode)</code></a>.</section>
+<a href=util.html#utilconvertprocesssignaltoexitcodesignal><code>util.convertProcessSignalToExitCode(subprocess.signalCode)</code></a>.</section>
 <section><h4><code>subprocess.spawnargs</code><span><a id=child_process_subprocess_spawnargs></a></span><span><a class=mark id=subprocessspawnargs href=#subprocessspawnargs>#</a></span></h4><div class=api_metadata></div><ul>
 <li>Type: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array><code>&lt;Array></code></a></li>
 </ul><p>The <code>subprocess.spawnargs</code> property represents the full list of command-line

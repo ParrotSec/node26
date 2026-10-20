@@ -12,8 +12,8 @@
 # used purely as a BOOTSTRAP to drive the build (Node's build runs JS tools and
 # bundles deps/npm). The bootstrap is never shipped; the shipped node is the
 # one compiled here. amd64/arm64 use the official nodejs.org tarballs; riscv64
-# (no official prebuilt) uses unofficial-builds.nodejs.org. The download is
-# verified against the published SHASUMS256.txt.
+# (no official prebuilt) uses unofficial-builds.nodejs.org. Downloads are
+# verified against SHA256 pins taken from the release checksum manifests.
 
 export DH_VERBOSE = 1
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all reproducible=+all
@@ -27,7 +27,7 @@ export HOME := $(CURDIR)/debian/fakehome
 DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
-UPSTREAM_VERSION := 26.7.0
+UPSTREAM_VERSION := 26.12.0
 # Derive packaged component versions from the source tree to avoid silent
 # mismatches when updating within the Node 26 release line.
 NODE_ABI := $(shell awk '/^\#define NODE_MODULE_VERSION [0-9]+/ { print $$3 }' src/node_version.h)
@@ -38,16 +38,16 @@ ifeq ($(DEB_HOST_ARCH),amd64)
 BOOT_ARCH := x64
 BOOT_VERSION := $(UPSTREAM_VERSION)
 BOOT_BASE := https://nodejs.org/dist
-BOOT_SHA256 := 982aa24dd8be4c889c6a8ab337ddff3b0896645b20f4239356e80552c16277ee
+BOOT_SHA256 := fd47865ecd6391ebb431fc815e01b9135bf83ded5cf373247e9331e196b7aded
 else ifeq ($(DEB_HOST_ARCH),arm64)
 BOOT_ARCH := arm64
 BOOT_VERSION := $(UPSTREAM_VERSION)
 BOOT_BASE := https://nodejs.org/dist
-BOOT_SHA256 := afc7a004018485092ac8985b817b0d5684472bd9472e0b57d2ab88737e50090d
+BOOT_SHA256 := fd6cc729fa4448c2ac27c3fca5606019ced63c65a15c152c8df03e0cbce7f4c5
 else ifeq ($(DEB_HOST_ARCH),riscv64)
 BOOT_ARCH := riscv64
-# No unofficial Node 26 riscv64 binary currently exists. Node 25 is new
-# enough to drive Node 26's build tools and is used only as the bootstrap.
+# Retain the pinned Node 25 riscv64 bootstrap. It is new enough for the
+# build tools and need not match the Node version compiled and shipped.
 BOOT_VERSION := 25.9.0
 BOOT_BASE := https://unofficial-builds.nodejs.org/download/release
 BOOT_SHA256 := ff8cdee0372ab93607fe596bd695340e050ca6794b3397d52115b9d8a74d04bb
@@ -213,6 +213,11 @@ override_dh_compress:
 # ----------------------------------------------------------------------------
 # Clean.
 # ----------------------------------------------------------------------------
+# Cargo.toml.orig files are part of upstream's vendored crates, not patch
+# leftovers. Keep the pristine source intact across dpkg-buildpackage clean.
+override_dh_clean:
+	dh_clean -XCargo.toml.orig
+
 override_dh_auto_clean:
 	-dh_auto_clean
 	-$(MAKE) distclean
