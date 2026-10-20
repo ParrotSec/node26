@@ -1027,7 +1027,7 @@
               "desc": "<p>The high resolution millisecond timestamp at which the Node.js process was\ninitialized.</p>"
             },
             {
-              "textRaw": "Returns: {Object}",
+              "textRaw": "Type: {Object}",
               "name": "uvMetricsInfo",
               "type": "Object",
               "meta": {
@@ -1037,7 +1037,7 @@
                 ],
                 "changes": []
               },
-              "desc": "<p>This is a wrapper to the <code>uv_metrics_info</code> function.\nIt returns the current set of event loop metrics.</p>\n<p>It is recommended to use this property inside a function whose execution was\nscheduled using <code>setImmediate</code> to avoid collecting metrics before finishing all\noperations scheduled during the current loop iteration.</p>\n<pre><code class=\"language-cjs\">const { performance } = require('node:perf_hooks');\n\nsetImmediate(() => {\n  console.log(performance.nodeTiming.uvMetricsInfo);\n});\n</code></pre>\n<pre><code class=\"language-mjs\">import { performance } from 'node:perf_hooks';\n\nsetImmediate(() => {\n  console.log(performance.nodeTiming.uvMetricsInfo);\n});\n</code></pre>",
+              "desc": "<p>This is a wrapper to the <code>uv_metrics_info</code> function.\nIt returns the current set of event loop metrics.</p>\n<p>The values are exact up to <code>Number.MAX_SAFE_INTEGER</code>. Use\n<a href=\"#performancenodetiminguvmetricsinfobigint\"><code>performanceNodeTiming.uvMetricsInfoBigInt</code></a> to obtain the full 64-bit\nvalues reported by libuv.</p>\n<p>It is recommended to use this property inside a function whose execution was\nscheduled using <code>setImmediate</code> to avoid collecting metrics before finishing all\noperations scheduled during the current loop iteration.</p>\n<pre><code class=\"language-cjs\">const { performance } = require('node:perf_hooks');\n\nsetImmediate(() => {\n  console.log(performance.nodeTiming.uvMetricsInfo);\n});\n</code></pre>\n<pre><code class=\"language-mjs\">import { performance } from 'node:perf_hooks';\n\nsetImmediate(() => {\n  console.log(performance.nodeTiming.uvMetricsInfo);\n});\n</code></pre>",
               "options": [
                 {
                   "textRaw": "`loopCount` {number} Number of event loop iterations.",
@@ -1055,6 +1055,38 @@
                   "textRaw": "`eventsWaiting` {number} Number of events that were waiting to be processed when the event provider was called.",
                   "name": "eventsWaiting",
                   "type": "number",
+                  "desc": "Number of events that were waiting to be processed when the event provider was called."
+                }
+              ]
+            },
+            {
+              "textRaw": "Type: {Object}",
+              "name": "uvMetricsInfoBigInt",
+              "type": "Object",
+              "meta": {
+                "added": [
+                  "v26.11.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The same as <a href=\"#performancenodetiminguvmetricsinfo\"><code>performanceNodeTiming.uvMetricsInfo</code></a>, except that the values\nare <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#bigint_type\"><code>&#x3C;bigint></code></a>s carrying the full 64-bit range reported by libuv.</p>\n<p>Because <code>JSON.stringify()</code> cannot serialize <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#bigint_type\"><code>&#x3C;bigint></code></a> values, this property is\nnot enumerable and is not included in the output of <code>performanceNodeTiming.toJSON()</code>. Copies of <code>performance.nodeTiming</code> made by\nspreading its enumerable properties, for example, remain serializable.</p>\n<pre><code class=\"language-cjs\">const { performance } = require('node:perf_hooks');\n\nsetImmediate(() => {\n  console.log(performance.nodeTiming.uvMetricsInfoBigInt);\n});\n</code></pre>\n<pre><code class=\"language-mjs\">import { performance } from 'node:perf_hooks';\n\nsetImmediate(() => {\n  console.log(performance.nodeTiming.uvMetricsInfoBigInt);\n});\n</code></pre>",
+              "options": [
+                {
+                  "textRaw": "`loopCount` {bigint} Number of event loop iterations.",
+                  "name": "loopCount",
+                  "type": "bigint",
+                  "desc": "Number of event loop iterations."
+                },
+                {
+                  "textRaw": "`events` {bigint} Number of events that have been processed by the event handler.",
+                  "name": "events",
+                  "type": "bigint",
+                  "desc": "Number of events that have been processed by the event handler."
+                },
+                {
+                  "textRaw": "`eventsWaiting` {bigint} Number of events that were waiting to be processed when the event provider was called.",
+                  "name": "eventsWaiting",
+                  "type": "bigint",
                   "desc": "Number of events that were waiting to be processed when the event provider was called."
                 }
               ]
@@ -1278,6 +1310,54 @@
             },
             {
               "textRaw": "Type: {number}",
+              "name": "finalResponseHeadersStart",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The high resolution millisecond timestamp representing the time immediately\nafter Node.js receives the first byte of the final response,\nas opposed to an interim response.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "firstInterimResponseStart",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The high resolution millisecond timestamp representing the time immediately\nafter Node.js receives the first byte of the first interim response, such as\na <code>103 Early Hints</code> response.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "responseStart",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v18.2.0",
+                  "v16.17.0"
+                ],
+                "changes": [
+                  {
+                    "version": "v26.9.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/65017",
+                    "description": "This property now returns `firstInterimResponseStart` when it is non-zero."
+                  },
+                  {
+                    "version": "v19.0.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/44483",
+                    "description": "This property getter must be called with the `PerformanceResourceTiming` object as the receiver."
+                  }
+                ]
+              },
+              "desc": "<p>The high resolution millisecond timestamp representing the time immediately\nafter Node.js receives the first byte of the response from the server. This\nis <code>firstInterimResponseStart</code> when it is non-zero, and\n<code>finalResponseHeadersStart</code> otherwise.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
               "name": "responseEnd",
               "type": "number",
               "meta": {
@@ -1351,6 +1431,42 @@
                 ]
               },
               "desc": "<p>A number representing the size (in octets) received from the fetch\n(HTTP or cache), of the message body, after removing any applied\ncontent-codings.</p>"
+            },
+            {
+              "textRaw": "Type: {string}",
+              "name": "renderBlockingStatus",
+              "type": "string",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The render blocking status of the resource. It is either <code>'blocking'</code> or <code>'non-blocking'</code>.</p>"
+            },
+            {
+              "textRaw": "Type: {string}",
+              "name": "contentType",
+              "type": "string",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The minimized MIME type of the content of the fetched resource, or an empty\nstring if it cannot be determined.</p>"
+            },
+            {
+              "textRaw": "Type: {string}",
+              "name": "contentEncoding",
+              "type": "string",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The content encoding of the fetched resource, such as <code>'gzip'</code> or <code>'br'</code>.</p>"
             }
           ],
           "methods": [
@@ -1652,6 +1768,833 @@
             ],
             "changes": []
           },
+          "methods": [
+            {
+              "textRaw": "`histogram.burnRate(sloTarget)`",
+              "name": "burnRate",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`sloTarget` {number} The SLO target as a fraction between 0 and 1 (exclusive). For example, `0.999` for a 99.9% SLO.",
+                      "name": "sloTarget",
+                      "type": "number",
+                      "desc": "The SLO target as a fraction between 0 and 1 (exclusive). For example, `0.999` for a 99.9% SLO."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {number}",
+                    "name": "return",
+                    "type": "number"
+                  }
+                }
+              ],
+              "desc": "<p>Returns the SLO burn rate: <code>ewmaErrorRate / (1 - sloTarget)</code>. A burn rate\nof 1 means the error budget will be exactly exhausted over the SLO window.\nA burn rate greater than 1 means it is being consumed faster than allowed.\nRequires the histogram to have been created with both <code>halfLife</code> and\n<code>threshold</code> options.</p>\n<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\n// Track latency with a 200ms SLO threshold, half-life of 100 samples\nconst h = createHistogram({ halfLife: 100, threshold: 200_000_000 });\n\n// ... record latency values ...\n\n// Check burn rate against a 99.9% SLO\nconst rate = h.burnRate(0.999);\nif (rate > 1) {\n  console.log(`SLO burn rate: ${rate.toFixed(2)}x — error budget depleting`);\n}\n</code></pre>"
+            },
+            {
+              "textRaw": "`histogram.ccdf(value)`",
+              "name": "ccdf",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`value` {number} The value to query.",
+                      "name": "value",
+                      "type": "number",
+                      "desc": "The value to query."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {number} A probability between 0.0 and 1.0.",
+                    "name": "return",
+                    "type": "number",
+                    "desc": "A probability between 0.0 and 1.0."
+                  }
+                }
+              ],
+              "desc": "<p>Returns the complementary cumulative distribution function (CCDF) value\nfor the given value, representing the probability that a recorded value\nwill exceed <code>value</code>. Equivalent to <code>1 - histogram.cdf(value)</code>.</p>"
+            },
+            {
+              "textRaw": "`histogram.cdf(value)`",
+              "name": "cdf",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`value` {number} The value to query.",
+                      "name": "value",
+                      "type": "number",
+                      "desc": "The value to query."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {number} A probability between 0.0 and 1.0.",
+                    "name": "return",
+                    "type": "number",
+                    "desc": "A probability between 0.0 and 1.0."
+                  }
+                }
+              ],
+              "desc": "<p>Returns the cumulative distribution function (CDF) value for the given\nvalue, representing the probability that a recorded value will be less\nthan or equal to <code>value</code>. This is the inverse operation of\n<code>histogram.percentile()</code>.</p>"
+            },
+            {
+              "textRaw": "`histogram.cliffsD(other)`",
+              "name": "cliffsD",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`other` {Histogram} The histogram to compare against.",
+                      "name": "other",
+                      "type": "Histogram",
+                      "desc": "The histogram to compare against."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {number} A value between -1.0 and 1.0.",
+                    "name": "return",
+                    "type": "number",
+                    "desc": "A value between -1.0 and 1.0."
+                  }
+                }
+              ],
+              "desc": "<p>Computes <a href=\"https://en.wikipedia.org/wiki/Effect_size#Cliff&#x27;s_delta\">Cliff's delta</a>, a non-parametric effect size measure. Returns\nthe probability that a random value from this histogram exceeds a random\nvalue from <code>other</code>, minus the reverse probability. A value of 1 means every\nvalue in this histogram exceeds every value in <code>other</code>; -1 means the\nopposite; 0 means no tendency in either direction.</p>"
+            },
+            {
+              "textRaw": "`histogram.cohensD(other)`",
+              "name": "cohensD",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`other` {Histogram} The histogram to compare against.",
+                      "name": "other",
+                      "type": "Histogram",
+                      "desc": "The histogram to compare against."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {number} The effect size.",
+                    "name": "return",
+                    "type": "number",
+                    "desc": "The effect size."
+                  }
+                }
+              ],
+              "desc": "<p>Computes <a href=\"https://en.wikipedia.org/wiki/Effect_size#Cohen&#x27;s_d\">Cohen's d</a> effect size, the standardized difference between the\nmeans of this histogram and <code>other</code>, using the pooled standard deviation.\nPositive values indicate this histogram has a higher mean. By convention,\n|d| &#x3C; 0.2 is a small effect, 0.5 is medium, and 0.8 or greater is large.\nBoth histograms must have at least 2 recorded values; otherwise returns 0.</p>"
+            },
+            {
+              "textRaw": "`histogram.countAt(value)`",
+              "name": "countAt",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`value` {number} The value to query.",
+                      "name": "value",
+                      "type": "number",
+                      "desc": "The value to query."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {number}",
+                    "name": "return",
+                    "type": "number"
+                  }
+                }
+              ],
+              "desc": "<p>Returns the number of recorded values that fall within the equivalent\nvalue range of the given value.</p>"
+            },
+            {
+              "textRaw": "`histogram.diff(other)`",
+              "name": "diff",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.11.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`other` {Histogram} An earlier snapshot of this histogram.",
+                      "name": "other",
+                      "type": "Histogram",
+                      "desc": "An earlier snapshot of this histogram."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Histogram}",
+                    "name": "return",
+                    "type": "Histogram"
+                  }
+                }
+              ],
+              "desc": "<p>Returns a new <a href=\"perf_hooks.html#class-histogram\"><code>&#x3C;Histogram></code></a> containing the values recorded in this histogram after <code>other</code> was taken. Neither histogram is changed. To get the values recorded\nduring each interval without calling <code>reset()</code>, compute each difference from a\nsnapshot and keep that snapshot as the baseline for the next interval:</p>\n<pre><code class=\"language-js\">const { monitorEventLoopDelay } = require('node:perf_hooks');\n\nconst histogram = monitorEventLoopDelay();\nhistogram.enable();\nlet previous = histogram.snapshot();\n\nsetInterval(() => {\n  const current = histogram.snapshot();\n  // After a reset, use everything recorded since the reset.\n  const delta = current.resetCount === previous.resetCount ?\n    current.diff(previous) : current;\n  console.log(delta.percentile(99));\n  previous = current;\n}, 10_000);\n</code></pre>\n<p>The <code>count</code>, <code>exceeds</code>, and bucket counts of the returned histogram are the\ndifferences between the two histograms. Its <code>min</code> and <code>max</code> are computed from\nthe buckets of the difference, it has no EWMA state, and its <code>resetCount</code> is\n<code>0</code>.</p>\n<p>This method throws:</p>\n<ul>\n<li><code>ERR_INVALID_ARG_VALUE</code> if <code>other</code> has a different <code>lowest</code>, <code>highest</code>, or\n<code>figures</code> configuration.</li>\n<li><code>ERR_INVALID_STATE</code> if values have been removed from this histogram since\n<code>other</code> was taken, which is the case when the <code>resetCount</code> of the two\nhistograms differs.</li>\n<li><code>ERR_INVALID_ARG_VALUE</code> if <code>other</code> contains values that are not in this\nhistogram, for example because the histograms were passed in the wrong order.</li>\n</ul>"
+            },
+            {
+              "textRaw": "`histogram.export()`",
+              "name": "export",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": [
+                  {
+                    "version": "v26.11.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/66098",
+                    "description": "The output uses format version 2."
+                  }
+                ]
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Uint8Array}",
+                    "name": "return",
+                    "type": "Uint8Array"
+                  }
+                }
+              ],
+              "desc": "<p>Serializes the histogram to a <a href=\"https://www.rfc-editor.org/rfc/rfc8949\">CBOR</a>-encoded (RFC 8949) <code>Uint8Array</code>\nsuitable for transmission or persistent storage. The encoding uses a\ndelta-encoded sparse representation of the bucket counts, so the output size\nscales with the number of distinct recorded values rather than the total\nbucket count.</p>\n<p>The output includes all histogram configuration, bucket data, and EWMA\nstate (when enabled). It can be reconstructed into a new histogram using\n<a href=\"#perf_hooksimporthistogramdata\"><code>perf_hooks.importHistogram()</code></a>.</p>\n<p>The CBOR payload is a map with integer keys:</p>\n<table>\n<thead>\n<tr>\n<th>Key</th>\n<th>Type</th>\n<th>Field</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>0</td>\n<td>uint</td>\n<td>Format version (currently 2)</td>\n</tr>\n<tr>\n<td>1</td>\n<td>uint</td>\n<td>Lowest discernible value</td>\n</tr>\n<tr>\n<td>2</td>\n<td>uint</td>\n<td>Highest trackable value</td>\n</tr>\n<tr>\n<td>3</td>\n<td>uint</td>\n<td>Significant figures</td>\n</tr>\n<tr>\n<td>4</td>\n<td>uint</td>\n<td>Total count</td>\n</tr>\n<tr>\n<td>5</td>\n<td>uint</td>\n<td>Min value</td>\n</tr>\n<tr>\n<td>6</td>\n<td>uint</td>\n<td>Max value</td>\n</tr>\n<tr>\n<td>7</td>\n<td>uint</td>\n<td>Normalizing index offset</td>\n</tr>\n<tr>\n<td>8</td>\n<td>float64</td>\n<td>Conversion ratio</td>\n</tr>\n<tr>\n<td>9</td>\n<td>uint</td>\n<td>Counts array length</td>\n</tr>\n<tr>\n<td>10</td>\n<td>array</td>\n<td>Delta-encoded sparse counts <code>[delta, c, ...]</code></td>\n</tr>\n<tr>\n<td>11</td>\n<td>map</td>\n<td>EWMA state (omitted when disabled)</td>\n</tr>\n</tbody>\n</table>\n<p>Any standard CBOR decoder can parse the output.</p>",
+              "modules": [
+                {
+                  "textRaw": "Histogram export format compatibility",
+                  "name": "histogram_export_format_compatibility",
+                  "type": "module",
+                  "desc": "<p><a href=\"#perf_hooksimporthistogramdata\"><code>perf_hooks.importHistogram()</code></a> accepts every format version that\n<code>histogram.export()</code> has produced:</p>\n<ul>\n<li>Version 1 was produced by Node.js v26.9.0. Data with a version 1 key, or\nwithout a version key, is imported with the original semantics: keys\nthat are not listed above are rejected.</li>\n<li>Version 2 has the same layout as version 1. Keys that are not recognized\nare ignored, so later versions of Node.js can add fields to version 2\ndata without changing the version, and the data remains importable.</li>\n</ul>\n<p>Data with any other version is rejected.</p>\n<p>When the total count, min, or max value is absent, it is derived from the\nbucket counts. A total count that is present must match the bucket counts.</p>",
+                  "displayName": "Histogram export format compatibility"
+                }
+              ]
+            },
+            {
+              "textRaw": "`histogram.ksTest(other)`",
+              "name": "ksTest",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`other` {Histogram} The histogram to compare against.",
+                      "name": "other",
+                      "type": "Histogram",
+                      "desc": "The histogram to compare against."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {number} The KS D-statistic, between 0.0 and 1.0.",
+                    "name": "return",
+                    "type": "number",
+                    "desc": "The KS D-statistic, between 0.0 and 1.0."
+                  }
+                }
+              ],
+              "desc": "<p>Computes the Kolmogorov-Smirnov test statistic comparing this histogram's\ndistribution to <code>other</code>. A value of 0 indicates identical distributions;\nvalues close to 1 indicate completely disjoint distributions. Useful for\ndetecting performance regressions by comparing before/after histograms.</p>"
+            },
+            {
+              "textRaw": "`histogram.linearBuckets(stepSize)`",
+              "name": "linearBuckets",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`stepSize` {number} The width of each linear bucket.",
+                      "name": "stepSize",
+                      "type": "number",
+                      "desc": "The width of each linear bucket."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Map} A map of bucket boundary values to counts.",
+                    "name": "return",
+                    "type": "Map",
+                    "desc": "A map of bucket boundary values to counts."
+                  }
+                }
+              ],
+              "desc": "<p>Returns the histogram data rebucketed into linearly-spaced intervals\nof <code>stepSize</code>. Useful for visualization and export.</p>"
+            },
+            {
+              "textRaw": "`histogram.logBuckets(firstBucket, base)`",
+              "name": "logBuckets",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`firstBucket` {number} The value of the first bucket boundary.",
+                      "name": "firstBucket",
+                      "type": "number",
+                      "desc": "The value of the first bucket boundary."
+                    },
+                    {
+                      "textRaw": "`base` {number} The logarithmic base for bucket width growth. Must be > 1.",
+                      "name": "base",
+                      "type": "number",
+                      "desc": "The logarithmic base for bucket width growth. Must be > 1."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Map} A map of bucket boundary values to counts.",
+                    "name": "return",
+                    "type": "Map",
+                    "desc": "A map of bucket boundary values to counts."
+                  }
+                }
+              ],
+              "desc": "<p>Returns the histogram data rebucketed into logarithmically-spaced\nintervals, where each bucket's width is multiplied by <code>base</code>.\nUseful for visualization and export.</p>"
+            },
+            {
+              "textRaw": "`histogram.mannWhitneyTest(other)`",
+              "name": "mannWhitneyTest",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`other` {Histogram} The histogram to compare against.",
+                      "name": "other",
+                      "type": "Histogram",
+                      "desc": "The histogram to compare against."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Object}",
+                    "name": "return",
+                    "type": "Object",
+                    "options": [
+                      {
+                        "textRaw": "`uStatistic` {number} The Mann-Whitney U statistic.",
+                        "name": "uStatistic",
+                        "type": "number",
+                        "desc": "The Mann-Whitney U statistic."
+                      },
+                      {
+                        "textRaw": "`zScore` {number} The z-score (normal approximation).",
+                        "name": "zScore",
+                        "type": "number",
+                        "desc": "The z-score (normal approximation)."
+                      },
+                      {
+                        "textRaw": "`pValue` {number} Two-tailed p-value.",
+                        "name": "pValue",
+                        "type": "number",
+                        "desc": "Two-tailed p-value."
+                      }
+                    ]
+                  }
+                }
+              ],
+              "desc": "<p>Performs a <a href=\"https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test\">Mann-Whitney U test</a> comparing whether this histogram tends to\nproduce larger or smaller values than <code>other</code>. Unlike <code>welchTest()</code>, this is a\nnon-parametric test that makes no assumptions about the shape of the\ndistributions. Uses the normal approximation with tie correction for the\np-value.</p>"
+            },
+            {
+              "textRaw": "`histogram.meanCI([options])`",
+              "name": "meanCI",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`confidence` {number} The confidence level for the interval, between 0 and 1 (exclusive). **Default:** `0.95`.",
+                          "name": "confidence",
+                          "type": "number",
+                          "default": "`0.95`",
+                          "desc": "The confidence level for the interval, between 0 and 1 (exclusive)."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Object}",
+                    "name": "return",
+                    "type": "Object",
+                    "options": [
+                      {
+                        "textRaw": "`mean` {number} The mean estimate, equivalent to `histogram.mean`.",
+                        "name": "mean",
+                        "type": "number",
+                        "desc": "The mean estimate, equivalent to `histogram.mean`."
+                      },
+                      {
+                        "textRaw": "`lower` {number} The lower bound of the confidence interval.",
+                        "name": "lower",
+                        "type": "number",
+                        "desc": "The lower bound of the confidence interval."
+                      },
+                      {
+                        "textRaw": "`upper` {number} The upper bound of the confidence interval.",
+                        "name": "upper",
+                        "type": "number",
+                        "desc": "The upper bound of the confidence interval."
+                      }
+                    ]
+                  }
+                }
+              ],
+              "desc": "<p>Returns a two-sided confidence interval for the mean using Student's\nt-distribution and the sample standard error. A higher confidence level\nproduces a wider interval. This interval assumes that samples are independent\nand approximately normally distributed, although the approximation is robust\nfor sufficiently large samples.</p>\n<p>The result reflects the histogram's configured precision and is calculated\nfrom the values represented by its buckets. With fewer than two recorded\nvalues, <code>lower</code> and <code>upper</code> are <code>NaN</code>. When all recorded values are equal,\n<code>lower</code> and <code>upper</code> equal <code>mean</code>.</p>\n<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\nconst h = createHistogram();\nfor (let i = 1; i &#x3C;= 100; i++) h.record(i);\n\nconst { mean, lower, upper } = h.meanCI();\nconsole.log(`mean=${mean}, 95% CI=[${lower}, ${upper}]`);\n</code></pre>"
+            },
+            {
+              "textRaw": "`histogram.percentile(percentile)`",
+              "name": "percentile",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v11.10.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`percentile` {number} A percentile value in the range (0, 100].",
+                      "name": "percentile",
+                      "type": "number",
+                      "desc": "A percentile value in the range (0, 100]."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {number}",
+                    "name": "return",
+                    "type": "number"
+                  }
+                }
+              ],
+              "desc": "<p>Returns the value at the given percentile.</p>"
+            },
+            {
+              "textRaw": "`histogram.percentileBigInt(percentile)`",
+              "name": "percentileBigInt",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v17.4.0",
+                  "v16.14.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`percentile` {number} A percentile value in the range (0, 100].",
+                      "name": "percentile",
+                      "type": "number",
+                      "desc": "A percentile value in the range (0, 100]."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {bigint}",
+                    "name": "return",
+                    "type": "bigint"
+                  }
+                }
+              ],
+              "desc": "<p>Returns the value at the given percentile.</p>"
+            },
+            {
+              "textRaw": "`histogram.percentileCI(percentile[, options])`",
+              "name": "percentileCI",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`percentile` {number} A percentile value in the range (0, 100].",
+                      "name": "percentile",
+                      "type": "number",
+                      "desc": "A percentile value in the range (0, 100]."
+                    },
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`confidence` {number} The confidence level for the interval, between 0 and 1 (exclusive). **Default:** `0.95`.",
+                          "name": "confidence",
+                          "type": "number",
+                          "default": "`0.95`",
+                          "desc": "The confidence level for the interval, between 0 and 1 (exclusive)."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Object}",
+                    "name": "return",
+                    "type": "Object",
+                    "options": [
+                      {
+                        "textRaw": "`value` {number} The point estimate (same as `histogram.percentile()`).",
+                        "name": "value",
+                        "type": "number",
+                        "desc": "The point estimate (same as `histogram.percentile()`)."
+                      },
+                      {
+                        "textRaw": "`lower` {number} The lower bound of the confidence interval.",
+                        "name": "lower",
+                        "type": "number",
+                        "desc": "The lower bound of the confidence interval."
+                      },
+                      {
+                        "textRaw": "`upper` {number} The upper bound of the confidence interval.",
+                        "name": "upper",
+                        "type": "number",
+                        "desc": "The upper bound of the confidence interval."
+                      }
+                    ]
+                  }
+                }
+              ],
+              "desc": "<p>Returns a confidence interval for the given percentile using the exact\nbinomial method. With fewer samples, the interval will be wider, reflecting\nthe greater uncertainty in the percentile estimate. Requires at least 2\nrecorded values; with fewer than 2, <code>lower</code> and <code>upper</code> will equal <code>value</code>.</p>\n<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\nconst h = createHistogram();\nfor (let i = 0; i &#x3C; 1000; i++) {\n  h.record(Math.floor(Math.random() * 100));\n}\n\nconst ci = h.percentileCI(99);\nconsole.log(ci.value);  // The p99 point estimate\nconsole.log(ci.lower);  // The lower bound (95% confidence)\nconsole.log(ci.upper);  // The upper bound (95% confidence)\n</code></pre>"
+            },
+            {
+              "textRaw": "`histogram.percentilesAt(percentiles)`",
+              "name": "percentilesAt",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`percentiles` {number}[] An array of percentile values in the range (0, 100].",
+                      "name": "percentiles",
+                      "type": "number",
+                      "desc": "[] An array of percentile values in the range (0, 100]."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Map} A map of percentile values to their corresponding histogram values.",
+                    "name": "return",
+                    "type": "Map",
+                    "desc": "A map of percentile values to their corresponding histogram values."
+                  }
+                }
+              ],
+              "desc": "<p>Returns the values at the specified percentiles, computed in a single\nefficient pass over the histogram data. More efficient than calling\n<code>histogram.percentile()</code> multiple times.</p>"
+            },
+            {
+              "textRaw": "`histogram.qrde([options])`",
+              "name": "qrde",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.10.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`bins` {number} The number of equal-probability density bins to return. Must be between 1 and 1000. Cannot be used with `probabilities`. **Default:** `100`.",
+                          "name": "bins",
+                          "type": "number",
+                          "default": "`100`",
+                          "desc": "The number of equal-probability density bins to return. Must be between 1 and 1000. Cannot be used with `probabilities`."
+                        },
+                        {
+                          "textRaw": "`probabilities` {number}[] Custom probability boundaries. The array must contain between 2 and 1001 strictly increasing values, start with `0`, and end with `1`. Cannot be used with `bins`.",
+                          "name": "probabilities",
+                          "type": "number",
+                          "desc": "[] Custom probability boundaries. The array must contain between 2 and 1001 strictly increasing values, start with `0`, and end with `1`. Cannot be used with `bins`."
+                        },
+                        {
+                          "textRaw": "`dequantize` {string} Controls whether repeated bucket values are spread deterministically over their equivalent-value ranges. May be `'none'`, `'hdr'`, or `'all'`. **Default:** `'hdr'`.",
+                          "name": "dequantize",
+                          "type": "string",
+                          "default": "`'hdr'`",
+                          "desc": "Controls whether repeated bucket values are spread deterministically over their equivalent-value ranges. May be `'none'`, `'hdr'`, or `'all'`."
+                        },
+                        {
+                          "textRaw": "`cache` {boolean} When `true`, retains the expanded histogram snapshot for reuse by subsequent calls with `cache: true`. The snapshot is invalidated when the histogram is modified. **Default:** `false`.",
+                          "name": "cache",
+                          "type": "boolean",
+                          "default": "`false`",
+                          "desc": "When `true`, retains the expanded histogram snapshot for reuse by subsequent calls with `cache: true`. The snapshot is invalidated when the histogram is modified."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfills with an {Object} containing:",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfills with an {Object} containing:",
+                    "options": [
+                      {
+                        "textRaw": "`probabilities` {Float64Array} The probability boundaries used by the estimate.",
+                        "name": "probabilities",
+                        "type": "Float64Array",
+                        "desc": "The probability boundaries used by the estimate."
+                      },
+                      {
+                        "textRaw": "`quantiles` {Float64Array} The quantiles at the probability boundaries.",
+                        "name": "quantiles",
+                        "type": "Float64Array",
+                        "desc": "The quantiles at the probability boundaries."
+                      },
+                      {
+                        "textRaw": "`densities` {Float64Array} The density within each quantile interval.",
+                        "name": "densities",
+                        "type": "Float64Array",
+                        "desc": "The density within each quantile interval."
+                      },
+                      {
+                        "textRaw": "`count` {bigint} The number of values in the histogram snapshot.",
+                        "name": "count",
+                        "type": "bigint",
+                        "desc": "The number of values in the histogram snapshot."
+                      },
+                      {
+                        "textRaw": "`bucketCount` {number} The number of occupied HDR buckets.",
+                        "name": "bucketCount",
+                        "type": "number",
+                        "desc": "The number of occupied HDR buckets."
+                      },
+                      {
+                        "textRaw": "`corrections` {number} The number of non-monotonic floating-point results that were clamped to the preceding quantile.",
+                        "name": "corrections",
+                        "type": "number",
+                        "desc": "The number of non-monotonic floating-point results that were clamped to the preceding quantile."
+                      },
+                      {
+                        "textRaw": "`dequantize` {string} The selected dequantization mode.",
+                        "name": "dequantize",
+                        "type": "string",
+                        "desc": "The selected dequantization mode."
+                      }
+                    ]
+                  }
+                }
+              ],
+              "desc": "<p>Returns a quantile-respectful density estimate based on the Harrell-Davis\nquantile estimator. By default, <code>bins</code> generates equal probability boundaries.\nThe <code>probabilities</code> option can instead focus the estimate on regions such as\np90, p99, p99.9, and p99.99. The density for interval <code>i</code> contains probability\nmass <code>probabilities[i + 1] - probabilities[i]</code>. The histogram is snapshotted\nwhen the method is called. Snapshot expansion and the estimate are calculated\nin the libuv thread pool. Highly concentrated beta weights use a second-order\nasymptotic approximation to avoid numerical convergence loss at large sample\ncounts.</p>\n<p>Setting <code>cache</code> to <code>true</code> avoids repeating snapshot capture and expansion when\nseveral estimates are requested from an unchanged histogram. The retained\nsnapshot uses memory proportional to the number of occupied HDR buckets and is\nreleased when the histogram is next modified.</p>\n<p>QRDE temporarily uses approximately one additional HDR count array plus 32\nbytes per occupied bucket. With <code>cache: true</code>, the expanded 32-byte-per-bucket\nsnapshot remains allocated. The following estimates use <code>lowest: 1</code> and\n<code>highest: Number.MAX_SAFE_INTEGER</code> and exclude allocator and JavaScript object\noverhead:</p>\n<table>\n<thead>\n<tr>\n<th><code>figures</code></th>\n<th align=\"right\">Histogram</th>\n<th align=\"right\">Maximum expanded snapshot</th>\n<th align=\"right\">Peak cache-miss QRDE</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>1</td>\n<td align=\"right\">6.3 KiB</td>\n<td align=\"right\">25 KiB</td>\n<td align=\"right\">31 KiB</td>\n</tr>\n<tr>\n<td>2</td>\n<td align=\"right\">47 KiB</td>\n<td align=\"right\">188 KiB</td>\n<td align=\"right\">235 KiB</td>\n</tr>\n<tr>\n<td>3</td>\n<td align=\"right\">352 KiB</td>\n<td align=\"right\">1.4 MiB</td>\n<td align=\"right\">1.7 MiB</td>\n</tr>\n<tr>\n<td>4</td>\n<td align=\"right\">5.0 MiB</td>\n<td align=\"right\">20 MiB</td>\n<td align=\"right\">25 MiB</td>\n</tr>\n<tr>\n<td>5</td>\n<td align=\"right\">37 MiB</td>\n<td align=\"right\">148 MiB</td>\n<td align=\"right\">185 MiB</td>\n</tr>\n</tbody>\n</table>\n<p>The maximum snapshot column assumes every representable bucket is occupied.\nLower <code>highest</code> values reduce histogram and temporary copy sizes. Concurrent\ncalls that miss the cache each require their own temporary copy and expanded\nsnapshot.</p>\n<p>HDR histograms aggregate observations into equivalent-value buckets. The\n<code>'hdr'</code> dequantization mode models repeated values in buckets wider than one\nunit as a continuous uniform distribution over the bucket resolution. This\nreduces density artifacts introduced by HDR quantization while preserving\nrepeated unit-resolution values as point masses. The <code>'all'</code> mode also\ndequantizes repeated unit-resolution values. Use <code>'none'</code> to calculate the\ngrouped Harrell-Davis estimator using bucket midpoints directly.</p>\n<p>An empty histogram returns the requested <code>probabilities</code> but produces empty\n<code>quantiles</code> and <code>densities</code> arrays. A non-dequantized interval whose quantile\nboundaries are equal has an infinite density.</p>"
+            },
+            {
+              "textRaw": "`histogram.reset()`",
+              "name": "reset",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v11.10.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": []
+                }
+              ],
+              "desc": "<p>Resets the collected histogram data and increments <code>histogram.resetCount</code>.</p>"
+            },
+            {
+              "textRaw": "`histogram.snapshot()`",
+              "name": "snapshot",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.11.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Histogram}",
+                    "name": "return",
+                    "type": "Histogram"
+                  }
+                }
+              ],
+              "desc": "<p>Returns a new, independent <a href=\"perf_hooks.html#class-histogram\"><code>&#x3C;Histogram></code></a> containing a copy of this histogram's\ncurrent state: its configuration, recorded values, <code>exceeds</code> count, and EWMA\nstate. Values recorded into this histogram after this method returns, and later\ncalls to <code>reset()</code>, do not change the returned histogram. This provides a stable\nview of a histogram that is still recording, such as an enabled <a href=\"perf_hooks.html#class-eldhistogram-extends-histogram\"><code>&#x3C;ELDHistogram></code></a>.</p>\n<p>Values cannot be recorded into the returned histogram. Taking a snapshot copies\nevery bucket, so both its time and memory cost depend on the histogram's\n<code>lowest</code>, <code>highest</code>, and <code>figures</code> configuration rather than on the number of\nrecorded values.</p>\n<pre><code class=\"language-js\">const { monitorEventLoopDelay } = require('node:perf_hooks');\n\nconst histogram = monitorEventLoopDelay();\nhistogram.enable();\n\nsetTimeout(() => {\n  const snapshot = histogram.snapshot();\n  console.log(snapshot.percentile(99));\n  histogram.disable();\n}, 1000);\n</code></pre>"
+            },
+            {
+              "textRaw": "`histogram.welchTest(other[, options])`",
+              "name": "welchTest",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`other` {Histogram} The histogram to compare against.",
+                      "name": "other",
+                      "type": "Histogram",
+                      "desc": "The histogram to compare against."
+                    },
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`confidence` {number} Confidence level for the interval, between 0 and 1. **Default:** `0.95`.",
+                          "name": "confidence",
+                          "type": "number",
+                          "default": "`0.95`",
+                          "desc": "Confidence level for the interval, between 0 and 1."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Object}",
+                    "name": "return",
+                    "type": "Object",
+                    "options": [
+                      {
+                        "textRaw": "`tStatistic` {number} The Welch t-statistic.",
+                        "name": "tStatistic",
+                        "type": "number",
+                        "desc": "The Welch t-statistic."
+                      },
+                      {
+                        "textRaw": "`degreesOfFreedom` {number} Welch-Satterthwaite degrees of freedom.",
+                        "name": "degreesOfFreedom",
+                        "type": "number",
+                        "desc": "Welch-Satterthwaite degrees of freedom."
+                      },
+                      {
+                        "textRaw": "`pValue` {number} Two-tailed p-value.",
+                        "name": "pValue",
+                        "type": "number",
+                        "desc": "Two-tailed p-value."
+                      },
+                      {
+                        "textRaw": "`confidenceInterval` {Object}",
+                        "name": "confidenceInterval",
+                        "type": "Object",
+                        "options": [
+                          {
+                            "textRaw": "`lower` {number} Lower bound of the confidence interval on the difference of means.",
+                            "name": "lower",
+                            "type": "number",
+                            "desc": "Lower bound of the confidence interval on the difference of means."
+                          },
+                          {
+                            "textRaw": "`upper` {number} Upper bound.",
+                            "name": "upper",
+                            "type": "number",
+                            "desc": "Upper bound."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "desc": "<p>Performs <a href=\"https://en.wikipedia.org/wiki/Welch%27s_t-test\">Welch's t-test</a> comparing the means of this histogram and <code>other</code>.\nThe p-value indicates the probability of observing a difference at least this\nextreme under the null hypothesis that the two distributions have the same\nmean. Both histograms must have at least 2 recorded values; otherwise the\nresult has <code>pValue</code> 1 and <code>tStatistic</code> 0.</p>"
+            }
+          ],
           "properties": [
             {
               "textRaw": "Type: {number}",
@@ -1689,7 +2632,7 @@
                 ],
                 "changes": []
               },
-              "desc": "<p>The number of times the event loop delay exceeded the maximum 1 hour event\nloop delay threshold.</p>"
+              "desc": "<p>The number of values that were not recorded because they exceeded the\nhistogram's highest recordable value.</p>"
             },
             {
               "textRaw": "Type: {bigint}",
@@ -1702,7 +2645,55 @@
                 ],
                 "changes": []
               },
-              "desc": "<p>The number of times the event loop delay exceeded the maximum 1 hour event\nloop delay threshold.</p>"
+              "desc": "<p>The number of values that were not recorded because they exceeded the\nhistogram's highest recordable value.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "ewmaMean",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The exponentially weighted moving average of recorded values. Only active\nwhen the histogram was created with a <code>halfLife</code> option greater than 0.\nReturns <code>0</code> when EWMA is disabled or no values have been recorded.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "ewmaStddev",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The exponentially weighted moving standard deviation. Only active when the\nhistogram was created with a <code>halfLife</code> option greater than 0. Returns <code>0</code>\nwhen EWMA is disabled or no values have been recorded.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "ewmaErrorRate",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The EWMA-smoothed probability of a recorded value exceeding the configured\n<code>threshold</code>. Only active when the histogram was created with both <code>halfLife</code>\nand <code>threshold</code> options. Returns <code>0</code> when not enabled or no values have been\nrecorded.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "kurtosis",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The excess kurtosis of the recorded values. Measures the heaviness of the\ndistribution's tails relative to a normal distribution. Positive values\nindicate heavier tails (more extreme outliers); negative values indicate\nlighter tails.</p>"
             },
             {
               "textRaw": "Type: {number}",
@@ -1793,6 +2784,30 @@
             },
             {
               "textRaw": "Type: {number}",
+              "name": "resetCount",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.11.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The number of times values have been removed from this histogram by <code>reset()</code> or, for a <a href=\"perf_hooks.html#class-recordablehistogram-extends-histogram\"><code>&#x3C;RecordableHistogram></code></a>, <code>subtract()</code>. A snapshot has the <code>resetCount</code>\nof its source at the time it was taken, so comparing the <code>resetCount</code> of two\nsnapshots shows whether the source was reset between them. See\n<a href=\"#histogramdiffother\"><code>histogram.diff()</code></a>.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "skewness",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The skewness of the recorded values. Measures the asymmetry of the\ndistribution. A positive value indicates a right-skewed distribution\n(longer right tail, common for latency data); a negative value\nindicates a left-skewed distribution.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
               "name": "stddev",
               "type": "number",
               "meta": {
@@ -1802,84 +2817,6 @@
                 "changes": []
               },
               "desc": "<p>The standard deviation of the recorded event loop delays.</p>"
-            }
-          ],
-          "methods": [
-            {
-              "textRaw": "`histogram.percentile(percentile)`",
-              "name": "percentile",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v11.10.0"
-                ],
-                "changes": []
-              },
-              "signatures": [
-                {
-                  "params": [
-                    {
-                      "textRaw": "`percentile` {number} A percentile value in the range (0, 100].",
-                      "name": "percentile",
-                      "type": "number",
-                      "desc": "A percentile value in the range (0, 100]."
-                    }
-                  ],
-                  "return": {
-                    "textRaw": "Returns: {number}",
-                    "name": "return",
-                    "type": "number"
-                  }
-                }
-              ],
-              "desc": "<p>Returns the value at the given percentile.</p>"
-            },
-            {
-              "textRaw": "`histogram.percentileBigInt(percentile)`",
-              "name": "percentileBigInt",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v17.4.0",
-                  "v16.14.0"
-                ],
-                "changes": []
-              },
-              "signatures": [
-                {
-                  "params": [
-                    {
-                      "textRaw": "`percentile` {number} A percentile value in the range (0, 100].",
-                      "name": "percentile",
-                      "type": "number",
-                      "desc": "A percentile value in the range (0, 100]."
-                    }
-                  ],
-                  "return": {
-                    "textRaw": "Returns: {bigint}",
-                    "name": "return",
-                    "type": "bigint"
-                  }
-                }
-              ],
-              "desc": "<p>Returns the value at the given percentile.</p>"
-            },
-            {
-              "textRaw": "`histogram.reset()`",
-              "name": "reset",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v11.10.0"
-                ],
-                "changes": []
-              },
-              "signatures": [
-                {
-                  "params": []
-                }
-              ],
-              "desc": "<p>Resets the collected histogram data.</p>"
             }
           ]
         },
@@ -2006,20 +2943,27 @@
                   "v15.9.0",
                   "v14.18.0"
                 ],
-                "changes": []
+                "changes": [
+                  {
+                    "version": "v26.11.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/66114",
+                    "description": "Recording `0` is now supported."
+                  }
+                ]
               },
               "signatures": [
                 {
                   "params": [
                     {
-                      "textRaw": "`val` {number|bigint} The amount to record in the histogram.",
+                      "textRaw": "`val` {number|bigint} The amount to record in the histogram. Must be an integer greater than or equal to `0`.",
                       "name": "val",
                       "type": "number|bigint",
-                      "desc": "The amount to record in the histogram."
+                      "desc": "The amount to record in the histogram. Must be an integer greater than or equal to `0`."
                     }
                   ]
                 }
-              ]
+              ],
+              "desc": "<p>Values smaller than the histogram's <code>lowest</code> option, including <code>0</code>, might not\nbe distinguishable from each other.</p>"
             },
             {
               "textRaw": "`histogram.recordDelta()`",
@@ -2038,6 +2982,142 @@
                 }
               ],
               "desc": "<p>Calculates the amount of time (in nanoseconds) that has passed since the\nprevious call to <code>recordDelta()</code> and records that amount in the histogram.</p>"
+            },
+            {
+              "textRaw": "`histogram.recordCorrected(val, expectedInterval)`",
+              "name": "recordCorrected",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": [
+                  {
+                    "version": "v26.11.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/66114",
+                    "description": "Recording `0` is now supported."
+                  }
+                ]
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`val` {number|bigint} The value to record. Must be an integer greater than or equal to `0`.",
+                      "name": "val",
+                      "type": "number|bigint",
+                      "desc": "The value to record. Must be an integer greater than or equal to `0`."
+                    },
+                    {
+                      "textRaw": "`expectedInterval` {number|bigint} The expected recording interval.",
+                      "name": "expectedInterval",
+                      "type": "number|bigint",
+                      "desc": "The expected recording interval."
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Records a value with coordinated omission correction. When a system stall\nprevents timely recording, this method backfills intermediate values at\n<code>expectedInterval</code> steps between the previously recorded value and <code>val</code>.\nThis compensates for measurement gaps that would otherwise underrepresent\nlatency.</p>"
+            },
+            {
+              "textRaw": "`histogram.subtract(other)`",
+              "name": "subtract",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`other` {RecordableHistogram}",
+                      "name": "other",
+                      "type": "RecordableHistogram"
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Subtracts the values of <code>other</code> from this histogram. Both histograms should\nhave compatible configurations. Bucket counts that would become negative\nare clamped to zero. Increments <code>histogram.resetCount</code>.</p>"
+            }
+          ]
+        },
+        {
+          "textRaw": "Class: `SlidingWindowHistogram`",
+          "name": "SlidingWindowHistogram",
+          "type": "class",
+          "meta": {
+            "added": [
+              "v26.10.0"
+            ],
+            "changes": []
+          },
+          "desc": "<p>Records values into a lazily rotated ring of histogram chunks. Instances are\ncreated using <a href=\"#perf_hookscreateslidingwindowhistogramoptions\"><code>perf_hooks.createSlidingWindowHistogram()</code></a> and cannot be\nconstructed directly. A <code>SlidingWindowHistogram</code> does not extend <a href=\"perf_hooks.html#class-histogram\"><code>&#x3C;Histogram></code></a>;\ncall <code>snapshot()</code> to materialize the current window as a <a href=\"perf_hooks.html#class-histogram\"><code>&#x3C;Histogram></code></a>.</p>\n<p><code>SlidingWindowHistogram</code> instances cannot be cloned or transferred through a\n<a href=\"worker_threads.html#class-messageport\"><code>&#x3C;MessagePort></code></a>.</p>",
+          "methods": [
+            {
+              "textRaw": "`slidingWindowHistogram.record(val)`",
+              "name": "record",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.10.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`val` {number|bigint} The amount to record. Must be an integer greater than or equal to `0`.",
+                      "name": "val",
+                      "type": "number|bigint",
+                      "desc": "The amount to record. Must be an integer greater than or equal to `0`."
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Records <code>val</code> in the current chunk. For a count-based window, every call that\nreaches the native histogram counts toward rotation, including values which\nexceed the configured <code>highest</code> value.</p>"
+            },
+            {
+              "textRaw": "`slidingWindowHistogram.reset()`",
+              "name": "reset",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.10.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": []
+                }
+              ],
+              "desc": "<p>Invalidates all chunks in the current window. Allocated chunks are reset\nlazily when reused.</p>"
+            },
+            {
+              "textRaw": "`slidingWindowHistogram.snapshot()`",
+              "name": "snapshot",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.10.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Histogram}",
+                    "name": "return",
+                    "type": "Histogram"
+                  }
+                }
+              ],
+              "desc": "<p>Materializes the current window as a new, independent <a href=\"perf_hooks.html#class-histogram\"><code>&#x3C;Histogram></code></a>. Values\nrecorded or expired after this method returns do not change the returned\nhistogram. Materialization allocates one histogram and merges every retained\nchunk.</p>"
             }
           ]
         }
@@ -2082,6 +3162,20 @@
                       "type": "number",
                       "default": "`3`",
                       "desc": "The number of accuracy digits. Must be a number between `1` and `5`."
+                    },
+                    {
+                      "textRaw": "`halfLife` {number} The EWMA half-life in number of samples. When set to a value greater than 0, the histogram tracks an exponentially weighted moving average and standard deviation, accessible via `histogram.ewmaMean` and `histogram.ewmaStddev`. After `halfLife` recordings, a value's influence has decayed to 50%. **Default:** `0` (disabled).",
+                      "name": "halfLife",
+                      "type": "number",
+                      "default": "`0` (disabled)",
+                      "desc": "The EWMA half-life in number of samples. When set to a value greater than 0, the histogram tracks an exponentially weighted moving average and standard deviation, accessible via `histogram.ewmaMean` and `histogram.ewmaStddev`. After `halfLife` recordings, a value's influence has decayed to 50%."
+                    },
+                    {
+                      "textRaw": "`threshold` {number} An SLO threshold value. When set together with `halfLife`, the histogram tracks a smoothed error rate for values exceeding this threshold, accessible via `histogram.ewmaErrorRate` and `histogram.burnRate()`. **Default:** `0` (disabled).",
+                      "name": "threshold",
+                      "type": "number",
+                      "default": "`0` (disabled)",
+                      "desc": "An SLO threshold value. When set together with `halfLife`, the histogram tracks a smoothed error rate for values exceeding this threshold, accessible via `histogram.ewmaErrorRate` and `histogram.burnRate()`."
                     }
                   ],
                   "optional": true
@@ -2095,6 +3189,110 @@
             }
           ],
           "desc": "<p>Returns a <a href=\"perf_hooks.html#class-recordablehistogram-extends-histogram\"><code>&#x3C;RecordableHistogram></code></a>.</p>"
+        },
+        {
+          "textRaw": "`perf_hooks.createSlidingWindowHistogram(options)`",
+          "name": "createSlidingWindowHistogram",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v26.10.0"
+            ],
+            "changes": []
+          },
+          "signatures": [
+            {
+              "params": [
+                {
+                  "textRaw": "`options` {Object}",
+                  "name": "options",
+                  "type": "Object",
+                  "options": [
+                    {
+                      "textRaw": "`chunks` {number} The number of histogram chunks retained. Must be an integer between `1` and `1024`.",
+                      "name": "chunks",
+                      "type": "number",
+                      "desc": "The number of histogram chunks retained. Must be an integer between `1` and `1024`."
+                    },
+                    {
+                      "textRaw": "`chunkDuration` {number} The duration of each chunk in milliseconds. Must be an integer between `1` and `18_446_744_073_709`. Exactly one of `chunkDuration` and `recordsPerChunk` must be specified.",
+                      "name": "chunkDuration",
+                      "type": "number",
+                      "desc": "The duration of each chunk in milliseconds. Must be an integer between `1` and `18_446_744_073_709`. Exactly one of `chunkDuration` and `recordsPerChunk` must be specified."
+                    },
+                    {
+                      "textRaw": "`recordsPerChunk` {number} The number of calls to `record()` assigned to each chunk. Must be an integer between `1` and `Number.MAX_SAFE_INTEGER`. Exactly one of `chunkDuration` and `recordsPerChunk` must be specified.",
+                      "name": "recordsPerChunk",
+                      "type": "number",
+                      "desc": "The number of calls to `record()` assigned to each chunk. Must be an integer between `1` and `Number.MAX_SAFE_INTEGER`. Exactly one of `chunkDuration` and `recordsPerChunk` must be specified."
+                    },
+                    {
+                      "textRaw": "`lowest` {number|bigint} The lowest discernible value. Must be an integer value greater than `0`. **Default:** `1`.",
+                      "name": "lowest",
+                      "type": "number|bigint",
+                      "default": "`1`",
+                      "desc": "The lowest discernible value. Must be an integer value greater than `0`."
+                    },
+                    {
+                      "textRaw": "`highest` {number|bigint} The highest recordable value. Must be an integer value that is equal to or greater than two times `lowest`. **Default:** `Number.MAX_SAFE_INTEGER`.",
+                      "name": "highest",
+                      "type": "number|bigint",
+                      "default": "`Number.MAX_SAFE_INTEGER`",
+                      "desc": "The highest recordable value. Must be an integer value that is equal to or greater than two times `lowest`."
+                    },
+                    {
+                      "textRaw": "`figures` {number} The number of accuracy digits. Must be an integer between `1` and `5`. **Default:** `3`.",
+                      "name": "figures",
+                      "type": "number",
+                      "default": "`3`",
+                      "desc": "The number of accuracy digits. Must be an integer between `1` and `5`."
+                    }
+                  ]
+                }
+              ],
+              "return": {
+                "textRaw": "Returns: {SlidingWindowHistogram}",
+                "name": "return",
+                "type": "SlidingWindowHistogram"
+              }
+            }
+          ],
+          "desc": "<p>Creates a {SlidingWindowHistogram} that retains the latest <code>chunks</code> histogram\nchunks. Rotation is lazy and does not create a timer. Time-based rotation is\nevaluated when <code>record()</code> or <code>snapshot()</code> is called. Count-based rotation is\nevaluated when <code>record()</code> is called.</p>\n<p>One histogram chunk is allocated during construction. Additional chunks are\nallocated lazily. The maximum native memory used by the window scales with\n<code>chunks</code> and with the <code>lowest</code>, <code>highest</code>, and <code>figures</code> histogram options.</p>\n<p>The window boundary has chunk-level precision. With <code>N</code> chunks of duration\n<code>D</code>, a recorded value is retained for between <code>(N - 1) * D</code> and <code>N * D</code>\nmilliseconds. Once a count-based window is populated, it retains between\n<code>(N - 1) * C + 1</code> and <code>N * C</code> recording attempts, where <code>C</code> is\n<code>recordsPerChunk</code>. Recording attempts which exceed <code>highest</code> are included when\ndetermining count-based rotation.</p>\n<pre><code class=\"language-js\">const { createSlidingWindowHistogram } = require('node:perf_hooks');\n\nconst window = createSlidingWindowHistogram({\n  chunks: 6,\n  chunkDuration: 10_000,\n});\n\nwindow.record(20_000_000);\n\n// Materialize the current window as an independent Histogram.\nconst snapshot = window.snapshot();\nconsole.log(snapshot.percentile(99));\n</code></pre>"
+        },
+        {
+          "textRaw": "`perf_hooks.importHistogram(data)`",
+          "name": "importHistogram",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v26.9.0"
+            ],
+            "changes": [
+              {
+                "version": "v26.11.0",
+                "pr-url": "https://github.com/nodejs/node/pull/66098",
+                "description": "Format version 2 is supported. Unknown keys in version 2 data are ignored."
+              }
+            ]
+          },
+          "signatures": [
+            {
+              "params": [
+                {
+                  "textRaw": "`data` {Uint8Array} A CBOR-encoded histogram previously produced by `histogram.export()`.",
+                  "name": "data",
+                  "type": "Uint8Array",
+                  "desc": "A CBOR-encoded histogram previously produced by `histogram.export()`."
+                }
+              ],
+              "return": {
+                "textRaw": "Returns: {RecordableHistogram}",
+                "name": "return",
+                "type": "RecordableHistogram"
+              }
+            }
+          ],
+          "desc": "<p>Reconstructs a histogram from a CBOR-encoded <code>Uint8Array</code>. The returned\nhistogram is a full <a href=\"perf_hooks.html#class-recordablehistogram-extends-histogram\"><code>&#x3C;RecordableHistogram></code></a> with all bucket data, configuration,\nand EWMA state restored. New values can be recorded into it.</p>\n<p>Data in any format version produced by <a href=\"#histogramexport\"><code>histogram.export()</code></a> can be\nimported. See <a href=\"#histogram-export-format-compatibility\">histogram export format compatibility</a> for details.</p>\n<pre><code class=\"language-js\">const { createHistogram, importHistogram } = require('node:perf_hooks');\n\nconst h = createHistogram();\nfor (let i = 1; i &#x3C;= 1000; i++) h.record(i);\n\n// Serialize and reconstruct\nconst data = h.export();\nconst h2 = importHistogram(data);\n\nconsole.log(h2.count);          // 1000\nconsole.log(h2.percentile(99)); // Same as h.percentile(99)\n</code></pre>"
         },
         {
           "textRaw": "`perf_hooks.eventLoopUtilization([utilization1[, utilization2]])`",
@@ -2161,6 +3359,11 @@
             ],
             "changes": [
               {
+                "version": "v26.11.0",
+                "pr-url": "https://github.com/nodejs/node/pull/66115",
+                "description": "Added the `lowest`, `highest`, and `figures` options."
+              },
+              {
                 "version": "v26.5.0",
                 "pr-url": "https://github.com/nodejs/node/pull/62935",
                 "description": "Added the `samplePerIteration` option."
@@ -2188,6 +3391,27 @@
                       "type": "number",
                       "default": "`10`",
                       "desc": "The sampling rate in milliseconds for interval-based sampling. Must be greater than zero. This option is ignored when `samplePerIteration` is `true`."
+                    },
+                    {
+                      "textRaw": "`lowest` {number|bigint} The lowest discernible delay, in nanoseconds. Must be an integer value greater than `0`. **Default:** `1` when `samplePerIteration` is `true`, otherwise `1000`.",
+                      "name": "lowest",
+                      "type": "number|bigint",
+                      "default": "`1` when `samplePerIteration` is `true`, otherwise `1000`",
+                      "desc": "The lowest discernible delay, in nanoseconds. Must be an integer value greater than `0`."
+                    },
+                    {
+                      "textRaw": "`highest` {number|bigint} The highest recordable delay, in nanoseconds. Must be an integer value that is equal to or greater than two times `lowest`. **Default:** `2n ** 63n - 1n`.",
+                      "name": "highest",
+                      "type": "number|bigint",
+                      "default": "`2n ** 63n - 1n`",
+                      "desc": "The highest recordable delay, in nanoseconds. Must be an integer value that is equal to or greater than two times `lowest`."
+                    },
+                    {
+                      "textRaw": "`figures` {number} The number of accuracy digits. Must be an integer between `1` and `5`. **Default:** `3`.",
+                      "name": "figures",
+                      "type": "number",
+                      "default": "`3`",
+                      "desc": "The number of accuracy digits. Must be an integer between `1` and `5`."
                     }
                   ],
                   "optional": true
@@ -2200,7 +3424,7 @@
               }
             }
           ],
-          "desc": "<p><em>This property is an extension by Node.js. It is not available in Web browsers.</em></p>\n<p>Creates a histogram object that samples and reports the event loop delay over\ntime. The delays will be reported in nanoseconds.</p>\n<p>By default, the histogram is updated by a timer using the configured\n<code>resolution</code>. When <code>samplePerIteration</code> is <code>true</code>, samples are taken once per\nevent loop iteration using <code>uv_prepare_t</code> and <code>uv_check_t</code> hooks. In that mode,\nthe histogram does not keep the loop alive or force additional iterations when\nthe application is idle.\nThe two sampling modes produce significantly different results and should not\nbe compared directly.</p>\n<pre><code class=\"language-mjs\">import { monitorEventLoopDelay } from 'node:perf_hooks';\n\nconst h = monitorEventLoopDelay({ resolution: 20 });\nh.enable();\n// Do something.\nh.disable();\nconsole.log(h.min);\nconsole.log(h.max);\nconsole.log(h.mean);\nconsole.log(h.stddev);\nconsole.log(h.percentiles);\nconsole.log(h.percentile(50));\nconsole.log(h.percentile(99));\n</code></pre>\n<pre><code class=\"language-cjs\">const { monitorEventLoopDelay } = require('node:perf_hooks');\nconst h = monitorEventLoopDelay({ resolution: 20 });\nh.enable();\n// Do something.\nh.disable();\nconsole.log(h.min);\nconsole.log(h.max);\nconsole.log(h.mean);\nconsole.log(h.stddev);\nconsole.log(h.percentiles);\nconsole.log(h.percentile(50));\nconsole.log(h.percentile(99));\n</code></pre>"
+          "desc": "<p><em>This property is an extension by Node.js. It is not available in Web browsers.</em></p>\n<p>Creates a histogram object that samples and reports the event loop delay over\ntime. The delays will be reported in nanoseconds.</p>\n<p>By default, the histogram is updated by a timer using the configured\n<code>resolution</code>. When <code>samplePerIteration</code> is <code>true</code>, samples are taken once per\nevent loop iteration using <code>uv_prepare_t</code> and <code>uv_check_t</code> hooks. In that mode,\nthe histogram does not keep the loop alive or force additional iterations when\nthe application is idle.\nThe two sampling modes produce significantly different results and should not\nbe compared directly.</p>\n<p>The <code>lowest</code>, <code>highest</code>, and <code>figures</code> options configure the histogram as they\ndo for <a href=\"#perf_hookscreatehistogramoptions\"><code>perf_hooks.createHistogram()</code></a>. <code>lowest</code> must be greater than <code>0</code>\nbecause an event loop delay of zero is not possible: the event loop has a\nminimal overhead, and the measurement itself depends on the event loop turning.\nDelays greater than <code>highest</code> are not recorded, and are counted by\n<a href=\"#histogramexceeds\"><code>histogram.exceeds</code></a> instead. With interval-based sampling, every sample\nincludes the <code>resolution</code>, so <code>highest</code> should be well above\n<code>resolution * 1e6</code>. The histogram's memory use depends on these options, not\non the number of samples.</p>\n<pre><code class=\"language-mjs\">import { monitorEventLoopDelay } from 'node:perf_hooks';\n\nconst h = monitorEventLoopDelay({ resolution: 20 });\nh.enable();\n// Do something.\nh.disable();\nconsole.log(h.min);\nconsole.log(h.max);\nconsole.log(h.mean);\nconsole.log(h.stddev);\nconsole.log(h.percentiles);\nconsole.log(h.percentile(50));\nconsole.log(h.percentile(99));\n</code></pre>\n<pre><code class=\"language-cjs\">const { monitorEventLoopDelay } = require('node:perf_hooks');\nconst h = monitorEventLoopDelay({ resolution: 20 });\nh.enable();\n// Do something.\nh.disable();\nconsole.log(h.min);\nconsole.log(h.max);\nconsole.log(h.mean);\nconsole.log(h.stddev);\nconsole.log(h.percentiles);\nconsole.log(h.percentile(50));\nconsole.log(h.percentile(99));\n</code></pre>"
         },
         {
           "textRaw": "`perf_hooks.timerify(fn[, options])`",
@@ -2242,6 +3466,71 @@
         }
       ],
       "modules": [
+        {
+          "textRaw": "Histogram analysis examples",
+          "name": "histogram_analysis_examples",
+          "type": "module",
+          "desc": "<p>The <code>Histogram</code> class provides statistical analysis methods useful for\nperformance monitoring, SLO enforcement, and regression detection.</p>",
+          "modules": [
+            {
+              "textRaw": "Distribution shape analysis",
+              "name": "distribution_shape_analysis",
+              "type": "module",
+              "desc": "<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\nconst h = createHistogram();\n\n// Simulate a right-skewed latency distribution\nfor (let i = 0; i &#x3C; 1000; i++) {\n  h.record(Math.ceil(Math.random() * 100));\n}\n// Add some outliers\nfor (let i = 0; i &#x3C; 10; i++) {\n  h.record(500 + Math.ceil(Math.random() * 500));\n}\n\nconsole.log('Skewness:', h.skewness.toFixed(4));  // Positive = right-skewed\nconsole.log('Kurtosis:', h.kurtosis.toFixed(4));  // Positive = heavy tails\n</code></pre>",
+              "displayName": "Distribution shape analysis"
+            },
+            {
+              "textRaw": "SLO monitoring with CDF",
+              "name": "slo_monitoring_with_cdf",
+              "type": "module",
+              "desc": "<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\nconst latency = createHistogram();\n\n// Record request latencies (in nanoseconds)...\n\n// \"What fraction of requests complete within 100ms?\"\nconst withinSLO = latency.cdf(100_000_000);\nconsole.log(`${(withinSLO * 100).toFixed(1)}% of requests within SLO`);\n\n// \"What fraction of requests exceed 500ms?\"\nconst violating = latency.ccdf(500_000_000);\nconsole.log(`${(violating * 100).toFixed(1)}% of requests violating SLO`);\n</code></pre>",
+              "displayName": "SLO monitoring with CDF"
+            },
+            {
+              "textRaw": "SLO burn rate monitoring",
+              "name": "slo_burn_rate_monitoring",
+              "type": "module",
+              "desc": "<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\n// Track latency with EWMA (half-life 100 samples) and a 200ms SLO threshold\nconst latency = createHistogram({\n  halfLife: 100,\n  threshold: 200_000_000,  // 200ms in nanoseconds\n});\n\n// Record request latencies...\n\n// Smoothed error rate: probability of exceeding the threshold\nconsole.log(`Error rate: ${(latency.ewmaErrorRate * 100).toFixed(2)}%`);\n\n// Burn rate against a 99.9% SLO\n// >1 means the error budget is depleting faster than allowed\nconst rate = latency.burnRate(0.999);\nconsole.log(`Burn rate: ${rate.toFixed(2)}x`);\n\n// EWMA mean and stddev track the smoothed latency\nconsole.log(`EWMA latency: ${latency.ewmaMean.toFixed(0)}ns`);\nconsole.log(`EWMA stddev:  ${latency.ewmaStddev.toFixed(0)}ns`);\n</code></pre>",
+              "displayName": "SLO burn rate monitoring"
+            },
+            {
+              "textRaw": "Regression detection with KS test",
+              "name": "regression_detection_with_ks_test",
+              "type": "module",
+              "desc": "<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\nconst baseline = createHistogram();\nconst current = createHistogram();\n\n// Record baseline and current latencies...\n\n// D-statistic: 0 = identical, 1 = completely different\nconst d = baseline.ksTest(current);\nif (d > 0.1) {\n  console.log(`Possible regression detected (D=${d.toFixed(4)})`);\n}\n</code></pre>",
+              "displayName": "Regression detection with KS test"
+            },
+            {
+              "textRaw": "Batch percentile queries",
+              "name": "batch_percentile_queries",
+              "type": "module",
+              "desc": "<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\nconst h = createHistogram();\n// Record values...\n\n// Efficiently query common monitoring percentiles in one pass\nconst p = h.percentilesAt([50, 75, 90, 95, 99, 99.9]);\nconsole.log('p50:', p.get(50));\nconsole.log('p99:', p.get(99));\n</code></pre>",
+              "displayName": "Batch percentile queries"
+            },
+            {
+              "textRaw": "Snapshot diffing with subtract",
+              "name": "snapshot_diffing_with_subtract",
+              "type": "module",
+              "desc": "<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\nconst total = createHistogram();\nconst snapshot = createHistogram();\n\n// Record values into total...\n// Periodically snapshot for \"last interval\" analysis:\nsnapshot.add(total);\n\n// Later, take a new snapshot and diff:\nconst newSnapshot = createHistogram();\nnewSnapshot.add(total);\nnewSnapshot.subtract(snapshot);\n// newSnapshot now contains only the values recorded since the last snapshot\nconsole.log('Recent p99:', newSnapshot.percentile(99));\n</code></pre>",
+              "displayName": "Snapshot diffing with subtract"
+            },
+            {
+              "textRaw": "Benchmark comparison with Welch's t-test",
+              "name": "benchmark_comparison_with_welch's_t-test",
+              "type": "module",
+              "desc": "<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\nconst baseline = createHistogram();\nconst candidate = createHistogram();\n\n// Record operation rates from the old and new builds...\n\nconst result = baseline.welchTest(candidate);\nconst improvement = ((candidate.mean - baseline.mean) / baseline.mean * 100);\n\nconsole.log(`Improvement: ${improvement.toFixed(2)}%`);\nconsole.log(`p-value: ${result.pValue.toFixed(6)}`);\nconsole.log(`95% CI: [${result.confidenceInterval.lower.toFixed(2)}, ` +\n            `${result.confidenceInterval.upper.toFixed(2)}]`);\n\nif (result.pValue &#x3C; 0.05) {\n  const d = baseline.cohensD(candidate);\n  console.log(`Statistically significant (Cohen's d = ${d.toFixed(4)})`);\n}\n</code></pre>",
+              "displayName": "Benchmark comparison with Welch's t-test"
+            },
+            {
+              "textRaw": "Effect size with Cliff's delta",
+              "name": "effect_size_with_cliff's_delta",
+              "type": "module",
+              "desc": "<pre><code class=\"language-js\">const { createHistogram } = require('node:perf_hooks');\n\nconst before = createHistogram();\nconst after = createHistogram();\n\n// Record latencies before and after a change...\n\nconst delta = before.cliffsD(after);\n// A delta > 0: before tends to produce larger values (improvement)\n// A delta &#x3C; 0: after tends to produce larger values (regression)\nconsole.log(`Cliff's delta: ${delta.toFixed(4)}`);\n</code></pre>",
+              "displayName": "Effect size with Cliff's delta"
+            }
+          ],
+          "displayName": "Histogram analysis examples"
+        },
         {
           "textRaw": "Examples",
           "name": "examples",

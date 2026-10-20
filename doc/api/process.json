@@ -324,7 +324,7 @@
               "name": "Signal events",
               "type": "event",
               "params": [],
-              "desc": "<p>Signal events will be emitted when the Node.js process receives a signal. Please\nrefer to <a href=\"http://man7.org/linux/man-pages/man7/signal.7.html\"><code>signal(7)</code></a> for a listing of standard POSIX signal names such as <code>'SIGINT'</code>, <code>'SIGHUP'</code>, etc.</p>\n<p>Signals are not available on <a href=\"worker_threads.html#class-worker\"><code>Worker</code></a> threads.</p>\n<p>The signal handler will receive the signal's name (<code>'SIGINT'</code>,\n<code>'SIGTERM'</code>, etc.) as the first argument.</p>\n<p>The name of each event will be the uppercase common name for the signal (e.g.\n<code>'SIGINT'</code> for <code>SIGINT</code> signals).</p>\n<pre><code class=\"language-mjs\">import process from 'node:process';\n\n// Begin reading from stdin so the process does not exit.\nprocess.stdin.resume();\n\nprocess.on('SIGINT', () => {\n  console.log('Received SIGINT. Press Control-D to exit.');\n});\n\n// Using a single function to handle multiple signals\nfunction handle(signal) {\n  console.log(`Received ${signal}`);\n}\n\nprocess.on('SIGINT', handle);\nprocess.on('SIGTERM', handle);\n</code></pre>\n<pre><code class=\"language-cjs\">// Begin reading from stdin so the process does not exit.\nprocess.stdin.resume();\n\nprocess.on('SIGINT', () => {\n  console.log('Received SIGINT. Press Control-D to exit.');\n});\n\n// Using a single function to handle multiple signals\nfunction handle(signal) {\n  console.log(`Received ${signal}`);\n}\n\nprocess.on('SIGINT', handle);\nprocess.on('SIGTERM', handle);\n</code></pre>\n<ul>\n<li><code>'SIGUSR1'</code> is reserved by Node.js to start the <a href=\"debugger.html\">debugger</a>. It's possible to\ninstall a listener but doing so might interfere with the debugger.</li>\n<li><code>'SIGTERM'</code> and <code>'SIGINT'</code> have default handlers on non-Windows platforms that\nreset the terminal mode before exiting with code <code>128 + signal number</code>. If one\nof these signals has a listener installed, its default behavior will be\nremoved (Node.js will no longer exit).</li>\n<li><code>'SIGPIPE'</code> is ignored by default. It can have a listener installed.</li>\n<li><code>'SIGHUP'</code> is generated on Windows when the console window is closed, and on\nother platforms under various similar conditions. See <a href=\"http://man7.org/linux/man-pages/man7/signal.7.html\"><code>signal(7)</code></a>. It can have a\nlistener installed, however Node.js will be unconditionally terminated by\nWindows about 10 seconds later. On non-Windows platforms, the default\nbehavior of <code>SIGHUP</code> is to terminate Node.js, but once a listener has been\ninstalled its default behavior will be removed.</li>\n<li><code>'SIGTERM'</code> is not supported on Windows, it can be listened on.</li>\n<li><code>'SIGINT'</code> from the terminal is supported on all platforms, and can usually be\ngenerated with <kbd>Ctrl</kbd>+<kbd>C</kbd> (though this may be configurable).\nIt is not generated when <a href=\"tty.html#readstreamsetrawmodemode\">terminal raw mode</a> is enabled\nand <kbd>Ctrl</kbd>+<kbd>C</kbd> is used.</li>\n<li><code>'SIGBREAK'</code> is delivered on Windows when <kbd>Ctrl</kbd>+<kbd>Break</kbd> is\npressed. On non-Windows platforms, it can be listened on, but there is no way\nto send or generate it.</li>\n<li><code>'SIGWINCH'</code> is delivered when the console has been resized. On Windows, this\nwill only happen on write to the console when the cursor is being moved, or\nwhen a readable tty is used in raw mode.</li>\n<li><code>'SIGKILL'</code> cannot have a listener installed, it will unconditionally\nterminate Node.js on all platforms.</li>\n<li><code>'SIGSTOP'</code> cannot have a listener installed.</li>\n<li><code>'SIGBUS'</code>, <code>'SIGFPE'</code>, <code>'SIGSEGV'</code>, and <code>'SIGILL'</code>, when not raised\nartificially using <a href=\"http://man7.org/linux/man-pages/man2/kill.2.html\"><code>kill(2)</code></a>, inherently leave the process in a state from\nwhich it is not safe to call JS listeners. Doing so might cause the process\nto stop responding.</li>\n<li><code>0</code> can be sent to test for the existence of a process, it has no effect if\nthe process exists, but will throw an error if the process does not exist.</li>\n</ul>\n<p>Windows does not support signals so has no equivalent to termination by signal,\nbut Node.js offers some emulation with <a href=\"#processkillpid-signal\"><code>process.kill()</code></a>, and\n<a href=\"child_process.html#subprocesskillsignal\"><code>subprocess.kill()</code></a>:</p>\n<ul>\n<li>Sending <code>SIGINT</code>, <code>SIGTERM</code>, and <code>SIGKILL</code> will cause the unconditional\ntermination of the target process, and afterwards, subprocess will report that\nthe process was terminated by signal.</li>\n<li>Sending signal <code>0</code> can be used as a platform independent way to test for the\nexistence of a process.</li>\n</ul>"
+              "desc": "<p>Signal events will be emitted when the Node.js process receives a signal. Please\nrefer to <a href=\"http://man7.org/linux/man-pages/man7/signal.7.html\"><code>signal(7)</code></a> for a listing of standard POSIX signal names such as <code>'SIGINT'</code>, <code>'SIGHUP'</code>, etc.</p>\n<p>Signals are not available on <a href=\"worker_threads.html#class-worker\"><code>Worker</code></a> threads.</p>\n<p>The signal handler will receive the signal's name (<code>'SIGINT'</code>,\n<code>'SIGTERM'</code>, etc.) as the first argument.</p>\n<p>The name of each event will be the uppercase common name for the signal (e.g.\n<code>'SIGINT'</code> for <code>SIGINT</code> signals).</p>\n<pre><code class=\"language-mjs\">import process from 'node:process';\n\n// Begin reading from stdin so the process does not exit.\nprocess.stdin.resume();\n\nprocess.on('SIGINT', () => {\n  console.log('Received SIGINT. Press Control-D to exit.');\n});\n\n// Using a single function to handle multiple signals\nfunction handle(signal) {\n  console.log(`Received ${signal}`);\n}\n\nprocess.on('SIGINT', handle);\nprocess.on('SIGTERM', handle);\n</code></pre>\n<pre><code class=\"language-cjs\">// Begin reading from stdin so the process does not exit.\nprocess.stdin.resume();\n\nprocess.on('SIGINT', () => {\n  console.log('Received SIGINT. Press Control-D to exit.');\n});\n\n// Using a single function to handle multiple signals\nfunction handle(signal) {\n  console.log(`Received ${signal}`);\n}\n\nprocess.on('SIGINT', handle);\nprocess.on('SIGTERM', handle);\n</code></pre>\n<ul>\n<li><code>'SIGUSR1'</code> is reserved by Node.js to start the <a href=\"debugger.html\">debugger</a>. It's possible to\ninstall a listener but doing so might interfere with the debugger.</li>\n<li><code>'SIGTERM'</code> and <code>'SIGINT'</code> have default handlers on non-Windows platforms that\nreset the terminal mode before exiting with code <code>128 + signal number</code>. If one\nof these signals has a listener installed, its default behavior will be\nremoved. Signal events are emitted asynchronously, so Node.js may exit before\nthe listener is called if the event loop is otherwise empty.</li>\n<li><code>'SIGPIPE'</code> is ignored by default. It can have a listener installed.</li>\n<li><code>'SIGHUP'</code> is generated on Windows when the console window is closed, and on\nother platforms under various similar conditions. See <a href=\"http://man7.org/linux/man-pages/man7/signal.7.html\"><code>signal(7)</code></a>. It can have a\nlistener installed, however Node.js will be unconditionally terminated by\nWindows about 10 seconds later. On non-Windows platforms, the default\nbehavior of <code>SIGHUP</code> is to terminate Node.js, but once a listener has been\ninstalled its default behavior will be removed.</li>\n<li><code>'SIGTERM'</code> is not supported on Windows, it can be listened on.</li>\n<li><code>'SIGINT'</code> from the terminal is supported on all platforms, and can usually be\ngenerated with <kbd>Ctrl</kbd>+<kbd>C</kbd> (though this may be configurable).\nIt is not generated when <a href=\"tty.html#readstreamsetrawmodemode\">terminal raw mode</a> is enabled\nand <kbd>Ctrl</kbd>+<kbd>C</kbd> is used.</li>\n<li><code>'SIGBREAK'</code> is delivered on Windows when <kbd>Ctrl</kbd>+<kbd>Break</kbd> is\npressed. On non-Windows platforms, it can be listened on, but there is no way\nto send or generate it.</li>\n<li><code>'SIGWINCH'</code> is delivered when the console has been resized. On Windows, this\nwill only happen on write to the console when the cursor is being moved, or\nwhen a readable tty is used in raw mode.</li>\n<li><code>'SIGKILL'</code> cannot have a listener installed, it will unconditionally\nterminate Node.js on all platforms.</li>\n<li><code>'SIGSTOP'</code> cannot have a listener installed.</li>\n<li><code>'SIGBUS'</code>, <code>'SIGFPE'</code>, <code>'SIGSEGV'</code>, and <code>'SIGILL'</code>, when not raised\nartificially using <a href=\"http://man7.org/linux/man-pages/man2/kill.2.html\"><code>kill(2)</code></a>, inherently leave the process in a state from\nwhich it is not safe to call JS listeners. Doing so might cause the process\nto stop responding.</li>\n<li><code>0</code> can be sent to test for the existence of a process, it has no effect if\nthe process exists, but will throw an error if the process does not exist.</li>\n</ul>\n<p>Windows does not support signals so has no equivalent to termination by signal,\nbut Node.js offers some emulation with <a href=\"#processkillpid-signal\"><code>process.kill()</code></a>, and\n<a href=\"child_process.html#subprocesskillsignal\"><code>subprocess.kill()</code></a>:</p>\n<ul>\n<li>Sending <code>SIGINT</code>, <code>SIGTERM</code>, and <code>SIGKILL</code> will cause the unconditional\ntermination of the target process, and afterwards, subprocess will report that\nthe process was terminated by signal.</li>\n<li>Sending signal <code>0</code> can be used as a platform independent way to test for the\nexistence of a process.</li>\n</ul>"
             }
           ],
           "displayName": "Process events"
@@ -333,7 +333,7 @@
           "textRaw": "Exit codes",
           "name": "exit_codes",
           "type": "module",
-          "desc": "<p>Node.js will normally exit with a <code>0</code> status code when no more async\noperations are pending. The following status codes are used in other\ncases:</p>\n<ul>\n<li><code>1</code> <strong>Uncaught Fatal Exception</strong>: There was an uncaught exception,\nand it was not handled by a domain or an <a href=\"#event-uncaughtexception\"><code>'uncaughtException'</code></a> event\nhandler.</li>\n<li><code>2</code>: Unused (reserved by Bash for builtin misuse)</li>\n<li><code>3</code> <strong>Internal JavaScript Parse Error</strong>: The JavaScript source code\ninternal in the Node.js bootstrapping process caused a parse error. This\nis extremely rare, and generally can only happen during development\nof Node.js itself.</li>\n<li><code>4</code> <strong>Internal JavaScript Evaluation Failure</strong>: The JavaScript\nsource code internal in the Node.js bootstrapping process failed to\nreturn a function value when evaluated. This is extremely rare, and\ngenerally can only happen during development of Node.js itself.</li>\n<li><code>5</code> <strong>Fatal Error</strong>: There was a fatal unrecoverable error in V8.\nTypically a message will be printed to stderr with the prefix <code>FATAL ERROR</code>.</li>\n<li><code>6</code> <strong>Non-function Internal Exception Handler</strong>: There was an\nuncaught exception, but the internal fatal exception handler\nfunction was somehow set to a non-function, and could not be called.</li>\n<li><code>7</code> <strong>Internal Exception Handler Run-Time Failure</strong>: There was an\nuncaught exception, and the internal fatal exception handler\nfunction itself threw an error while attempting to handle it. This\ncan happen, for example, if an <a href=\"#event-uncaughtexception\"><code>'uncaughtException'</code></a> or\n<code>domain.on('error')</code> handler throws an error.</li>\n<li><code>8</code>: Unused. In previous versions of Node.js, exit code 8 sometimes\nindicated an uncaught exception.</li>\n<li><code>9</code> <strong>Invalid Argument</strong>: Either an unknown option was specified,\nor an option requiring a value was provided without a value.</li>\n<li><code>10</code> <strong>Internal JavaScript Run-Time Failure</strong>: The JavaScript\nsource code internal in the Node.js bootstrapping process threw an error\nwhen the bootstrapping function was called. This is extremely rare,\nand generally can only happen during development of Node.js itself.</li>\n<li><code>12</code> <strong>Invalid Debug Argument</strong>: The <code>--inspect</code> and/or <code>--inspect-brk</code>\noptions were set, but the port number chosen was invalid or unavailable.</li>\n<li><code>13</code> <strong>Unsettled Top-Level Await</strong>: <code>await</code> was used outside of a function\nin the top-level code, but the passed <code>Promise</code> never settled.</li>\n<li><code>14</code> <strong>Snapshot Failure</strong>: Node.js was started to build a V8 startup\nsnapshot and it failed because certain requirements of the state of\nthe application were not met.</li>\n<li><code>>128</code> <strong>Signal Exits</strong>: If Node.js receives a fatal signal such as\n<code>SIGKILL</code> or <code>SIGHUP</code>, then its exit code will be <code>128</code> plus the\nvalue of the signal code. This is a standard POSIX practice, since\nexit codes are defined to be 7-bit integers, and signal exits set\nthe high-order bit, and then contain the value of the signal code.\nFor example, signal <code>SIGABRT</code> has value <code>6</code>, so the expected exit\ncode will be <code>128</code> + <code>6</code>, or <code>134</code>.</li>\n</ul>",
+          "desc": "<p>Node.js will normally exit with a <code>0</code> status code when no more async\noperations are pending. The following status codes are used in other\ncases:</p>\n<ul>\n<li><code>1</code> <strong>Uncaught Fatal Exception</strong>: There was an uncaught exception,\nand it was not handled by a domain or an <a href=\"#event-uncaughtexception\"><code>'uncaughtException'</code></a> event\nhandler.</li>\n<li><code>2</code>: Unused (reserved by Bash for builtin misuse)</li>\n<li><code>3</code> <strong>Internal JavaScript Parse Error</strong>: The JavaScript source code\ninternal in the Node.js bootstrapping process caused a parse error. This\nis extremely rare, and generally can only happen during development\nof Node.js itself.</li>\n<li><code>4</code> <strong>Internal JavaScript Evaluation Failure</strong>: The JavaScript\nsource code internal in the Node.js bootstrapping process failed to\nreturn a function value when evaluated. This is extremely rare, and\ngenerally can only happen during development of Node.js itself.</li>\n<li><code>5</code> <strong>Fatal Error</strong>: There was a fatal unrecoverable error in V8.\nTypically a message will be printed to stderr with the prefix <code>FATAL ERROR</code>.</li>\n<li><code>6</code> <strong>Non-function Internal Exception Handler</strong>: There was an\nuncaught exception, but the internal fatal exception handler\nfunction was somehow set to a non-function, and could not be called.</li>\n<li><code>7</code> <strong>Internal Exception Handler Run-Time Failure</strong>: There was an\nuncaught exception, and the internal fatal exception handler\nfunction itself threw an error while attempting to handle it. This\ncan happen, for example, if an <a href=\"#event-uncaughtexception\"><code>'uncaughtException'</code></a> or\n<code>domain.on('error')</code> handler throws an error.</li>\n<li><code>8</code>: Unused. In previous versions of Node.js, exit code 8 sometimes\nindicated an uncaught exception.</li>\n<li><code>9</code> <strong>Invalid Argument</strong>: Either an unknown option was specified,\nor an option requiring a value was provided without a value.</li>\n<li><code>10</code> <strong>Internal JavaScript Run-Time Failure</strong>: The JavaScript\nsource code internal in the Node.js bootstrapping process threw an error\nwhen the bootstrapping function was called. This is extremely rare,\nand generally can only happen during development of Node.js itself.</li>\n<li><code>12</code> <strong>Invalid Debug Argument</strong>: The <code>--inspect</code> and/or <code>--inspect-brk</code>\noptions were set, but the port number chosen was invalid or unavailable.</li>\n<li><code>13</code> <strong>Unsettled Top-Level Await</strong>: <code>await</code> was used outside of a function\nin the top-level code, but the passed <code>Promise</code> never settled.</li>\n<li><code>14</code> <strong>Snapshot Failure</strong>: Node.js was started to build a V8 startup\nsnapshot and it failed because certain requirements of the state of\nthe application were not met.</li>\n<li><code>124</code> <strong>Process Timeout</strong>: The process was still running when the duration\nset with <a href=\"cli.html#--process-timeoutduration\"><code>--process-timeout</code></a> elapsed.</li>\n<li><code>>128</code> <strong>Signal Exits</strong>: If Node.js receives a fatal signal such as\n<code>SIGKILL</code> or <code>SIGHUP</code>, then its exit code will be <code>128</code> plus the\nvalue of the signal code. This is a standard POSIX practice, since\nexit codes are defined to be 7-bit integers, and signal exits set\nthe high-order bit, and then contain the value of the signal code.\nFor example, signal <code>SIGABRT</code> has value <code>6</code>, so the expected exit\ncode will be <code>128</code> + <code>6</code>, or <code>134</code>.</li>\n</ul>",
           "displayName": "Exit codes"
         }
       ],
@@ -799,10 +799,16 @@
             "added": [
               "v22.5.0"
             ],
-            "changes": []
+            "changes": [
+              {
+                "version": "v26.12.0",
+                "pr-url": "https://github.com/nodejs/node/pull/66436",
+                "description": "Marked as release candidate."
+              }
+            ]
           },
-          "stability": 1.1,
-          "stabilityText": "Active Development",
+          "stability": 1.2,
+          "stabilityText": "Release candidate",
           "signatures": [
             {
               "params": [
@@ -845,10 +851,16 @@
             "added": [
               "v22.5.0"
             ],
-            "changes": []
+            "changes": [
+              {
+                "version": "v26.12.0",
+                "pr-url": "https://github.com/nodejs/node/pull/66436",
+                "description": "Marked as release candidate."
+              }
+            ]
           },
-          "stability": 1.1,
-          "stabilityText": "Active Development",
+          "stability": 1.2,
+          "stabilityText": "Release candidate",
           "signatures": [
             {
               "params": [
@@ -891,10 +903,16 @@
             "added": [
               "v22.5.0"
             ],
-            "changes": []
+            "changes": [
+              {
+                "version": "v26.12.0",
+                "pr-url": "https://github.com/nodejs/node/pull/66436",
+                "description": "Marked as release candidate."
+              }
+            ]
           },
-          "stability": 1.1,
-          "stabilityText": "Active Development",
+          "stability": 1.2,
+          "stabilityText": "Release candidate",
           "signatures": [
             {
               "params": [
@@ -1416,10 +1434,14 @@
               "v23.6.0",
               "v22.14.0"
             ],
-            "changes": []
+            "changes": [
+              {
+                "version": "v26.11.0",
+                "pr-url": "https://github.com/nodejs/node/pull/66213",
+                "description": "This API is no longer experimental."
+              }
+            ]
           },
-          "stability": 1,
-          "stabilityText": "Experimental",
           "signatures": [
             {
               "params": [
@@ -1888,10 +1910,14 @@
               "v23.6.0",
               "v22.14.0"
             ],
-            "changes": []
+            "changes": [
+              {
+                "version": "v26.11.0",
+                "pr-url": "https://github.com/nodejs/node/pull/66213",
+                "description": "This API is no longer experimental."
+              }
+            ]
           },
-          "stability": 1,
-          "stabilityText": "Experimental",
           "signatures": [
             {
               "params": [
@@ -2378,7 +2404,13 @@
                 "added": [
                   "v20.0.0"
                 ],
-                "changes": []
+                "changes": [
+                  {
+                    "version": "v26.12.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/65492",
+                    "description": "The `reference` argument can be a `URL` or a `Uint8Array`."
+                  }
+                ]
               },
               "signatures": [
                 {
@@ -2389,9 +2421,9 @@
                       "type": "string"
                     },
                     {
-                      "textRaw": "`reference` {string}",
+                      "textRaw": "`reference` {string|URL|Uint8Array}",
                       "name": "reference",
-                      "type": "string",
+                      "type": "string|URL|Uint8Array",
                       "optional": true
                     }
                   ],
@@ -2402,7 +2434,7 @@
                   }
                 }
               ],
-              "desc": "<p>Verifies that the process is able to access the given scope and reference.\nIf no reference is provided, a global scope is assumed, for instance,\n<code>process.permission.has('fs.read')</code> will check if the process has ALL\nfile system read permissions.</p>\n<p>In audit mode (<a href=\"cli.html#--permission-audit\"><code>--permission-audit</code></a>), this method still returns the actual\npermission status, but denied operations will not throw <code>ERR_ACCESS_DENIED</code>.</p>\n<p>The reference has a meaning based on the provided scope. For example,\nthe reference when the scope is File System means files and folders.</p>\n<p>The available scopes are:</p>\n<ul>\n<li><code>fs</code> - All File System</li>\n<li><code>fs.read</code> - File System read operations</li>\n<li><code>fs.write</code> - File System write operations</li>\n<li><code>child</code> - Child process spawning operations</li>\n<li><code>openssl.store</code> - Loading keys through OpenSSL STORE loaders</li>\n<li><code>worker</code> - Worker thread spawning operation</li>\n<li><code>ffi</code> - Foreign function interface operations</li>\n</ul>\n<pre><code class=\"language-js\">// Check if the process has permission to read the README file\nprocess.permission.has('fs.read', './README.md');\n// Check if the process has read permission operations\nprocess.permission.has('fs.read');\n</code></pre>"
+              "desc": "<p>Verifies that the process is able to access the given scope and reference.\nIf no reference is provided, a global scope is assumed, for instance,\n<code>process.permission.has('fs.read')</code> will check if the process has ALL\nfile system read permissions.</p>\n<p>In audit mode (<a href=\"cli.html#--permission-audit\"><code>--permission-audit</code></a>), this method still returns the actual\npermission status, but denied operations will not throw <code>ERR_ACCESS_DENIED</code>.</p>\n<p>The reference has a meaning based on the provided scope. For example,\nthe reference when the scope is File System means files and folders.</p>\n<p>For File System scopes, a <code>URL</code> reference must use the <code>file:</code> protocol and is\nconverted to a path, while a <code>Uint8Array</code> reference is treated as the raw bytes\nof a path. Other scopes ignore the reference.</p>\n<p>The available scopes are:</p>\n<ul>\n<li><code>fs</code> - All File System</li>\n<li><code>fs.read</code> - File System read operations</li>\n<li><code>fs.write</code> - File System write operations</li>\n<li><code>child</code> - Child process spawning operations</li>\n<li><code>openssl.store</code> - Loading keys through OpenSSL STORE loaders</li>\n<li><code>worker</code> - Worker thread spawning operation</li>\n<li><code>net</code> - Network operations</li>\n<li><code>inspector</code> - Inspector operations</li>\n<li><code>wasi</code> - WASI operations</li>\n<li><code>addon</code> - Native addon operations</li>\n<li><code>ffi</code> - Foreign function interface operations</li>\n</ul>\n<pre><code class=\"language-js\">// Check if the process has permission to read the README file\nprocess.permission.has('fs.read', './README.md');\n// Check if the process has read permission operations\nprocess.permission.has('fs.read');\n</code></pre>"
             },
             {
               "textRaw": "`process.permission.drop(scope[, reference])`",
@@ -2410,9 +2442,16 @@
               "type": "method",
               "meta": {
                 "added": [
-                  "v26.3.0"
+                  "v26.3.0",
+                  "v24.20.0"
                 ],
-                "changes": []
+                "changes": [
+                  {
+                    "version": "v26.12.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/65492",
+                    "description": "The `reference` argument can be a `URL` or a `Uint8Array`."
+                  }
+                ]
               },
               "stability": 1.1,
               "stabilityText": "Active Development",
@@ -2425,15 +2464,15 @@
                       "type": "string"
                     },
                     {
-                      "textRaw": "`reference` {string}",
+                      "textRaw": "`reference` {string|URL|Uint8Array}",
                       "name": "reference",
-                      "type": "string",
+                      "type": "string|URL|Uint8Array",
                       "optional": true
                     }
                   ]
                 }
               ],
-              "desc": "<p>Drops the specified permission from the current process. This operation is\n<strong>irreversible</strong> — once a permission is dropped, it cannot be restored through\nany Node.js API.</p>\n<p>In audit mode (<a href=\"cli.html#--permission-audit\"><code>--permission-audit</code></a>), dropping a permission takes effect,\nbut since denied operations do not throw, the impact is limited to changing the\nreturn value of <code>permission.has()</code>.</p>\n<p>If no reference is provided, the entire scope is dropped. For example,\n<code>process.permission.drop('fs.read')</code> will revoke ALL file system read\npermissions.</p>\n<p>When a reference is provided, only the permission for that specific resource\nis dropped. For example, <code>process.permission.drop('fs.read', '/etc/myapp')</code>\nwill revoke read access to that directory while keeping other read\npermissions intact.</p>\n<p><strong>Important:</strong> You can only drop the exact resource that was explicitly\ngranted. The reference passed to <code>drop()</code> must match the original grant:</p>\n<ul>\n<li>If a permission was granted using a wildcard (<code>*</code>), such as\n<code>--allow-fs-read=*</code>, individual paths cannot be dropped - only the entire\nscope can be dropped (by calling <code>drop()</code> without a reference).</li>\n<li>If a directory was granted (e.g. <code>--allow-fs-read=/my/folder</code>), you cannot\ndrop access to individual files inside it. You must drop the same directory\nthat was granted. Any remaining grants continue to apply.</li>\n</ul>\n<p>The available scopes are the same as <a href=\"#processpermissionhasscope-reference\"><code>process.permission.has()</code></a>:</p>\n<ul>\n<li><code>fs</code> - All File System (drops both read and write)</li>\n<li><code>fs.read</code> - File System read operations</li>\n<li><code>fs.write</code> - File System write operations</li>\n<li><code>child</code> - Child process spawning operations</li>\n<li><code>openssl.store</code> - Loading keys through OpenSSL STORE loaders</li>\n<li><code>worker</code> - Worker thread spawning operation</li>\n<li><code>net</code> - Network operations</li>\n<li><code>inspector</code> - Inspector operations</li>\n<li><code>wasi</code> - WASI operations</li>\n<li><code>addon</code> - Native addon operations</li>\n</ul>\n<pre><code class=\"language-js\">const fs = require('node:fs');\n\n// Read configuration during startup\nconst config = fs.readFileSync('/etc/myapp/config.json', 'utf8');\n\n// Drop read access to the config directory after initialization\nprocess.permission.drop('fs.read', '/etc/myapp');\n\n// This will now throw ERR_ACCESS_DENIED\nfs.readFileSync('/etc/myapp/config.json');\n</code></pre>"
+              "desc": "<p>Drops the specified permission from the current process. This operation is\n<strong>irreversible</strong> — once a permission is dropped, it cannot be restored through\nany Node.js API.</p>\n<p>In audit mode (<a href=\"cli.html#--permission-audit\"><code>--permission-audit</code></a>), dropping a permission takes effect,\nbut since denied operations do not throw, the impact is limited to changing the\nreturn value of <code>permission.has()</code>.</p>\n<p>If no reference is provided, the entire scope is dropped. For example,\n<code>process.permission.drop('fs.read')</code> will revoke ALL file system read\npermissions.</p>\n<p>When a reference is provided, only the permission for that specific resource\nis dropped. For example, <code>process.permission.drop('fs.read', '/etc/myapp')</code>\nwill revoke read access to that directory while keeping other read\npermissions intact.</p>\n<p><strong>Important:</strong> You can only drop the exact resource that was explicitly\ngranted. The reference passed to <code>drop()</code> must match the original grant:</p>\n<ul>\n<li>If a permission was granted using a wildcard (<code>*</code>), such as\n<code>--allow-fs-read=*</code>, individual paths cannot be dropped - only the entire\nscope can be dropped (by calling <code>drop()</code> without a reference).</li>\n<li>If a directory was granted (e.g. <code>--allow-fs-read=/my/folder</code>), you cannot\ndrop access to individual files inside it. You must drop the same directory\nthat was granted. Any remaining grants continue to apply.</li>\n</ul>\n<p>The available scopes are the same as <a href=\"#processpermissionhasscope-reference\"><code>process.permission.has()</code></a>:</p>\n<ul>\n<li><code>fs</code> - All File System (drops both read and write)</li>\n<li><code>fs.read</code> - File System read operations</li>\n<li><code>fs.write</code> - File System write operations</li>\n<li><code>child</code> - Child process spawning operations</li>\n<li><code>openssl.store</code> - Loading keys through OpenSSL STORE loaders</li>\n<li><code>worker</code> - Worker thread spawning operation</li>\n<li><code>net</code> - Network operations</li>\n<li><code>inspector</code> - Inspector operations</li>\n<li><code>wasi</code> - WASI operations</li>\n<li><code>addon</code> - Native addon operations</li>\n<li><code>ffi</code> - Foreign function interface operations</li>\n</ul>\n<pre><code class=\"language-js\">const fs = require('node:fs');\n\n// Read configuration during startup\nconst config = fs.readFileSync('/etc/myapp/config.json', 'utf8');\n\n// Drop read access to the config directory after initialization\nprocess.permission.drop('fs.read', '/etc/myapp');\n\n// This will now throw ERR_ACCESS_DENIED\nfs.readFileSync('/etc/myapp/config.json');\n</code></pre>"
             }
           ]
         },

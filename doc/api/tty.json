@@ -46,6 +46,18 @@
                 "changes": []
               },
               "desc": "<p>A <code>boolean</code> that is always <code>true</code> for <code>tty.ReadStream</code> instances.</p>"
+            },
+            {
+              "textRaw": "{boolean|string}",
+              "name": "rawMode",
+              "type": "boolean|string",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The current raw mode for the <code>tty.ReadStream</code>. This is <code>false</code> when the stream\nis in its default mode, <code>'raw'</code> when raw input mode is enabled, and <code>'io'</code> when\nbinary-safe I/O mode is enabled.</p>"
             }
           ],
           "methods": [
@@ -57,16 +69,22 @@
                 "added": [
                   "v0.7.7"
                 ],
-                "changes": []
+                "changes": [
+                  {
+                    "version": "v26.8.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/64140",
+                    "description": "The `mode` argument supports `'raw'` and `'io'`."
+                  }
+                ]
               },
               "signatures": [
                 {
                   "params": [
                     {
-                      "textRaw": "`mode` {boolean} If `true`, configures the `tty.ReadStream` to operate as a raw device. If `false`, configures the `tty.ReadStream` to operate in its default mode. The `readStream.isRaw` property will be set to the resulting mode.",
+                      "textRaw": "`mode` {boolean|string} If `true` or `'raw'`, configures the `tty.ReadStream` to operate as a raw device. If `'io'`, configures the `tty.ReadStream` to operate in binary-safe I/O mode. If `false`, configures the `tty.ReadStream` to operate in its default mode. The `readStream.isRaw` property will be set to whether the stream is in raw mode, and the `readStream.rawMode` property will be set to the resulting mode.",
                       "name": "mode",
-                      "type": "boolean",
-                      "desc": "If `true`, configures the `tty.ReadStream` to operate as a raw device. If `false`, configures the `tty.ReadStream` to operate in its default mode. The `readStream.isRaw` property will be set to the resulting mode."
+                      "type": "boolean|string",
+                      "desc": "If `true` or `'raw'`, configures the `tty.ReadStream` to operate as a raw device. If `'io'`, configures the `tty.ReadStream` to operate in binary-safe I/O mode. If `false`, configures the `tty.ReadStream` to operate in its default mode. The `readStream.isRaw` property will be set to whether the stream is in raw mode, and the `readStream.rawMode` property will be set to the resulting mode."
                     }
                   ],
                   "return": {
@@ -77,7 +95,7 @@
                   }
                 }
               ],
-              "desc": "<p>Allows configuration of <code>tty.ReadStream</code> so that it operates as a raw device.</p>\n<p>When in raw mode, input is always available character-by-character, not\nincluding modifiers. Additionally, all special processing of input characters\nby the terminal is disabled, including echoing input\ncharacters. <kbd>Ctrl</kbd>+<kbd>C</kbd> will no longer cause a <code>SIGINT</code> when\nin this mode. This mode does not affect terminal output processing, such as\nnewline translation on Unix terminals.</p>"
+              "desc": "<p>Allows configuration of <code>tty.ReadStream</code> so that it operates as a raw device.</p>\n<p>When in raw mode, input is always available character-by-character, not\nincluding modifiers. Additionally, all special processing of input characters\nby the terminal is disabled, including echoing input\ncharacters. <kbd>Ctrl</kbd>+<kbd>C</kbd> will no longer cause a <code>SIGINT</code> when\nin this mode. This mode does not affect terminal output processing, such as\nnewline translation on Unix terminals.</p>\n<p>On Windows, <code>setRawMode()</code> requires write permission to the console input\nbuffer. When opening <code>\"\\\\\\\\.\\\\CONIN$\"</code> with the <a href=\"fs.html#fsopenpath-flags-mode-callback\"><code>fs.open()</code></a> family of APIs\n(for passing into <code>new tty.ReadStream()</code>), be sure to use a read/write flag\nsuch as <code>'r+'</code>.</p>\n<p>When in binary-safe I/O mode, terminal output processing is also disabled.\nThis corresponds to libuv's <code>UV_TTY_MODE_IO</code> mode and is not supported on\nWindows.</p>"
             }
           ]
         },

@@ -94,6 +94,13 @@
               "displayName": "Default evaluation"
             },
             {
+              "textRaw": "Error handling",
+              "name": "error_handling",
+              "type": "module",
+              "desc": "<p>By default, uncaught exceptions in the REPL are printed to the output stream\n(as with <code>Uncaught Error: REPL await</code> above). <code>uncaughtException</code> listeners\ncan be added freely in both standalone and nested REPLs. The <code>handleError</code>\noption of <a href=\"#replstartoptions\"><code>repl.start()</code></a> can customize this behavior, including\nforwarding exceptions to <a href=\"process.html#event-uncaughtexception\"><code>'uncaughtException'</code></a> by returning\n<code>'unhandled'</code>.</p>",
+              "displayName": "Error handling"
+            },
+            {
               "textRaw": "Reverse-i-search",
               "name": "reverse-i-search",
               "type": "module",
@@ -204,7 +211,7 @@
             ],
             "changes": []
           },
-          "desc": "<ul>\n<li><code>options</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object\"><code>&#x3C;Object></code></a> | <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type\"><code>&#x3C;string></code></a> See <a href=\"#replstartoptions\"><code>repl.start()</code></a></li>\n<li>Extends: <a href=\"readline.html#class-readlineinterface\"><code>&#x3C;readline.Interface></code></a></li>\n</ul>\n<p>Instances of <code>repl.REPLServer</code> are created using the <a href=\"#replstartoptions\"><code>repl.start()</code></a> method\nor directly using the JavaScript <code>new</code> keyword.</p>\n<pre><code class=\"language-mjs\">import repl from 'node:repl';\n\nconst options = { useColors: true };\n\nconst firstInstance = repl.start(options);\nconst secondInstance = new repl.REPLServer(options);\n</code></pre>\n<pre><code class=\"language-cjs\">const repl = require('node:repl');\n\nconst options = { useColors: true };\n\nconst firstInstance = repl.start(options);\nconst secondInstance = new repl.REPLServer(options);\n</code></pre>",
+          "desc": "<ul>\n<li><code>options</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object\"><code>&#x3C;Object></code></a> | <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type\"><code>&#x3C;string></code></a> See <a href=\"#replstartoptions\"><code>repl.start()</code></a></li>\n<li>Extends: <a href=\"readline.html#class-readlineinterface\"><code>&#x3C;readline.Interface></code></a></li>\n</ul>\n<p>Instances of <code>repl.REPLServer</code> are created using the <a href=\"#replstartoptions\"><code>repl.start()</code></a> method\nor directly using the JavaScript <code>new</code> keyword.</p>\n<pre><code class=\"language-mjs\">import repl from 'node:repl';\n\nconst options = { useColors: true };\n\nconst firstInstance = repl.start(options);\nconst secondInstance = new repl.REPLServer(options);\n</code></pre>\n<pre><code class=\"language-cjs\">const repl = require('node:repl');\n\nconst options = { useColors: true };\n\nconst firstInstance = repl.start(options);\nconst secondInstance = new repl.REPLServer(options);\n</code></pre>\n<p>Calling <code>repl.REPLServer()</code> without the <code>new</code> keyword throws a <code>TypeError</code>\n(see <a href=\"deprecations.html#dep0185-instantiating-noderepl-classes-without-new\">DEP0185</a>).</p>",
           "events": [
             {
               "textRaw": "Event: `'exit'`",

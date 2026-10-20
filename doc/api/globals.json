@@ -167,10 +167,10 @@
             {
               "params": [
                 {
-                  "textRaw": "`signals` {AbortSignal}[] The `AbortSignal`s of which to compose a new `AbortSignal`.",
+                  "textRaw": "`signals` {Iterable} An iterable of {AbortSignal}s from which to compose a new {AbortSignal}.",
                   "name": "signals",
-                  "type": "AbortSignal",
-                  "desc": "[] The `AbortSignal`s of which to compose a new `AbortSignal`."
+                  "type": "Iterable",
+                  "desc": "An iterable of {AbortSignal}s from which to compose a new {AbortSignal}."
                 }
               ]
             }
@@ -1139,6 +1139,43 @@
       "desc": "<p>A browser-compatible implementation of <a href=\"https://developer.mozilla.org/docs/Web/API/WebSocket\"><code>&#x3C;WebSocket></code></a>. Disable this API\nwith the <a href=\"cli.html#--no-experimental-websocket\"><code>--no-experimental-websocket</code></a> CLI flag.</p>"
     },
     {
+      "textRaw": "Class: `Worker`",
+      "name": "Worker",
+      "type": "class",
+      "meta": {
+        "added": [
+          "v26.9.0"
+        ],
+        "changes": []
+      },
+      "stability": 1,
+      "stabilityText": "Experimental. Enable this API with the `--experimental-web-worker` CLI flag.",
+      "desc": "<p>A mostly browser-compatible implementation of Web Workers of the <a href=\"https://html.spec.whatwg.org/multipage/workers.html\">HTML Standard</a>,\nimplemented on top of <a href=\"worker_threads.html\"><code>node:worker_threads</code></a>. Threads created with it\nare given the <a href=\"https://developer.mozilla.org/docs/Web/API/DedicatedWorkerGlobalScope\"><code>&#x3C;DedicatedWorkerGlobalScope></code></a> API (<code>self</code>,\n<code>name</code>, <code>location</code>, <code>navigator</code>, <code>postMessage()</code>, <code>close()</code>, and\n<code>importScripts()</code>), in addition to the usual Node.js globals, such as <code>process</code>.</p>\n<pre><code class=\"language-js\">// worker.js\naddEventListener('message', (event) => {\n  postMessage(`${event.data} from ${name}!`);\n});\n</code></pre>\n<pre><code class=\"language-js\">// main.js\nconst worker = new Worker('./worker.js', { name: 'greeter' });\n\nworker.addEventListener('message', (event) => {\n  console.log(event.data); // Prints: Hello from greeter!\n  worker.terminate();\n});\n\nworker.postMessage('Hello');\n</code></pre>\n<p>Because their lifetime and sharing model depend on origins and\nbrowsing contexts, Node.js does not currently implement <code>SharedWorker</code>.</p>",
+      "modules": [
+        {
+          "textRaw": "Loading worker scripts",
+          "name": "loading_worker_scripts",
+          "type": "module",
+          "desc": "<p>Worker scripts are read synchronously from the local file system or from\nmemory rather than fetched over the network, which changes which URLs are\naccepted and how failures are reported:</p>\n<ul>\n<li><code>new Worker()</code> and <code>importScripts()</code> accept only <code>file:</code>, <code>data:</code>, and\n<code>blob:</code> URLs. Any other scheme makes <code>new Worker()</code> throw a\n<code>NotSupportedError</code> and <code>importScripts()</code> throw a <code>NetworkError</code>.</li>\n<li>A script that cannot be read makes <code>importScripts()</code> throw a <code>NetworkError</code>;\nfor <code>new Worker()</code> it fires an <code>error</code> event at the <code>Worker</code> object.</li>\n<li>Redirects, the <code>nosniff</code> check, and HTTP MIME type validation do not apply.\nMIME types are validated only for <code>data:</code> and <code>blob:</code> URLs. The\n<code>credentials</code> option is validated for API compatibility but has no effect,\nsince no network request is made.</li>\n<li>On the main thread, relative script URLs are resolved against the current\nworking directory, because there is no document base URL. Within a worker\nthey are resolved against the worker's own URL (as is done in the spec).</li>\n<li>For <code>blob:</code> URLs, the script must be held in memory, so blobs backed by a file,\nsuch as those returned by <a href=\"fs.html#fsopenasblobpath-options\"><code>fs.openAsBlob()</code></a>, cannot be used.</li>\n</ul>\n<p><a href=\"typescript.html#type-stripping\">Type stripping</a> only applies to module workers loaded from\n<code>file:</code> URLs. The <code>type</code> option, not the file extension, decides how an entry is\nrun, so a <code>.cts</code> entry is still evaluated as an ES module.</p>",
+          "displayName": "Loading worker scripts"
+        },
+        {
+          "textRaw": "Differences from the HTML Standard",
+          "name": "differences_from_the_html_standard",
+          "type": "module",
+          "desc": "<p>Besides script loading, mentioned above:</p>\n<ul>\n<li>Node.js has no origin model, so same-origin and cross-origin distinctions do\nnot exist and <code>location.origin</code> is <code>'null'</code> for every supported scheme.</li>\n<li><code>close()</code> terminates the worker immediately instead of following the\nspecification's \"closing flag\" algorithm, so code remaining in the current\ntask after <code>close()</code> is not executed.</li>\n<li>The worker global is the normal Node.js global object with\n<code>DedicatedWorkerGlobalScope</code> inserted into its prototype chain, rather than\na fresh global created from the interface. Node.js globals such as\n<code>process</code>, <code>Buffer</code>, and <code>require()</code> remain available to worker scripts.</li>\n<li><code>ErrorEvent</code>s dispatched at <code>Worker</code> instances include <code>message</code> and\n<code>error</code>, but <code>filename</code>, <code>lineno</code>, and <code>colno</code> are always <code>''</code>, <code>0</code>, and\n<code>0</code>. An uncaught exception terminates the worker thread, and an unhandled\n<code>error</code> event is not propagated further: it neither reaches the parent's\nglobal scope nor affects the exit code of the process.</li>\n<li>The following <a href=\"https://developer.mozilla.org/docs/Web/API/WorkerGlobalScope\"><code>&#x3C;WorkerGlobalScope></code></a> events are never dispatched, although\ntheir handler properties exist: <code>languagechange</code>, <code>online</code>, and <code>offline</code>,\nsince these concepts do not exist in Node.js; <code>rejectionhandled</code> and\n<code>unhandledrejection</code>, since Node.js exposes the equivalent does not\nimplement the <code>PromiseRejectionEvent</code> interface or the per-rejection\n<code>preventDefault()</code> behavior required by the HTML Standard.</li>\n<li>Module workers loaded from <code>file:</code> URLs support <a href=\"typescript.html#type-stripping\">type stripping</a>.</li>\n</ul>",
+          "displayName": "Differences from the HTML Standard"
+        },
+        {
+          "textRaw": "Web Workers and `node:worker_threads`",
+          "name": "web_workers_and_`node:worker_threads`",
+          "type": "module",
+          "desc": "<p>Every Web Worker is backed by a <a href=\"worker_threads.html\"><code>node:worker_threads</code></a> <a href=\"worker_threads.html#class-worker\"><code>&#x3C;Worker></code></a>, so the\ntwo APIs share their threading, structured clone, and transfer semantics.\nInside a worker, [<code>worker_threads.parentPort</code>][] is the port behind\n<code>self.postMessage()</code> and the worker's <code>message</code> events, <code>isMainThread</code> is\n<code>false</code>, and <code>workerData</code> is <code>undefined</code>.</p>\n<p>Web Workers, like <code>node:worker_threads</code> workers, keep the event loop alive by\ndefault. In Node.js, Web Workers implement the <a href=\"process.html#processrefmayberefable\">Refable protocol</a>, and can be\nref'd and unref'd using <code>process.ref(worker)</code> and <code>process.unref(worker)</code>.</p>\n<p>As a rule of thumb, use <a href=\"worker_threads.html\"><code>node:worker_threads</code></a> directly when a program\nneeds <code>workerData</code>, a custom <code>env</code> or <code>execArgv</code>, resource limits, stdio\nredirection, the <code>'online'</code> and <code>'exit'</code> events, or <code>worker.threadId</code>;\n<code>Worker</code> accepts only the <code>name</code>, <code>type</code>, and <code>credentials</code> options and,\nper the specification, its <code>terminate()</code> returns <code>undefined</code>, rather than\na promise. Threads started through <a href=\"worker_threads.html\"><code>node:worker_threads</code></a> are ordinary\nNode.js threads and do not get the worker global scope APIs.</p>",
+          "displayName": "Web Workers and `node:worker_threads`"
+        }
+      ]
+    },
+    {
       "textRaw": "Class: `WritableStream`",
       "name": "WritableStream",
       "type": "class",
@@ -1935,10 +1972,10 @@
                 {
                   "params": [
                     {
-                      "textRaw": "`signals` {AbortSignal}[] The `AbortSignal`s of which to compose a new `AbortSignal`.",
+                      "textRaw": "`signals` {Iterable} An iterable of {AbortSignal}s from which to compose a new {AbortSignal}.",
                       "name": "signals",
-                      "type": "AbortSignal",
-                      "desc": "[] The `AbortSignal`s of which to compose a new `AbortSignal`."
+                      "type": "Iterable",
+                      "desc": "An iterable of {AbortSignal}s from which to compose a new {AbortSignal}."
                     }
                   ]
                 }
@@ -2905,6 +2942,43 @@
             ]
           },
           "desc": "<p>A browser-compatible implementation of <a href=\"https://developer.mozilla.org/docs/Web/API/WebSocket\"><code>&#x3C;WebSocket></code></a>. Disable this API\nwith the <a href=\"cli.html#--no-experimental-websocket\"><code>--no-experimental-websocket</code></a> CLI flag.</p>"
+        },
+        {
+          "textRaw": "Class: `Worker`",
+          "name": "Worker",
+          "type": "class",
+          "meta": {
+            "added": [
+              "v26.9.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Experimental. Enable this API with the `--experimental-web-worker` CLI flag.",
+          "desc": "<p>A mostly browser-compatible implementation of Web Workers of the <a href=\"https://html.spec.whatwg.org/multipage/workers.html\">HTML Standard</a>,\nimplemented on top of <a href=\"worker_threads.html\"><code>node:worker_threads</code></a>. Threads created with it\nare given the <a href=\"https://developer.mozilla.org/docs/Web/API/DedicatedWorkerGlobalScope\"><code>&#x3C;DedicatedWorkerGlobalScope></code></a> API (<code>self</code>,\n<code>name</code>, <code>location</code>, <code>navigator</code>, <code>postMessage()</code>, <code>close()</code>, and\n<code>importScripts()</code>), in addition to the usual Node.js globals, such as <code>process</code>.</p>\n<pre><code class=\"language-js\">// worker.js\naddEventListener('message', (event) => {\n  postMessage(`${event.data} from ${name}!`);\n});\n</code></pre>\n<pre><code class=\"language-js\">// main.js\nconst worker = new Worker('./worker.js', { name: 'greeter' });\n\nworker.addEventListener('message', (event) => {\n  console.log(event.data); // Prints: Hello from greeter!\n  worker.terminate();\n});\n\nworker.postMessage('Hello');\n</code></pre>\n<p>Because their lifetime and sharing model depend on origins and\nbrowsing contexts, Node.js does not currently implement <code>SharedWorker</code>.</p>",
+          "modules": [
+            {
+              "textRaw": "Loading worker scripts",
+              "name": "loading_worker_scripts",
+              "type": "module",
+              "desc": "<p>Worker scripts are read synchronously from the local file system or from\nmemory rather than fetched over the network, which changes which URLs are\naccepted and how failures are reported:</p>\n<ul>\n<li><code>new Worker()</code> and <code>importScripts()</code> accept only <code>file:</code>, <code>data:</code>, and\n<code>blob:</code> URLs. Any other scheme makes <code>new Worker()</code> throw a\n<code>NotSupportedError</code> and <code>importScripts()</code> throw a <code>NetworkError</code>.</li>\n<li>A script that cannot be read makes <code>importScripts()</code> throw a <code>NetworkError</code>;\nfor <code>new Worker()</code> it fires an <code>error</code> event at the <code>Worker</code> object.</li>\n<li>Redirects, the <code>nosniff</code> check, and HTTP MIME type validation do not apply.\nMIME types are validated only for <code>data:</code> and <code>blob:</code> URLs. The\n<code>credentials</code> option is validated for API compatibility but has no effect,\nsince no network request is made.</li>\n<li>On the main thread, relative script URLs are resolved against the current\nworking directory, because there is no document base URL. Within a worker\nthey are resolved against the worker's own URL (as is done in the spec).</li>\n<li>For <code>blob:</code> URLs, the script must be held in memory, so blobs backed by a file,\nsuch as those returned by <a href=\"fs.html#fsopenasblobpath-options\"><code>fs.openAsBlob()</code></a>, cannot be used.</li>\n</ul>\n<p><a href=\"typescript.html#type-stripping\">Type stripping</a> only applies to module workers loaded from\n<code>file:</code> URLs. The <code>type</code> option, not the file extension, decides how an entry is\nrun, so a <code>.cts</code> entry is still evaluated as an ES module.</p>",
+              "displayName": "Loading worker scripts"
+            },
+            {
+              "textRaw": "Differences from the HTML Standard",
+              "name": "differences_from_the_html_standard",
+              "type": "module",
+              "desc": "<p>Besides script loading, mentioned above:</p>\n<ul>\n<li>Node.js has no origin model, so same-origin and cross-origin distinctions do\nnot exist and <code>location.origin</code> is <code>'null'</code> for every supported scheme.</li>\n<li><code>close()</code> terminates the worker immediately instead of following the\nspecification's \"closing flag\" algorithm, so code remaining in the current\ntask after <code>close()</code> is not executed.</li>\n<li>The worker global is the normal Node.js global object with\n<code>DedicatedWorkerGlobalScope</code> inserted into its prototype chain, rather than\na fresh global created from the interface. Node.js globals such as\n<code>process</code>, <code>Buffer</code>, and <code>require()</code> remain available to worker scripts.</li>\n<li><code>ErrorEvent</code>s dispatched at <code>Worker</code> instances include <code>message</code> and\n<code>error</code>, but <code>filename</code>, <code>lineno</code>, and <code>colno</code> are always <code>''</code>, <code>0</code>, and\n<code>0</code>. An uncaught exception terminates the worker thread, and an unhandled\n<code>error</code> event is not propagated further: it neither reaches the parent's\nglobal scope nor affects the exit code of the process.</li>\n<li>The following <a href=\"https://developer.mozilla.org/docs/Web/API/WorkerGlobalScope\"><code>&#x3C;WorkerGlobalScope></code></a> events are never dispatched, although\ntheir handler properties exist: <code>languagechange</code>, <code>online</code>, and <code>offline</code>,\nsince these concepts do not exist in Node.js; <code>rejectionhandled</code> and\n<code>unhandledrejection</code>, since Node.js exposes the equivalent does not\nimplement the <code>PromiseRejectionEvent</code> interface or the per-rejection\n<code>preventDefault()</code> behavior required by the HTML Standard.</li>\n<li>Module workers loaded from <code>file:</code> URLs support <a href=\"typescript.html#type-stripping\">type stripping</a>.</li>\n</ul>",
+              "displayName": "Differences from the HTML Standard"
+            },
+            {
+              "textRaw": "Web Workers and `node:worker_threads`",
+              "name": "web_workers_and_`node:worker_threads`",
+              "type": "module",
+              "desc": "<p>Every Web Worker is backed by a <a href=\"worker_threads.html\"><code>node:worker_threads</code></a> <a href=\"worker_threads.html#class-worker\"><code>&#x3C;Worker></code></a>, so the\ntwo APIs share their threading, structured clone, and transfer semantics.\nInside a worker, [<code>worker_threads.parentPort</code>][] is the port behind\n<code>self.postMessage()</code> and the worker's <code>message</code> events, <code>isMainThread</code> is\n<code>false</code>, and <code>workerData</code> is <code>undefined</code>.</p>\n<p>Web Workers, like <code>node:worker_threads</code> workers, keep the event loop alive by\ndefault. In Node.js, Web Workers implement the <a href=\"process.html#processrefmayberefable\">Refable protocol</a>, and can be\nref'd and unref'd using <code>process.ref(worker)</code> and <code>process.unref(worker)</code>.</p>\n<p>As a rule of thumb, use <a href=\"worker_threads.html\"><code>node:worker_threads</code></a> directly when a program\nneeds <code>workerData</code>, a custom <code>env</code> or <code>execArgv</code>, resource limits, stdio\nredirection, the <code>'online'</code> and <code>'exit'</code> events, or <code>worker.threadId</code>;\n<code>Worker</code> accepts only the <code>name</code>, <code>type</code>, and <code>credentials</code> options and,\nper the specification, its <code>terminate()</code> returns <code>undefined</code>, rather than\na promise. Threads started through <a href=\"worker_threads.html\"><code>node:worker_threads</code></a> are ordinary\nNode.js threads and do not get the worker global scope APIs.</p>",
+              "displayName": "Web Workers and `node:worker_threads`"
+            }
+          ]
         },
         {
           "textRaw": "Class: `WritableStream`",

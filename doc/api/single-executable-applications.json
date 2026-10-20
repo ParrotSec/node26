@@ -38,7 +38,7 @@
           "textRaw": "Generating single executable applications with `--build-sea`",
           "name": "generating_single_executable_applications_with_`--build-sea`",
           "type": "module",
-          "desc": "<p>To generate a single executable application directly, the <code>--build-sea</code> flag can be\nused. It takes a path to a configuration file in JSON format. If the path passed to it\nisn't absolute, Node.js will use the path relative to the current working directory.</p>\n<p>The configuration currently reads the following top-level fields:</p>\n<pre><code class=\"language-json\">{\n  \"main\": \"/path/to/bundled/script.js\",\n  \"mainFormat\": \"commonjs\", // Default: \"commonjs\", options: \"commonjs\", \"module\"\n  \"executable\": \"/path/to/node/binary\", // Optional, if not specified, uses the current Node.js binary\n  \"output\": \"/path/to/write/the/generated/executable\",\n  \"disableExperimentalSEAWarning\": true, // Default: false\n  \"useSnapshot\": false,  // Default: false\n  \"useCodeCache\": true, // Default: false\n  \"execArgv\": [\"--no-warnings\", \"--max-old-space-size=4096\"], // Optional\n  \"execArgvExtension\": \"env\", // Default: \"env\", options: \"none\", \"env\", \"cli\"\n  \"assets\": {  // Optional\n    \"a.dat\": \"/path/to/a.dat\",\n    \"b.txt\": \"/path/to/b.txt\"\n  }\n}\n</code></pre>\n<p>If the paths are not absolute, Node.js will use the path relative to the\ncurrent working directory. The version of the Node.js binary used to produce\nthe blob must be the same as the one to which the blob will be injected.</p>\n<p>Note: When generating cross-platform SEAs (e.g., generating a SEA\nfor <code>linux-x64</code> on <code>darwin-arm64</code>), <code>useCodeCache</code> and <code>useSnapshot</code>\nmust be set to false to avoid generating incompatible executables.\nSince code cache and snapshots can only be loaded on the same platform\nwhere they are compiled, the generated executable might crash on startup when\ntrying to load code cache or snapshots built on a different platform.</p>",
+          "desc": "<p>To generate a single executable application directly, the <code>--build-sea</code> flag can be\nused. It takes a path to a configuration file in JSON format. If the path passed to it\nisn't absolute, Node.js will use the path relative to the current working directory.</p>\n<p>The configuration currently reads the following top-level fields:</p>\n<pre><code class=\"language-json\">{\n  \"main\": \"/path/to/bundled/script.js\",\n  \"mainFormat\": \"commonjs\", // Default: \"commonjs\", options: \"commonjs\", \"module\"\n  \"executable\": \"/path/to/node/binary\", // Optional, if not specified, uses the current Node.js binary\n  \"output\": \"/path/to/write/the/generated/executable\",\n  \"disableExperimentalSEAWarning\": true, // Default: false\n  \"useSnapshot\": false,  // Default: false\n  \"useCodeCache\": true, // Default: false\n  \"useVfs\": true, // Default: false\n  \"vfsArchive\": \"/path/to/assets.zip\", // Optional\n  \"execArgv\": [\"--no-warnings\", \"--max-old-space-size=4096\"], // Optional\n  \"execArgvExtension\": \"env\", // Default: \"env\", options: \"none\", \"env\", \"cli\"\n  \"assets\": {  // Optional\n    \"a.dat\": \"/path/to/a.dat\",\n    \"b.txt\": \"/path/to/b.txt\"\n  }\n}\n</code></pre>\n<p>If the paths are not absolute, Node.js will use the path relative to the\ncurrent working directory. The version of the Node.js binary used to produce\nthe blob must be the same as the one to which the blob will be injected.</p>\n<p>Note: When generating cross-platform SEAs (e.g., generating a SEA\nfor <code>linux-x64</code> on <code>darwin-arm64</code>), <code>useCodeCache</code> and <code>useSnapshot</code>\nmust be set to false to avoid generating incompatible executables.\nSince code cache and snapshots can only be loaded on the same platform\nwhere they are compiled, the generated executable might crash on startup when\ntrying to load code cache or snapshots built on a different platform.</p>",
           "modules": [
             {
               "textRaw": "Assets",
@@ -46,6 +46,58 @@
               "type": "module",
               "desc": "<p>Users can include assets by adding a key-path dictionary to the configuration\nas the <code>assets</code> field. At build time, Node.js would read the assets from the\nspecified paths and bundle them into the preparation blob. In the generated\nexecutable, users can retrieve the assets using the <a href=\"#seagetassetkey-encoding\"><code>sea.getAsset()</code></a> and\n<a href=\"#seagetassetasblobkey-options\"><code>sea.getAssetAsBlob()</code></a> APIs.</p>\n<pre><code class=\"language-json\">{\n  \"main\": \"/path/to/bundled/script.js\",\n  \"output\": \"/path/to/write/the/generated/executable\",\n  \"assets\": {\n    \"a.jpg\": \"/path/to/a.jpg\",\n    \"b.txt\": \"/path/to/b.txt\"\n  }\n}\n</code></pre>\n<p>The single-executable application can access the assets as follows:</p>\n<pre><code class=\"language-cjs\">const { getAsset, getAssetAsBlob, getRawAsset, getAssetKeys } = require('node:sea');\n// Get all asset keys.\nconst keys = getAssetKeys();\nconsole.log(keys); // ['a.jpg', 'b.txt']\n// Returns a copy of the data in an ArrayBuffer.\nconst image = getAsset('a.jpg');\n// Returns a string decoded from the asset as UTF8.\nconst text = getAsset('b.txt', 'utf8');\n// Returns a Blob containing the asset.\nconst blob = getAssetAsBlob('a.jpg');\n// Returns an ArrayBuffer containing the raw asset without copying.\nconst raw = getRawAsset('a.jpg');\n</code></pre>\n<p>See documentation of the <a href=\"#seagetassetkey-encoding\"><code>sea.getAsset()</code></a>, <a href=\"#seagetassetasblobkey-options\"><code>sea.getAssetAsBlob()</code></a>,\n<a href=\"#seagetrawassetkey\"><code>sea.getRawAsset()</code></a> and <a href=\"#seagetassetkeys\"><code>sea.getAssetKeys()</code></a> APIs for more information.</p>",
               "displayName": "Assets"
+            },
+            {
+              "textRaw": "Virtual file system (VFS) for assets",
+              "name": "virtual_file_system_(vfs)_for_assets",
+              "type": "module",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "stability": 1,
+              "stabilityText": "Early development",
+              "desc": "<p>In addition to using the <code>node:sea</code> API to access individual assets, the\nbundled assets can be exposed as a read-only <a href=\"vfs.html\">virtual file system</a> and\naccessed through standard <code>node:fs</code> APIs. To enable this, set\n<code>\"useVfs\": true</code> in the SEA configuration.</p>\n<p>A virtual file system never shadows the real file system: it is mounted at a\nreserved mount point that cannot exist on the real file system, and the mount\npoint is chosen at runtime rather than being a fixed path. When <code>useVfs</code> is\nenabled, the injected main script itself is placed at the root of the mount\nand executed from there, so <code>__filename</code> and <code>__dirname</code> point inside the\nvirtual file system instead of reflecting <a href=\"process.html#processexecpath\"><code>process.execPath</code></a>. Bundled\ncode therefore reaches the assets through <code>__dirname</code>-relative paths and\nrelative <a href=\"modules.html#requireid\"><code>require()</code></a> calls, without having to know the mount point:</p>\n<pre><code class=\"language-cjs\">const fs = require('node:fs');\nconst path = require('node:path');\n\n// __dirname is the root of the virtual file system holding the assets.\nconst rawConfig = fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8');\nconst data = fs.readFileSync(path.join(__dirname, 'data/file.txt'));\n\n// Directory operations work too.\nconst files = fs.readdirSync(path.join(__dirname, 'assets'));\n\n// Check if a bundled file exists.\nif (fs.existsSync(path.join(__dirname, 'optional.json'))) {\n  // ...\n}\n</code></pre>\n<p>The VFS supports the <code>node:fs</code> operations for reading files and directories.\nSince the SEA VFS is read-only, write operations fail with <code>EROFS</code>. See the\n<a href=\"vfs.html\">VFS documentation</a> for the full list of supported operations.</p>",
+              "modules": [
+                {
+                  "textRaw": "Loading modules from the VFS in a SEA",
+                  "name": "loading_modules_from_the_vfs_in_a_sea",
+                  "type": "module",
+                  "desc": "<p>When <code>useVfs</code> is enabled, the main script is executed from inside the\nvirtual file system, and <code>require()</code> uses the <a href=\"vfs.html#module-loader-integration\">module loader\nintegration</a> of the VFS to load modules from the bundled assets. This\nsupports relative requires (e.g. <code>require('./helper.js')</code>) as well as\n<code>node_modules</code> package lookups, which are confined to the mount:</p>\n<pre><code class=\"language-cjs\">// Require bundled modules using relative paths.\nconst myModule = require('./lib/mymodule.js');\n\n// Packages bundled under the node_modules asset prefix also resolve.\nconst dep = require('some-package');\n</code></pre>",
+                  "displayName": "Loading modules from the VFS in a SEA"
+                },
+                {
+                  "textRaw": "ESM entry points",
+                  "name": "esm_entry_points",
+                  "type": "module",
+                  "desc": "<p><code>\"useVfs\": true</code> also supports <code>\"mainFormat\": \"module\"</code>. The ESM main\nscript is loaded from inside the mount through the ESM loader, so\n<code>import.meta.url</code>, <code>import.meta.filename</code>, and <code>import.meta.dirname</code>\nreflect the location of the main script in the virtual file system, and\nstatic and dynamic imports resolve against the bundled assets:</p>\n<pre><code class=\"language-mjs\">import fs from 'node:fs';\nimport path from 'node:path';\n\n// import.meta.dirname is the root of the virtual file system.\nconst data = fs.readFileSync(\n  path.join(import.meta.dirname, 'data/file.txt'));\n\n// Relative and bare specifier imports resolve inside the mount.\nimport myModule from './lib/mymodule.mjs';\nconst lazy = await import('./lib/lazy.mjs');\n</code></pre>\n<p>Module format detection works the same way as on the real file\nsystem: name bundled ES modules with the <code>.mjs</code> extension (or provide the\nrelevant <code>package.json</code> files as assets) so they are interpreted as ESM.</p>",
+                  "displayName": "ESM entry points"
+                },
+                {
+                  "textRaw": "Serving the assets from a ZIP archive with `\"vfsArchive\"`",
+                  "name": "serving_the_assets_from_a_zip_archive_with_`\"vfsarchive\"`",
+                  "type": "module",
+                  "desc": "<p>Instead of listing individual <code>\"assets\"</code>, the configuration can point\n<code>\"vfsArchive\"</code> at a prebuilt ZIP archive. The archive is embedded into the\nexecutable as-is, and the virtual file system serves the files inside it,\ninflating each one when it is read. When the assets are compressible (such\nas JavaScript, JSON, or other text), a deflate-compressed archive can\nsubstantially reduce the size of the generated executable.</p>\n<p>The archive can be built with any ZIP tool, or with the ZIP support in\n<a href=\"zlib.html\"><code>node:zlib</code></a>:</p>\n<pre><code class=\"language-mjs\">import { zipFiles } from 'node:zlib';\nimport { createWriteStream } from 'node:fs';\nimport { pipeline } from 'node:stream/promises';\n\nawait pipeline(\n  zipFiles([\n    ['./dist/config.json', 'config.json'],\n    ['./dist/data.txt', 'data/data.txt'],\n  ]),\n  createWriteStream('assets.zip'),\n);\n</code></pre>\n<p>The mounted file tree looks the same as with <code>\"assets\"</code>: the entries appear\nunder the mount point using their archive names, the main script is placed\nat the mount point root, and access through <code>__dirname</code>-relative paths,\n<code>require()</code>, and <code>import</code> is unchanged. However, <code>sea.getAsset()</code> and\n<code>sea.getAssetAsBlob()</code> do not serve the individual files, because the\nexecutable only embeds the archive; read the files through the file system\nAPIs instead. <code>\"vfsArchive\"</code> requires <code>\"useVfs\": true</code> and cannot be\ncombined with <code>\"assets\"</code>.</p>",
+                  "displayName": "Serving the assets from a ZIP archive with `\"vfsArchive\"`"
+                },
+                {
+                  "textRaw": "Snapshot and code caching limitations",
+                  "name": "snapshot_and_code_caching_limitations",
+                  "type": "module",
+                  "desc": "<p><code>\"useVfs\": true</code> cannot be used together with <code>\"useSnapshot\": true</code> or\n<code>\"useCodeCache\": true</code>. The code cache limitation is due to incomplete\nimplementation, not a technical impossibility. Consider bundling the\napplication if startup performance matters and do not rely on module loading\nfrom the VFS in that case.</p>",
+                  "displayName": "Snapshot and code caching limitations"
+                },
+                {
+                  "textRaw": "Native addon limitations",
+                  "name": "native_addon_limitations",
+                  "type": "module",
+                  "desc": "<p>Native addons (<code>.node</code> files) cannot be loaded directly from the VFS because\n<code>process.dlopen()</code> requires files on the real file system. To use native\naddons in a SEA with VFS, write the asset to a temporary file first. See\n<a href=\"#using-native-addons-in-the-injected-main-script\">Using native addons in the injected main script</a> for an example.</p>",
+                  "displayName": "Native addon limitations"
+                }
+              ],
+              "displayName": "Virtual file system (VFS) for assets"
             },
             {
               "textRaw": "Startup snapshot support",
@@ -58,7 +110,7 @@
               "textRaw": "V8 code cache support",
               "name": "v8_code_cache_support",
               "type": "module",
-              "desc": "<p>When <code>useCodeCache</code> is set to <code>true</code> in the configuration, during the generation\nof the single executable preparation blob, Node.js will compile the <code>main</code>\nscript to generate the V8 code cache. The generated code cache would be part of\nthe preparation blob and get injected into the final executable. When the single\nexecutable application is launched, instead of compiling the <code>main</code> script from\nscratch, Node.js would use the code cache to speed up the compilation, then\nexecute the script, which would improve the startup performance.</p>\n<p><strong>Note:</strong> <code>import()</code> does not work when <code>useCodeCache</code> is <code>true</code>.</p>",
+              "desc": "<p>When <code>useCodeCache</code> is set to <code>true</code> in the configuration, during the generation\nof the single executable preparation blob, Node.js will compile the <code>main</code>\nscript to generate the V8 code cache. The generated code cache would be part of\nthe preparation blob and get injected into the final executable. When the single\nexecutable application is launched, instead of compiling the <code>main</code> script from\nscratch, Node.js would use the code cache to speed up the compilation, then\nexecute the script, which would improve the startup performance.</p>",
               "displayName": "V8 code cache support"
             },
             {
@@ -296,7 +348,7 @@
               "textRaw": "`import()` in the injected main script",
               "name": "`import()`_in_the_injected_main_script",
               "type": "module",
-              "desc": "<p>When using <code>\"mainFormat\": \"module\"</code>, <code>import()</code> can be used to dynamically\nload built-in modules. Attempting to use <code>import()</code> to load modules from\nthe file system will throw an error.</p>",
+              "desc": "<p><code>import()</code> can be used to dynamically load built-in modules in both\nCommonJS and ESM (<code>\"mainFormat\": \"module\"</code>) single executable applications.\nAttempting to use <code>import()</code> to load modules from\nthe file system will throw an error.</p>",
               "displayName": "`import()` in the injected main script"
             },
             {

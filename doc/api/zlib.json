@@ -808,7 +808,7 @@
                   "textRaw": "Pledged Source Size",
                   "name": "pledged_source_size",
                   "type": "module",
-                  "desc": "<p>It's possible to specify the expected total size of the uncompressed input via\n<code>opts.pledgedSrcSize</code>, which must be a non-negative safe integer. If the size\ndoesn't match at the end of the input, compression will fail with the code\n<code>ZSTD_error_srcSize_wrong</code>.</p>",
+                  "desc": "<p>It's possible to specify the expected total size of the uncompressed input via\n<code>opts.pledgedSrcSize</code>, which must be a non-negative safe integer. If the size\ndoesn't match at the end of the input, compression will fail with the code\n<code>ZSTD_error_srcSize_wrong</code>.</p>\n<p><a href=\"#zlibzstdcompressbuffer-options-callback\"><code>zlib.zstdCompress()</code></a> defaults <code>opts.pledgedSrcSize</code> to the byte length of\nits input.</p>",
                   "displayName": "Pledged Source Size"
                 },
                 {
@@ -914,7 +914,7 @@
           },
           "stability": 1,
           "stabilityText": "Experimental",
-          "desc": "<p>Each Zstd-based class takes an <code>options</code> object. All options are optional.</p>\n<ul>\n<li><code>flush</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type\"><code>&#x3C;integer></code></a> <strong>Default:</strong> <code>zlib.constants.ZSTD_e_continue</code></li>\n<li><code>finishFlush</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type\"><code>&#x3C;integer></code></a> <strong>Default:</strong> <code>zlib.constants.ZSTD_e_end</code></li>\n<li><code>chunkSize</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type\"><code>&#x3C;integer></code></a> <strong>Default:</strong> <code>16 * 1024</code></li>\n<li><code>params</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object\"><code>&#x3C;Object></code></a> Key-value object containing indexed <a href=\"#zstd-constants\">Zstd parameters</a>.</li>\n<li><code>maxOutputLength</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type\"><code>&#x3C;integer></code></a> Limits output size when using <a href=\"#convenience-methods\">convenience methods</a>. <strong>Default:</strong> <a href=\"buffer.html#bufferkmaxlength\"><code>buffer.kMaxLength</code></a></li>\n<li><code>info</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type\"><code>&#x3C;boolean></code></a> If <code>true</code>, returns an object with <code>buffer</code> and <code>engine</code>. <strong>Default:</strong> <code>false</code></li>\n<li><code>dictionary</code> <a href=\"buffer.html#class-buffer\"><code>&#x3C;Buffer></code></a> | <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray\"><code>&#x3C;TypedArray></code></a> | <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView\"><code>&#x3C;DataView></code></a> | <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer\"><code>&#x3C;ArrayBuffer></code></a> Optional dictionary used\nto improve compression efficiency when compressing or decompressing data that\nshares common patterns with the dictionary.</li>\n<li><code>rejectGarbageAfterEnd</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type\"><code>&#x3C;boolean></code></a> If <code>true</code>, decompression fails when\ninput remains after the first complete compressed stream. <strong>Default:</strong> <code>false</code></li>\n</ul>\n<p>For example:</p>\n<pre><code class=\"language-js\">const stream = zlib.createZstdCompress({\n  chunkSize: 32 * 1024,\n  params: {\n    [zlib.constants.ZSTD_c_compressionLevel]: 10,\n    [zlib.constants.ZSTD_c_checksumFlag]: 1,\n  },\n});\n</code></pre>"
+          "desc": "<p>Each Zstd-based class takes an <code>options</code> object. All options are optional.</p>\n<ul>\n<li><code>flush</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type\"><code>&#x3C;integer></code></a> <strong>Default:</strong> <code>zlib.constants.ZSTD_e_continue</code></li>\n<li><code>finishFlush</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type\"><code>&#x3C;integer></code></a> <strong>Default:</strong> <code>zlib.constants.ZSTD_e_end</code></li>\n<li><code>chunkSize</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type\"><code>&#x3C;integer></code></a> <strong>Default:</strong> <code>16 * 1024</code></li>\n<li><code>params</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object\"><code>&#x3C;Object></code></a> Key-value object containing indexed <a href=\"#zstd-constants\">Zstd parameters</a>.</li>\n<li><code>pledgedSrcSize</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type\"><code>&#x3C;number></code></a> Expected total size of the uncompressed input. It\nmust be a non-negative safe integer and must match the input size when\ncompression finishes. Only applicable to Zstd compressors.</li>\n<li><code>maxOutputLength</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type\"><code>&#x3C;integer></code></a> Limits output size when using <a href=\"#convenience-methods\">convenience methods</a>. <strong>Default:</strong> <a href=\"buffer.html#bufferkmaxlength\"><code>buffer.kMaxLength</code></a></li>\n<li><code>info</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type\"><code>&#x3C;boolean></code></a> If <code>true</code>, returns an object with <code>buffer</code> and <code>engine</code>. <strong>Default:</strong> <code>false</code></li>\n<li><code>dictionary</code> <a href=\"buffer.html#class-buffer\"><code>&#x3C;Buffer></code></a> | <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray\"><code>&#x3C;TypedArray></code></a> | <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView\"><code>&#x3C;DataView></code></a> | <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer\"><code>&#x3C;ArrayBuffer></code></a> Optional dictionary used\nto improve compression efficiency when compressing or decompressing data that\nshares common patterns with the dictionary.</li>\n<li><code>rejectGarbageAfterEnd</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type\"><code>&#x3C;boolean></code></a> If <code>true</code>, decompression fails when\ninput remains after a complete sequence of Zstd frames. <strong>Default:</strong> <code>false</code></li>\n</ul>\n<p>For example:</p>\n<pre><code class=\"language-js\">const stream = zlib.createZstdCompress({\n  chunkSize: 32 * 1024,\n  params: {\n    [zlib.constants.ZSTD_c_compressionLevel]: 10,\n    [zlib.constants.ZSTD_c_checksumFlag]: 1,\n  },\n});\n</code></pre>"
         },
         {
           "textRaw": "Convenience methods",
@@ -1712,7 +1712,13 @@
                   "v23.8.0",
                   "v22.15.0"
                 ],
-                "changes": []
+                "changes": [
+                  {
+                    "version": "v26.11.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/66358",
+                    "description": "The `pledgedSrcSize` option defaults to the byte length of `buffer`."
+                  }
+                ]
               },
               "stability": 1,
               "stabilityText": "Experimental",
@@ -1782,6 +1788,8 @@
                 ],
                 "changes": []
               },
+              "stability": 1,
+              "stabilityText": "Experimental",
               "signatures": [
                 {
                   "params": [
@@ -1991,6 +1999,1810 @@
           "desc": "<ul>\n<li>Extends: <a href=\"#class-zlibzlibbase\"><code>ZlibBase</code></a></li>\n</ul>\n<p>Decompress either a Gzip- or Deflate-compressed stream by auto-detecting\nthe header.</p>"
         },
         {
+          "textRaw": "Class: `zlib.ZipBuffer`",
+          "name": "zlib.ZipBuffer",
+          "type": "class",
+          "meta": {
+            "added": [
+              "v26.8.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Early development",
+          "desc": "<p>The ZIP archive API is experimental. Using any part of it (this class among\nthem) emits an experimental warning the first time; merely importing\n<code>node:zlib</code> does not.</p>\n<p>An in-memory, <strong>zero-copy</strong> view over the entries of a ZIP archive already\nheld in a <code>Buffer</code>, <code>TypedArray</code>, <code>DataView</code>, or <code>ArrayBuffer</code>. Its set of\nentries can be edited - entries added or removed - but, unlike <a href=\"#class-zlibzipfile\"><code>ZipFile</code></a>,\nthose edits are <strong>not</strong> written into the source buffer: a newly added entry is\nheld as a separate in-memory <a href=\"#class-zlibzipentry\"><code>ZipEntry</code></a> (the passed buffer is a fixed-size\nview with no room to append to), and removal just drops the entry from\n<code>ZipBuffer</code>'s index. The original bytes are never modified.\n<a href=\"#zipbuffertobufferoptions\"><code>zipBuffer.toBuffer()</code></a> serializes the current set of entries into a fresh\narchive.</p>\n<p><code>ZipBuffer</code> does not copy the archive you hand it. It keeps a view onto that\nmemory and reads each entry's content lazily and directly from it, which is\nwhat makes construction cheap regardless of archive size. The trade-off is\nthat you <strong>must not modify or reuse</strong> that memory - including the\n<code>ArrayBuffer</code> backing a <code>TypedArray</code>/<code>DataView</code> - while the <code>ZipBuffer</code>, or\nany <a href=\"#class-zlibzipentry\"><code>ZipEntry</code></a> obtained from it, is still in use: a later read would\nobserve the change and may fail or return corrupt data. Pass a copy (for\nexample <code>Buffer.from(source)</code>) if the source might be mutated or reused.</p>\n<p><code>add()</code> and <code>toBuffer()</code> each have a <code>*Sync</code> counterpart\n(<a href=\"#zipbufferaddsyncfilename-data-options\"><code>addSync()</code></a>, <a href=\"#zipbuffertobuffersyncoptions\"><code>toBufferSync()</code></a>)\nthat performs the same compression work synchronously. As with the\nsynchronous <code>node:fs</code> APIs, these block the Node.js event loop and further\nJavaScript execution until the operation completes; use them only where\nsynchronous execution is appropriate (for example, short-lived scripts or\nstartup code), not in code that must stay responsive.</p>\n<pre><code class=\"language-mjs\">import { ZipBuffer } from 'node:zlib';\nimport { readFileSync, writeFileSync } from 'node:fs';\nimport { Buffer } from 'node:buffer';\n\nconst zip = new ZipBuffer(readFileSync('archive.zip'));\nfor (const [name, entry] of zip) {\n  console.log(name, entry.size);\n}\nawait zip.add('hello.txt', Buffer.from('Hello, world!'));\nzip.delete('unwanted.txt');\nwriteFileSync('archive.zip', await zip.toBuffer());\n</code></pre>\n<pre><code class=\"language-cjs\">const { ZipBuffer } = require('node:zlib');\nconst { readFileSync, writeFileSync } = require('node:fs');\n\nasync function main() {\n  const zip = new ZipBuffer(readFileSync('archive.zip'));\n  for (const [name, entry] of zip) {\n    console.log(name, entry.size);\n  }\n  await zip.add('hello.txt', Buffer.from('Hello, world!'));\n  zip.delete('unwanted.txt');\n  writeFileSync('archive.zip', await zip.toBuffer());\n}\nmain();\n</code></pre>",
+          "signatures": [
+            {
+              "textRaw": "`new zlib.ZipBuffer(buffer)`",
+              "name": "zlib.ZipBuffer",
+              "type": "ctor",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "params": [
+                {
+                  "textRaw": "`buffer` {Buffer|TypedArray|DataView|ArrayBuffer} A complete ZIP archive.",
+                  "name": "buffer",
+                  "type": "Buffer|TypedArray|DataView|ArrayBuffer",
+                  "desc": "A complete ZIP archive."
+                }
+              ],
+              "desc": "<p>Parses the archive's central directory. Throws an <a href=\"errors.html#err_zip_invalid_archive\"><code>ERR_ZIP_INVALID_ARCHIVE</code></a>\nor <a href=\"errors.html#err_zip_unsupported_feature\"><code>ERR_ZIP_UNSUPPORTED_FEATURE</code></a> error if <code>buffer</code> is not a well-formed,\nsupported archive.</p>\n<p><code>buffer</code> is <strong>not copied</strong>: the <code>ZipBuffer</code> retains a zero-copy view of it (for\na <code>TypedArray</code>, <code>DataView</code>, or <code>ArrayBuffer</code>, of the underlying <code>ArrayBuffer</code>)\nand reads entry content directly from it on demand. Do not mutate or reuse that\nmemory while the <code>ZipBuffer</code> or any entry read from it is still live; pass a\ncopy if it might change.</p>"
+            }
+          ],
+          "methods": [
+            {
+              "textRaw": "`zipBuffer.add(filename, data[, options])`",
+              "name": "add",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string} The entry's name within the archive. A trailing `/` marks a directory entry.",
+                      "name": "filename",
+                      "type": "string",
+                      "desc": "The entry's name within the archive. A trailing `/` marks a directory entry."
+                    },
+                    {
+                      "textRaw": "`data` {Buffer|TypedArray|DataView|ArrayBuffer} The entry's complete, uncompressed content.",
+                      "name": "data",
+                      "type": "Buffer|TypedArray|DataView|ArrayBuffer",
+                      "desc": "The entry's complete, uncompressed content."
+                    },
+                    {
+                      "textRaw": "`options` {Object} See `zlib.ZipEntry.create()`.",
+                      "name": "options",
+                      "type": "Object",
+                      "desc": "See `zlib.ZipEntry.create()`.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with the created {ZipEntry}.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with the created {ZipEntry}."
+                  }
+                }
+              ],
+              "desc": "<p>Equivalent to <code>zipBuffer.addEntry(await zlib.ZipEntry.create(filename, data, options))</code>.</p>"
+            },
+            {
+              "textRaw": "`zipBuffer.addSync(filename, data[, options])`",
+              "name": "addSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string} The entry's name within the archive. A trailing `/` marks a directory entry.",
+                      "name": "filename",
+                      "type": "string",
+                      "desc": "The entry's name within the archive. A trailing `/` marks a directory entry."
+                    },
+                    {
+                      "textRaw": "`data` {Buffer|TypedArray|DataView|ArrayBuffer} The entry's complete, uncompressed content.",
+                      "name": "data",
+                      "type": "Buffer|TypedArray|DataView|ArrayBuffer",
+                      "desc": "The entry's complete, uncompressed content."
+                    },
+                    {
+                      "textRaw": "`options` {Object} See `zlib.ZipEntry.createSync()`.",
+                      "name": "options",
+                      "type": "Object",
+                      "desc": "See `zlib.ZipEntry.createSync()`.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipEntry} The created entry.",
+                    "name": "return",
+                    "type": "ZipEntry",
+                    "desc": "The created entry."
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipbufferaddfilename-data-options\"><code>zipBuffer.add()</code></a>. Equivalent to\n<code>zipBuffer.addEntry(zlib.ZipEntry.createSync(filename, data, options))</code>.</p>"
+            },
+            {
+              "textRaw": "`zipBuffer.addEntry(entry)`",
+              "name": "addEntry",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`entry` {ZipEntry}",
+                      "name": "entry",
+                      "type": "ZipEntry"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipEntry} `entry`.",
+                    "name": "return",
+                    "type": "ZipEntry",
+                    "desc": "`entry`."
+                  }
+                }
+              ],
+              "desc": "<p>Adds an already-built entry, keyed by its own <a href=\"#zipentryname\"><code>zipEntry.name</code></a>. Replaces\nany existing entry of that name.</p>"
+            },
+            {
+              "textRaw": "`zipBuffer.clear()`",
+              "name": "clear",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": []
+                }
+              ],
+              "desc": "<p>Removes every entry.</p>"
+            },
+            {
+              "textRaw": "`zipBuffer.delete(name)`",
+              "name": "delete",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`name` {string}",
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {boolean} `true` if an entry named `name` existed and was removed.",
+                    "name": "return",
+                    "type": "boolean",
+                    "desc": "`true` if an entry named `name` existed and was removed."
+                  }
+                }
+              ]
+            },
+            {
+              "textRaw": "`zipBuffer.entries()`",
+              "name": "entries",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Iterator} of `[name, entry]` pairs, where `entry` is a `ZipEntry`.",
+                    "name": "return",
+                    "type": "Iterator",
+                    "desc": "of `[name, entry]` pairs, where `entry` is a `ZipEntry`."
+                  }
+                }
+              ]
+            },
+            {
+              "textRaw": "`zipBuffer.forEach(callback[, thisArg])`",
+              "name": "forEach",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`callback` {Function}",
+                      "name": "callback",
+                      "type": "Function"
+                    },
+                    {
+                      "textRaw": "`thisArg` {any}",
+                      "name": "thisArg",
+                      "type": "any",
+                      "optional": true
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Calls <code>callback</code> once for each entry, in the order the archive lists them.</p>"
+            },
+            {
+              "textRaw": "`zipBuffer.get(name)`",
+              "name": "get",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`name` {string}",
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipEntry}",
+                    "name": "return",
+                    "type": "ZipEntry"
+                  }
+                }
+              ],
+              "desc": "<p>Throws <a href=\"errors.html#err_zip_entry_not_found\"><code>ERR_ZIP_ENTRY_NOT_FOUND</code></a> if the archive has no entry named <code>name</code>.</p>"
+            },
+            {
+              "textRaw": "`zipBuffer.has(name)`",
+              "name": "has",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`name` {string}",
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {boolean}",
+                    "name": "return",
+                    "type": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "textRaw": "`zipBuffer.keys()`",
+              "name": "keys",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Iterator} of entry names.",
+                    "name": "return",
+                    "type": "Iterator",
+                    "desc": "of entry names."
+                  }
+                }
+              ]
+            },
+            {
+              "textRaw": "`zipBuffer.toBuffer([options])`",
+              "name": "toBuffer",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`options` {string|Object} An archive comment, as a shorthand for `{ comment: options }`.",
+                      "name": "options",
+                      "type": "string|Object",
+                      "desc": "An archive comment, as a shorthand for `{ comment: options }`.",
+                      "options": [
+                        {
+                          "textRaw": "`comment` {string} An archive comment. **Default:** `zipBuffer.comment`.",
+                          "name": "comment",
+                          "type": "string",
+                          "default": "`zipBuffer.comment`",
+                          "desc": "An archive comment."
+                        },
+                        {
+                          "textRaw": "`baseOffset` {number} Shifts every offset the archive records by this many bytes, so the serialized archive is self-describing even when it is written somewhere other than the start of its eventual file - for example, after `baseOffset` bytes of other content already written to the same output. **Default:** `0`.",
+                          "name": "baseOffset",
+                          "type": "number",
+                          "default": "`0`",
+                          "desc": "Shifts every offset the archive records by this many bytes, so the serialized archive is self-describing even when it is written somewhere other than the start of its eventual file - for example, after `baseOffset` bytes of other content already written to the same output."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with a {Buffer} containing the serialized archive.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with a {Buffer} containing the serialized archive."
+                  }
+                }
+              ],
+              "desc": "<p>Serializes the current set of entries - in the order they were added or\nread - into a fresh archive, switching to Zip64 structures automatically as\nneeded (see <a href=\"#zlibcreateziparchiveentries-options\"><code>zlib.createZipArchive()</code></a>).</p>"
+            },
+            {
+              "textRaw": "`zipBuffer.toBufferSync([options])`",
+              "name": "toBufferSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`options` {string|Object} See `zipBuffer.toBuffer()`.",
+                      "name": "options",
+                      "type": "string|Object",
+                      "desc": "See `zipBuffer.toBuffer()`.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Buffer} The serialized archive.",
+                    "name": "return",
+                    "type": "Buffer",
+                    "desc": "The serialized archive."
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipbuffertobufferoptions\"><code>zipBuffer.toBuffer()</code></a> (see\n<a href=\"#zlibcreateziparchivesyncentries-options\"><code>zlib.createZipArchiveSync()</code></a>).</p>"
+            },
+            {
+              "textRaw": "`zipBuffer.values()`",
+              "name": "values",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Iterator} of `ZipEntry`.",
+                    "name": "return",
+                    "type": "Iterator",
+                    "desc": "of `ZipEntry`."
+                  }
+                }
+              ]
+            }
+          ],
+          "properties": [
+            {
+              "textRaw": "Type: {string}",
+              "name": "comment",
+              "type": "string",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The archive-level comment, preserved byte-for-byte across\n<a href=\"#zipbuffertobufferoptions\"><code>zipBuffer.toBuffer()</code></a> calls unless overridden. The bytes are decoded as\nUTF-8 when they are valid UTF-8 and as CP437 otherwise (the field carries no\nencoding flag of its own).</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "size",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The number of entries in the archive.</p>"
+            },
+            {
+              "textRaw": "Type: {boolean}",
+              "name": "writable",
+              "type": "boolean",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>Always <code>true</code>.</p>"
+            }
+          ]
+        },
+        {
+          "textRaw": "Class: `zlib.ZipEntry`",
+          "name": "zlib.ZipEntry",
+          "type": "class",
+          "meta": {
+            "added": [
+              "v26.8.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Early development",
+          "desc": "<p>The ZIP archive API is experimental. Using any part of it (this class among\nthem) emits an experimental warning the first time; merely importing\n<code>node:zlib</code> does not.</p>\n<p>A single file or directory inside a ZIP archive. Instances are produced by\n<a href=\"#class-zlibzipbuffer\"><code>ZipBuffer</code></a> and <a href=\"#class-zlibzipfile\"><code>ZipFile</code></a>, or created directly for writing with\n<code>ZipEntry.create()</code>/<code>ZipEntry.createStream()</code>.</p>\n<p><code>create()</code> and <code>content()</code> each have a <code>*Sync</code> counterpart (the streaming\n<code>contentIterator()</code> does not). As with the synchronous <code>node:fs</code> APIs, these\nblock the\nNode.js event loop and further JavaScript execution until the operation\n(including any deflate/inflate pass) completes; use them only where\nsynchronous execution is appropriate (for example, short-lived scripts or\nstartup code), not in code that must stay responsive.</p>",
+          "classMethods": [
+            {
+              "textRaw": "Static method: `zlib.ZipEntry.create(filename, data[, options])`",
+              "name": "create",
+              "type": "classMethod",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string} The entry's name within the archive. A trailing `/` marks a directory entry.",
+                      "name": "filename",
+                      "type": "string",
+                      "desc": "The entry's name within the archive. A trailing `/` marks a directory entry."
+                    },
+                    {
+                      "textRaw": "`data` {Buffer|TypedArray|DataView|ArrayBuffer} The entry's complete, uncompressed content. Must be empty when `filename` names a directory.",
+                      "name": "data",
+                      "type": "Buffer|TypedArray|DataView|ArrayBuffer",
+                      "desc": "The entry's complete, uncompressed content. Must be empty when `filename` names a directory."
+                    },
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`comment` {string} An entry comment.",
+                          "name": "comment",
+                          "type": "string",
+                          "desc": "An entry comment."
+                        },
+                        {
+                          "textRaw": "`mode` {integer} Unix permission bits. **Default:** `0o644` (`0o755` for directories).",
+                          "name": "mode",
+                          "type": "integer",
+                          "default": "`0o644` (`0o755` for directories)",
+                          "desc": "Unix permission bits."
+                        },
+                        {
+                          "textRaw": "`modified` {Date} The entry's modification time. **Default:** the current time.",
+                          "name": "modified",
+                          "type": "Date",
+                          "default": "the current time",
+                          "desc": "The entry's modification time."
+                        },
+                        {
+                          "textRaw": "`method` {string} One of `'deflate'`, `'store'`, or `'zstd'`. **Default:** `'deflate'`, except for directories and empty content, which are always stored.",
+                          "name": "method",
+                          "type": "string",
+                          "default": "`'deflate'`, except for directories and empty content, which are always stored",
+                          "desc": "One of `'deflate'`, `'store'`, or `'zstd'`."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with a {ZipEntry}.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with a {ZipEntry}."
+                  }
+                }
+              ],
+              "desc": "<p>Compresses <code>data</code> (unless <code>method</code> is <code>'store'</code>, or compression would not\nreduce its size) and computes its CRC-32.</p>\n<p>When the entry ends up stored uncompressed (because <code>method</code> is <code>'store'</code>,\nor because compression would not reduce the size), the entry retains a\nzero-copy view of <code>data</code> rather than a copy, and its CRC-32 has already been\nrecorded. Do not mutate <code>data</code> after creating the entry; pass a copy if it\nmight change.</p>\n<p>The MS-DOS date/time fields ZIP uses for <code>modified</code> have 2-second resolution\nand no time zone. When <code>modified</code> does not fall on a whole 2-second\nboundary, an Info-ZIP extended-timestamp extra field is written as well,\nrecording the whole (UTC) second so the time round-trips more precisely (see\n<a href=\"#zipentrymodified\"><code>zipEntry.modified</code></a>). This applies to every entry-creation path.</p>"
+            },
+            {
+              "textRaw": "Static method: `zlib.ZipEntry.createStream(filename, source[, options])`",
+              "name": "createStream",
+              "type": "classMethod",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string} The entry's name within the archive. Must not end in `/`.",
+                      "name": "filename",
+                      "type": "string",
+                      "desc": "The entry's name within the archive. Must not end in `/`."
+                    },
+                    {
+                      "textRaw": "`source` {AsyncIterable} Yields the entry's uncompressed content as `Uint8Array` chunks.",
+                      "name": "source",
+                      "type": "AsyncIterable",
+                      "desc": "Yields the entry's uncompressed content as `Uint8Array` chunks."
+                    },
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`comment` {string} An entry comment.",
+                          "name": "comment",
+                          "type": "string",
+                          "desc": "An entry comment."
+                        },
+                        {
+                          "textRaw": "`mode` {integer} Unix permission bits. **Default:** `0o644`.",
+                          "name": "mode",
+                          "type": "integer",
+                          "default": "`0o644`",
+                          "desc": "Unix permission bits."
+                        },
+                        {
+                          "textRaw": "`modified` {Date} The entry's modification time. **Default:** the current time.",
+                          "name": "modified",
+                          "type": "Date",
+                          "default": "the current time",
+                          "desc": "The entry's modification time."
+                        },
+                        {
+                          "textRaw": "`method` {string} One of `'deflate'`, `'store'`, or `'zstd'`. **Default:** `'deflate'`.",
+                          "name": "method",
+                          "type": "string",
+                          "default": "`'deflate'`",
+                          "desc": "One of `'deflate'`, `'store'`, or `'zstd'`."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipEntry}",
+                    "name": "return",
+                    "type": "ZipEntry"
+                  }
+                }
+              ],
+              "desc": "<p>Creates an entry whose content is compressed on the fly as it is serialized\nby <a href=\"#zlibcreateziparchiveentries-options\"><code>zlib.createZipArchive()</code></a>, without buffering <code>source</code> in memory. Its\n<code>size</code>, <code>compressedSize</code>, and <code>crc32</code> only become available once\nserialization has finished. There is no synchronous counterpart: streaming\nentries only make sense with an asynchronous, incrementally-produced\n<code>source</code>.</p>\n<p><code>source</code> is drained exactly once, during serialization. Until that happens\nthe entry has no readable content, so <a href=\"#zipentrycontentoptions\"><code>zipEntry.content()</code></a>,\n<a href=\"#zipentrycontentsyncoptions\"><code>zipEntry.contentSync()</code></a>, and <a href=\"#zipentrycontentiteratoroptions\"><code>zipEntry.contentIterator()</code></a> throw\n<a href=\"errors.html#err_invalid_state\"><code>ERR_INVALID_STATE</code></a>. If the entry is serialized by adding it to a writable\n<a href=\"#class-zlibzipfile\"><code>ZipFile</code></a> with <a href=\"#zipfileaddentryentry\"><code>zipFile.addEntry()</code></a> (or <code>addEntrySync()</code>), it is then\n<strong>promoted in place</strong> to a file-backed entry pointing at the copy just written,\nso it becomes readable (and can be serialized again) for as long as that\n<code>ZipFile</code> stays open. Serializing it any other way (for example directly\nthrough <a href=\"#zlibcreateziparchiveentries-options\"><code>zlib.createZipArchive()</code></a>) leaves it spent and unreadable.</p>\n<p>Because <code>source</code> may hold an operating-system resource (a file read stream,\nsay), a streaming entry is disposable: its <code>Symbol.dispose</code> and\n<code>Symbol.asyncDispose</code> methods destroy <code>source</code> if it has not been consumed.\nAn entry passed to an archive is disposed by that archive (see\n<a href=\"#zlibcreateziparchiveentries-options\"><code>zlib.createZipArchive()</code></a>); dispose an entry directly only when it was\nbuilt but never handed to one. Disposal is a no-op for non-streaming entries -\nin particular a file-backed entry never closes the <a href=\"#class-zlibzipfile\"><code>ZipFile</code></a> descriptor it\nborrows.</p>"
+            },
+            {
+              "textRaw": "Static method: `zlib.ZipEntry.createSymlink(filename, target[, options])`",
+              "name": "createSymlink",
+              "type": "classMethod",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string} The entry's name within the archive.",
+                      "name": "filename",
+                      "type": "string",
+                      "desc": "The entry's name within the archive."
+                    },
+                    {
+                      "textRaw": "`target` {string} The symbolic link's target path.",
+                      "name": "target",
+                      "type": "string",
+                      "desc": "The symbolic link's target path."
+                    },
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`comment` {string} An entry comment.",
+                          "name": "comment",
+                          "type": "string",
+                          "desc": "An entry comment."
+                        },
+                        {
+                          "textRaw": "`mode` {integer} Unix permission bits. **Default:** `0o777`.",
+                          "name": "mode",
+                          "type": "integer",
+                          "default": "`0o777`",
+                          "desc": "Unix permission bits."
+                        },
+                        {
+                          "textRaw": "`modified` {Date} The entry's modification time. **Default:** the current time.",
+                          "name": "modified",
+                          "type": "Date",
+                          "default": "the current time",
+                          "desc": "The entry's modification time."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipEntry}",
+                    "name": "return",
+                    "type": "ZipEntry"
+                  }
+                }
+              ],
+              "desc": "<p>Creates a symbolic-link entry: a stored entry whose content is <code>target</code> and\nwhose Unix mode type bits mark it as a symlink, so <a href=\"#zipentryissymlink\"><code>zipEntry.isSymlink</code></a> is\n<code>true</code> when it is read back. Extraction tools that honor symlink entries\nrecreate the link; treat <code>target</code> as untrusted (see <a href=\"#zipentryname\"><code>zipEntry.name</code></a> on\npath safety).</p>"
+            },
+            {
+              "textRaw": "Static method: `zlib.ZipEntry.createSync(filename, data[, options])`",
+              "name": "createSync",
+              "type": "classMethod",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string} The entry's name within the archive. A trailing `/` marks a directory entry.",
+                      "name": "filename",
+                      "type": "string",
+                      "desc": "The entry's name within the archive. A trailing `/` marks a directory entry."
+                    },
+                    {
+                      "textRaw": "`data` {Buffer|TypedArray|DataView|ArrayBuffer} The entry's complete, uncompressed content. Must be empty when `filename` names a directory.",
+                      "name": "data",
+                      "type": "Buffer|TypedArray|DataView|ArrayBuffer",
+                      "desc": "The entry's complete, uncompressed content. Must be empty when `filename` names a directory."
+                    },
+                    {
+                      "textRaw": "`options` {Object} See `zlib.ZipEntry.create()`.",
+                      "name": "options",
+                      "type": "Object",
+                      "desc": "See `zlib.ZipEntry.create()`.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipEntry}",
+                    "name": "return",
+                    "type": "ZipEntry"
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#static-method-zlibzipentrycreatefilename-data-options\"><code>zlib.ZipEntry.create()</code></a>.</p>"
+            },
+            {
+              "textRaw": "Static method: `zlib.ZipEntry.read(buffer)`",
+              "name": "read",
+              "type": "classMethod",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`buffer` {Buffer|TypedArray|DataView|ArrayBuffer} A complete ZIP archive.",
+                      "name": "buffer",
+                      "type": "Buffer|TypedArray|DataView|ArrayBuffer",
+                      "desc": "A complete ZIP archive."
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Iterator} of {ZipEntry}.",
+                    "name": "return",
+                    "type": "Iterator",
+                    "desc": "of {ZipEntry}."
+                  }
+                }
+              ],
+              "desc": "<p>Parses every entry out of <code>buffer</code> directly, without indexing it into a\n<a href=\"#class-zlibzipbuffer\"><code>ZipBuffer</code></a>. Like <a href=\"#class-zlibzipbuffer\"><code>ZipBuffer</code></a>, the yielded entries hold zero-copy views\nof <code>buffer</code> rather than copies of their content, so the same rule applies: do\nnot mutate or reuse <code>buffer</code> while any of them is still in use.</p>"
+            }
+          ],
+          "properties": [
+            {
+              "textRaw": "Type: {string}",
+              "name": "comment",
+              "type": "string",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              }
+            },
+            {
+              "textRaw": "Type: {boolean}",
+              "name": "compressed",
+              "type": "boolean",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p><code>true</code> if the entry's content is stored in compressed form (any compression\nmethod, currently deflate or Zstandard); <code>false</code> if it is stored\nuncompressed.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "compressedSize",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              }
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "crc32",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              }
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "flags",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The entry's raw general-purpose bit flag.</p>"
+            },
+            {
+              "textRaw": "Type: {boolean}",
+              "name": "isDirectory",
+              "type": "boolean",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p><code>true</code> if the entry is a directory (its name ends with <code>/</code>).</p>"
+            },
+            {
+              "textRaw": "Type: {boolean}",
+              "name": "isFile",
+              "type": "boolean",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p><code>true</code> if the entry is a regular file — that is, neither a directory nor a\nsymbolic link.</p>"
+            },
+            {
+              "textRaw": "Type: {boolean}",
+              "name": "isSymlink",
+              "type": "boolean",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p><code>true</code> if the entry is a symbolic link (its Unix mode type bits are\n<code>S_IFLNK</code>); its content is the link target. Always <code>false</code> for archives not\nwritten on a Unix-like system. When extracting, treat a symlink's target as\nuntrusted — see <a href=\"#zipentryname\"><code>zipEntry.name</code></a> on path safety.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "mode",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The entry's Unix mode permission bits, including the setuid, setgid, and\nsticky bits (the low 12 bits, <code>0o7777</code>), or <code>0</code> if the archive was not written\non a Unix-like system. The file-type bits are not included here; use\n<a href=\"#zipentryisdirectory\"><code>zipEntry.isDirectory</code></a> / <a href=\"#zipentryissymlink\"><code>zipEntry.isSymlink</code></a> for the type.</p>"
+            },
+            {
+              "textRaw": "Type: {Date}",
+              "name": "modified",
+              "type": "Date",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The entry's last-modification time. When the archive carries a higher-fidelity\ntimestamp in an extra field — an NTFS (<code>0x000a</code>), Info-ZIP extended (<code>0x5455</code>),\nor Info-ZIP Unix (<code>0x5855</code>) field, as most modern tools write — that absolute\n(UTC) time is used; otherwise the coarse, local-time MS-DOS date/time field\n(2-second resolution) is used.</p>\n<p>Some tools store their high-fidelity timestamp only in the local file header,\nso on a file-backed entry (one returned by <a href=\"#zipfilegetname\"><code>zipFile.get()</code></a>) the first read\nof this property may perform a small synchronous positioned disk read to\nresolve that header. If that read fails, the value silently falls back to the\ncentral-directory data.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "method",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The entry's raw compression method: <code>0</code> for stored, <code>8</code> for deflate, <code>93</code>\nfor Zstandard.</p>"
+            },
+            {
+              "textRaw": "Type: {string}",
+              "name": "name",
+              "type": "string",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The entry's name, decoded from the central directory, which is treated as\nauthoritative — a local file header that disagrees is ignored, so a\nmismatched-header (\"ZIP-confusion\") archive cannot make <code>name</code> disagree with\nwhat is read. The bytes are decoded from a valid Info-ZIP Unicode Path extra\nfield (<code>0x7075</code>) when one is present; otherwise as UTF-8 when the\nlanguage-encoding flag (general-purpose bit 11) is set <strong>or the bytes are\nvalid UTF-8</strong> (plenty of tools wrote UTF-8 names without ever setting the\nflag); and as CP437 — the historical default — only when they are not.\nSee <a href=\"#zipentrynamebuffer\"><code>zipEntry.nameBuffer</code></a> for the raw bytes.</p>\n<p>The name is returned <strong>verbatim</strong>: it is never normalized, and a name\ncontaining <code>..</code>, a leading <code>/</code>, a drive letter, or backslashes is neither\nrewritten nor rejected. A <code>ZipFile</code>/<code>ZipBuffer</code> never writes to disk, so\nguarding against path traversal (\"Zip Slip\") when extracting is the caller's\nresponsibility.</p>"
+            },
+            {
+              "textRaw": "Type: {Buffer}",
+              "name": "nameBuffer",
+              "type": "Buffer",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The entry's raw name bytes, before any character decoding. Useful when the\narchive's names are in an encoding other than UTF-8 or CP437 and the caller\nwants to decode them itself.</p>"
+            },
+            {
+              "textRaw": "Type: {Buffer|null}",
+              "name": "rawContent",
+              "type": "Buffer|null",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The entry's raw (still compressed, if applicable) content when it is held in\nmemory, or <code>null</code> when there is no in-memory buffer to expose - for an entry\ncreated with <a href=\"#static-method-zlibzipentrycreatestreamfilename-source-options\"><code>zlib.ZipEntry.createStream()</code></a>, or a file-backed entry\nreturned by <a href=\"#zipfilegetname\"><code>zipFile.get()</code></a>, whose bytes are read from disk on demand\nrather than retained. Use <a href=\"#zipentrycontentoptions\"><code>zipEntry.content()</code></a> or\n<a href=\"#zipentrycontentiteratoroptions\"><code>zipEntry.contentIterator()</code></a> to read a file-backed entry.</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "size",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The entry's uncompressed size, in bytes.</p>"
+            }
+          ],
+          "methods": [
+            {
+              "textRaw": "`zipEntry.content([options])`",
+              "name": "content",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`verify` {boolean} Verify the entry's CRC-32 checksum. **Default:** `true`.",
+                          "name": "verify",
+                          "type": "boolean",
+                          "default": "`true`",
+                          "desc": "Verify the entry's CRC-32 checksum."
+                        },
+                        {
+                          "textRaw": "`maxSize` {number} Reject content declaring more than this many uncompressed bytes, before allocating anything. **Default:** `zlib.getMaxZipContentSize()`.",
+                          "name": "maxSize",
+                          "type": "number",
+                          "default": "`zlib.getMaxZipContentSize()`",
+                          "desc": "Reject content declaring more than this many uncompressed bytes, before allocating anything."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with a {Buffer} containing the entry's decompressed content. The buffer is a fresh copy that shares no memory with the archive or with data the entry was created from.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with a {Buffer} containing the entry's decompressed content. The buffer is a fresh copy that shares no memory with the archive or with data the entry was created from."
+                  }
+                }
+              ],
+              "desc": "<p>Throws an <a href=\"errors.html#err_zip_entry_too_large\"><code>ERR_ZIP_ENTRY_TOO_LARGE</code></a> error if the entry's declared size\nexceeds <code>maxSize</code>, an <a href=\"errors.html#err_zip_entry_corrupt\"><code>ERR_ZIP_ENTRY_CORRUPT</code></a> error if the content fails\nCRC-32 verification or does not match its declared size, and an\n<a href=\"errors.html#err_invalid_state\"><code>ERR_INVALID_STATE</code></a> error for a streaming entry\n(<a href=\"#static-method-zlibzipentrycreatestreamfilename-source-options\"><code>zlib.ZipEntry.createStream()</code></a>) whose content is not yet available (see\nthat method for when a streaming entry becomes readable).</p>"
+            },
+            {
+              "textRaw": "`zipEntry.contentSync([options])`",
+              "name": "contentSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`options` {Object} See `zipEntry.content()`.",
+                      "name": "options",
+                      "type": "Object",
+                      "desc": "See `zipEntry.content()`.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Buffer} The entry's decompressed content.",
+                    "name": "return",
+                    "type": "Buffer",
+                    "desc": "The entry's decompressed content."
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipentrycontentoptions\"><code>zipEntry.content()</code></a>.</p>"
+            },
+            {
+              "textRaw": "`zipEntry.contentIterator([options])`",
+              "name": "contentIterator",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`verify` {boolean} Verify the entry's CRC-32 checksum. **Default:** `true`.",
+                          "name": "verify",
+                          "type": "boolean",
+                          "default": "`true`",
+                          "desc": "Verify the entry's CRC-32 checksum."
+                        },
+                        {
+                          "textRaw": "`maxSize` {number} Reject content declaring more than this many uncompressed bytes, before decompressing anything. **Default:** no limit.",
+                          "name": "maxSize",
+                          "type": "number",
+                          "default": "no limit",
+                          "desc": "Reject content declaring more than this many uncompressed bytes, before decompressing anything."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {AsyncIterator} of {Buffer} chunks of the entry's decompressed content.",
+                    "name": "return",
+                    "type": "AsyncIterator",
+                    "desc": "of {Buffer} chunks of the entry's decompressed content."
+                  }
+                }
+              ],
+              "desc": "<p>Unlike <a href=\"#zipentrycontentoptions\"><code>zipEntry.content()</code></a>, this does not buffer the whole member in\nmemory. For a file-backed entry (one returned by <a href=\"#zipfilegetname\"><code>zipFile.get()</code></a>) the\ncompressed bytes are read from disk as the iterator is consumed and nothing is\nretained; the entry is valid only while its <code>ZipFile</code> is open.</p>\n<p>Because streaming is the bounded-memory path for arbitrarily large members, it\nis <strong>not</strong> capped by <a href=\"#zlibgetmaxzipcontentsize\"><code>zlib.getMaxZipContentSize()</code></a> the way\n<a href=\"#zipentrycontentoptions\"><code>zipEntry.content()</code></a> is - that default guards a single large allocation,\nwhich streaming never makes. Output is still bounded per chunk to the declared\nuncompressed size; pass <code>maxSize</code> to impose an explicit ceiling.</p>\n<p>For an in-memory entry stored without compression, the yielded chunks are\nzero-copy views of the entry's retained content (see\n<a href=\"#zipentryrawcontent\"><code>zipEntry.rawContent</code></a>); do not mutate them.</p>\n<p>The yielded chunks are <strong>provisional until the iterator completes</strong>. CRC-32\nverification (and the final declared-size check) can only run once every byte\nhas been read, so a corrupt or truncated entry is reported by the iterator\nthrowing <em>after</em> the last chunk, not before the first. Each chunk is still\nbounded so the total never exceeds the declared size or <code>maxSize</code>, but a\nconsumer that must not act on unverified bytes should buffer them (or use\n<a href=\"#zipentrycontentoptions\"><code>zipEntry.content()</code></a>, which verifies before returning anything) rather than\nprocessing chunks as they arrive.</p>"
+            }
+          ]
+        },
+        {
+          "textRaw": "Class: `zlib.ZipFile`",
+          "name": "zlib.ZipFile",
+          "type": "class",
+          "meta": {
+            "added": [
+              "v26.8.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Early development",
+          "desc": "<p>The ZIP archive API is experimental. Using any part of it (this class among\nthem) emits an experimental warning the first time; merely importing\n<code>node:zlib</code> does not.</p>\n<p>A random-access view over the entries of a ZIP archive on disk. Only the\narchive's tail and central directory are read up front; member content is\nread from disk lazily, on demand. Writable when opened with\n<code>{ writable: true }</code>: <a href=\"#zipfileaddentryentry\"><code>zipFile.addEntry()</code></a>/<a href=\"#zipfileaddfilename-data-options\"><code>zipFile.add()</code></a> append the\nnew member's data where the central directory used to be, then rewrite the\ncentral directory immediately after it; <a href=\"#zipfiledeletename\"><code>zipFile.delete()</code></a> just rewrites\nthe central directory. Both mean the file is altered as soon as the method's\nreturned <code>Promise</code> fulfills. Deleted or replaced members are left behind as\ndead space; <a href=\"#zipfilecompactcomment\"><code>zipFile.compact()</code></a> produces a stream with none.</p>\n<p>These in-place edits are <strong>not crash-atomic</strong>. Rewriting the central directory\nhappens in place, so a write that fails partway - the disk fills, the device\ndisconnects, the process is killed - can leave the archive on disk with a\npartial or missing central directory, i.e. unreadable, even though the member\ndata before it is intact. The rejected call surfaces the underlying error and\nthe <code>ZipFile</code> object is left usable (its in-memory view is not discarded, so a\ncaller can attempt recovery - for example re-writing the entries elsewhere with\n<a href=\"#zipfilecompactcomment\"><code>zipFile.compact()</code></a>), but that in-memory view may no longer match the bytes\non disk. Write to a copy, or <code>compact()</code> into a fresh file, when durability\nacross a failure matters.</p>\n<p>Every method has a <code>*Sync</code> counterpart. As with the synchronous <code>node:fs</code>\nAPIs, these block the Node.js event loop and further JavaScript execution\nuntil the operation completes; use them only where synchronous execution is\nappropriate (for example, short-lived scripts or startup code), not in code\nthat must stay responsive. A synchronous method throws <code>ERR_INVALID_STATE</code>\nif called while an asynchronous <code>add()</code>, <code>addEntry()</code>, <code>delete()</code>, or\n<code>close()</code> on the same <code>ZipFile</code> has not settled yet, since letting the two\ninterleave could corrupt the archive.</p>\n<pre><code class=\"language-mjs\">import { ZipFile } from 'node:zlib';\nimport { Buffer } from 'node:buffer';\n\nconst zip = await ZipFile.open('archive.zip', { writable: true });\ntry {\n  const entry = await zip.get('member.txt');\n  console.log((await entry.content()).toString());\n  for await (const chunk of await zip.stream('huge.bin')) {\n    // Process each chunk without buffering the whole member.\n  }\n  await zip.add('new.txt', Buffer.from('hello'));\n  await zip.delete('unwanted.txt');\n} finally {\n  await zip.close();\n}\n</code></pre>\n<pre><code class=\"language-cjs\">const { ZipFile } = require('node:zlib');\n\nasync function main() {\n  const zip = await ZipFile.open('archive.zip', { writable: true });\n  try {\n    const entry = await zip.get('member.txt');\n    console.log((await entry.content()).toString());\n    for await (const chunk of await zip.stream('huge.bin')) {\n      // Process each chunk without buffering the whole member.\n    }\n    await zip.add('new.txt', Buffer.from('hello'));\n    await zip.delete('unwanted.txt');\n  } finally {\n    await zip.close();\n  }\n}\nmain();\n</code></pre>",
+          "classMethods": [
+            {
+              "textRaw": "Static method: `zlib.ZipFile.open(filename[, options])`",
+              "name": "open",
+              "type": "classMethod",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string}",
+                      "name": "filename",
+                      "type": "string"
+                    },
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`writable` {boolean} Open the underlying file for both reading and writing (`'r+'`), enabling `zipFile.addEntry()`/`zipFile.add()`/ `zipFile.delete()`. **Default:** `false`.",
+                          "name": "writable",
+                          "type": "boolean",
+                          "default": "`false`",
+                          "desc": "Open the underlying file for both reading and writing (`'r+'`), enabling `zipFile.addEntry()`/`zipFile.add()`/ `zipFile.delete()`."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with a {ZipFile}.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with a {ZipFile}."
+                  }
+                }
+              ],
+              "desc": "<p>Throws an <a href=\"errors.html#err_zip_archive_too_large\"><code>ERR_ZIP_ARCHIVE_TOO_LARGE</code></a> error if the archive's central\ndirectory is too large to buffer in memory.</p>"
+            },
+            {
+              "textRaw": "Static method: `zlib.ZipFile.openSync(filename[, options])`",
+              "name": "openSync",
+              "type": "classMethod",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string}",
+                      "name": "filename",
+                      "type": "string"
+                    },
+                    {
+                      "textRaw": "`options` {Object} See `zlib.ZipFile.open()`.",
+                      "name": "options",
+                      "type": "Object",
+                      "desc": "See `zlib.ZipFile.open()`.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipFile}",
+                    "name": "return",
+                    "type": "ZipFile"
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#static-method-zlibzipfileopenfilename-options\"><code>zlib.ZipFile.open()</code></a>.</p>"
+            }
+          ],
+          "methods": [
+            {
+              "textRaw": "`zipFile.add(filename, data[, options])`",
+              "name": "add",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string} The entry's name within the archive. A trailing `/` marks a directory entry.",
+                      "name": "filename",
+                      "type": "string",
+                      "desc": "The entry's name within the archive. A trailing `/` marks a directory entry."
+                    },
+                    {
+                      "textRaw": "`data` {Buffer|TypedArray|DataView|ArrayBuffer} The entry's complete, uncompressed content.",
+                      "name": "data",
+                      "type": "Buffer|TypedArray|DataView|ArrayBuffer",
+                      "desc": "The entry's complete, uncompressed content."
+                    },
+                    {
+                      "textRaw": "`options` {Object} See `zlib.ZipEntry.create()`.",
+                      "name": "options",
+                      "type": "Object",
+                      "desc": "See `zlib.ZipEntry.create()`.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with the created {ZipEntry}.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with the created {ZipEntry}."
+                  }
+                }
+              ],
+              "desc": "<p>Equivalent to <code>zipFile.addEntry(await zlib.ZipEntry.create(filename, data, options))</code>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.addEntry(entry)`",
+              "name": "addEntry",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`entry` {ZipEntry}",
+                      "name": "entry",
+                      "type": "ZipEntry"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with `entry`.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with `entry`."
+                  }
+                }
+              ],
+              "desc": "<p>Writes <code>entry</code> where the central directory currently starts, then rewrites\nthe central directory to include it, replacing any existing entry of the\nsame name. Throws <a href=\"errors.html#err_zip_not_writable\"><code>ERR_ZIP_NOT_WRITABLE</code></a> if the <code>ZipFile</code> was not opened\nwith <code>{ writable: true }</code>.</p>\n<p>The returned (same) <code>entry</code> is left readable: a streaming entry created with\n<a href=\"#static-method-zlibzipentrycreatestreamfilename-source-options\"><code>zlib.ZipEntry.createStream()</code></a>, which would otherwise be spent once\nserialized, is promoted in place to a file-backed entry pointing at the copy\njust written (valid while this <code>ZipFile</code> is open). In-memory entries keep their\nown buffer unchanged.</p>"
+            },
+            {
+              "textRaw": "`zipFile.addEntrySync(entry)`",
+              "name": "addEntrySync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`entry` {ZipEntry}",
+                      "name": "entry",
+                      "type": "ZipEntry"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipEntry} `entry`.",
+                    "name": "return",
+                    "type": "ZipEntry",
+                    "desc": "`entry`."
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipfileaddentryentry\"><code>zipFile.addEntry()</code></a>. <code>entry</code> must not be a\npending streaming entry (one created with\n<a href=\"#static-method-zlibzipentrycreatestreamfilename-source-options\"><code>zlib.ZipEntry.createStream()</code></a>) - there is no synchronous way to drain\nits asynchronous source.</p>"
+            },
+            {
+              "textRaw": "`zipFile.addSync(filename, data[, options])`",
+              "name": "addSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`filename` {string} The entry's name within the archive. A trailing `/` marks a directory entry.",
+                      "name": "filename",
+                      "type": "string",
+                      "desc": "The entry's name within the archive. A trailing `/` marks a directory entry."
+                    },
+                    {
+                      "textRaw": "`data` {Buffer|TypedArray|DataView|ArrayBuffer} The entry's complete, uncompressed content.",
+                      "name": "data",
+                      "type": "Buffer|TypedArray|DataView|ArrayBuffer",
+                      "desc": "The entry's complete, uncompressed content."
+                    },
+                    {
+                      "textRaw": "`options` {Object} See `zlib.ZipEntry.createSync()`.",
+                      "name": "options",
+                      "type": "Object",
+                      "desc": "See `zlib.ZipEntry.createSync()`.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipEntry} The created entry.",
+                    "name": "return",
+                    "type": "ZipEntry",
+                    "desc": "The created entry."
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipfileaddfilename-data-options\"><code>zipFile.add()</code></a>. Equivalent to\n<code>zipFile.addEntrySync(zlib.ZipEntry.createSync(filename, data, options))</code>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.close()`",
+              "name": "close",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Promise}",
+                    "name": "return",
+                    "type": "Promise"
+                  }
+                }
+              ],
+              "desc": "<p>Closes the underlying file handle.</p>\n<p>Closing does not invalidate outstanding objects: <code>ZipEntry</code> objects previously\nreturned by <a href=\"#zipfilegetname\"><code>zipFile.get()</code></a> and the <code>ZipFile</code>'s own methods will fail with\nsystem-level errors (for example <code>EBADF</code>) if used after close, rather than a\ndedicated Node.js error code. The same applies to <a href=\"#zipfileclosesync\"><code>zipFile.closeSync()</code></a>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.closeSync()`",
+              "name": "closeSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": []
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipfileclose\"><code>zipFile.close()</code></a>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.compact([comment])`",
+              "name": "compact",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`comment` {string} An archive comment. **Default:** `zipFile.comment`.",
+                      "name": "comment",
+                      "type": "string",
+                      "default": "`zipFile.comment`",
+                      "desc": "An archive comment.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {stream.Readable} A stream of the currently live entries, serialized as a fresh archive with no dead space left by prior `zipFile.addEntry()`/`zipFile.delete()` calls.",
+                    "name": "return",
+                    "type": "stream.Readable",
+                    "desc": "A stream of the currently live entries, serialized as a fresh archive with no dead space left by prior `zipFile.addEntry()`/`zipFile.delete()` calls."
+                  }
+                }
+              ],
+              "desc": "<p>Does not modify the open file; pipe the result into a new one:</p>\n<pre><code class=\"language-mjs\">import { createWriteStream } from 'node:fs';\nzip.compact().pipe(createWriteStream('compacted.zip'));\n</code></pre>"
+            },
+            {
+              "textRaw": "`zipFile.compactSync([comment])`",
+              "name": "compactSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`comment` {string} An archive comment. **Default:** `zipFile.comment`.",
+                      "name": "comment",
+                      "type": "string",
+                      "default": "`zipFile.comment`",
+                      "desc": "An archive comment.",
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Buffer} The currently live entries, serialized as a fresh archive with no dead space left by prior `zipFile.addEntry()`/`zipFile.delete()` calls.",
+                    "name": "return",
+                    "type": "Buffer",
+                    "desc": "The currently live entries, serialized as a fresh archive with no dead space left by prior `zipFile.addEntry()`/`zipFile.delete()` calls."
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipfilecompactcomment\"><code>zipFile.compact()</code></a>. Does not modify the\nopen file.</p>"
+            },
+            {
+              "textRaw": "`zipFile.delete(name)`",
+              "name": "delete",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`name` {string}",
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with `true` if an entry named `name` existed and was removed, `false` otherwise.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with `true` if an entry named `name` existed and was removed, `false` otherwise."
+                  }
+                }
+              ],
+              "desc": "<p>Rewrites the central directory without writing any new content - the\narchive does not grow. Throws <a href=\"errors.html#err_zip_not_writable\"><code>ERR_ZIP_NOT_WRITABLE</code></a> if the <code>ZipFile</code> was\nnot opened with <code>{ writable: true }</code>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.deleteSync(name)`",
+              "name": "deleteSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`name` {string}",
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {boolean} `true` if an entry named `name` existed and was removed, `false` otherwise.",
+                    "name": "return",
+                    "type": "boolean",
+                    "desc": "`true` if an entry named `name` existed and was removed, `false` otherwise."
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipfiledeletename\"><code>zipFile.delete()</code></a>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.entries()`",
+              "name": "entries",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Iterator} of `[name, entry]` pairs, where `entry` is a {Promise} fulfilled with a `ZipEntry`.",
+                    "name": "return",
+                    "type": "Iterator",
+                    "desc": "of `[name, entry]` pairs, where `entry` is a {Promise} fulfilled with a `ZipEntry`."
+                  }
+                }
+              ]
+            },
+            {
+              "textRaw": "`zipFile.entriesSync()`",
+              "name": "entriesSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Iterator} of `[name, entry]` pairs, where `entry` is a resolved `ZipEntry` (not a `Promise`).",
+                    "name": "return",
+                    "type": "Iterator",
+                    "desc": "of `[name, entry]` pairs, where `entry` is a resolved `ZipEntry` (not a `Promise`)."
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipfileentries\"><code>zipFile.entries()</code></a>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.forEach(callback[, thisArg])`",
+              "name": "forEach",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`callback` {Function}",
+                      "name": "callback",
+                      "type": "Function"
+                    },
+                    {
+                      "textRaw": "`thisArg` {any}",
+                      "name": "thisArg",
+                      "type": "any",
+                      "optional": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "textRaw": "`zipFile.forEachSync(callback[, thisArg])`",
+              "name": "forEachSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`callback` {Function}",
+                      "name": "callback",
+                      "type": "Function"
+                    },
+                    {
+                      "textRaw": "`thisArg` {any}",
+                      "name": "thisArg",
+                      "type": "any",
+                      "optional": true
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipfileforeachcallback-thisarg\"><code>zipFile.forEach()</code></a>: <code>callback</code> is invoked\nwith a resolved <a href=\"#class-zlibzipentry\"><code>ZipEntry</code></a> instead of a <code>Promise</code>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.get(name)`",
+              "name": "get",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`name` {string}",
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with a {ZipEntry}.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with a {ZipEntry}."
+                  }
+                }
+              ],
+              "desc": "<p>Returns a lazy, file-backed <a href=\"#class-zlibzipentry\"><code>ZipEntry</code></a> for <code>name</code>. Nothing is read from\ndisk here and no content is buffered: the returned entry reads (and, for\n<a href=\"#zipentrycontentoptions\"><code>zipEntry.content()</code></a>, decompresses) its member straight from the file on\neach access, and the <code>ZipFile</code> retains no member content. The entry is valid\nonly while this <code>ZipFile</code> is open. Reading its content later may throw\n<a href=\"errors.html#err_zip_entry_too_large\"><code>ERR_ZIP_ENTRY_TOO_LARGE</code></a> if the member is too large to hold in a single\nbuffer; use <a href=\"#zipentrycontentiteratoroptions\"><code>zipEntry.contentIterator()</code></a> (or <a href=\"#zipfilestreamname-options\"><code>zipFile.stream()</code></a>)\ninstead. Throws <a href=\"errors.html#err_zip_entry_not_found\"><code>ERR_ZIP_ENTRY_NOT_FOUND</code></a> if the archive has no entry\nnamed <code>name</code>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.getSync(name)`",
+              "name": "getSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`name` {string}",
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {ZipEntry}",
+                    "name": "return",
+                    "type": "ZipEntry"
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipfilegetname\"><code>zipFile.get()</code></a>. Like <code>get()</code>, it reads\nnothing up front and only builds the lazy handle, so it does not itself block\non I/O - but reads performed later through the returned entry (such as\n<a href=\"#zipentrycontentsyncoptions\"><code>zipEntry.contentSync()</code></a>) do; see the note above on synchronous methods.</p>"
+            },
+            {
+              "textRaw": "`zipFile.has(name)`",
+              "name": "has",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`name` {string}",
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {boolean}",
+                    "name": "return",
+                    "type": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "textRaw": "`zipFile.keys()`",
+              "name": "keys",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Iterator} of entry names.",
+                    "name": "return",
+                    "type": "Iterator",
+                    "desc": "of entry names."
+                  }
+                }
+              ]
+            },
+            {
+              "textRaw": "`zipFile.stream(name[, options])`",
+              "name": "stream",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`name` {string}",
+                      "name": "name",
+                      "type": "string"
+                    },
+                    {
+                      "textRaw": "`options` {Object}",
+                      "name": "options",
+                      "type": "Object",
+                      "options": [
+                        {
+                          "textRaw": "`verify` {boolean} Verify the entry's CRC-32 checksum. **Default:** `true`.",
+                          "name": "verify",
+                          "type": "boolean",
+                          "default": "`true`",
+                          "desc": "Verify the entry's CRC-32 checksum."
+                        },
+                        {
+                          "textRaw": "`maxSize` {number} Reject content declaring more than this many uncompressed bytes. **Default:** no limit.",
+                          "name": "maxSize",
+                          "type": "number",
+                          "default": "no limit",
+                          "desc": "Reject content declaring more than this many uncompressed bytes."
+                        }
+                      ],
+                      "optional": true
+                    }
+                  ],
+                  "return": {
+                    "textRaw": "Returns: {Promise} Fulfilled with a {stream.Readable} of the member's decompressed content, without buffering the whole member in memory.",
+                    "name": "return",
+                    "type": "Promise",
+                    "desc": "Fulfilled with a {stream.Readable} of the member's decompressed content, without buffering the whole member in memory."
+                  }
+                }
+              ],
+              "desc": "<p>Convenience wrapper that resolves to a <code>Readable</code> over\n<a href=\"#zipentrycontentiteratoroptions\"><code>zipEntry.contentIterator()</code></a> of <a href=\"#zipfilegetname\"><code>zipFile.get()</code></a><code>(name)</code>; the\ncompressed bytes are read from disk as the stream is consumed. The returned\npromise rejects with <a href=\"errors.html#err_zip_entry_not_found\"><code>ERR_ZIP_ENTRY_NOT_FOUND</code></a> if the archive has no entry\nnamed <code>name</code>.</p>"
+            },
+            {
+              "textRaw": "`zipFile.values()`",
+              "name": "values",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Iterator} of {Promise} objects, each fulfilled with a `ZipEntry`.",
+                    "name": "return",
+                    "type": "Iterator",
+                    "desc": "of {Promise} objects, each fulfilled with a `ZipEntry`."
+                  }
+                }
+              ]
+            },
+            {
+              "textRaw": "`zipFile.valuesSync()`",
+              "name": "valuesSync",
+              "type": "method",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "signatures": [
+                {
+                  "params": [],
+                  "return": {
+                    "textRaw": "Returns: {Iterator} of resolved `ZipEntry` values (not `Promise`s).",
+                    "name": "return",
+                    "type": "Iterator",
+                    "desc": "of resolved `ZipEntry` values (not `Promise`s)."
+                  }
+                }
+              ],
+              "desc": "<p>The synchronous version of <a href=\"#zipfilevalues\"><code>zipFile.values()</code></a>.</p>"
+            }
+          ],
+          "properties": [
+            {
+              "textRaw": "Type: {string}",
+              "name": "comment",
+              "type": "string",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The archive-level comment, preserved byte-for-byte across\n<a href=\"#zipfileaddentryentry\"><code>zipFile.addEntry()</code></a>/<a href=\"#zipfiledeletename\"><code>zipFile.delete()</code></a> calls. The bytes are decoded\nas UTF-8 when they are valid UTF-8 and as CP437 otherwise (the field carries\nno encoding flag of its own).</p>"
+            },
+            {
+              "textRaw": "Type: {number}",
+              "name": "size",
+              "type": "number",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>The number of entries in the archive.</p>"
+            },
+            {
+              "textRaw": "Type: {boolean}",
+              "name": "writable",
+              "type": "boolean",
+              "meta": {
+                "added": [
+                  "v26.8.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>Whether this <code>ZipFile</code> was opened with <code>{ writable: true }</code>.</p>"
+            }
+          ]
+        },
+        {
           "textRaw": "Class: `zlib.ZlibBase`",
           "name": "zlib.ZlibBase",
           "type": "class",
@@ -2072,7 +3884,7 @@
                   ]
                 }
               ],
-              "desc": "<ul>\n<li><code>kind</code> <strong>Default:</strong> <code>zlib.constants.Z_FULL_FLUSH</code> for zlib-based streams,\n<code>zlib.constants.BROTLI_OPERATION_FLUSH</code> for Brotli-based streams.</li>\n<li><code>callback</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function\"><code>&#x3C;Function></code></a></li>\n</ul>\n<p>Flush pending data. Don't call this frivolously, premature flushes negatively\nimpact the effectiveness of the compression algorithm.</p>\n<p>Calling this only flushes data from the internal <code>zlib</code> state, and does not\nperform flushing of any kind on the streams level. Rather, it behaves like a\nnormal call to <code>.write()</code>, i.e. it will be queued up behind other pending\nwrites and will only produce output when data is being read from the stream.</p>"
+              "desc": "<ul>\n<li><code>kind</code> <strong>Default:</strong> <code>zlib.constants.Z_FULL_FLUSH</code> for zlib-based streams,\n<code>zlib.constants.BROTLI_OPERATION_FLUSH</code> for Brotli-based streams, and\n<code>zlib.constants.ZSTD_e_flush</code> for Zstd-based streams.</li>\n<li><code>callback</code> <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function\"><code>&#x3C;Function></code></a></li>\n</ul>\n<p>Flush pending data. Don't call this frivolously, premature flushes negatively\nimpact the effectiveness of the compression algorithm.</p>\n<p>Calling this only flushes data from the internal <code>zlib</code> state, and does not\nperform flushing of any kind on the streams level. Rather, it behaves like a\nnormal call to <code>.write()</code>, i.e. it will be queued up behind other pending\nwrites and will only produce output when data is being read from the stream.</p>"
             },
             {
               "textRaw": "`zlib.params(level, strategy, callback)`",
@@ -2115,14 +3927,20 @@
                 "added": [
                   "v0.7.0"
                 ],
-                "changes": []
+                "changes": [
+                  {
+                    "version": "v26.11.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/66157",
+                    "description": "Brotli streams preserve parameters and dictionary on reset."
+                  }
+                ]
               },
               "signatures": [
                 {
                   "params": []
                 }
               ],
-              "desc": "<p>Reset the compressor/decompressor to factory defaults. Only applicable to\nthe inflate and deflate algorithms.</p>"
+              "desc": "<p>For inflate and deflate streams, reset the compressor/decompressor to factory\ndefaults.</p>\n<p>For Brotli streams, start a new compression or decompression session while\npreserving the configured parameters and dictionary.</p>\n<p>For Zstd streams, cancel the current frame and start a new session while\npreserving the configured parameters and dictionary. If <code>pledgedSrcSize</code> was\nconfigured for a Zstd compressor, it applies again to the next frame.</p>\n<p>Resetting a gzip stream after it has emitted output for an incomplete member\ncauses the stream to error with <code>ERR_ZLIB_INCOMPLETE_FRAME</code>. Resetting at\nthat point would discard the member state while the bytes already written out\nremain at the start of the output stream, leaving it undecodable. Call\n<code>.end()</code>, or start over with a new gzip stream, instead.\nzlib-wrapped deflate may still <code>reset()</code> after a flush; callers that reuse\nthe compressor discard the first output. Raw deflate has no wrapper header,\nso <code>reset()</code> after a flush still concatenates.</p>\n<p>Calling <code>reset()</code> while a write is in progress throws an <code>Error</code>.</p>\n<p>Resetting an incomplete Zstd compression frame after it has emitted output\ncauses the stream to error with <code>ERR_ZLIB_INCOMPLETE_FRAME</code>. Resetting at\nthat point would discard the frame state while the bytes already written\nout remain at the start of the output stream, leaving it undecodable. Call\n<code>.end()</code>, or start over with a new stream, instead.</p>"
             }
           ]
         },
@@ -2154,7 +3972,7 @@
           },
           "stability": 1,
           "stabilityText": "Experimental",
-          "desc": "<p>Decompress data using the Zstd algorithm.</p>"
+          "desc": "<p>Decompress data using the Zstd algorithm. Concatenated Zstd and skippable frames\nare decoded as a single stream.</p>"
         }
       ],
       "properties": [
@@ -2430,6 +4248,158 @@
           "desc": "<p>Creates and returns a new <a href=\"#class-zlibunzip\"><code>Unzip</code></a> object.</p>"
         },
         {
+          "textRaw": "`zlib.createZipArchive(entries[, options])`",
+          "name": "createZipArchive",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v26.8.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Early development",
+          "signatures": [
+            {
+              "params": [
+                {
+                  "textRaw": "`entries` {Iterable|AsyncIterable} of `ZipEntry`.",
+                  "name": "entries",
+                  "type": "Iterable|AsyncIterable",
+                  "desc": "of `ZipEntry`."
+                },
+                {
+                  "textRaw": "`options` {string|Object} An archive comment, as a shorthand for `{ comment: options }`.",
+                  "name": "options",
+                  "type": "string|Object",
+                  "desc": "An archive comment, as a shorthand for `{ comment: options }`.",
+                  "options": [
+                    {
+                      "textRaw": "`comment` {string} An archive comment.",
+                      "name": "comment",
+                      "type": "string",
+                      "desc": "An archive comment."
+                    },
+                    {
+                      "textRaw": "`baseOffset` {number} Shifts every local/central header offset the archive records by this many bytes, so the emitted stream is self-describing even when something else is written before it - for example, appending the archive after `baseOffset` bytes already written to the same file, rather than at its start. **Default:** `0`.",
+                      "name": "baseOffset",
+                      "type": "number",
+                      "default": "`0`",
+                      "desc": "Shifts every local/central header offset the archive records by this many bytes, so the emitted stream is self-describing even when something else is written before it - for example, appending the archive after `baseOffset` bytes already written to the same file, rather than at its start."
+                    }
+                  ],
+                  "optional": true
+                }
+              ],
+              "return": {
+                "textRaw": "Returns: {stream.Readable} A byte stream of the serialized archive.",
+                "name": "return",
+                "type": "stream.Readable",
+                "desc": "A byte stream of the serialized archive."
+              }
+            }
+          ],
+          "desc": "<p>The ZIP archive API is experimental. Using any part of it (this function among\nthem) emits an experimental warning the first time; merely importing\n<code>node:zlib</code> does not.</p>\n<p>Serializes <code>entries</code> into a ZIP archive, switching to Zip64 structures\nautomatically once the entry count, or any offset or size, exceeds what the\nclassic 32-/16-bit ZIP fields can hold. The returned <code>Readable</code> is also an\n<code>AsyncIterable</code> of the same <a href=\"buffer.html#class-buffer\"><code>&#x3C;Buffer></code></a> chunks it streams.</p>\n<p>Entries are written in iteration order and nothing deduplicates names: an\niterable that yields two entries with the same name produces an archive\ncontaining both, and most extraction tools keep the one that appears later.\n<a href=\"#class-zlibzipbuffer\"><code>ZipBuffer</code></a> and <a href=\"#class-zlibzipfile\"><code>ZipFile</code></a> <code>add()</code> methods replace entries by name\ninstead.</p>\n<p>The entries are owned by the returned stream: each is consumed as the archive\nis produced and must not be reused afterwards. This matters for streaming\nentries (from <a href=\"#static-method-zlibzipentrycreatestreamfilename-source-options\"><code>zlib.ZipEntry.createStream()</code></a>), which hold an underlying\nsource such as a file read stream. If the returned stream is destroyed before\nit is fully consumed - for example, the destination of a <a href=\"stream.html#streampipelinesource-transforms-destination-callback\"><code>pipeline()</code></a>\nfails - it disposes the entry it was serializing and every entry still queued\nbehind it, destroying their sources so no descriptor leaks. Consume the stream\nto the end, or destroy it (directly, through a failed <code>pipeline()</code>, or with\n<code>await using</code>), to guarantee this cleanup; a stream that is neither consumed\nnor destroyed cannot release anything. A <a href=\"#class-zlibzipentry\"><code>ZipEntry</code></a> that is never handed to\nan archive can be released directly with <code>Symbol.dispose</code> / <code>Symbol.asyncDispose</code>.</p>\n<p>Throws an <a href=\"errors.html#err_zip_archive_too_large\"><code>ERR_ZIP_ARCHIVE_TOO_LARGE</code></a> error if the archive comment\nexceeds 65,535 bytes when encoded as UTF-8.</p>\n<pre><code class=\"language-mjs\">import { createWriteStream } from 'node:fs';\nimport { pipeline } from 'node:stream/promises';\nimport { Buffer } from 'node:buffer';\nimport { ZipEntry, createZipArchive } from 'node:zlib';\n\nconst entries = [\n  await ZipEntry.create('hello.txt', Buffer.from('Hello, world!')),\n  await ZipEntry.create('data/', Buffer.alloc(0)),\n];\nawait pipeline(\n  createZipArchive(entries, 'created by node:zlib'),\n  createWriteStream('archive.zip'),\n);\n</code></pre>\n<pre><code class=\"language-cjs\">const { createWriteStream } = require('node:fs');\nconst { pipeline } = require('node:stream/promises');\nconst { ZipEntry, createZipArchive } = require('node:zlib');\n\nasync function main() {\n  const entries = [\n    await ZipEntry.create('hello.txt', Buffer.from('Hello, world!')),\n    await ZipEntry.create('data/', Buffer.alloc(0)),\n  ];\n  await pipeline(\n    createZipArchive(entries, 'created by node:zlib'),\n    createWriteStream('archive.zip'),\n  );\n}\nmain();\n</code></pre>\n<p>Passing <code>options.baseOffset</code> produces an archive that is valid immediately\nwhen placed after other content in the same file, without relying on a\nreader's self-extracting-archive detection to compensate for the shift:</p>\n<pre><code class=\"language-mjs\">import { createWriteStream } from 'node:fs';\nimport { Buffer } from 'node:buffer';\nimport { ZipEntry, createZipArchive } from 'node:zlib';\n\nconst prefix = Buffer.from('#!/bin/sh\\nexit 0\\n');\nconst entries = [await ZipEntry.create('hello.txt', Buffer.from('Hello, world!'))];\nconst out = createWriteStream('self-extracting.zip');\nout.write(prefix);\ncreateZipArchive(entries, { baseOffset: prefix.byteLength }).pipe(out);\n</code></pre>"
+        },
+        {
+          "textRaw": "`zlib.createZipArchiveSync(entries[, options])`",
+          "name": "createZipArchiveSync",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v26.8.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Early development",
+          "signatures": [
+            {
+              "params": [
+                {
+                  "textRaw": "`entries` {Iterable} of `ZipEntry`.",
+                  "name": "entries",
+                  "type": "Iterable",
+                  "desc": "of `ZipEntry`."
+                },
+                {
+                  "textRaw": "`options` {string|Object} See `zlib.createZipArchive()`.",
+                  "name": "options",
+                  "type": "string|Object",
+                  "desc": "See `zlib.createZipArchive()`.",
+                  "optional": true
+                }
+              ],
+              "return": {
+                "textRaw": "Returns: {Iterator} of {Buffer} chunks making up the serialized archive.",
+                "name": "return",
+                "type": "Iterator",
+                "desc": "of {Buffer} chunks making up the serialized archive."
+              }
+            }
+          ],
+          "desc": "<p>The ZIP archive API is experimental. Using any part of it (this function among\nthem) emits an experimental warning the first time; merely importing\n<code>node:zlib</code> does not.</p>\n<p>The synchronous version of <a href=\"#zlibcreateziparchiveentries-options\"><code>zlib.createZipArchive()</code></a>. Blocks the\nNode.js event loop and further JavaScript execution until the whole\narchive (including any deflate passes) has been produced; use only where\nsynchronous execution is appropriate (for example, short-lived scripts or\nstartup code), not in code that must stay responsive. <code>entries</code> must be a\nplain (synchronous) <code>Iterable</code> - a streaming entry created with\n<a href=\"#static-method-zlibzipentrycreatestreamfilename-source-options\"><code>zlib.ZipEntry.createStream()</code></a> throws when its turn to serialize comes\nup, since draining its asynchronous source has no synchronous equivalent.</p>\n<p>As with <a href=\"#zlibcreateziparchiveentries-options\"><code>zlib.createZipArchive()</code></a>, the entries are owned by the returned\niterator and must not be reused. If iteration stops early - including the\nthrow on a streaming entry - the entry that stopped it and every entry still\nqueued behind it are disposed, releasing any sources they hold.</p>"
+        },
+        {
+          "textRaw": "`zlib.zipFiles(files[, options])`",
+          "name": "zipFiles",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v26.8.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Early development",
+          "signatures": [
+            {
+              "params": [
+                {
+                  "textRaw": "`files` {Iterable} of `[sourcePath, entryName]` string pairs. Any iterable works — an array, a `Map`, the result of `Object.entries()`, a generator.",
+                  "name": "files",
+                  "type": "Iterable",
+                  "desc": "of `[sourcePath, entryName]` string pairs. Any iterable works — an array, a `Map`, the result of `Object.entries()`, a generator."
+                },
+                {
+                  "textRaw": "`options` {string|Object}",
+                  "name": "options",
+                  "type": "string|Object",
+                  "options": [
+                    {
+                      "textRaw": "`followSymlinks` {boolean} Resolve a symbolic link and archive the file it points to, rather than storing the link itself. **Default:** `true`.",
+                      "name": "followSymlinks",
+                      "type": "boolean",
+                      "default": "`true`",
+                      "desc": "Resolve a symbolic link and archive the file it points to, rather than storing the link itself."
+                    },
+                    {
+                      "textRaw": "`comment` {string} An archive comment; a string `options` is shorthand for `{ comment: options }`.",
+                      "name": "comment",
+                      "type": "string",
+                      "desc": "An archive comment; a string `options` is shorthand for `{ comment: options }`."
+                    },
+                    {
+                      "textRaw": "`baseOffset` {number} See `zlib.createZipArchive()`.",
+                      "name": "baseOffset",
+                      "type": "number",
+                      "desc": "See `zlib.createZipArchive()`."
+                    }
+                  ],
+                  "optional": true
+                }
+              ],
+              "return": {
+                "textRaw": "Returns: {stream.Readable} of {Buffer} chunks making up the serialized archive.",
+                "name": "return",
+                "type": "stream.Readable",
+                "desc": "of {Buffer} chunks making up the serialized archive."
+              }
+            }
+          ],
+          "desc": "<p>The ZIP archive API is experimental. Using any part of it (this function among\nthem) emits an experimental warning the first time; merely importing\n<code>node:zlib</code> does not.</p>\n<p>Builds an archive from files on disk. For each <code>[sourcePath, entryName]</code> pair\nit reads <code>sourcePath</code> and adds an entry named <code>entryName</code>, capturing the file's\nUnix mode and modification time. A directory becomes a directory entry; a\nregular file's contents are streamed in (as a <a href=\"#static-method-zlibzipentrycreatestreamfilename-source-options\"><code>zlib.ZipEntry.createStream()</code></a>\nentry) without being buffered in memory. Directory contents are not walked\nrecursively — list each path you want included.</p>\n<p>When <code>followSymlinks</code> is <code>true</code> (the default) a symbolic link is resolved and\narchived as its target file; when it is <code>false</code> the link itself is stored as a\nsymbolic-link entry whose content is the target path (see\n<a href=\"#static-method-zlibzipentrycreatesymlinkfilename-target-options\"><code>zlib.ZipEntry.createSymlink()</code></a>).</p>\n<pre><code class=\"language-mjs\">import { zipFiles } from 'node:zlib';\nimport { createWriteStream } from 'node:fs';\nimport { pipeline } from 'node:stream/promises';\n\nawait pipeline(\n  zipFiles([\n    ['/data/report.pdf', 'report.pdf'],\n    ['/data/notes.txt', 'docs/notes.txt'],\n  ]),\n  createWriteStream('archive.zip'),\n);\n</code></pre>"
+        },
+        {
           "textRaw": "`zlib.createZstdCompress([options])`",
           "name": "createZstdCompress",
           "type": "method",
@@ -2482,6 +4452,55 @@
             }
           ],
           "desc": "<p>Creates and returns a new <a href=\"#class-zlibzstddecompress\"><code>ZstdDecompress</code></a> object.</p>"
+        },
+        {
+          "textRaw": "`zlib.getMaxZipContentSize()`",
+          "name": "getMaxZipContentSize",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v26.8.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Early development",
+          "signatures": [
+            {
+              "params": [],
+              "return": {
+                "textRaw": "Returns: {number}",
+                "name": "return",
+                "type": "number"
+              }
+            }
+          ],
+          "desc": "<p>The ZIP archive API is experimental. Using any part of it (this function among\nthem) emits an experimental warning the first time; merely importing\n<code>node:zlib</code> does not.</p>\n<p>The current default ceiling, in bytes, applied by <a href=\"#zipentrycontentoptions\"><code>zipEntry.content()</code></a>\nwhen no explicit <code>maxSize</code> is given. <strong>Default:</strong> <code>268435456</code> (256 MiB).</p>"
+        },
+        {
+          "textRaw": "`zlib.setMaxZipContentSize(size)`",
+          "name": "setMaxZipContentSize",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v26.8.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Early development",
+          "signatures": [
+            {
+              "params": [
+                {
+                  "textRaw": "`size` {number}",
+                  "name": "size",
+                  "type": "number"
+                }
+              ]
+            }
+          ],
+          "desc": "<p>The ZIP archive API is experimental. Using any part of it (this function among\nthem) emits an experimental warning the first time; merely importing\n<code>node:zlib</code> does not.</p>\n<p>Sets the default ceiling used by <a href=\"#zipentrycontentoptions\"><code>zipEntry.content()</code></a> when no explicit\n<code>maxSize</code> option is given. This is a guard against zip bombs: an archive\nwhose central directory declares a member larger than this is rejected\nbefore allocating memory for it. Streaming reads\n(<a href=\"#zipentrycontentiteratoroptions\"><code>zipEntry.contentIterator()</code></a>, <a href=\"#zipfilestreamname-options\"><code>zipFile.stream()</code></a>) are bounded-memory\nby design and are not affected by this setting.</p>"
         },
         {
           "textRaw": "`zlib.brotliCompress(buffer[, options], callback)`",
@@ -3273,7 +5292,13 @@
               "v23.8.0",
               "v22.15.0"
             ],
-            "changes": []
+            "changes": [
+              {
+                "version": "v26.11.0",
+                "pr-url": "https://github.com/nodejs/node/pull/66358",
+                "description": "The `pledgedSrcSize` option defaults to the byte length of `buffer`."
+              }
+            ]
           },
           "stability": 1,
           "stabilityText": "Experimental",
@@ -3343,6 +5368,8 @@
             ],
             "changes": []
           },
+          "stability": 1,
+          "stabilityText": "Experimental",
           "signatures": [
             {
               "params": [

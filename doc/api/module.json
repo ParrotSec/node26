@@ -7,373 +7,377 @@
       "name": "modules:_`node:module`_api",
       "introduced_in": "v12.20.0",
       "type": "module",
-      "meta": {
-        "added": [
-          "v0.3.7"
-        ],
-        "changes": []
-      },
-      "modules": [
+      "stability": 2,
+      "stabilityText": "Stable",
+      "desc": "<p>The <code>node:module</code> module provides utilities for interacting with the Node.js\nmodule system.</p>\n<p>It can be accessed using:</p>\n<pre><code class=\"language-mjs\">import module from 'node:module';\n</code></pre>",
+      "classes": [
         {
-          "textRaw": "The `Module` object",
-          "name": "the_`module`_object",
-          "type": "module",
-          "desc": "<ul>\n<li>Type: <a href=\"https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object\"><code>&#x3C;Object></code></a></li>\n</ul>\n<p>Provides general utility methods when interacting with instances of\n<code>Module</code>, the <a href=\"#the-module-object\"><code>module</code></a> variable often seen in <a href=\"modules.html\">CommonJS</a> modules. Accessed\nvia <code>import 'node:module'</code> or <code>require('node:module')</code>.</p>",
-          "properties": [
+          "textRaw": "Class: `Module`",
+          "name": "Module",
+          "type": "class",
+          "meta": {
+            "added": [
+              "v0.3.5"
+            ],
+            "changes": []
+          },
+          "desc": "<p><code>module</code> objects in <a href=\"modules.html\">CommonJS</a> modules are instances of this class.</p>\n<p>See the CommonJS documentation for <a href=\"modules.html#the-module-object\">the <code>module</code> object</a>.</p>"
+        }
+      ],
+      "properties": [
+        {
+          "textRaw": "Type: {string}[]",
+          "name": "builtinModules",
+          "type": "string",
+          "meta": {
+            "added": [
+              "v9.3.0",
+              "v8.10.0",
+              "v6.13.0"
+            ],
+            "changes": [
+              {
+                "version": "v23.5.0",
+                "pr-url": "https://github.com/nodejs/node/pull/56185",
+                "description": "The list now also contains prefix-only modules."
+              }
+            ]
+          },
+          "desc": "<p>A list of the names of all modules provided by Node.js.</p>\n<pre><code class=\"language-mjs\">import { builtinModules } from 'node:module';\nconsole.log(builtinModules.filter((name) => name.startsWith('path')));\n// Prints: [ 'path', 'path/posix', 'path/win32' ]\n</code></pre>\n<p>To test whether a module name corresponds to a builtin module, use\n<a href=\"#moduleisbuiltinmodulename\"><code>module.isBuiltin()</code></a>.</p>",
+          "shortDesc": "[]"
+        }
+      ],
+      "methods": [
+        {
+          "textRaw": "`module.createRequire(filename)`",
+          "name": "createRequire",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v12.2.0"
+            ],
+            "changes": []
+          },
+          "signatures": [
             {
-              "textRaw": "Type: {string}[]",
-              "name": "builtinModules",
-              "type": "string",
-              "meta": {
-                "added": [
-                  "v9.3.0",
-                  "v8.10.0",
-                  "v6.13.0"
-                ],
-                "changes": [
-                  {
-                    "version": "v23.5.0",
-                    "pr-url": "https://github.com/nodejs/node/pull/56185",
-                    "description": "The list now also contains prefix-only modules."
-                  }
-                ]
-              },
-              "desc": "<p>A list of the names of all modules provided by Node.js. Can be used to verify\nif a module is maintained by a third party or not.</p>\n<p><code>module</code> in this context isn't the same object that's provided\nby the <a href=\"modules.html#the-module-wrapper\">module wrapper</a>. To access it, require the <code>Module</code> module:</p>\n<pre><code class=\"language-mjs\">// module.mjs\n// In an ECMAScript module\nimport { builtinModules as builtin } from 'node:module';\n</code></pre>\n<pre><code class=\"language-cjs\">// module.cjs\n// In a CommonJS module\nconst builtin = require('node:module').builtinModules;\n</code></pre>",
-              "shortDesc": "[]"
+              "params": [
+                {
+                  "textRaw": "`filename` {string|URL} Filename to be used to construct the require function. Must be a file URL object, file URL string, or absolute path string.",
+                  "name": "filename",
+                  "type": "string|URL",
+                  "desc": "Filename to be used to construct the require function. Must be a file URL object, file URL string, or absolute path string."
+                }
+              ],
+              "return": {
+                "textRaw": "Returns: {require} Require function",
+                "name": "return",
+                "type": "require",
+                "desc": "Require function"
+              }
             }
           ],
-          "methods": [
+          "desc": "<pre><code class=\"language-mjs\">import { createRequire } from 'node:module';\nconst require = createRequire(import.meta.url);\n\n// sibling-module.js is a CommonJS module.\nconst siblingModule = require('./sibling-module');\n</code></pre>"
+        },
+        {
+          "textRaw": "`module.findPackageJSON(specifier[, base])`",
+          "name": "findPackageJSON",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v23.2.0",
+              "v22.14.0"
+            ],
+            "changes": []
+          },
+          "stability": 1.1,
+          "stabilityText": "Active Development",
+          "signatures": [
             {
-              "textRaw": "`module.createRequire(filename)`",
-              "name": "createRequire",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v12.2.0"
-                ],
-                "changes": []
-              },
-              "signatures": [
+              "params": [
                 {
-                  "params": [
-                    {
-                      "textRaw": "`filename` {string|URL} Filename to be used to construct the require function. Must be a file URL object, file URL string, or absolute path string.",
-                      "name": "filename",
-                      "type": "string|URL",
-                      "desc": "Filename to be used to construct the require function. Must be a file URL object, file URL string, or absolute path string."
-                    }
-                  ],
-                  "return": {
-                    "textRaw": "Returns: {require} Require function",
-                    "name": "return",
-                    "type": "require",
-                    "desc": "Require function"
-                  }
+                  "textRaw": "`specifier` {string|URL} The specifier for the module whose `package.json` to retrieve. When passing a _bare specifier_, the `package.json` at the root of the package is returned. When passing a _relative specifier_ or an _absolute specifier_, the closest parent `package.json` is returned.",
+                  "name": "specifier",
+                  "type": "string|URL",
+                  "desc": "The specifier for the module whose `package.json` to retrieve. When passing a _bare specifier_, the `package.json` at the root of the package is returned. When passing a _relative specifier_ or an _absolute specifier_, the closest parent `package.json` is returned."
+                },
+                {
+                  "textRaw": "`base` {string|URL} The absolute location (`file:` URL string or FS path) of the containing module. For CJS, use `__filename` (not `__dirname`!); for ESM, use `import.meta.url`. You do not need to pass it if `specifier` is an `absolute specifier`.",
+                  "name": "base",
+                  "type": "string|URL",
+                  "desc": "The absolute location (`file:` URL string or FS path) of the containing module. For CJS, use `__filename` (not `__dirname`!); for ESM, use `import.meta.url`. You do not need to pass it if `specifier` is an `absolute specifier`.",
+                  "optional": true
                 }
               ],
-              "desc": "<pre><code class=\"language-mjs\">import { createRequire } from 'node:module';\nconst require = createRequire(import.meta.url);\n\n// sibling-module.js is a CommonJS module.\nconst siblingModule = require('./sibling-module');\n</code></pre>"
-            },
+              "return": {
+                "textRaw": "Returns: {string|undefined} A path if the `package.json` is found. When `specifier` is a package, the package's root `package.json`; when a relative or unresolved, the closest `package.json` to the `specifier`.",
+                "name": "return",
+                "type": "string|undefined",
+                "desc": "A path if the `package.json` is found. When `specifier` is a package, the package's root `package.json`; when a relative or unresolved, the closest `package.json` to the `specifier`."
+              }
+            }
+          ],
+          "desc": "<blockquote>\n<p><strong>Caveat</strong>: Do not use this to try to determine module format. There are many things affecting\nthat determination; the <code>type</code> field of package.json is the <em>least</em> definitive (ex file extension\nsupersedes it, and a loader hook supersedes that).</p>\n</blockquote>\n<blockquote>\n<p><strong>Caveat</strong>: This currently leverages only the built-in default resolver; if\n<a href=\"#synchronous-resolvespecifier-context-nextresolve\"><code>resolve</code> customization hooks</a> are registered, they will not affect the resolution.\nThis may change in the future.</p>\n</blockquote>\n<pre><code class=\"language-text\">/path/to/project\n  ├ packages/\n    ├ bar/\n      ├ bar.js\n      └ package.json // name = '@foo/bar'\n    └ qux/\n      ├ node_modules/\n        └ some-package/\n          └ package.json // name = 'some-package'\n      ├ qux.js\n      └ package.json // name = '@foo/qux'\n  ├ main.js\n  └ package.json // name = '@foo'\n</code></pre>\n<pre><code class=\"language-mjs\">// /path/to/project/packages/bar/bar.js\nimport { findPackageJSON } from 'node:module';\n\nfindPackageJSON('..', import.meta.url);\n// '/path/to/project/package.json'\n// Same result when passing an absolute specifier instead:\nfindPackageJSON(new URL('../', import.meta.url));\nfindPackageJSON(import.meta.resolve('../'));\n\nfindPackageJSON('some-package', import.meta.url);\n// '/path/to/project/packages/bar/node_modules/some-package/package.json'\n// When passing an absolute specifier, you might get a different result if the\n// resolved module is inside a subfolder that has nested `package.json`.\nfindPackageJSON(import.meta.resolve('some-package'));\n// '/path/to/project/packages/bar/node_modules/some-package/some-subfolder/package.json'\n\nfindPackageJSON('@foo/qux', import.meta.url);\n// '/path/to/project/packages/qux/package.json'\n</code></pre>\n<pre><code class=\"language-cjs\">// /path/to/project/packages/bar/bar.js\nconst { findPackageJSON } = require('node:module');\nconst { pathToFileURL } = require('node:url');\nconst path = require('node:path');\n\nfindPackageJSON('..', __filename);\n// '/path/to/project/package.json'\n// Same result when passing an absolute specifier instead:\nfindPackageJSON(pathToFileURL(path.join(__dirname, '..')));\n\nfindPackageJSON('some-package', __filename);\n// '/path/to/project/packages/bar/node_modules/some-package/package.json'\n// When passing an absolute specifier, you might get a different result if the\n// resolved module is inside a subfolder that has nested `package.json`.\nfindPackageJSON(pathToFileURL(require.resolve('some-package')));\n// '/path/to/project/packages/bar/node_modules/some-package/some-subfolder/package.json'\n\nfindPackageJSON('@foo/qux', __filename);\n// '/path/to/project/packages/qux/package.json'\n</code></pre>"
+        },
+        {
+          "textRaw": "`module.isBuiltin(moduleName)`",
+          "name": "isBuiltin",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v18.6.0",
+              "v16.17.0"
+            ],
+            "changes": []
+          },
+          "signatures": [
             {
-              "textRaw": "`module.findPackageJSON(specifier[, base])`",
-              "name": "findPackageJSON",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v23.2.0",
-                  "v22.14.0"
-                ],
-                "changes": []
-              },
-              "stability": 1.1,
-              "stabilityText": "Active Development",
-              "signatures": [
+              "params": [
                 {
-                  "params": [
-                    {
-                      "textRaw": "`specifier` {string|URL} The specifier for the module whose `package.json` to retrieve. When passing a _bare specifier_, the `package.json` at the root of the package is returned. When passing a _relative specifier_ or an _absolute specifier_, the closest parent `package.json` is returned.",
-                      "name": "specifier",
-                      "type": "string|URL",
-                      "desc": "The specifier for the module whose `package.json` to retrieve. When passing a _bare specifier_, the `package.json` at the root of the package is returned. When passing a _relative specifier_ or an _absolute specifier_, the closest parent `package.json` is returned."
-                    },
-                    {
-                      "textRaw": "`base` {string|URL} The absolute location (`file:` URL string or FS path) of the containing module. For CJS, use `__filename` (not `__dirname`!); for ESM, use `import.meta.url`. You do not need to pass it if `specifier` is an `absolute specifier`.",
-                      "name": "base",
-                      "type": "string|URL",
-                      "desc": "The absolute location (`file:` URL string or FS path) of the containing module. For CJS, use `__filename` (not `__dirname`!); for ESM, use `import.meta.url`. You do not need to pass it if `specifier` is an `absolute specifier`.",
-                      "optional": true
-                    }
-                  ],
-                  "return": {
-                    "textRaw": "Returns: {string|undefined} A path if the `package.json` is found. When `specifier` is a package, the package's root `package.json`; when a relative or unresolved, the closest `package.json` to the `specifier`.",
-                    "name": "return",
-                    "type": "string|undefined",
-                    "desc": "A path if the `package.json` is found. When `specifier` is a package, the package's root `package.json`; when a relative or unresolved, the closest `package.json` to the `specifier`."
-                  }
+                  "textRaw": "`moduleName` {string} name of the module",
+                  "name": "moduleName",
+                  "type": "string",
+                  "desc": "name of the module"
                 }
               ],
-              "desc": "<blockquote>\n<p><strong>Caveat</strong>: Do not use this to try to determine module format. There are many things affecting\nthat determination; the <code>type</code> field of package.json is the <em>least</em> definitive (ex file extension\nsupersedes it, and a loader hook supersedes that).</p>\n</blockquote>\n<blockquote>\n<p><strong>Caveat</strong>: This currently leverages only the built-in default resolver; if\n<a href=\"#synchronous-resolvespecifier-context-nextresolve\"><code>resolve</code> customization hooks</a> are registered, they will not affect the resolution.\nThis may change in the future.</p>\n</blockquote>\n<pre><code class=\"language-text\">/path/to/project\n  ├ packages/\n    ├ bar/\n      ├ bar.js\n      └ package.json // name = '@foo/bar'\n    └ qux/\n      ├ node_modules/\n        └ some-package/\n          └ package.json // name = 'some-package'\n      ├ qux.js\n      └ package.json // name = '@foo/qux'\n  ├ main.js\n  └ package.json // name = '@foo'\n</code></pre>\n<pre><code class=\"language-mjs\">// /path/to/project/packages/bar/bar.js\nimport { findPackageJSON } from 'node:module';\n\nfindPackageJSON('..', import.meta.url);\n// '/path/to/project/package.json'\n// Same result when passing an absolute specifier instead:\nfindPackageJSON(new URL('../', import.meta.url));\nfindPackageJSON(import.meta.resolve('../'));\n\nfindPackageJSON('some-package', import.meta.url);\n// '/path/to/project/packages/bar/node_modules/some-package/package.json'\n// When passing an absolute specifier, you might get a different result if the\n// resolved module is inside a subfolder that has nested `package.json`.\nfindPackageJSON(import.meta.resolve('some-package'));\n// '/path/to/project/packages/bar/node_modules/some-package/some-subfolder/package.json'\n\nfindPackageJSON('@foo/qux', import.meta.url);\n// '/path/to/project/packages/qux/package.json'\n</code></pre>\n<pre><code class=\"language-cjs\">// /path/to/project/packages/bar/bar.js\nconst { findPackageJSON } = require('node:module');\nconst { pathToFileURL } = require('node:url');\nconst path = require('node:path');\n\nfindPackageJSON('..', __filename);\n// '/path/to/project/package.json'\n// Same result when passing an absolute specifier instead:\nfindPackageJSON(pathToFileURL(path.join(__dirname, '..')));\n\nfindPackageJSON('some-package', __filename);\n// '/path/to/project/packages/bar/node_modules/some-package/package.json'\n// When passing an absolute specifier, you might get a different result if the\n// resolved module is inside a subfolder that has nested `package.json`.\nfindPackageJSON(pathToFileURL(require.resolve('some-package')));\n// '/path/to/project/packages/bar/node_modules/some-package/some-subfolder/package.json'\n\nfindPackageJSON('@foo/qux', __filename);\n// '/path/to/project/packages/qux/package.json'\n</code></pre>"
-            },
-            {
-              "textRaw": "`module.isBuiltin(moduleName)`",
-              "name": "isBuiltin",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v18.6.0",
-                  "v16.17.0"
-                ],
-                "changes": []
+              "return": {
+                "textRaw": "Returns: {boolean} returns true if the module is builtin else returns false",
+                "name": "return",
+                "type": "boolean",
+                "desc": "returns true if the module is builtin else returns false"
+              }
+            }
+          ],
+          "desc": "<pre><code class=\"language-mjs\">import { isBuiltin } from 'node:module';\nisBuiltin('node:fs'); // true\nisBuiltin('fs'); // true\nisBuiltin('wss'); // false\n</code></pre>"
+        },
+        {
+          "textRaw": "`module.register(specifier[, parentURL][, options])`",
+          "name": "register",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v20.6.0",
+              "v18.19.0"
+            ],
+            "changes": [
+              {
+                "version": "v26.0.0",
+                "pr-url": "https://github.com/nodejs/node/pull/62401",
+                "description": "Runtime deprecation (DEP0205)."
               },
-              "signatures": [
-                {
-                  "params": [
-                    {
-                      "textRaw": "`moduleName` {string} name of the module",
-                      "name": "moduleName",
-                      "type": "string",
-                      "desc": "name of the module"
-                    }
-                  ],
-                  "return": {
-                    "textRaw": "Returns: {boolean} returns true if the module is builtin else returns false",
-                    "name": "return",
-                    "type": "boolean",
-                    "desc": "returns true if the module is builtin else returns false"
-                  }
-                }
-              ],
-              "desc": "<pre><code class=\"language-mjs\">import { isBuiltin } from 'node:module';\nisBuiltin('node:fs'); // true\nisBuiltin('fs'); // true\nisBuiltin('wss'); // false\n</code></pre>"
-            },
-            {
-              "textRaw": "`module.register(specifier[, parentURL][, options])`",
-              "name": "register",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v20.6.0",
+              {
+                "version": [
+                  "v23.6.1",
+                  "v22.13.1",
+                  "v20.18.2"
+                ],
+                "pr-url": "https://github.com/nodejs-private/node-private/pull/629",
+                "description": "Using this feature with the permission model enabled requires passing `--allow-worker`."
+              },
+              {
+                "version": [
+                  "v20.8.0",
                   "v18.19.0"
                 ],
-                "changes": [
-                  {
-                    "version": "v26.0.0",
-                    "pr-url": "https://github.com/nodejs/node/pull/62401",
-                    "description": "Runtime deprecation (DEP0205)."
-                  },
-                  {
-                    "version": [
-                      "v23.6.1",
-                      "v22.13.1",
-                      "v20.18.2"
-                    ],
-                    "pr-url": "https://github.com/nodejs-private/node-private/pull/629",
-                    "description": "Using this feature with the permission model enabled requires passing `--allow-worker`."
-                  },
-                  {
-                    "version": [
-                      "v20.8.0",
-                      "v18.19.0"
-                    ],
-                    "pr-url": "https://github.com/nodejs/node/pull/49655",
-                    "description": "Add support for WHATWG URL instances."
-                  }
-                ],
-                "deprecated": [
-                  "v25.9.0"
-                ]
-              },
-              "stability": 0,
-              "stabilityText": "Deprecated: Use `module.registerHooks()` instead.",
-              "signatures": [
+                "pr-url": "https://github.com/nodejs/node/pull/49655",
+                "description": "Add support for WHATWG URL instances."
+              }
+            ],
+            "deprecated": [
+              "v25.9.0"
+            ]
+          },
+          "stability": 0,
+          "stabilityText": "Deprecated: Use `module.registerHooks()` instead.",
+          "signatures": [
+            {
+              "params": [
                 {
-                  "params": [
+                  "textRaw": "`specifier` {string|URL} Customization hooks to be registered; this should be the same string that would be passed to `import()`, except that if it is relative, it is resolved relative to `parentURL`.",
+                  "name": "specifier",
+                  "type": "string|URL",
+                  "desc": "Customization hooks to be registered; this should be the same string that would be passed to `import()`, except that if it is relative, it is resolved relative to `parentURL`."
+                },
+                {
+                  "textRaw": "`parentURL` {string|URL} If you want to resolve `specifier` relative to a base URL, such as `import.meta.url`, you can pass that URL here. **Default:** `'data:'`",
+                  "name": "parentURL",
+                  "type": "string|URL",
+                  "default": "`'data:'`",
+                  "desc": "If you want to resolve `specifier` relative to a base URL, such as `import.meta.url`, you can pass that URL here.",
+                  "optional": true
+                },
+                {
+                  "textRaw": "`options` {Object}",
+                  "name": "options",
+                  "type": "Object",
+                  "options": [
                     {
-                      "textRaw": "`specifier` {string|URL} Customization hooks to be registered; this should be the same string that would be passed to `import()`, except that if it is relative, it is resolved relative to `parentURL`.",
-                      "name": "specifier",
-                      "type": "string|URL",
-                      "desc": "Customization hooks to be registered; this should be the same string that would be passed to `import()`, except that if it is relative, it is resolved relative to `parentURL`."
-                    },
-                    {
-                      "textRaw": "`parentURL` {string|URL} If you want to resolve `specifier` relative to a base URL, such as `import.meta.url`, you can pass that URL here. **Default:** `'data:'`",
+                      "textRaw": "`parentURL` {string|URL} If you want to resolve `specifier` relative to a base URL, such as `import.meta.url`, you can pass that URL here. This property is ignored if the `parentURL` is supplied as the second argument. **Default:** `'data:'`",
                       "name": "parentURL",
                       "type": "string|URL",
                       "default": "`'data:'`",
-                      "desc": "If you want to resolve `specifier` relative to a base URL, such as `import.meta.url`, you can pass that URL here.",
-                      "optional": true
+                      "desc": "If you want to resolve `specifier` relative to a base URL, such as `import.meta.url`, you can pass that URL here. This property is ignored if the `parentURL` is supplied as the second argument."
                     },
                     {
-                      "textRaw": "`options` {Object}",
-                      "name": "options",
+                      "textRaw": "`data` {any} Any arbitrary, cloneable JavaScript value to pass into the `initialize` hook.",
+                      "name": "data",
+                      "type": "any",
+                      "desc": "Any arbitrary, cloneable JavaScript value to pass into the `initialize` hook."
+                    },
+                    {
+                      "textRaw": "`transferList` {Object}[] transferable objects to be passed into the `initialize` hook.",
+                      "name": "transferList",
                       "type": "Object",
-                      "options": [
-                        {
-                          "textRaw": "`parentURL` {string|URL} If you want to resolve `specifier` relative to a base URL, such as `import.meta.url`, you can pass that URL here. This property is ignored if the `parentURL` is supplied as the second argument. **Default:** `'data:'`",
-                          "name": "parentURL",
-                          "type": "string|URL",
-                          "default": "`'data:'`",
-                          "desc": "If you want to resolve `specifier` relative to a base URL, such as `import.meta.url`, you can pass that URL here. This property is ignored if the `parentURL` is supplied as the second argument."
-                        },
-                        {
-                          "textRaw": "`data` {any} Any arbitrary, cloneable JavaScript value to pass into the `initialize` hook.",
-                          "name": "data",
-                          "type": "any",
-                          "desc": "Any arbitrary, cloneable JavaScript value to pass into the `initialize` hook."
-                        },
-                        {
-                          "textRaw": "`transferList` {Object}[] transferable objects to be passed into the `initialize` hook.",
-                          "name": "transferList",
-                          "type": "Object",
-                          "desc": "[] transferable objects to be passed into the `initialize` hook."
-                        }
-                      ],
-                      "optional": true
+                      "desc": "[] transferable objects to be passed into the `initialize` hook."
+                    }
+                  ],
+                  "optional": true
+                }
+              ]
+            }
+          ],
+          "desc": "<p>Register a module that exports <a href=\"#customization-hooks\">hooks</a> that customize Node.js module\nresolution and loading behavior. See <a href=\"#customization-hooks\">Customization hooks</a>.</p>\n<p>This feature requires <code>--allow-worker</code> if used with the <a href=\"permissions.html#permission-model\">Permission Model</a>.</p>"
+        },
+        {
+          "textRaw": "`module.registerHooks(options)`",
+          "name": "registerHooks",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v23.5.0",
+              "v22.15.0"
+            ],
+            "changes": [
+              {
+                "version": [
+                  "v25.4.0",
+                  "v24.13.1"
+                ],
+                "pr-url": "https://github.com/nodejs/node/pull/60960",
+                "description": "Synchronous and in-thread hooks are now release candidate."
+              }
+            ]
+          },
+          "stability": 1.2,
+          "stabilityText": "Release candidate",
+          "signatures": [
+            {
+              "params": [
+                {
+                  "textRaw": "`options` {Object}",
+                  "name": "options",
+                  "type": "Object",
+                  "options": [
+                    {
+                      "textRaw": "`load` {Function|undefined} See load hook. **Default:** `undefined`.",
+                      "name": "load",
+                      "type": "Function|undefined",
+                      "default": "`undefined`",
+                      "desc": "See load hook."
+                    },
+                    {
+                      "textRaw": "`resolve` {Function|undefined} See resolve hook. **Default:** `undefined`.",
+                      "name": "resolve",
+                      "type": "Function|undefined",
+                      "default": "`undefined`",
+                      "desc": "See resolve hook."
                     }
                   ]
                 }
               ],
-              "desc": "<p>Register a module that exports <a href=\"#customization-hooks\">hooks</a> that customize Node.js module\nresolution and loading behavior. See <a href=\"#customization-hooks\">Customization hooks</a>.</p>\n<p>This feature requires <code>--allow-worker</code> if used with the <a href=\"permissions.html#permission-model\">Permission Model</a>.</p>"
-            },
-            {
-              "textRaw": "`module.registerHooks(options)`",
-              "name": "registerHooks",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v23.5.0",
-                  "v22.15.0"
-                ],
-                "changes": [
-                  {
-                    "version": [
-                      "v25.4.0",
-                      "v24.13.1"
-                    ],
-                    "pr-url": "https://github.com/nodejs/node/pull/60960",
-                    "description": "Synchronous and in-thread hooks are now release candidate."
-                  }
-                ]
-              },
-              "stability": 1.2,
-              "stabilityText": "Release candidate",
-              "signatures": [
-                {
-                  "params": [
-                    {
-                      "textRaw": "`options` {Object}",
-                      "name": "options",
-                      "type": "Object",
-                      "options": [
-                        {
-                          "textRaw": "`load` {Function|undefined} See load hook. **Default:** `undefined`.",
-                          "name": "load",
-                          "type": "Function|undefined",
-                          "default": "`undefined`",
-                          "desc": "See load hook."
-                        },
-                        {
-                          "textRaw": "`resolve` {Function|undefined} See resolve hook. **Default:** `undefined`.",
-                          "name": "resolve",
-                          "type": "Function|undefined",
-                          "default": "`undefined`",
-                          "desc": "See resolve hook."
-                        }
-                      ]
-                    }
-                  ],
-                  "return": {
-                    "textRaw": "Returns: {Object} An object with the following property:`deregister()` {Function} Remove the registered hooks so that they are no longer called. Hooks are otherwise retained for the lifetime of the running process.`[Symbol.dispose]` {Function} The same as `deregister`.",
-                    "name": "return",
-                    "type": "Object",
-                    "desc": "An object with the following property:`deregister()` {Function} Remove the registered hooks so that they are no longer called. Hooks are otherwise retained for the lifetime of the running process.`[Symbol.dispose]` {Function} The same as `deregister`."
-                  }
-                }
-              ],
-              "desc": "<p>Register <a href=\"#customization-hooks\">hooks</a> that customize Node.js module resolution and loading behavior.\nSee <a href=\"#customization-hooks\">Customization hooks</a>. The returned object can be used to\n<a href=\"#deregistration-of-synchronous-customization-hooks\">deregister the hooks</a>.</p>"
-            },
-            {
-              "textRaw": "`module.stripTypeScriptTypes(code[, options])`",
-              "name": "stripTypeScriptTypes",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v23.2.0",
-                  "v22.13.0"
-                ],
-                "changes": [
-                  {
-                    "version": "v26.0.0",
-                    "pr-url": "https://github.com/nodejs/node/pull/61803",
-                    "description": "Removed `transform` and `sourceMap` options."
-                  }
-                ]
-              },
-              "stability": 1.2,
-              "stabilityText": "Release candidate",
-              "signatures": [
-                {
-                  "params": [
-                    {
-                      "textRaw": "`code` {string} The code to strip type annotations from.",
-                      "name": "code",
-                      "type": "string",
-                      "desc": "The code to strip type annotations from."
-                    },
-                    {
-                      "textRaw": "`options` {Object}",
-                      "name": "options",
-                      "type": "Object",
-                      "options": [
-                        {
-                          "textRaw": "`mode` {string} **Default:** `'strip'`. Possible values are:",
-                          "name": "mode",
-                          "type": "string",
-                          "default": "`'strip'`. Possible values are:",
-                          "options": [
-                            {
-                              "textRaw": "`'strip'` Only strip type annotations without performing the transformation of TypeScript features.",
-                              "desc": "`'strip'` Only strip type annotations without performing the transformation of TypeScript features."
-                            }
-                          ]
-                        },
-                        {
-                          "textRaw": "`sourceUrl` {string} Specifies the source url used in the source map.",
-                          "name": "sourceUrl",
-                          "type": "string",
-                          "desc": "Specifies the source url used in the source map."
-                        }
-                      ],
-                      "optional": true
-                    }
-                  ],
-                  "return": {
-                    "textRaw": "Returns: {string} The code with type annotations stripped.",
-                    "name": "return",
-                    "type": "string",
-                    "desc": "The code with type annotations stripped."
-                  }
-                }
-              ],
-              "desc": "<p><code>module.stripTypeScriptTypes()</code> removes type annotations from TypeScript code. It\ncan be used to strip type annotations from TypeScript code before running it\nwith <code>vm.runInContext()</code> or <code>vm.compileFunction()</code>.</p>\n<p>By default, it will throw an error if the code contains TypeScript features\nthat require transformation, such as <code>enum</code>s. See <a href=\"typescript.html#type-stripping\">type-stripping</a> for more information.</p>\n<p><em>WARNING</em>: The output of this function should not be considered stable across Node.js versions,\ndue to changes in the TypeScript parser.</p>\n<pre><code class=\"language-mjs\">import { stripTypeScriptTypes } from 'node:module';\nconst code = 'const a: number = 1;';\nconst strippedCode = stripTypeScriptTypes(code);\nconsole.log(strippedCode);\n// Prints: const a         = 1;\n</code></pre>\n<pre><code class=\"language-cjs\">const { stripTypeScriptTypes } = require('node:module');\nconst code = 'const a: number = 1;';\nconst strippedCode = stripTypeScriptTypes(code);\nconsole.log(strippedCode);\n// Prints: const a         = 1;\n</code></pre>\n<p>If <code>sourceUrl</code> is provided, it will be used appended as a comment at the end of the output:</p>\n<pre><code class=\"language-mjs\">import { stripTypeScriptTypes } from 'node:module';\nconst code = 'const a: number = 1;';\nconst strippedCode = stripTypeScriptTypes(code, { mode: 'strip', sourceUrl: 'source.ts' });\nconsole.log(strippedCode);\n// Prints: const a         = 1\\n\\n//# sourceURL=source.ts;\n</code></pre>\n<pre><code class=\"language-cjs\">const { stripTypeScriptTypes } = require('node:module');\nconst code = 'const a: number = 1;';\nconst strippedCode = stripTypeScriptTypes(code, { mode: 'strip', sourceUrl: 'source.ts' });\nconsole.log(strippedCode);\n// Prints: const a         = 1\\n\\n//# sourceURL=source.ts;\n</code></pre>"
-            },
-            {
-              "textRaw": "`module.syncBuiltinESMExports()`",
-              "name": "syncBuiltinESMExports",
-              "type": "method",
-              "meta": {
-                "added": [
-                  "v12.12.0"
-                ],
-                "changes": []
-              },
-              "signatures": [
-                {
-                  "params": []
-                }
-              ],
-              "desc": "<p>The <code>module.syncBuiltinESMExports()</code> method updates all the live bindings for\nbuiltin <a href=\"esm.html\">ES Modules</a> to match the properties of the <a href=\"modules.html\">CommonJS</a> exports. It\ndoes not add or remove exported names from the <a href=\"esm.html\">ES Modules</a>.</p>\n<pre><code class=\"language-js\">const fs = require('node:fs');\nconst assert = require('node:assert');\nconst { syncBuiltinESMExports } = require('node:module');\n\nfs.readFile = newAPI;\n\ndelete fs.readFileSync;\n\nfunction newAPI() {\n  // ...\n}\n\nfs.newAPI = newAPI;\n\nsyncBuiltinESMExports();\n\nimport('node:fs').then((esmFS) => {\n  // It syncs the existing readFile property with the new value\n  assert.strictEqual(esmFS.readFile, newAPI);\n  // readFileSync has been deleted from the required fs\n  assert.strictEqual('readFileSync' in fs, false);\n  // syncBuiltinESMExports() does not remove readFileSync from esmFS\n  assert.strictEqual('readFileSync' in esmFS, true);\n  // syncBuiltinESMExports() does not add names\n  assert.strictEqual(esmFS.newAPI, undefined);\n});\n</code></pre>"
+              "return": {
+                "textRaw": "Returns: {Object} An object with the following property:`deregister()` {Function} Remove the registered hooks so that they are no longer called. Hooks are otherwise retained for the lifetime of the running process.`[Symbol.dispose]` {Function} The same as `deregister`.",
+                "name": "return",
+                "type": "Object",
+                "desc": "An object with the following property:`deregister()` {Function} Remove the registered hooks so that they are no longer called. Hooks are otherwise retained for the lifetime of the running process.`[Symbol.dispose]` {Function} The same as `deregister`."
+              }
             }
           ],
-          "displayName": "The `Module` object"
+          "desc": "<p>Register <a href=\"#customization-hooks\">hooks</a> that customize Node.js module resolution and loading behavior.\nSee <a href=\"#customization-hooks\">Customization hooks</a>. The returned object can be used to\n<a href=\"#deregistration-of-synchronous-customization-hooks\">deregister the hooks</a>.</p>"
         },
+        {
+          "textRaw": "`module.stripTypeScriptTypes(code[, options])`",
+          "name": "stripTypeScriptTypes",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v23.2.0",
+              "v22.13.0"
+            ],
+            "changes": [
+              {
+                "version": "v26.0.0",
+                "pr-url": "https://github.com/nodejs/node/pull/61803",
+                "description": "Removed `transform` and `sourceMap` options."
+              }
+            ]
+          },
+          "stability": 1.2,
+          "stabilityText": "Release candidate",
+          "signatures": [
+            {
+              "params": [
+                {
+                  "textRaw": "`code` {string} The code to strip type annotations from.",
+                  "name": "code",
+                  "type": "string",
+                  "desc": "The code to strip type annotations from."
+                },
+                {
+                  "textRaw": "`options` {Object}",
+                  "name": "options",
+                  "type": "Object",
+                  "options": [
+                    {
+                      "textRaw": "`mode` {string} **Default:** `'strip'`. Possible values are:",
+                      "name": "mode",
+                      "type": "string",
+                      "default": "`'strip'`. Possible values are:",
+                      "options": [
+                        {
+                          "textRaw": "`'strip'` Only strip type annotations without performing the transformation of TypeScript features.",
+                          "desc": "`'strip'` Only strip type annotations without performing the transformation of TypeScript features."
+                        }
+                      ]
+                    },
+                    {
+                      "textRaw": "`sourceUrl` {string} Specifies the source url used in the source map.",
+                      "name": "sourceUrl",
+                      "type": "string",
+                      "desc": "Specifies the source url used in the source map."
+                    }
+                  ],
+                  "optional": true
+                }
+              ],
+              "return": {
+                "textRaw": "Returns: {string} The code with type annotations stripped.",
+                "name": "return",
+                "type": "string",
+                "desc": "The code with type annotations stripped."
+              }
+            }
+          ],
+          "desc": "<p><code>module.stripTypeScriptTypes()</code> removes type annotations from TypeScript code. It\ncan be used to strip type annotations from TypeScript code before running it\nwith <code>vm.runInContext()</code> or <code>vm.compileFunction()</code>.</p>\n<p>By default, it will throw an error if the code contains TypeScript features\nthat require transformation, such as <code>enum</code>s. See <a href=\"typescript.html#type-stripping\">type-stripping</a> for more information.</p>\n<p><em>WARNING</em>: The output of this function should not be considered stable across Node.js versions,\ndue to changes in the TypeScript parser.</p>\n<pre><code class=\"language-mjs\">import { stripTypeScriptTypes } from 'node:module';\nconst code = 'const a: number = 1;';\nconst strippedCode = stripTypeScriptTypes(code);\nconsole.log(strippedCode);\n// Prints: const a         = 1;\n</code></pre>\n<pre><code class=\"language-cjs\">const { stripTypeScriptTypes } = require('node:module');\nconst code = 'const a: number = 1;';\nconst strippedCode = stripTypeScriptTypes(code);\nconsole.log(strippedCode);\n// Prints: const a         = 1;\n</code></pre>\n<p>If <code>sourceUrl</code> is provided, it will be used appended as a comment at the end of the output:</p>\n<pre><code class=\"language-mjs\">import { stripTypeScriptTypes } from 'node:module';\nconst code = 'const a: number = 1;';\nconst strippedCode = stripTypeScriptTypes(code, { mode: 'strip', sourceUrl: 'source.ts' });\nconsole.log(strippedCode);\n// Prints: const a         = 1\\n\\n//# sourceURL=source.ts;\n</code></pre>\n<pre><code class=\"language-cjs\">const { stripTypeScriptTypes } = require('node:module');\nconst code = 'const a: number = 1;';\nconst strippedCode = stripTypeScriptTypes(code, { mode: 'strip', sourceUrl: 'source.ts' });\nconsole.log(strippedCode);\n// Prints: const a         = 1\\n\\n//# sourceURL=source.ts;\n</code></pre>"
+        },
+        {
+          "textRaw": "`module.syncBuiltinESMExports()`",
+          "name": "syncBuiltinESMExports",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v12.12.0"
+            ],
+            "changes": []
+          },
+          "signatures": [
+            {
+              "params": []
+            }
+          ],
+          "desc": "<p>The <code>module.syncBuiltinESMExports()</code> method updates all the live bindings for\nbuiltin <a href=\"esm.html\">ES Modules</a> to match the properties of the <a href=\"modules.html\">CommonJS</a> exports. It\ndoes not add or remove exported names from the <a href=\"esm.html\">ES Modules</a>.</p>\n<pre><code class=\"language-js\">const fs = require('node:fs');\nconst assert = require('node:assert');\nconst { syncBuiltinESMExports } = require('node:module');\n\nfs.readFile = newAPI;\n\ndelete fs.readFileSync;\n\nfunction newAPI() {\n  // ...\n}\n\nfs.newAPI = newAPI;\n\nsyncBuiltinESMExports();\n\nimport('node:fs').then((esmFS) => {\n  // It syncs the existing readFile property with the new value\n  assert.strictEqual(esmFS.readFile, newAPI);\n  // readFileSync has been deleted from the required fs\n  assert.strictEqual('readFileSync' in fs, false);\n  // syncBuiltinESMExports() does not remove readFileSync from esmFS\n  assert.strictEqual('readFileSync' in esmFS, true);\n  // syncBuiltinESMExports() does not add names\n  assert.strictEqual(esmFS.newAPI, undefined);\n});\n</code></pre>"
+        }
+      ],
+      "modules": [
         {
           "textRaw": "Module compile cache",
           "name": "module_compile_cache",
@@ -396,8 +400,15 @@
               "textRaw": "Portability of the compile cache",
               "name": "portability_of_the_compile_cache",
               "type": "module",
-              "desc": "<p>By default, caches are invalidated when the absolute paths of the modules being\ncached are changed. To keep the cache working after moving the\nproject directory, enable portable compile cache. This allows previously compiled\nmodules to be reused across different directory locations as long as the layout relative\nto the cache directory remains the same. This would be done on a best-effort basis. If\nNode.js cannot compute the location of a module relative to the cache directory, the module\nwill not be cached.</p>\n<p>There are two ways to enable the portable mode:</p>\n<ol>\n<li>\n<p>Using the portable option in <a href=\"#moduleenablecompilecacheoptions\"><code>module.enableCompileCache()</code></a>:</p>\n<pre><code class=\"language-js\">// Non-portable cache (default): cache breaks if project is moved\nmodule.enableCompileCache({ directory: '/path/to/cache/storage/dir' });\n\n// Portable cache: cache works after the project is moved\nmodule.enableCompileCache({ directory: '/path/to/cache/storage/dir', portable: true });\n</code></pre>\n</li>\n<li>\n<p>Setting the environment variable: <a href=\"cli.html#node_compile_cache_portable1\"><code>NODE_COMPILE_CACHE_PORTABLE=1</code></a></p>\n</li>\n</ol>",
+              "desc": "<p>By default, caches are invalidated when the absolute paths of the modules being\ncached are changed. To keep the cache working after moving the\nproject directory, enable portable compile cache. This allows previously compiled\nmodules to be reused across different directory locations as long as the layout relative\nto the cache directory remains the same. This would be done on a best-effort basis. If\nNode.js cannot compute the location of a module relative to the cache directory, the module\nwill not be cached.</p>\n<p>A portable cache is also not split by user: on platforms with uids the\ncache subdirectory of a non-portable cache is suffixed with the uid of the\nuser who created it, so it is only found by that user, while a portable\ncache uses the same subdirectory for every user. This lets a cache generated\nonce (for example at build time, then shipped read-only with an application)\nbe read by whoever runs the code; a user who cannot write to the directory\nstill reads it, and a failed write only means the module is compiled again.</p>\n<p>There are two ways to enable the portable mode:</p>\n<ol>\n<li>\n<p>Using the portable option in <a href=\"#moduleenablecompilecacheoptions\"><code>module.enableCompileCache()</code></a>:</p>\n<pre><code class=\"language-js\">// Non-portable cache (default): cache breaks if project is moved\nmodule.enableCompileCache({ directory: '/path/to/cache/storage/dir' });\n\n// Portable cache: cache works after the project is moved\nmodule.enableCompileCache({ directory: '/path/to/cache/storage/dir', portable: true });\n</code></pre>\n</li>\n<li>\n<p>Setting the environment variable: <a href=\"cli.html#node_compile_cache_portable1\"><code>NODE_COMPILE_CACHE_PORTABLE=1</code></a></p>\n</li>\n</ol>",
               "displayName": "Portability of the compile cache"
+            },
+            {
+              "textRaw": "Read-only compile cache",
+              "name": "read-only_compile_cache",
+              "type": "module",
+              "desc": "<p>A cache that was generated ahead of time, for example at build time to be\nshipped inside an application package, can be enabled with <code>readOnly: true</code>\n(or <a href=\"cli.html#node_compile_cache_readonly1\"><code>NODE_COMPILE_CACHE_READONLY=1</code></a>). Node.js then loads whatever entries\nthe directory holds and never writes to it: modules without a usable entry are\ncompiled as usual but not persisted, <a href=\"#moduleflushcompilecache\"><code>module.flushCompileCache()</code></a> is a\nno-op, and the directory is not created if it is missing.</p>",
+              "displayName": "Read-only compile cache"
             },
             {
               "textRaw": "Limitations of the compile cache",
@@ -437,6 +448,11 @@
                   "v22.8.0"
                 ],
                 "changes": [
+                  {
+                    "version": "v26.8.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/65302",
+                    "description": "Add the `readOnly` option."
+                  },
                   {
                     "version": "v25.4.0",
                     "pr-url": "https://github.com/nodejs/node/pull/60971",
@@ -480,6 +496,12 @@
                           "name": "portable",
                           "type": "boolean",
                           "desc": "Optional. If `true`, enables portable compile cache so that the cache can be reused even if the project directory is moved. This is a best-effort feature. If not specified, it will depend on whether the environment variable `NODE_COMPILE_CACHE_PORTABLE=1` is set."
+                        },
+                        {
+                          "textRaw": "`readOnly` {boolean} Optional. If `true`, existing cache entries in `directory` are used but nothing is ever written to it, and the directory is not created when it does not exist (enabling then fails). Meant for caches generated ahead of time and shipped with an application. If not specified, it will depend on whether the environment variable `NODE_COMPILE_CACHE_READONLY=1` is set.",
+                          "name": "readOnly",
+                          "type": "boolean",
+                          "desc": "Optional. If `true`, existing cache entries in `directory` are used but nothing is ever written to it, and the directory is not created when it does not exist (enabling then fails). Meant for caches generated ahead of time and shipped with an application. If not specified, it will depend on whether the environment variable `NODE_COMPILE_CACHE_READONLY=1` is set."
                         }
                       ],
                       "optional": true
@@ -1231,6 +1253,50 @@
           ]
         }
       ],
+      "meta": {
+        "added": [
+          "v8.8.0"
+        ],
+        "changes": [
+          {
+            "version": [
+              "v25.4.0",
+              "v24.13.1"
+            ],
+            "pr-url": "https://github.com/nodejs/node/pull/60960",
+            "description": "Synchronous and in-thread hooks are now release candidate."
+          },
+          {
+            "version": [
+              "v23.5.0",
+              "v22.15.0"
+            ],
+            "pr-url": "https://github.com/nodejs/node/pull/55698",
+            "description": "Add support for synchronous and in-thread hooks."
+          },
+          {
+            "version": [
+              "v20.6.0",
+              "v18.19.0"
+            ],
+            "pr-url": "https://github.com/nodejs/node/pull/48842",
+            "description": "Added `initialize` hook to replace `globalPreload`."
+          },
+          {
+            "version": [
+              "v18.6.0",
+              "v16.17.0"
+            ],
+            "pr-url": "https://github.com/nodejs/node/pull/42623",
+            "description": "Add support for chaining loaders."
+          },
+          {
+            "version": "v16.12.0",
+            "pr-url": "https://github.com/nodejs/node/pull/37468",
+            "description": "Removed `getFormat`, `getSource`, `transformSource`, and `globalPreload`; added `load` hook and `getGlobalPreload` hook."
+          }
+        ]
+      },
       "displayName": "Modules: `node:module` API"
     }
   ]

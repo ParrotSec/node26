@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>V8 | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/v8.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-v8><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>V8 | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/v8.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-v8><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=v8 class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><a href=v8.html#v8>V8</a>
 <ul>
@@ -214,6 +215,7 @@
 <li><a href=v8.html#v8isstringonebyterepresentationcontent><code>v8.isStringOneByteRepresentation(content)</code></a></li>
 <li><a href=v8.html#v8startcpuprofileoptions><code>v8.startCpuProfile([options])</code></a></li>
 <li><a href=v8.html#v8startheapprofileoptions><code>v8.startHeapProfile([options])</code></a></li>
+<li><span class=stability_1><a href=v8.html#v8setheapprofilenearheaplimitlimit><code>v8.setHeapProfileNearHeapLimit(limit)</code></a></span></li>
 </ul>
 </li>
 </ul></div></div></li> <li class=picker-header><a href=#gtoc-picker aria-controls=gtoc-picker><span class=picker-arrow></span>Index</a><div class=picker tabindex=-1 id=gtoc-picker><ul><li><a href=index.html>Index</a></ul><hr class=line><ul>
@@ -222,6 +224,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -420,6 +423,7 @@
 <li><a href=v8.html#v8isstringonebyterepresentationcontent><code>v8.isStringOneByteRepresentation(content)</code></a></li>
 <li><a href=v8.html#v8startcpuprofileoptions><code>v8.startCpuProfile([options])</code></a></li>
 <li><a href=v8.html#v8startheapprofileoptions><code>v8.startHeapProfile([options])</code></a></li>
+<li><span class=stability_1><a href=v8.html#v8setheapprofilenearheaplimitlimit><code>v8.setHeapProfileNearHeapLimit(limit)</code></a></span></li>
 </ul>
 </li>
 </ul></details>
@@ -1425,7 +1429,13 @@ is as follows.<pre class="catppuccin-latte catppuccin-mocha language-json shiki 
 <section><h3>Class: <code>SyncHeapProfileHandle</code><span><a id=v8_class_syncheapprofilehandle></a></span><span><a class=mark id=class-syncheapprofilehandle href=#class-syncheapprofilehandle>#</a></span></h3><div class=api_metadata><span>Added in: v26.1.0</span></div><div class="api_stability api_stability_1"><p><a href=documentation.html#stability-index>Stability: 1</a> - Experimental</div></section>
 <section><h4><code>syncHeapProfileHandle.stop()</code><span><a id=v8_syncheapprofilehandle_stop></a></span><span><a class=mark id=syncheapprofilehandlestop href=#syncheapprofilehandlestop>#</a></span></h4><div class=api_metadata><span>Added in: v26.1.0</span></div><ul>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a></li>
-</ul><p>Stopping collecting the profile and return the profile data.</section>
+</ul><p>Stopping collecting the profile and return the profile data.<p>The returned string is JSON in the Chrome DevTools sampling heap profile
+format, with a <code>head</code> call-tree and a <code>samples</code> array. On top of the DevTools
+fields, the following are added:<ul>
+<li>Each node reports <code>selfCount</code>, the number of sampled objects allocated by the
+node (<code>selfSize</code> is the existing total in bytes).</li>
+<li>Each sample reports <code>objectSize</code>, <code>objectCount</code>, and <code>isLive</code>.</li>
+</ul><p>The DevTools <code>size</code> field stays <code>objectSize * objectCount</code> for compatibility.</section>
 <section><h4><code>syncHeapProfileHandle[Symbol.dispose]()</code><span><a id=v8_syncheapprofilehandle_symbol_dispose></a></span><span><a class=mark id=syncheapprofilehandlesymboldispose href=#syncheapprofilehandlesymboldispose>#</a></span></h4><div class=api_metadata><span>Added in: v26.1.0</span></div><p>Stopping collecting the profile and the profile will be discarded.</section>
 <section><h3>Class: <code>CPUProfileHandle</code><span><a id=v8_class_cpuprofilehandle></a></span><span><a class=mark id=class-cpuprofilehandle href=#class-cpuprofilehandle>#</a></span></h3><div class=api_metadata><span>Added in: v24.8.0</span></div></section>
 <section><h4><code>cpuProfileHandle.stop()</code><span><a id=v8_cpuprofilehandle_stop></a></span><span><a class=mark id=cpuprofilehandlestop href=#cpuprofilehandlestop>#</a></span></h4><div class=api_metadata><span>Added in: v24.8.0</span></div><ul>
@@ -1559,6 +1569,22 @@ This API supports <code>using</code> syntax.<pre style=background-color:#eff1f5;
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> profile </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> handle</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>stop</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>console</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>log</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(profile)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
+<section><h3><code>v8.setHeapProfileNearHeapLimit(limit)</code><span><a id=v8_v8_setheapprofilenearheaplimit_limit></a></span><span><a class=mark id=v8setheapprofilenearheaplimitlimit href=#v8setheapprofilenearheaplimitlimit>#</a></span></h3><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><ul>
+<li><code>limit</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a></li>
+</ul><p>Writes the active sampling heap profile as a <code>.heapprofile</code> file when V8 is
+near the heap limit, up to <code>limit</code> times. Files are written to the directory
+configured by <code>--diagnostic-dir</code> (or to the current working directory if the
+option is unset), using the
+<code>Heap.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.heapprofile</code> naming
+convention.<p><a href=#v8startheapprofileoptions><code>v8.startHeapProfile()</code></a> must be called before this API can capture a
+profile. If no sampling heap profile is active when V8 reaches the heap
+limit, the callback is uninstalled and V8 continues its normal
+out-of-memory behavior.<p>This API can be used together with <a href=#v8setheapsnapshotnearheaplimitlimit><code>v8.setHeapSnapshotNearHeapLimit()</code></a>.
+Each API maintains its own <code>limit</code>.<p>Writing is best-effort. Materializing the sampled call tree can allocate V8
+and native memory, so the profile might not be completed if the process has
+insufficient memory available. The serialized profile is written by native code
+and is not exposed to JavaScript.<p>Calling <code>setHeapProfileNearHeapLimit()</code> more than once is a no-op. <code>limit</code>
+must be a positive integer.</section>
           
         </div>
       </div>

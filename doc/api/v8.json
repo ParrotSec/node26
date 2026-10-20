@@ -554,6 +554,31 @@
             }
           ],
           "desc": "<p>Starting a heap profile then return a <code>SyncHeapProfileHandle</code> object.\nThis API supports <code>using</code> syntax.</p>\n<pre><code class=\"language-cjs\">const v8 = require('node:v8');\n\nconst handle = v8.startHeapProfile();\nconst profile = handle.stop();\nconsole.log(profile);\n</code></pre>\n<pre><code class=\"language-mjs\">import v8 from 'node:v8';\n\nconst handle = v8.startHeapProfile();\nconst profile = handle.stop();\nconsole.log(profile);\n</code></pre>\n<p>With custom parameters:</p>\n<pre><code class=\"language-cjs\">const v8 = require('node:v8');\n\nconst handle = v8.startHeapProfile({\n  sampleInterval: 1024,\n  stackDepth: 8,\n  forceGC: true,\n  includeObjectsCollectedByMajorGC: true,\n});\nconst profile = handle.stop();\nconsole.log(profile);\n</code></pre>\n<pre><code class=\"language-mjs\">import v8 from 'node:v8';\n\nconst handle = v8.startHeapProfile({\n  sampleInterval: 1024,\n  stackDepth: 8,\n  forceGC: true,\n  includeObjectsCollectedByMajorGC: true,\n});\nconst profile = handle.stop();\nconsole.log(profile);\n</code></pre>"
+        },
+        {
+          "textRaw": "`v8.setHeapProfileNearHeapLimit(limit)`",
+          "name": "setHeapProfileNearHeapLimit",
+          "type": "method",
+          "meta": {
+            "added": [
+              "v26.9.0"
+            ],
+            "changes": []
+          },
+          "stability": 1,
+          "stabilityText": "Experimental",
+          "signatures": [
+            {
+              "params": [
+                {
+                  "textRaw": "`limit` {integer}",
+                  "name": "limit",
+                  "type": "integer"
+                }
+              ]
+            }
+          ],
+          "desc": "<p>Writes the active sampling heap profile as a <code>.heapprofile</code> file when V8 is\nnear the heap limit, up to <code>limit</code> times. Files are written to the directory\nconfigured by <code>--diagnostic-dir</code> (or to the current working directory if the\noption is unset), using the\n<code>Heap.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.heapprofile</code> naming\nconvention.</p>\n<p><a href=\"#v8startheapprofileoptions\"><code>v8.startHeapProfile()</code></a> must be called before this API can capture a\nprofile. If no sampling heap profile is active when V8 reaches the heap\nlimit, the callback is uninstalled and V8 continues its normal\nout-of-memory behavior.</p>\n<p>This API can be used together with <a href=\"#v8setheapsnapshotnearheaplimitlimit\"><code>v8.setHeapSnapshotNearHeapLimit()</code></a>.\nEach API maintains its own <code>limit</code>.</p>\n<p>Writing is best-effort. Materializing the sampled call tree can allocate V8\nand native memory, so the profile might not be completed if the process has\ninsufficient memory available. The serialized profile is written by native code\nand is not exposed to JavaScript.</p>\n<p>Calling <code>setHeapProfileNearHeapLimit()</code> more than once is a no-op. <code>limit</code>\nmust be a positive integer.</p>"
         }
       ],
       "modules": [
@@ -1644,7 +1669,7 @@
                   }
                 }
               ],
-              "desc": "<p>Stopping collecting the profile and return the profile data.</p>"
+              "desc": "<p>Stopping collecting the profile and return the profile data.</p>\n<p>The returned string is JSON in the Chrome DevTools sampling heap profile\nformat, with a <code>head</code> call-tree and a <code>samples</code> array. On top of the DevTools\nfields, the following are added:</p>\n<ul>\n<li>Each node reports <code>selfCount</code>, the number of sampled objects allocated by the\nnode (<code>selfSize</code> is the existing total in bytes).</li>\n<li>Each sample reports <code>objectSize</code>, <code>objectCount</code>, and <code>isLive</code>.</li>\n</ul>\n<p>The DevTools <code>size</code> field stays <code>objectSize * objectCount</code> for compatibility.</p>"
             },
             {
               "textRaw": "`syncHeapProfileHandle[Symbol.dispose]()`",

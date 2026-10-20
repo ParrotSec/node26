@@ -108,6 +108,18 @@
       "desc": "<ul>\n<li>Extends: <a href=\"errors.html#class-errorserror\"><code>&#x3C;errors.Error></code></a></li>\n</ul>\n<p>Indicates the failure of an assertion. For details, see\n<a href=\"assert.html#class-assertassertionerror\"><code>Class: assert.AssertionError</code></a>.</p>"
     },
     {
+      "textRaw": "Class: `DOMException`",
+      "name": "DOMException",
+      "type": "class",
+      "meta": {
+        "added": [
+          "v17.0.0"
+        ],
+        "changes": []
+      },
+      "desc": "<ul>\n<li>Extends: <a href=\"errors.html#class-errorserror\"><code>&#x3C;errors.Error></code></a></li>\n</ul>\n<p>The Web IDL <a href=\"https://developer.mozilla.org/docs/Web/API/DOMException\"><code>&#x3C;DOMException></code></a> class. These errors are thrown by web-platform APIs\nin Node.js such as <a href=\"globals.html#fetch\"><code>fetch()</code></a>, <a href=\"globals.html#class-abortcontroller\"><code>&#x3C;AbortController></code></a>, <a href=\"globals.html#class-abortsignal\"><code>&#x3C;AbortSignal></code></a>, and Web\nStreams. For details, see also <a href=\"globals.html#class-domexception\"><code>Class: DOMException</code></a> on the Globals page.</p>\n<p>The <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/DOMException/name\"><code>domException.name</code></a> property identifies the type of the exception (for\nexample, <code>'AbortError'</code>). Unlike most errors in Node.js, the\n<a href=\"https://developer.mozilla.org/en-US/docs/Web/API/DOMException/code\"><code>domException.code</code></a> property is a number that corresponds to a\n<a href=\"https://webidl.spec.whatwg.org/#dfn-error-names-table\">legacy error code name</a> (for example, <code>20</code> for\n<code>ABORT_ERR</code>).</p>\n<p>Node.js-specific APIs that support <a href=\"globals.html#class-abortsignal\"><code>&#x3C;AbortSignal></code></a> (such as <a href=\"events.html#eventsonceemitter-name-options\"><code>events.once()</code></a>) throw a Node.js <code>AbortError</code> (a native <a href=\"errors.html#class-errorserror\"><code>&#x3C;errors.Error></code></a> with <code>name</code> of <code>'AbortError'</code> and <code>code</code> of <a href=\"#abort_err\"><code>'ABORT_ERR'</code></a>) rather than a\n<a href=\"https://developer.mozilla.org/docs/Web/API/DOMException\"><code>&#x3C;DOMException></code></a>. To identify abort errors in either case, checking <code>err?.name === 'AbortError'</code> is sufficient.</p>\n<p>See also <a href=\"#abort_err\"><code>ABORT_ERR</code></a>.</p>"
+    },
+    {
       "textRaw": "Class: `RangeError`",
       "name": "RangeError",
       "type": "class",
@@ -550,7 +562,7 @@
               "textRaw": "`ERR_CRYPTO_HASH_UPDATE_FAILED`",
               "name": "`err_crypto_hash_update_failed`",
               "type": "module",
-              "desc": "<p><a href=\"crypto.html#hashupdatedata-inputencoding\"><code>hash.update()</code></a> failed for any reason. This should rarely, if ever, happen.</p>\n<p><a id=\"ERR_CRYPTO_INCOMPATIBLE_KEY\"></a></p>",
+              "desc": "<p><a href=\"crypto.html#hashupdatedata-inputencoding\"><code>hash.update()</code></a> failed for an unspecified reason.</p>\n<p><a id=\"ERR_CRYPTO_INCOMPATIBLE_KEY\"></a></p>",
               "displayName": "`ERR_CRYPTO_HASH_UPDATE_FAILED`"
             },
             {
@@ -695,8 +707,21 @@
               "textRaw": "`ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE`",
               "name": "`err_crypto_invalid_key_object_type`",
               "type": "module",
-              "desc": "<p>The given crypto key object's type is invalid for the attempted operation.</p>\n<p><a id=\"ERR_CRYPTO_INVALID_MESSAGELEN\"></a></p>",
+              "desc": "<p>The given crypto key object's type is invalid for the attempted operation.</p>\n<p><a id=\"ERR_CRYPTO_INVALID_MAC\"></a></p>",
               "displayName": "`ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE`"
+            },
+            {
+              "textRaw": "`ERR_CRYPTO_INVALID_MAC`",
+              "name": "`err_crypto_invalid_mac`",
+              "type": "module",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>An invalid MAC algorithm was specified.</p>\n<p><a id=\"ERR_CRYPTO_INVALID_MESSAGELEN\"></a></p>",
+              "displayName": "`ERR_CRYPTO_INVALID_MAC`"
             },
             {
               "textRaw": "`ERR_CRYPTO_INVALID_MESSAGELEN`",
@@ -781,8 +806,47 @@
                 ],
                 "changes": []
               },
-              "desc": "<p>Attempted to use KEM operations while Node.js was not compiled with\nOpenSSL with KEM support.</p>\n<p><a id=\"ERR_CRYPTO_OPERATION_FAILED\"></a></p>",
+              "desc": "<p>Attempted to use KEM operations while Node.js was not compiled with\nOpenSSL with KEM support.</p>\n<p><a id=\"ERR_CRYPTO_MAC_FINALIZED\"></a></p>",
               "displayName": "`ERR_CRYPTO_KEM_NOT_SUPPORTED`"
+            },
+            {
+              "textRaw": "`ERR_CRYPTO_MAC_FINALIZED`",
+              "name": "`err_crypto_mac_finalized`",
+              "type": "module",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>An operation was attempted on a <code>Mac</code> object after finalization was attempted\nor an underlying MAC update failed.</p>\n<p><a id=\"ERR_CRYPTO_MAC_NOT_SUPPORTED\"></a></p>",
+              "displayName": "`ERR_CRYPTO_MAC_FINALIZED`"
+            },
+            {
+              "textRaw": "`ERR_CRYPTO_MAC_NOT_SUPPORTED`",
+              "name": "`err_crypto_mac_not_supported`",
+              "type": "module",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>Node.js was built without support for the OpenSSL <code>EVP_MAC</code> API.</p>\n<p><a id=\"ERR_CRYPTO_MAC_UPDATE_FAILED\"></a></p>",
+              "displayName": "`ERR_CRYPTO_MAC_NOT_SUPPORTED`"
+            },
+            {
+              "textRaw": "`ERR_CRYPTO_MAC_UPDATE_FAILED`",
+              "name": "`err_crypto_mac_update_failed`",
+              "type": "module",
+              "meta": {
+                "added": [
+                  "v26.9.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p><a href=\"crypto.html#macupdatedata-inputencoding\"><code>mac.update()</code></a> failed for an unspecified reason.</p>\n<p><a id=\"ERR_CRYPTO_OPERATION_FAILED\"></a></p>",
+              "displayName": "`ERR_CRYPTO_MAC_UPDATE_FAILED`"
             },
             {
               "textRaw": "`ERR_CRYPTO_OPERATION_FAILED`",
@@ -2579,8 +2643,21 @@
               },
               "stability": 1,
               "stabilityText": "Experimental.",
-              "desc": "<p>An attempt was made to <code>require()</code> an <a href=\"esm.html\">ES Module</a> while another <code>import()</code> call\nwas already in progress to load it asynchronously.</p>\n<p><a id=\"ERR_SCRIPT_EXECUTION_INTERRUPTED\"></a></p>",
+              "desc": "<p>An attempt was made to <code>require()</code> an <a href=\"esm.html\">ES Module</a> while another <code>import()</code> call\nwas already in progress to load it asynchronously.</p>\n<p><a id=\"ERR_RX_MEMORY_NOT_SUPPORTED\"></a></p>",
               "displayName": "`ERR_REQUIRE_ESM_RACE_CONDITION`"
+            },
+            {
+              "textRaw": "`ERR_RX_MEMORY_NOT_SUPPORTED`",
+              "name": "`err_rx_memory_not_supported`",
+              "type": "module",
+              "meta": {
+                "added": [
+                  "v26.12.0"
+                ],
+                "changes": []
+              },
+              "desc": "<p>A feature requiring runtime allocation of executable memory was used in an\nenvironment where that capability is unavailable. This includes creating an\notherwise eligible FFI Fast API function, or allocating an FFI callback when\nlibffi cannot provide a closure and executable memory is unavailable.</p>\n<p>Node.js does not guarantee a non-generated-code fallback for these operations.\nThis error can be caught without terminating the process.</p>\n<p><a id=\"ERR_SCRIPT_EXECUTION_INTERRUPTED\"></a></p>",
+              "displayName": "`ERR_RX_MEMORY_NOT_SUPPORTED`"
             },
             {
               "textRaw": "`ERR_SCRIPT_EXECUTION_INTERRUPTED`",
@@ -2705,7 +2782,7 @@
               "textRaw": "`ERR_SOCKET_HANDLE_ADOPTED`",
               "name": "`err_socket_handle_adopted`",
               "type": "module",
-              "desc": "<p>An operation was attempted on a <a href=\"net.html#class-netboundsocket\"><code>BoundSocket</code></a> that had already been adopted\nby a <a href=\"net.html#class-netserver\"><code>net.Server</code></a> or <a href=\"net.html#class-netsocket\"><code>net.Socket</code></a>. Once a bound socket is adopted, its\n<code>address()</code> and <code>close()</code> methods can no longer be used.</p>\n<p><a id=\"ERR_SOURCE_MAP_CORRUPT\"></a></p>",
+              "desc": "<p>An operation was attempted on a <a href=\"net.html#class-netboundsocket\"><code>BoundSocket</code></a> that had already been adopted\nby a <a href=\"net.html#class-netserver\"><code>net.Server</code></a> or <a href=\"net.html#class-netsocket\"><code>net.Socket</code></a>, or transferred to another thread.\nOnce a bound socket is adopted or transferred, its <code>address()</code> and <code>close()</code>\nmethods can no longer be used.</p>\n<p><a id=\"ERR_SOURCE_MAP_CORRUPT\"></a></p>",
               "displayName": "`ERR_SOCKET_HANDLE_ADOPTED`"
             },
             {
@@ -2857,8 +2934,15 @@
               "textRaw": "`ERR_TEST_FAILURE`",
               "name": "`err_test_failure`",
               "type": "module",
-              "desc": "<p>This error represents a failed test. Additional information about the failure\nis available via the <code>cause</code> property. The <code>failureType</code> property specifies\nwhat the test was doing when the failure occurred.</p>\n<p><a id=\"ERR_TLS_ALPN_CALLBACK_INVALID_RESULT\"></a></p>",
+              "desc": "<p>This error represents a failed test. Additional information about the failure\nis available via the <code>cause</code> property. The <code>failureType</code> property specifies\nwhat the test was doing when the failure occurred.</p>\n<p><a id=\"ERR_THROTTLED\"></a></p>",
               "displayName": "`ERR_TEST_FAILURE`"
+            },
+            {
+              "textRaw": "`ERR_THROTTLED`",
+              "name": "`err_throttled`",
+              "type": "module",
+              "desc": "<p>A call was dropped because a throttled function could not invoke it immediately\nor its pending queue was full.</p>\n<p><a id=\"ERR_TLS_ALPN_CALLBACK_INVALID_RESULT\"></a></p>",
+              "displayName": "`ERR_THROTTLED`"
             },
             {
               "textRaw": "`ERR_TLS_ALPN_CALLBACK_INVALID_RESULT`",
@@ -3003,7 +3087,7 @@
               "textRaw": "`ERR_TRACE_EVENTS_UNAVAILABLE`",
               "name": "`err_trace_events_unavailable`",
               "type": "module",
-              "desc": "<p>The <code>node:trace_events</code> module could not be loaded because Node.js was compiled\nwith the <code>--without-v8-platform</code> flag.</p>\n<p><a id=\"ERR_TRAILING_JUNK_AFTER_STREAM_END\"></a></p>",
+              "desc": "<p>The <code>node:trace_events</code> module could not be loaded because Node.js was compiled\nwith the <code>--without-v8-platform</code> flag, or because the process was initialized by\nan embedder that provides its own V8 platform.</p>\n<p><a id=\"ERR_TRAILING_JUNK_AFTER_STREAM_END\"></a></p>",
               "displayName": "`ERR_TRACE_EVENTS_UNAVAILABLE`"
             },
             {
@@ -3163,8 +3247,15 @@
               "textRaw": "`ERR_VALID_PERFORMANCE_ENTRY_TYPE`",
               "name": "`err_valid_performance_entry_type`",
               "type": "module",
-              "desc": "<p>While using the Performance Timing API (<code>perf_hooks</code>), no valid performance\nentry types are found.</p>\n<p><a id=\"ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING\"></a></p>",
+              "desc": "<p>While using the Performance Timing API (<code>perf_hooks</code>), no valid performance\nentry types are found.</p>\n<p><a id=\"ERR_VFS_INVALID_TARGET\"></a></p>",
               "displayName": "`ERR_VALID_PERFORMANCE_ENTRY_TYPE`"
+            },
+            {
+              "textRaw": "`ERR_VFS_INVALID_TARGET`",
+              "name": "`err_vfs_invalid_target`",
+              "type": "module",
+              "desc": "<p>A <code>--vfs-load</code> source does not exist, is neither a regular file nor a\ndirectory, or is a source no provider claims.</p>\n<p><a id=\"ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING\"></a></p>",
+              "displayName": "`ERR_VFS_INVALID_TARGET`"
             },
             {
               "textRaw": "`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`",
@@ -3247,7 +3338,7 @@
               "textRaw": "`ERR_WEBASSEMBLY_NOT_SUPPORTED`",
               "name": "`err_webassembly_not_supported`",
               "type": "module",
-              "desc": "<p>A feature requiring WebAssembly was used, but WebAssembly is not supported or\nhas been disabled in the current environment (for example, when running with\n<code>--jitless</code>).</p>\n<p><a id=\"ERR_WEBASSEMBLY_RESPONSE\"></a></p>",
+              "desc": "<p>A feature requiring WebAssembly was used, but WebAssembly is not supported or\nhas been disabled in the current environment (for example, when running with\n<code>--jitless</code>).</p>\n<p>TypeScript parsing and WebAssembly module imports, including source phase\nimports, report this error when WebAssembly is unavailable. Node.js does not\nprovide an alternative implementation for these operations. This error can be\ncaught without terminating the process.</p>\n<p><a id=\"ERR_WEBASSEMBLY_RESPONSE\"></a></p>",
               "displayName": "`ERR_WEBASSEMBLY_NOT_SUPPORTED`"
             },
             {
@@ -3267,7 +3358,7 @@
               "textRaw": "`ERR_WORKER_HANDLE_NOT_TRANSFERABLE`",
               "name": "`err_worker_handle_not_transferable`",
               "type": "module",
-              "desc": "<p>An attempt was made to transfer a <code>net.Socket</code> or <code>net.Server</code> to another thread\nvia a <code>worker_threads</code> <code>postMessage()</code> call while it was not in a transferable\nstate, for example because it had already started reading or had buffered data.</p>\n<p><a id=\"ERR_WORKER_INIT_FAILED\"></a></p>",
+              "desc": "<p>An attempt was made to transfer a <code>net.Socket</code>, <code>net.Server</code> or\n<code>net.BoundSocket</code> to another thread via a <code>worker_threads</code> <code>postMessage()</code> call\nwhile it was not in a transferable state, for example because it had already\nstarted reading, had buffered data, or had already been adopted.</p>\n<p><a id=\"ERR_WORKER_INIT_FAILED\"></a></p>",
               "displayName": "`ERR_WORKER_HANDLE_NOT_TRANSFERABLE`"
             },
             {
@@ -3376,8 +3467,57 @@
               "textRaw": "`ERR_WORKER_UNSUPPORTED_OPERATION`",
               "name": "`err_worker_unsupported_operation`",
               "type": "module",
-              "desc": "<p>The requested functionality is not supported in worker threads.</p>\n<p><a id=\"ERR_ZLIB_INITIALIZATION_FAILED\"></a></p>",
+              "desc": "<p>The requested functionality is not supported in worker threads.</p>\n<p><a id=\"ERR_ZIP_ARCHIVE_TOO_LARGE\"></a></p>",
               "displayName": "`ERR_WORKER_UNSUPPORTED_OPERATION`"
+            },
+            {
+              "textRaw": "`ERR_ZIP_ARCHIVE_TOO_LARGE`",
+              "name": "`err_zip_archive_too_large`",
+              "type": "module",
+              "desc": "<p>An archive-level structure exceeds a limit: the archive comment exceeds the\n65,535-byte encoded length that the ZIP format allows, or the archive's\ncentral directory is too large to buffer in memory.</p>\n<p><a id=\"ERR_ZIP_ENTRY_CORRUPT\"></a></p>",
+              "displayName": "`ERR_ZIP_ARCHIVE_TOO_LARGE`"
+            },
+            {
+              "textRaw": "`ERR_ZIP_ENTRY_CORRUPT`",
+              "name": "`err_zip_entry_corrupt`",
+              "type": "module",
+              "desc": "<p>A ZIP archive entry failed CRC-32 verification, or produced more or fewer\nbytes than its declared uncompressed size, while being read.</p>\n<p><a id=\"ERR_ZIP_ENTRY_NOT_FOUND\"></a></p>",
+              "displayName": "`ERR_ZIP_ENTRY_CORRUPT`"
+            },
+            {
+              "textRaw": "`ERR_ZIP_ENTRY_NOT_FOUND`",
+              "name": "`err_zip_entry_not_found`",
+              "type": "module",
+              "desc": "<p>A named entry was requested from a <a href=\"zlib.html#class-zlibzipfile\"><code>ZipFile</code></a> or <a href=\"zlib.html#class-zlibzipbuffer\"><code>ZipBuffer</code></a> that does\nnot contain an entry with that name.</p>\n<p><a id=\"ERR_ZIP_ENTRY_TOO_LARGE\"></a></p>",
+              "displayName": "`ERR_ZIP_ENTRY_NOT_FOUND`"
+            },
+            {
+              "textRaw": "`ERR_ZIP_ENTRY_TOO_LARGE`",
+              "name": "`err_zip_entry_too_large`",
+              "type": "module",
+              "desc": "<p>A ZIP archive entry's declared size exceeds the configured limit, or a\nprovided entry name or comment exceeds the 65,535-byte encoded length that\nthe ZIP format allows.</p>\n<p><a id=\"ERR_ZIP_INVALID_ARCHIVE\"></a></p>",
+              "displayName": "`ERR_ZIP_ENTRY_TOO_LARGE`"
+            },
+            {
+              "textRaw": "`ERR_ZIP_INVALID_ARCHIVE`",
+              "name": "`err_zip_invalid_archive`",
+              "type": "module",
+              "desc": "<p>Data that was expected to be a ZIP archive, or a structure within one, is\nmissing, out of bounds, or otherwise inconsistent with the ZIP format.</p>\n<p><a id=\"ERR_ZIP_NOT_WRITABLE\"></a></p>",
+              "displayName": "`ERR_ZIP_INVALID_ARCHIVE`"
+            },
+            {
+              "textRaw": "`ERR_ZIP_NOT_WRITABLE`",
+              "name": "`err_zip_not_writable`",
+              "type": "module",
+              "desc": "<p>A mutating method (such as <code>zipFile.addEntry()</code> or <code>zipFile.delete()</code>) was\ncalled on a <a href=\"zlib.html#class-zlibzipfile\"><code>ZipFile</code></a> that was not opened with <code>{ writable: true }</code>.</p>\n<p><a id=\"ERR_ZIP_UNSUPPORTED_FEATURE\"></a></p>",
+              "displayName": "`ERR_ZIP_NOT_WRITABLE`"
+            },
+            {
+              "textRaw": "`ERR_ZIP_UNSUPPORTED_FEATURE`",
+              "name": "`err_zip_unsupported_feature`",
+              "type": "module",
+              "desc": "<p>A ZIP archive uses a feature outside of what this implementation supports,\nsuch as entry encryption, an unsupported compression method, or a multi-disk\narchive.</p>\n<p><a id=\"ERR_ZLIB_INITIALIZATION_FAILED\"></a></p>",
+              "displayName": "`ERR_ZIP_UNSUPPORTED_FEATURE`"
             },
             {
               "textRaw": "`ERR_ZLIB_INITIALIZATION_FAILED`",
@@ -4603,6 +4743,18 @@
           "name": "AssertionError",
           "type": "class",
           "desc": "<ul>\n<li>Extends: <a href=\"errors.html#class-errorserror\"><code>&#x3C;errors.Error></code></a></li>\n</ul>\n<p>Indicates the failure of an assertion. For details, see\n<a href=\"assert.html#class-assertassertionerror\"><code>Class: assert.AssertionError</code></a>.</p>"
+        },
+        {
+          "textRaw": "Class: `DOMException`",
+          "name": "DOMException",
+          "type": "class",
+          "meta": {
+            "added": [
+              "v17.0.0"
+            ],
+            "changes": []
+          },
+          "desc": "<ul>\n<li>Extends: <a href=\"errors.html#class-errorserror\"><code>&#x3C;errors.Error></code></a></li>\n</ul>\n<p>The Web IDL <a href=\"https://developer.mozilla.org/docs/Web/API/DOMException\"><code>&#x3C;DOMException></code></a> class. These errors are thrown by web-platform APIs\nin Node.js such as <a href=\"globals.html#fetch\"><code>fetch()</code></a>, <a href=\"globals.html#class-abortcontroller\"><code>&#x3C;AbortController></code></a>, <a href=\"globals.html#class-abortsignal\"><code>&#x3C;AbortSignal></code></a>, and Web\nStreams. For details, see also <a href=\"globals.html#class-domexception\"><code>Class: DOMException</code></a> on the Globals page.</p>\n<p>The <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/DOMException/name\"><code>domException.name</code></a> property identifies the type of the exception (for\nexample, <code>'AbortError'</code>). Unlike most errors in Node.js, the\n<a href=\"https://developer.mozilla.org/en-US/docs/Web/API/DOMException/code\"><code>domException.code</code></a> property is a number that corresponds to a\n<a href=\"https://webidl.spec.whatwg.org/#dfn-error-names-table\">legacy error code name</a> (for example, <code>20</code> for\n<code>ABORT_ERR</code>).</p>\n<p>Node.js-specific APIs that support <a href=\"globals.html#class-abortsignal\"><code>&#x3C;AbortSignal></code></a> (such as <a href=\"events.html#eventsonceemitter-name-options\"><code>events.once()</code></a>) throw a Node.js <code>AbortError</code> (a native <a href=\"errors.html#class-errorserror\"><code>&#x3C;errors.Error></code></a> with <code>name</code> of <code>'AbortError'</code> and <code>code</code> of <a href=\"#abort_err\"><code>'ABORT_ERR'</code></a>) rather than a\n<a href=\"https://developer.mozilla.org/docs/Web/API/DOMException\"><code>&#x3C;DOMException></code></a>. To identify abort errors in either case, checking <code>err?.name === 'AbortError'</code> is sufficient.</p>\n<p>See also <a href=\"#abort_err\"><code>ABORT_ERR</code></a>.</p>"
         },
         {
           "textRaw": "Class: `RangeError`",

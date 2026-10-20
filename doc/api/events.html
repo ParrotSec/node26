@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>Events | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/events.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-events><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>Events | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/events.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-events><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=events class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><span class=stability_2><a href=events.html#events>Events</a></span>
 <ul>
@@ -219,6 +220,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -1656,7 +1658,7 @@ max for all newly created <a href=events.html#class-eventtarget><code>&lt;EventT
 <span class=line></span>
 <span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>setMaxListeners</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#FE640B;--shiki-dark:#FAB387>5</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> target</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> emitter)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
-<section><h3><code>events.addAbortListener(signal, listener)</code><span><a id=events_events_addabortlistener_signal_listener></a></span><span><a class=mark id=eventsaddabortlistenersignal-listener href=#eventsaddabortlistenersignal-listener>#</a></span></h3><div class=api_metadata><span>Added in: v20.5.0, v18.18.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.0.0, v22.16.0<td><p>Change stability index for this feature from Experimental to Stable.</table></details></div><ul>
+<section><h3><code>events.addAbortListener(signal, listener)</code><span><a id=events_events_addabortlistener_signal_listener></a></span><span><a class=mark id=eventsaddabortlistenersignal-listener href=#eventsaddabortlistenersignal-listener>#</a></span></h3><div class=api_metadata><span>Added in: v20.5.0, v18.18.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.11.0<td><p>When the signal is already aborted, the listener now receives an <code>abort</code> event and disposing cancels the pending call.<tr><td>v24.0.0, v22.16.0<td><p>Change stability index for this feature from Experimental to Stable.</table></details></div><ul>
 <li><code>signal</code> <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a></li>
 <li><code>listener</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a> | <a href=events.html#event-listener><code>&lt;EventListener></code></a></li>
 <li>Returns: <a href=https://tc39.es/proposal-explicit-resource-management/#sec-disposable-interface><code>&lt;Disposable></code></a> A Disposable that removes the <code>abort</code> listener.</li>
@@ -1666,7 +1668,8 @@ call <a href=#eventstopimmediatepropagation><code>e.stopImmediatePropagation()</
 this since it would violate the web standard. Additionally, the original
 API makes it easy to forget to remove listeners.<p>This API allows safely using <code>AbortSignal</code>s in Node.js APIs by solving these
 two issues by listening to the event such that <code>stopImmediatePropagation</code> does
-not prevent the listener from running.<p>Returns a disposable so that it may be unsubscribed from more easily.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox checked><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> addAbortListener </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:events'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+not prevent the listener from running.<p>Returns a disposable so that it may be unsubscribed from more easily.<p>If <code>signal</code> is already aborted, the listener is called with an <code>abort</code> event in a
+microtask. Disposing before that microtask runs cancels the call.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox checked><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> addAbortListener </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:events'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>function</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> example</span><span style=color:#7C7F93;--shiki-dark:#9399B2>(</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic>signal</span><span style=color:#7C7F93;--shiki-dark:#9399B2>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>  signal</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>addEventListener</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'abort'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#7C7F93;--shiki-dark:#9399B2> (</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic>e</span><span style=color:#7C7F93;--shiki-dark:#9399B2>)</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> =></span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> e</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>stopImmediatePropagation</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>())</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>

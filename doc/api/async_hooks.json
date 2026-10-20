@@ -252,7 +252,7 @@
                   }
                 }
               ],
-              "desc": "<pre><code class=\"language-js\">const server = net.createServer((conn) => {\n  // The resource that caused (or triggered) this callback to be called\n  // was that of the new connection. Thus the return value of triggerAsyncId()\n  // is the asyncId of \"conn\".\n  async_hooks.triggerAsyncId();\n\n}).listen(port, () => {\n  // Even though all callbacks passed to .listen() are wrapped in a nextTick()\n  // the callback itself exists because the call to the server's .listen()\n  // was made. So the return value would be the ID of the server.\n  async_hooks.triggerAsyncId();\n});\n</code></pre>\n<p>Promise contexts may not get valid <code>triggerAsyncId</code>s by default. See\nthe section on <a href=\"#promise-execution-tracking\">promise execution tracking</a>.</p>"
+              "desc": "<pre><code class=\"language-js\">const server = net.createServer((conn) => {\n  // Returns the triggerAsyncId of the server, not of the new connection,\n  // because the callback runs in the execution scope of the server's\n  // MakeCallback().\n  async_hooks.triggerAsyncId();\n\n}).listen(port, () => {\n  // Even though all callbacks passed to .listen() are wrapped in a nextTick()\n  // the callback itself exists because the call to the server's .listen()\n  // was made. So the return value would be the ID of the server.\n  async_hooks.triggerAsyncId();\n});\n</code></pre>\n<p>Promise contexts may not get valid <code>triggerAsyncId</code>s by default. See\nthe section on <a href=\"#promise-execution-tracking\">promise execution tracking</a>.</p>"
             }
           ],
           "modules": [

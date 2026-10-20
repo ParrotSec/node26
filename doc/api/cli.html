@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>Command-line API | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/cli.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-cli><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>Command-line API | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/cli.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-cli><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=cli class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><a href=cli.html#command-line-api>Command-line API</a>
 <ul>
@@ -114,18 +115,27 @@
 <li><span class=stability_1><a href=cli.html#--allow-child-process><code>--allow-child-process</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-ffi><code>--allow-ffi</code></a></span></li>
 <li><a href=cli.html#--allow-fs-read><code>--allow-fs-read</code></a></li>
+<li><span class=stability_1><a href=cli.html#--allow-fs-vfs><code>--allow-fs-vfs</code></a></span></li>
 <li><a href=cli.html#--allow-fs-write><code>--allow-fs-write</code></a></li>
 <li><span class=stability_1><a href=cli.html#--allow-inspector><code>--allow-inspector</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-net><code>--allow-net</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-openssl-store><code>--allow-openssl-store</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-wasi><code>--allow-wasi</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-worker><code>--allow-worker</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench><code>--bench</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-isolationmode><code>--bench-isolation=mode</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-name-patternpattern><code>--bench-name-pattern=pattern</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-reporter-destinationdestination><code>--bench-reporter-destination=destination</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-reporterreporter><code>--bench-reporter=reporter</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-samplescount><code>--bench-samples=count</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-warmupcount><code>--bench-warmup=count</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--build-seaconfig><code>--build-sea=config</code></a></span></li>
 <li><a href=cli.html#--build-snapshot><code>--build-snapshot</code></a></li>
 <li><a href=cli.html#--build-snapshot-config><code>--build-snapshot-config</code></a></li>
 <li><a href=cli.html#-check><code>-c</code>, <code>--check</code></a></li>
 <li><a href=cli.html#--completion-bash><code>--completion-bash</code></a></li>
 <li><a href=cli.html#-conditionscondition><code>-C condition</code>, <code>--conditions=condition</code></a></li>
+<li><a href=cli.html#--config-filepath---config-file><code>--config-file=path</code>, <code>--config-file</code></a></li>
 <li><a href=cli.html#--cpu-prof><code>--cpu-prof</code></a></li>
 <li><a href=cli.html#--cpu-prof-dir><code>--cpu-prof-dir</code></a></li>
 <li><a href=cli.html#--cpu-prof-interval><code>--cpu-prof-interval</code></a></li>
@@ -138,16 +148,16 @@
 <li><a href=cli.html#--disallow-code-generation-from-strings><code>--disallow-code-generation-from-strings</code></a></li>
 <li><a href=cli.html#--dns-result-orderorder><code>--dns-result-order=order</code></a></li>
 <li><a href=cli.html#--enable-fips><code>--enable-fips</code></a></li>
+<li><a href=cli.html#--enable-fips-indicator-events><code>--enable-fips-indicator-events</code></a></li>
 <li><a href=cli.html#--enable-source-maps><code>--enable-source-maps</code></a></li>
 <li><span class=stability_1><a href=cli.html#--entry-url><code>--entry-url</code></a></span></li>
 <li><a href=cli.html#--env-file-if-existsfile><code>--env-file-if-exists=file</code></a></li>
 <li><a href=cli.html#--env-filefile><code>--env-file=file</code></a></li>
 <li><a href=cli.html#-eval-script><code>-e</code>, <code>--eval "script"</code></a></li>
 <li><span class=stability_1><a href=cli.html#--experimental-addon-modules><code>--experimental-addon-modules</code></a></span></li>
-<li><span class=stability_1><a href=cli.html#--experimental-config-filepath---experimental-config-file><code>--experimental-config-file=path</code>, <code>--experimental-config-file</code></a></span></li>
-<li><span class=stability_1><a href=cli.html#--experimental-default-config-file><code>--experimental-default-config-file</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--experimental-bench><code>--experimental-bench</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--experimental-dtls><code>--experimental-dtls</code></a></span></li>
 <li><a href=cli.html#--experimental-eventsource><code>--experimental-eventsource</code></a></li>
-<li><span class=stability_1><a href=cli.html#--experimental-ffi><code>--experimental-ffi</code></a></span></li>
 <li><a href=cli.html#--experimental-import-meta-resolve><code>--experimental-import-meta-resolve</code></a></li>
 <li><span class=stability_1><a href=cli.html#--experimental-import-text><code>--experimental-import-text</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--experimental-inspector-network-resource><code>--experimental-inspector-network-resource</code></a></span></li>
@@ -162,14 +172,14 @@
 <li><span class=stability_1><a href=cli.html#--experimental-stream-iter><code>--experimental-stream-iter</code></a></span></li>
 <li><a href=cli.html#--experimental-test-coverage><code>--experimental-test-coverage</code></a></li>
 <li><span class=stability_1><a href=cli.html#--experimental-test-module-mocks><code>--experimental-test-module-mocks</code></a></span></li>
-<li><span class=stability_1><a href=cli.html#--experimental-test-tag-filtertag><code>--experimental-test-tag-filter=&lt;tag></code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--experimental-test-tag-filterexpr><code>--experimental-test-tag-filter='&lt;expr>'</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--experimental-vfs><code>--experimental-vfs</code></a></span></li>
 <li><a href=cli.html#--experimental-vm-modules><code>--experimental-vm-modules</code></a></li>
 <li><a href=cli.html#--experimental-wasi-unstable-preview1><code>--experimental-wasi-unstable-preview1</code></a></li>
+<li><a href=cli.html#--experimental-web-worker><code>--experimental-web-worker</code></a></li>
 <li><span class=stability_1><a href=cli.html#--experimental-worker-inspection><code>--experimental-worker-inspection</code></a></span></li>
-<li><span class=stability_1><a href=cli.html#--expose-gc><code>--expose-gc</code></a></span></li>
 <li><a href=cli.html#--force-context-aware><code>--force-context-aware</code></a></li>
-<li><a href=cli.html#--force-fips><code>--force-fips</code></a></li>
+<li><a href=cli.html#--force-fipsmode><code>--force-fips[=mode]</code></a></li>
 <li><a href=cli.html#--force-node-api-uncaught-exceptions-policy><code>--force-node-api-uncaught-exceptions-policy</code></a></li>
 <li><span class=stability_1><a href=cli.html#--frozen-intrinsics><code>--frozen-intrinsics</code></a></span></li>
 <li><a href=cli.html#--heap-prof><code>--heap-prof</code></a></li>
@@ -202,6 +212,7 @@
 <li><a href=cli.html#--no-async-context-frame><code>--no-async-context-frame</code></a></li>
 <li><a href=cli.html#--no-deprecation><code>--no-deprecation</code></a></li>
 <li><a href=cli.html#--no-experimental-detect-module><code>--no-experimental-detect-module</code></a></li>
+<li><span class=stability_1><a href=cli.html#--no-experimental-ffi><code>--no-experimental-ffi</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--no-experimental-global-navigator><code>--no-experimental-global-navigator</code></a></span></li>
 <li><a href=cli.html#--no-experimental-repl-await><code>--no-experimental-repl-await</code></a></li>
 <li><span class=stability_3><a href=cli.html#--no-experimental-require-module><code>--no-experimental-require-module</code></a></span></li>
@@ -215,6 +226,7 @@
 <li><a href=cli.html#--no-require-module><code>--no-require-module</code></a></li>
 <li><a href=cli.html#--no-strip-types><code>--no-strip-types</code></a></li>
 <li><a href=cli.html#--no-warnings><code>--no-warnings</code></a></li>
+<li><span class=stability_1><a href=cli.html#--no-worker-snapshot><code>--no-worker-snapshot</code></a></span></li>
 <li><a href=cli.html#--node-memory-debug><code>--node-memory-debug</code></a></li>
 <li><a href=cli.html#--openssl-configfile><code>--openssl-config=file</code></a></li>
 <li><a href=cli.html#--openssl-legacy-provider><code>--openssl-legacy-provider</code></a></li>
@@ -225,6 +237,7 @@
 <li><a href=cli.html#--preserve-symlinks><code>--preserve-symlinks</code></a></li>
 <li><a href=cli.html#--preserve-symlinks-main><code>--preserve-symlinks-main</code></a></li>
 <li><a href=cli.html#-print-script><code>-p</code>, <code>--print "script"</code></a></li>
+<li><span class=stability_1><a href=cli.html#--process-timeoutduration><code>--process-timeout=duration</code></a></span></li>
 <li><a href=cli.html#--prof><code>--prof</code></a></li>
 <li><a href=cli.html#--prof-process><code>--prof-process</code></a></li>
 <li><a href=cli.html#--redirect-warningsfile><code>--redirect-warnings=file</code></a></li>
@@ -234,6 +247,7 @@
 <li><a href=cli.html#--report-exclude-network><code>--report-exclude-network</code></a></li>
 <li><a href=cli.html#--report-filenamefilename><code>--report-filename=filename</code></a></li>
 <li><a href=cli.html#--report-on-fatalerror><code>--report-on-fatalerror</code></a></li>
+<li><span class=stability_1><a href=cli.html#--report-on-process-timeout><code>--report-on-process-timeout</code></a></span></li>
 <li><a href=cli.html#--report-on-signal><code>--report-on-signal</code></a></li>
 <li><a href=cli.html#--report-signalsignal><code>--report-signal=signal</code></a></li>
 <li><a href=cli.html#--report-uncaught-exception><code>--report-uncaught-exception</code></a></li>
@@ -302,6 +316,7 @@
 <li><a href=cli.html#--v8-options><code>--v8-options</code></a></li>
 <li><a href=cli.html#--v8-pool-sizenum><code>--v8-pool-size=num</code></a></li>
 <li><a href=cli.html#-version><code>-v</code>, <code>--version</code></a></li>
+<li><a href=cli.html#--vfs-loadsource><code>--vfs-load=source</code></a></li>
 <li><a href=cli.html#--watch><code>--watch</code></a></li>
 <li><span class=stability_1><a href=cli.html#--watch-kill-signal><code>--watch-kill-signal</code></a></span></li>
 <li><a href=cli.html#--watch-path><code>--watch-path</code></a></li>
@@ -314,6 +329,7 @@
 <li><a href=cli.html#force_color1-2-3><code>FORCE_COLOR=[1, 2, 3]</code></a></li>
 <li><a href=cli.html#node_compile_cachedir><code>NODE_COMPILE_CACHE=dir</code></a></li>
 <li><a href=cli.html#node_compile_cache_portable1><code>NODE_COMPILE_CACHE_PORTABLE=1</code></a></li>
+<li><a href=cli.html#node_compile_cache_readonly1><code>NODE_COMPILE_CACHE_READONLY=1</code></a></li>
 <li><a href=cli.html#node_debugmodule><code>NODE_DEBUG=module[,…]</code></a></li>
 <li><a href=cli.html#node_debug_nativemodule><code>NODE_DEBUG_NATIVE=module[,…]</code></a></li>
 <li><a href=cli.html#node_disable_colors1><code>NODE_DISABLE_COLORS=1</code></a></li>
@@ -353,7 +369,7 @@
 <li><a href=cli.html#--abort-on-uncaught-exception-1><code>--abort-on-uncaught-exception</code></a></li>
 <li><a href=cli.html#--disallow-code-generation-from-strings-1><code>--disallow-code-generation-from-strings</code></a></li>
 <li><a href=cli.html#--enable-etw-stack-walking><code>--enable-etw-stack-walking</code></a></li>
-<li><a href=cli.html#--expose-gc-1><code>--expose-gc</code></a></li>
+<li><a href=cli.html#--expose-gc><code>--expose-gc</code></a></li>
 <li><a href=cli.html#--harmony-shadow-realm><code>--harmony-shadow-realm</code></a></li>
 <li><a href=cli.html#--heap-snapshot-on-oom><code>--heap-snapshot-on-oom</code></a></li>
 <li><a href=cli.html#--interpreted-frames-native-stack><code>--interpreted-frames-native-stack</code></a></li>
@@ -378,6 +394,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -476,18 +493,27 @@
 <li><span class=stability_1><a href=cli.html#--allow-child-process><code>--allow-child-process</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-ffi><code>--allow-ffi</code></a></span></li>
 <li><a href=cli.html#--allow-fs-read><code>--allow-fs-read</code></a></li>
+<li><span class=stability_1><a href=cli.html#--allow-fs-vfs><code>--allow-fs-vfs</code></a></span></li>
 <li><a href=cli.html#--allow-fs-write><code>--allow-fs-write</code></a></li>
 <li><span class=stability_1><a href=cli.html#--allow-inspector><code>--allow-inspector</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-net><code>--allow-net</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-openssl-store><code>--allow-openssl-store</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-wasi><code>--allow-wasi</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--allow-worker><code>--allow-worker</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench><code>--bench</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-isolationmode><code>--bench-isolation=mode</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-name-patternpattern><code>--bench-name-pattern=pattern</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-reporter-destinationdestination><code>--bench-reporter-destination=destination</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-reporterreporter><code>--bench-reporter=reporter</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-samplescount><code>--bench-samples=count</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--bench-warmupcount><code>--bench-warmup=count</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--build-seaconfig><code>--build-sea=config</code></a></span></li>
 <li><a href=cli.html#--build-snapshot><code>--build-snapshot</code></a></li>
 <li><a href=cli.html#--build-snapshot-config><code>--build-snapshot-config</code></a></li>
 <li><a href=cli.html#-check><code>-c</code>, <code>--check</code></a></li>
 <li><a href=cli.html#--completion-bash><code>--completion-bash</code></a></li>
 <li><a href=cli.html#-conditionscondition><code>-C condition</code>, <code>--conditions=condition</code></a></li>
+<li><a href=cli.html#--config-filepath---config-file><code>--config-file=path</code>, <code>--config-file</code></a></li>
 <li><a href=cli.html#--cpu-prof><code>--cpu-prof</code></a></li>
 <li><a href=cli.html#--cpu-prof-dir><code>--cpu-prof-dir</code></a></li>
 <li><a href=cli.html#--cpu-prof-interval><code>--cpu-prof-interval</code></a></li>
@@ -500,16 +526,16 @@
 <li><a href=cli.html#--disallow-code-generation-from-strings><code>--disallow-code-generation-from-strings</code></a></li>
 <li><a href=cli.html#--dns-result-orderorder><code>--dns-result-order=order</code></a></li>
 <li><a href=cli.html#--enable-fips><code>--enable-fips</code></a></li>
+<li><a href=cli.html#--enable-fips-indicator-events><code>--enable-fips-indicator-events</code></a></li>
 <li><a href=cli.html#--enable-source-maps><code>--enable-source-maps</code></a></li>
 <li><span class=stability_1><a href=cli.html#--entry-url><code>--entry-url</code></a></span></li>
 <li><a href=cli.html#--env-file-if-existsfile><code>--env-file-if-exists=file</code></a></li>
 <li><a href=cli.html#--env-filefile><code>--env-file=file</code></a></li>
 <li><a href=cli.html#-eval-script><code>-e</code>, <code>--eval "script"</code></a></li>
 <li><span class=stability_1><a href=cli.html#--experimental-addon-modules><code>--experimental-addon-modules</code></a></span></li>
-<li><span class=stability_1><a href=cli.html#--experimental-config-filepath---experimental-config-file><code>--experimental-config-file=path</code>, <code>--experimental-config-file</code></a></span></li>
-<li><span class=stability_1><a href=cli.html#--experimental-default-config-file><code>--experimental-default-config-file</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--experimental-bench><code>--experimental-bench</code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--experimental-dtls><code>--experimental-dtls</code></a></span></li>
 <li><a href=cli.html#--experimental-eventsource><code>--experimental-eventsource</code></a></li>
-<li><span class=stability_1><a href=cli.html#--experimental-ffi><code>--experimental-ffi</code></a></span></li>
 <li><a href=cli.html#--experimental-import-meta-resolve><code>--experimental-import-meta-resolve</code></a></li>
 <li><span class=stability_1><a href=cli.html#--experimental-import-text><code>--experimental-import-text</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--experimental-inspector-network-resource><code>--experimental-inspector-network-resource</code></a></span></li>
@@ -524,14 +550,14 @@
 <li><span class=stability_1><a href=cli.html#--experimental-stream-iter><code>--experimental-stream-iter</code></a></span></li>
 <li><a href=cli.html#--experimental-test-coverage><code>--experimental-test-coverage</code></a></li>
 <li><span class=stability_1><a href=cli.html#--experimental-test-module-mocks><code>--experimental-test-module-mocks</code></a></span></li>
-<li><span class=stability_1><a href=cli.html#--experimental-test-tag-filtertag><code>--experimental-test-tag-filter=&lt;tag></code></a></span></li>
+<li><span class=stability_1><a href=cli.html#--experimental-test-tag-filterexpr><code>--experimental-test-tag-filter='&lt;expr>'</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--experimental-vfs><code>--experimental-vfs</code></a></span></li>
 <li><a href=cli.html#--experimental-vm-modules><code>--experimental-vm-modules</code></a></li>
 <li><a href=cli.html#--experimental-wasi-unstable-preview1><code>--experimental-wasi-unstable-preview1</code></a></li>
+<li><a href=cli.html#--experimental-web-worker><code>--experimental-web-worker</code></a></li>
 <li><span class=stability_1><a href=cli.html#--experimental-worker-inspection><code>--experimental-worker-inspection</code></a></span></li>
-<li><span class=stability_1><a href=cli.html#--expose-gc><code>--expose-gc</code></a></span></li>
 <li><a href=cli.html#--force-context-aware><code>--force-context-aware</code></a></li>
-<li><a href=cli.html#--force-fips><code>--force-fips</code></a></li>
+<li><a href=cli.html#--force-fipsmode><code>--force-fips[=mode]</code></a></li>
 <li><a href=cli.html#--force-node-api-uncaught-exceptions-policy><code>--force-node-api-uncaught-exceptions-policy</code></a></li>
 <li><span class=stability_1><a href=cli.html#--frozen-intrinsics><code>--frozen-intrinsics</code></a></span></li>
 <li><a href=cli.html#--heap-prof><code>--heap-prof</code></a></li>
@@ -564,6 +590,7 @@
 <li><a href=cli.html#--no-async-context-frame><code>--no-async-context-frame</code></a></li>
 <li><a href=cli.html#--no-deprecation><code>--no-deprecation</code></a></li>
 <li><a href=cli.html#--no-experimental-detect-module><code>--no-experimental-detect-module</code></a></li>
+<li><span class=stability_1><a href=cli.html#--no-experimental-ffi><code>--no-experimental-ffi</code></a></span></li>
 <li><span class=stability_1><a href=cli.html#--no-experimental-global-navigator><code>--no-experimental-global-navigator</code></a></span></li>
 <li><a href=cli.html#--no-experimental-repl-await><code>--no-experimental-repl-await</code></a></li>
 <li><span class=stability_3><a href=cli.html#--no-experimental-require-module><code>--no-experimental-require-module</code></a></span></li>
@@ -577,6 +604,7 @@
 <li><a href=cli.html#--no-require-module><code>--no-require-module</code></a></li>
 <li><a href=cli.html#--no-strip-types><code>--no-strip-types</code></a></li>
 <li><a href=cli.html#--no-warnings><code>--no-warnings</code></a></li>
+<li><span class=stability_1><a href=cli.html#--no-worker-snapshot><code>--no-worker-snapshot</code></a></span></li>
 <li><a href=cli.html#--node-memory-debug><code>--node-memory-debug</code></a></li>
 <li><a href=cli.html#--openssl-configfile><code>--openssl-config=file</code></a></li>
 <li><a href=cli.html#--openssl-legacy-provider><code>--openssl-legacy-provider</code></a></li>
@@ -587,6 +615,7 @@
 <li><a href=cli.html#--preserve-symlinks><code>--preserve-symlinks</code></a></li>
 <li><a href=cli.html#--preserve-symlinks-main><code>--preserve-symlinks-main</code></a></li>
 <li><a href=cli.html#-print-script><code>-p</code>, <code>--print "script"</code></a></li>
+<li><span class=stability_1><a href=cli.html#--process-timeoutduration><code>--process-timeout=duration</code></a></span></li>
 <li><a href=cli.html#--prof><code>--prof</code></a></li>
 <li><a href=cli.html#--prof-process><code>--prof-process</code></a></li>
 <li><a href=cli.html#--redirect-warningsfile><code>--redirect-warnings=file</code></a></li>
@@ -596,6 +625,7 @@
 <li><a href=cli.html#--report-exclude-network><code>--report-exclude-network</code></a></li>
 <li><a href=cli.html#--report-filenamefilename><code>--report-filename=filename</code></a></li>
 <li><a href=cli.html#--report-on-fatalerror><code>--report-on-fatalerror</code></a></li>
+<li><span class=stability_1><a href=cli.html#--report-on-process-timeout><code>--report-on-process-timeout</code></a></span></li>
 <li><a href=cli.html#--report-on-signal><code>--report-on-signal</code></a></li>
 <li><a href=cli.html#--report-signalsignal><code>--report-signal=signal</code></a></li>
 <li><a href=cli.html#--report-uncaught-exception><code>--report-uncaught-exception</code></a></li>
@@ -664,6 +694,7 @@
 <li><a href=cli.html#--v8-options><code>--v8-options</code></a></li>
 <li><a href=cli.html#--v8-pool-sizenum><code>--v8-pool-size=num</code></a></li>
 <li><a href=cli.html#-version><code>-v</code>, <code>--version</code></a></li>
+<li><a href=cli.html#--vfs-loadsource><code>--vfs-load=source</code></a></li>
 <li><a href=cli.html#--watch><code>--watch</code></a></li>
 <li><span class=stability_1><a href=cli.html#--watch-kill-signal><code>--watch-kill-signal</code></a></span></li>
 <li><a href=cli.html#--watch-path><code>--watch-path</code></a></li>
@@ -676,6 +707,7 @@
 <li><a href=cli.html#force_color1-2-3><code>FORCE_COLOR=[1, 2, 3]</code></a></li>
 <li><a href=cli.html#node_compile_cachedir><code>NODE_COMPILE_CACHE=dir</code></a></li>
 <li><a href=cli.html#node_compile_cache_portable1><code>NODE_COMPILE_CACHE_PORTABLE=1</code></a></li>
+<li><a href=cli.html#node_compile_cache_readonly1><code>NODE_COMPILE_CACHE_READONLY=1</code></a></li>
 <li><a href=cli.html#node_debugmodule><code>NODE_DEBUG=module[,…]</code></a></li>
 <li><a href=cli.html#node_debug_nativemodule><code>NODE_DEBUG_NATIVE=module[,…]</code></a></li>
 <li><a href=cli.html#node_disable_colors1><code>NODE_DISABLE_COLORS=1</code></a></li>
@@ -715,7 +747,7 @@
 <li><a href=cli.html#--abort-on-uncaught-exception-1><code>--abort-on-uncaught-exception</code></a></li>
 <li><a href=cli.html#--disallow-code-generation-from-strings-1><code>--disallow-code-generation-from-strings</code></a></li>
 <li><a href=cli.html#--enable-etw-stack-walking><code>--enable-etw-stack-walking</code></a></li>
-<li><a href=cli.html#--expose-gc-1><code>--expose-gc</code></a></li>
+<li><a href=cli.html#--expose-gc><code>--expose-gc</code></a></li>
 <li><a href=cli.html#--harmony-shadow-realm><code>--harmony-shadow-realm</code></a></li>
 <li><a href=cli.html#--heap-snapshot-on-oom><code>--heap-snapshot-on-oom</code></a></li>
 <li><a href=cli.html#--interpreted-frames-native-stack><code>--interpreted-frames-native-stack</code></a></li>
@@ -819,10 +851,10 @@ directly through the process arguments.</section>
 <section><h4><code>--allow-ffi</code><span><a id=cli_allow_ffi></a></span><span><a class=mark id=--allow-ffi href=#--allow-ffi>#</a></span></h4><div class=api_metadata><span>Added in: v26.1.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active development</div><p>When using the <a href=permissions.html#permission-model>Permission Model</a>, the process will not be able to use FFI
 APIs by default. Attempts to use FFI APIs will throw an <code>ERR_ACCESS_DENIED</code>
 exception unless the user explicitly passes the <code>--allow-ffi</code> flag when
-starting Node.js. The <a href=ffi.html><code>node:ffi</code></a> module also requires the
-<code>--experimental-ffi</code> flag and is only available in builds with FFI support.<p>Example:<pre class="catppuccin-latte catppuccin-mocha language-js shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> DynamicLibrary </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:ffi'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> lib </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#8839EF;--shiki-light-font-weight:bold;--shiki-dark:#CBA6F7;--shiki-dark-font-weight:bold> new</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> DynamicLibrary</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'mylib.so'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre><pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --permission --experimental-ffi index.js</span></span>
+starting Node.js. The <a href=ffi.html><code>node:ffi</code></a> module is only available in builds with
+FFI support.<p>Example:<pre class="catppuccin-latte catppuccin-mocha language-js shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> DynamicLibrary</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> suffix </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:ffi'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> lib </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#8839EF;--shiki-light-font-weight:bold;--shiki-dark:#CBA6F7;--shiki-dark-font-weight:bold> new</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> DynamicLibrary</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>`./mylib.</span><span style=color:#7C7F93;--shiki-dark:#9399B2>${</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>suffix</span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>`</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre><pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --permission index.js</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>Error: Access to this API has been restricted. Use --allow-ffi to manage permissions.</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>    at node:internal/main/run_main_module:17:47 {</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>  code: 'ERR_ACCESS_DENIED',</span></span>
@@ -843,6 +875,12 @@ by default in the allowed read list.</li>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>process</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>permission</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>has</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'fs.read'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'custom-require.js'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic> // true</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>process</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>permission</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>has</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'fs.read'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'custom-require-2.js'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic> // true</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre></section>
+<section><h4><code>--allow-fs-vfs</code><span><a id=cli_allow_fs_vfs></a></span><span><a class=mark id=--allow-fs-vfs href=#--allow-fs-vfs>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active development</div><p>When using the <a href=permissions.html#permission-model>Permission Model</a>, a <a href=vfs.html>virtual file system</a> cannot be
+mounted by default: <a href=vfs.html#vfsmount><code>vfs.mount()</code></a> throws <code>ERR_INVALID_STATE</code> unless the
+user explicitly passes the <code>--allow-fs-vfs</code> flag when starting Node.js.<p>A mounted VFS serves paths that the file system permissions do not describe,
+so mounting one is gated on its own flag rather than on <code>--allow-fs-read</code> or
+<code>--allow-fs-write</code>.<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --experimental-vfs --permission --allow-fs-vfs app.js</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre></section>
 <section><h4><code>--allow-fs-write</code><span><a id=cli_allow_fs_write></a></span><span><a class=mark id=--allow-fs-write href=#--allow-fs-write>#</a></span></h4><div class=api_metadata><span>Added in: v20.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v23.5.0, v22.13.0<td><p>Permission Model and --allow-fs flags are stable.<tr><td>v20.7.0<td><p>Paths delimited by comma (<code>,</code>) are no longer allowed.</table></details></div><p>This flag configures file system write permissions using
 the <a href=permissions.html#permission-model>Permission Model</a>.<p>The valid arguments for the <code>--allow-fs-write</code> flag are:<ul>
 <li><code>*</code> - To allow all <code>FileSystemWrite</code> operations.</li>
@@ -918,6 +956,39 @@ user explicitly pass the flag <code>--allow-worker</code> in the main Node.js pr
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>  permission: 'WorkerThreads'</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>}</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre></section>
+<section><h4><code>--bench</code><span><a id=cli_bench></a></span><span><a class=mark id=--bench href=#--bench>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Starts the Node.js command-line benchmark runner. At least one explicit file or
+glob pattern is required:<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>node --experimental-bench --bench benchmark.mjs</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>node --experimental-bench --bench 'benchmarks/**/*.js'</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre><p>The <code>--experimental-bench</code> flag is required to use this flag or any other
+<code>--bench-*</code> option.<p>Quote glob patterns to prevent expansion by the shell. Matching files are
+sorted and executed serially. By default, each file runs in a separate child
+process. Benchmark files declare benchmarks using <code>node:bench</code>; they must not
+call <code>run()</code> themselves. See the <a href=bench.html#command-line-runner>benchmark runner</a> documentation for more
+details.<p>This flag cannot be combined with <code>--test</code>, <code>--watch</code>, <code>--watch-path</code>,
+<code>--check</code>, <code>--eval</code>, or <code>--interactive</code>.</section>
+<section><h4><code>--bench-isolation=mode</code><span><a id=cli_bench_isolation_mode></a></span><span><a class=mark id=--bench-isolationmode href=#--bench-isolationmode>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Configures benchmark file isolation. When <code>mode</code> is <code>'process'</code>, each matching
+file runs in a separate child process. This is the default. Files are still run
+serially so their measured work does not overlap.<p>When <code>mode</code> is <code>'none'</code>, all matching files and benchmarks run serially in the
+benchmark runner process. This reduces startup overhead but allows module,
+heap, and process state to carry between files. User writes to stdout or stderr
+also share destinations with benchmark reporters in this mode.<p>The supported modes are <code>'process'</code> and <code>'none'</code>.</section>
+<section><h4><code>--bench-name-pattern=pattern</code><span><a id=cli_bench_name_pattern_pattern></a></span><span><a class=mark id=--bench-name-patternpattern href=#--bench-name-patternpattern>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Only runs benchmarks whose full hierarchical name matches the JavaScript
+regular expression <code>pattern</code>. Non-matching benchmarks are reported as skipped.</section>
+<section><h4><code>--bench-reporter-destination=destination</code><span><a id=cli_bench_reporter_destination_destination></a></span><span><a class=mark id=--bench-reporter-destinationdestination href=#--bench-reporter-destinationdestination>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Specifies the destination for the corresponding benchmark reporter. The value
+can be <code>stdout</code>, <code>stderr</code>, or a file path. A single reporter defaults to
+<code>stdout</code> when no destination is specified.</section>
+<section><h4><code>--bench-reporter=reporter</code><span><a id=cli_bench_reporter_reporter></a></span><span><a class=mark id=--bench-reporterreporter href=#--bench-reporterreporter>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Specifies a benchmark reporter. The built-in reporters are <code>spec</code> and <code>json</code>.
+The <code>json</code> reporter emits newline-delimited JSON. A custom reporter can be
+specified using a module specifier resolved from the current working directory.<p>This option can be repeated. When multiple reporters are specified, each must
+have a corresponding <code>--bench-reporter-destination</code>. The default reporter is
+<code>spec</code>.</section>
+<section><h4><code>--bench-samples=count</code><span><a id=cli_bench_samples_count></a></span><span><a class=mark id=--bench-samplescount href=#--bench-samplescount>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Overrides the maximum number of measured callback invocations for every
+selected benchmark. A benchmark may finish earlier by calling
+<code>context.done()</code>. <code>count</code> must be an integer between <code>1</code> and <code>4294967295</code>.</section>
+<section><h4><code>--bench-warmup=count</code><span><a id=cli_bench_warmup_count></a></span><span><a class=mark id=--bench-warmupcount href=#--bench-warmupcount>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Overrides the number of unreported warmup callback invocations for every
+selected benchmark. <code>count</code> must be an integer between <code>0</code> and <code>4294967295</code>.
+Without this option, each benchmark uses its own <code>warmup</code> value, which defaults
+to <code>10</code>.</section>
 <section><h4><code>--build-sea=config</code><span><a id=cli_build_sea_config></a></span><span><a class=mark id=--build-seaconfig href=#--build-seaconfig>#</a></span></h4><div class=api_metadata><span>Added in: v25.5.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active development</div><p>Generates a <a href=single-executable-applications.html>single executable application</a> from a JSON
 configuration file. The argument must be a path to the configuration file. If
 the path is not absolute, it is resolved relative to the current working
@@ -979,142 +1050,11 @@ not be executed and instead be interpreted as regular command line arguments.</s
 <section><h4><code>-C condition</code>, <code>--conditions=condition</code><span><a id=cli_c_condition_conditions_condition></a></span><span><a class=mark id=-conditionscondition href=#-conditionscondition>#</a></span></h4><div class=api_metadata><span>Added in: v14.9.0, v12.19.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.9.0, v20.18.0<td><p>The flag is no longer experimental.</table></details></div><p>Provide custom <a href=packages.html#conditional-exports>conditional exports</a> resolution conditions.<p>Any number of custom string condition names are permitted.<p>The default Node.js conditions of <code>"node"</code>, <code>"default"</code>, <code>"import"</code>, and
 <code>"require"</code> will always apply as defined.<p>For example, to run a module with "development" resolutions:<pre class="catppuccin-latte catppuccin-mocha language-bash shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> -C</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> development</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> app.js</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>bash</span><button class=copy-button>copy</button></div></pre></section>
-<section><h4><code>--cpu-prof</code><span><a id=cli_cpu_prof></a></span><span><a class=mark id=--cpu-prof href=#--cpu-prof>#</a></span></h4><div class=api_metadata><span>Added in: v12.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.4.0, v20.16.0<td><p>The <code>--cpu-prof</code> flags are now stable.</table></details></div><p>Starts the V8 CPU profiler on start up, and writes the CPU profile to disk
-before exit.<p>If <code>--cpu-prof-dir</code> is not specified, the generated profile is placed
-in the current working directory.<p>If <code>--cpu-prof-name</code> is not specified, the generated profile is
-named <code>CPU.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.cpuprofile</code>.<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --cpu-prof index.js</span></span>
-<span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> ls </span><span style=color:#179299;--shiki-dark:#94E2D5>*</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>.cpuprofile</span></span>
-<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>CPU.20190409.202950.15293.0.0.cpuprofile</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre><p>If <code>--cpu-prof-name</code> is specified, the provided value is used as a template
-for the file name. The following placeholder is supported and will be
-substituted at runtime:<ul>
-<li><code>${pid}</code> — the current process ID</li>
-</ul><pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --cpu-prof --cpu-prof-name </span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'CPU.${pid}.cpuprofile'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> index.js</span></span>
-<span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> ls </span><span style=color:#179299;--shiki-dark:#94E2D5>*</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>.cpuprofile</span></span>
-<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>CPU.15293.cpuprofile</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre></section>
-<section><h4><code>--cpu-prof-dir</code><span><a id=cli_cpu_prof_dir></a></span><span><a class=mark id=--cpu-prof-dir href=#--cpu-prof-dir>#</a></span></h4><div class=api_metadata><span>Added in: v12.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.4.0, v20.16.0<td><p>The <code>--cpu-prof</code> flags are now stable.</table></details></div><p>Specify the directory where the CPU profiles generated by <code>--cpu-prof</code> will
-be placed.<p>The default value is controlled by the
-<a href=#--diagnostic-dirdirectory><code>--diagnostic-dir</code></a> command-line option.</section>
-<section><h4><code>--cpu-prof-interval</code><span><a id=cli_cpu_prof_interval></a></span><span><a class=mark id=--cpu-prof-interval href=#--cpu-prof-interval>#</a></span></h4><div class=api_metadata><span>Added in: v12.2.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.4.0, v20.16.0<td><p>The <code>--cpu-prof</code> flags are now stable.</table></details></div><p>Specify the sampling interval in microseconds for the CPU profiles generated
-by <code>--cpu-prof</code>. The default is 1000 microseconds.</section>
-<section><h4><code>--cpu-prof-name</code><span><a id=cli_cpu_prof_name></a></span><span><a class=mark id=--cpu-prof-name href=#--cpu-prof-name>#</a></span></h4><div class=api_metadata><span>Added in: v12.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.4.0, v20.16.0<td><p>The <code>--cpu-prof</code> flags are now stable.</table></details></div><p>Specify the file name of the CPU profile generated by <code>--cpu-prof</code>.</section>
-<section><h4><code>--diagnostic-dir=directory</code><span><a id=cli_diagnostic_dir_directory></a></span><span><a class=mark id=--diagnostic-dirdirectory href=#--diagnostic-dirdirectory>#</a></span></h4><div class=api_metadata></div><p>Set the directory to which all diagnostic output files are written.
-Defaults to current working directory.<p>Affects the default output directory of:<ul>
-<li><a href=#--cpu-prof-dir><code>--cpu-prof-dir</code></a></li>
-<li><a href=#--heap-prof-dir><code>--heap-prof-dir</code></a></li>
-<li><a href=#--redirect-warningsfile><code>--redirect-warnings</code></a></li>
-</ul></section>
-<section><h4><code>--disable-proto=mode</code><span><a id=cli_disable_proto_mode></a></span><span><a class=mark id=--disable-protomode href=#--disable-protomode>#</a></span></h4><div class=api_metadata><span>Added in: v13.12.0, v12.17.0</span></div><p>Disable the <code>Object.prototype.__proto__</code> property. If <code>mode</code> is <code>delete</code>, the
-property is removed entirely. If <code>mode</code> is <code>throw</code>, accesses to the
-property throw an exception with the code <code>ERR_PROTO_ACCESS</code>.</section>
-<section><h4><code>--disable-sigusr1</code><span><a id=cli_disable_sigusr1></a></span><span><a class=mark id=--disable-sigusr1 href=#--disable-sigusr1>#</a></span></h4><div class=api_metadata><span>Added in: v23.7.0, v22.14.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.8.0, v22.20.0<td><p>The option is no longer experimental.</table></details></div><p>Disable the ability of starting a debugging session by sending a
-<code>SIGUSR1</code> signal to the process.</section>
-<section><h4><code>--disable-warning=code-or-type</code><span><a id=cli_disable_warning_code_or_type></a></span><span><a class=mark id=--disable-warningcode-or-type href=#--disable-warningcode-or-type>#</a></span></h4><div class=api_metadata><span>Added in: v21.3.0, v20.11.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.7.0<td><p>The <code>--disable-warning</code> flag is now stable.</table></details></div><div class="api_stability api_stability_2"><p>Stability: 2 - Stable</div><p>Disable specific process warnings by <code>code</code> or <code>type</code>.<p>Warnings emitted from <a href=process.html#processemitwarningwarning-options><code>process.emitWarning()</code></a> may contain a
-<code>code</code> and a <code>type</code>. This option will not-emit warnings that have a matching
-<code>code</code> or <code>type</code>.<p>List of <a href=deprecations.html#list-of-deprecated-apis>deprecation warnings</a>.<p>The Node.js core warning types are: <code>DeprecationWarning</code> and
-<code>ExperimentalWarning</code><p>For example, the following script will not emit
-<a href=deprecations.html#dep0025-requirenodesys>DEP0025 <code>require('node:sys')</code></a> when executed with
-<code>node --disable-warning=DEP0025</code>:<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox><code class="catppuccin-latte catppuccin-mocha language-mjs mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=mjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> sys </span><span style=color:#8839EF;--shiki-dark:#CBA6F7>from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:sys'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line></span></code><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> sys </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:sys'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre><p>For example, the following script will emit the
-<a href=deprecations.html#dep0025-requirenodesys>DEP0025 <code>require('node:sys')</code></a>, but not any Experimental
-Warnings (such as
-<a href=vm.html#vmmeasurememoryoptions>ExperimentalWarning: <code>vm.measureMemory</code> is an experimental feature</a>
-in &lt;=v21) when executed with <code>node --disable-warning=ExperimentalWarning</code>:<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox><code class="catppuccin-latte catppuccin-mocha language-mjs mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=mjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> sys </span><span style=color:#8839EF;--shiki-dark:#CBA6F7>from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:sys'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> vm </span><span style=color:#8839EF;--shiki-dark:#CBA6F7>from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:vm'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line></span>
-<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>vm</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>measureMemory</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line></span></code><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> sys </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:sys'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> vm </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:vm'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line></span>
-<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>vm</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>measureMemory</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
-<section><h4><code>--disable-wasm-trap-handler</code><span><a id=cli_disable_wasm_trap_handler></a></span><span><a class=mark id=--disable-wasm-trap-handler href=#--disable-wasm-trap-handler>#</a></span></h4><div class=api_metadata><span>Added in: v22.2.0, v20.15.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.0.0<td><p>Node.js now automatically disables the trap handler when there is not enough virtual memory available at startup to allocate one cage.</table></details></div><p>Node.js enables V8's trap-handler-based WebAssembly bound checks on 64-bit platforms,
-which significantly improves WebAssembly performance by eliminating the need for
-inline bound checks. This optimization requires allocating a large virtual memory
-cage per WebAssembly memory instance (currently typically 8GB for 32-bit WebAssembly memory,
-16GB for 64-bit WebAssembly memory) to trap out-of-bound accesses. On most 64-bit
-platforms, the virtual memory address space is usually large enough (around 128TB)
-to accommodate typical WebAssembly usages, but if the machine has manual limits
-on virtual memory (e.g. through <code>ulimit -v</code>), WebAssembly memory allocation is
-more likely to fail with <code>WebAssembly.Memory(): could not allocate memory</code>.<p>At startup, Node.js automatically checks whether there is enough virtual memory
-available to allocate at least one cage, and if not, the trap-handler optimization
-is automatically disabled so that WebAssembly can still run using inline
-bound checks (with less optimal performance). But if the application needs to create
-many WebAssembly memory instances and the machine still configures a relatively high
-limit on virtual memory, allocation of WebAssembly memory instances may still fail
-more quickly than expected due to the raised virtual memory usage.<p><code>--disable-wasm-trap-handler</code> fully disables this optimization so that WebAssembly memory
-instances always use inline bound checks instead of reserving large virtual memory cages.
-This allows more instances to be created when the virtual memory address space available
-to the Node.js process is limited.</section>
-<section><h4><code>--disallow-code-generation-from-strings</code><span><a id=cli_disallow_code_generation_from_strings></a></span><span><a class=mark id=--disallow-code-generation-from-strings href=#--disallow-code-generation-from-strings>#</a></span></h4><div class=api_metadata><span>Added in: v9.8.0</span></div><p>Make built-in language features like <code>eval</code> and <code>new Function</code> that generate
-code from strings throw an exception instead. This does not affect the Node.js
-<code>node:vm</code> module.</section>
-<section><h4><code>--dns-result-order=order</code><span><a id=cli_dns_result_order_order></a></span><span><a class=mark id=--dns-result-orderorder href=#--dns-result-orderorder>#</a></span></h4><div class=api_metadata><span>Added in: v16.4.0, v14.18.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.1.0, v20.13.0<td><p>The <code>ipv6first</code> is supported now.<tr><td>v17.0.0<td><p>Changed default value to <code>verbatim</code>.</table></details></div><p>Set the default value of <code>order</code> in <a href=dns.html#dnslookuphostname-options-callback><code>dns.lookup()</code></a> and
-<a href=dns.html#dnspromiseslookuphostname-options><code>dnsPromises.lookup()</code></a>. The value could be:<ul>
-<li><code>ipv4first</code>: sets default <code>order</code> to <code>ipv4first</code>.</li>
-<li><code>ipv6first</code>: sets default <code>order</code> to <code>ipv6first</code>.</li>
-<li><code>verbatim</code>: sets default <code>order</code> to <code>verbatim</code>.</li>
-</ul><p>The default is <code>verbatim</code> and <a href=dns.html#dnssetdefaultresultorderorder><code>dns.setDefaultResultOrder()</code></a> have higher
-priority than <code>--dns-result-order</code>.</section>
-<section><h4><code>--enable-fips</code><span><a id=cli_enable_fips></a></span><span><a class=mark id=--enable-fips href=#--enable-fips>#</a></span></h4><div class=api_metadata><span>Added in: v6.0.0</span></div><p>Enable FIPS-compliant crypto at startup. (Requires Node.js to be built
-against FIPS-compatible OpenSSL.)</section>
-<section><h4><code>--enable-source-maps</code><span><a id=cli_enable_source_maps></a></span><span><a class=mark id=--enable-source-maps href=#--enable-source-maps>#</a></span></h4><div class=api_metadata><span>Added in: v12.12.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v15.11.0, v14.18.0<td><p>This API is no longer experimental.</table></details></div><p>Enable <a href=https://tc39.es/ecma426/>Source Map</a> support for stack traces.<p>When using a transpiler, such as TypeScript, stack traces thrown by an
-application reference the transpiled code, not the original source position.
-<code>--enable-source-maps</code> enables caching of Source Maps and makes a best
-effort to report stack traces relative to the original source file.<p>Overriding <code>Error.prepareStackTrace</code> may prevent <code>--enable-source-maps</code> from
-modifying the stack trace. Call and return the results of the original
-<code>Error.prepareStackTrace</code> in the overriding function to modify the stack trace
-with source maps.<pre class="catppuccin-latte catppuccin-mocha language-js shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> originalPrepareStackTrace </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> Error</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>prepareStackTrace</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>Error</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>prepareStackTrace</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#7C7F93;--shiki-dark:#9399B2> (</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic>error</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic> trace</span><span style=color:#7C7F93;--shiki-dark:#9399B2>)</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> =></span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span></span>
-<span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>  // Modify error and trace and format stack trace with</span></span>
-<span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>  // original Error.prepareStackTrace.</span></span>
-<span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>  return</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> originalPrepareStackTrace</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(error</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> trace)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>};</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre><p>Note, enabling source maps can introduce latency to your application
-when <code>Error.stack</code> is accessed. If you access <code>Error.stack</code> frequently
-in your application, take into account the performance implications
-of <code>--enable-source-maps</code>.</section>
-<section><h4><code>--entry-url</code><span><a id=cli_entry_url></a></span><span><a class=mark id=--entry-url href=#--entry-url>#</a></span></h4><div class=api_metadata><span>Added in: v23.0.0, v22.10.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>When present, Node.js will interpret the entry point as a URL, rather than a
-path.<p>Follows <a href=esm.html#modules-ecmascript-modules>ECMAScript module</a> resolution rules.<p>Any query parameter or hash in the URL will be accessible via <a href=esm.html#importmetaurl><code>import.meta.url</code></a>.<pre class="catppuccin-latte catppuccin-mocha language-bash shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --entry-url</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'file:///path/to/file.js?queryparams=work#and-hashes-too'</span></span>
-<span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --entry-url</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'file.ts?query#hash'</span></span>
-<span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --entry-url</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'data:text/javascript,console.log("Hello")'</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>bash</span><button class=copy-button>copy</button></div></pre></section>
-<section><h4><code>--env-file-if-exists=file</code><span><a id=cli_env_file_if_exists_file></a></span><span><a class=mark id=--env-file-if-existsfile href=#--env-file-if-existsfile>#</a></span></h4><div class=api_metadata><span>Added in: v22.9.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.10.0, v22.21.0<td><p>The <code>--env-file-if-exists</code> flag is no longer experimental.</table></details></div><p>Behavior is the same as <a href=#--env-filefile><code>--env-file</code></a>, but an error is not thrown if the file
-does not exist.</section>
-<section><h4><code>--env-file=file</code><span><a id=cli_env_file_file></a></span><span><a class=mark id=--env-filefile href=#--env-filefile>#</a></span></h4><div class=api_metadata><span>Added in: v20.6.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.10.0, v22.21.0<td><p>The <code>--env-file</code> flag is no longer experimental.<tr><td>v21.7.0, v20.12.0<td><p>Add support to multi-line values.</table></details></div><p>Loads environment variables from a file relative to the current directory,
-making them available to applications on <code>process.env</code>. The <a href=#environment-variables_1>environment
-variables which configure Node.js</a>, such as <code>NODE_OPTIONS</code>,
-are parsed and applied. If the same variable is defined in the environment and
-in the file, the value from the environment takes precedence.<p>You can pass multiple <code>--env-file</code> arguments. Subsequent files override
-pre-existing variables defined in previous files.<p>An error is thrown if the file does not exist.<pre class="catppuccin-latte catppuccin-mocha language-bash shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --env-file=.env</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --env-file=.development.env</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> index.js</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>bash</span><button class=copy-button>copy</button></div></pre><p>The format of the file should be one line per key-value pair of environment
-variable name and value separated by <code>=</code>:<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span>PORT=3000</span></span>
-<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>Any text after a <code>#</code> is treated as a comment:<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span># This is a comment</span></span>
-<span class=line><span>PORT=3000 # This is also a comment</span></span>
-<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>Values can start and end with the following quotes: <code>`</code>, <code>"</code> or <code>'</code>.
-They are omitted from the values.<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span>USERNAME="nodejs" # will result in `nodejs` as the value.</span></span>
-<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>Multi-line values are supported:<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span>MULTI_LINE="THIS IS</span></span>
-<span class=line><span>A MULTILINE"</span></span>
-<span class=line><span># will result in `THIS IS\nA MULTILINE` as the value.</span></span>
-<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>Export keyword before a key is ignored:<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span>export USERNAME="nodejs" # will result in `nodejs` as the value.</span></span>
-<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>If you want to load environment variables from a file that may not exist, you
-can use the <a href=#--env-file-if-existsfile><code>--env-file-if-exists</code></a> flag instead.</section>
-<section><h4><code>-e</code>, <code>--eval "script"</code><span><a id=cli_e_eval_script></a></span><span><a class=mark id=-eval-script href=#-eval-script>#</a></span></h4><div class=api_metadata><span>Added in: v0.5.2</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.6.0<td><p>Eval now supports experimental type-stripping.<tr><td>v5.11.0<td><p>Built-in libraries are now available as predefined variables.</table></details></div><p>Evaluate the following argument as JavaScript. The modules which are
-predefined in the REPL can also be used in <code>script</code>.<p>If <code>script</code> starts with <code>-</code>, pass it using <code>=</code> (for example,
-<code>node --print --eval=-42</code>) so it is parsed as the value of <code>--eval</code>.<p>On Windows, using <code>cmd.exe</code> a single quote will not work correctly because it
-only recognizes double <code>"</code> for quoting. In Powershell or Git bash, both <code>'</code>
-and <code>"</code> are usable.<p>It is possible to run code containing inline types unless the
-<a href=#--no-strip-types><code>--no-strip-types</code></a> flag is provided.</section>
-<section><h4><code>--experimental-addon-modules</code><span><a id=cli_experimental_addon_modules></a></span><span><a class=mark id=--experimental-addon-modules href=#--experimental-addon-modules>#</a></span></h4><div class=api_metadata><span>Added in: v23.6.0, v22.20.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.5.0<td><p>This is enabled by default.</table></details></div><div class="api_stability api_stability_1"><p>Stability: 1.2 - Release candidate</div><p>Enable experimental import support for <code>.node</code> addons.</section>
-<section><h4><code>--experimental-config-file=path</code>, <code>--experimental-config-file</code><span><a id=cli_experimental_config_file_path_experimental_config_file></a></span><span><a class=mark id=--experimental-config-filepath---experimental-config-file href=#--experimental-config-filepath---experimental-config-file>#</a></span></h4><div class=api_metadata><span>Added in: v23.10.0, v22.16.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.7.0<td><p>Marked as release candidate.</table></details></div><div class="api_stability api_stability_1"><p>Stability: 1.2 - Release candidate</div><p>If present, Node.js will look for a configuration file at the specified path.
+<section><h4><code>--config-file=path</code>, <code>--config-file</code><span><a id=cli_config_file_path_config_file></a></span><span><a class=mark id=--config-filepath---config-file href=#--config-filepath---config-file>#</a></span></h4><div class=api_metadata><span>Added in: v23.10.0, v22.16.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.12.0<td><p>This flag was renamed from <code>--experimental-config-file</code> to <code>--config-file</code> and is now stable. <code>--experimental-config-file</code> and <code>--experimental-default-config-file</code> are kept as aliases.<tr><td>v26.7.0<td><p>Marked as release candidate.</table></details></div><p>If present, Node.js will look for a configuration file at the specified path.
 If the path is not specified, Node.js will look for a <code>node.config.json</code> file
 in the current working directory.
-To specify a custom path, use the <code>--experimental-config-file=path</code> form.
-The space-separated <code>--experimental-config-file path</code> form is not supported.
-The alias <code>--experimental-default-config-file</code> is equivalent to
-<code>--experimental-config-file</code> without an argument.
+To specify a custom path, use the <code>--config-file=path</code> form.
+The space-separated <code>--config-file path</code> form is not supported.
 Node.js will read the configuration file and apply the settings. The
 configuration file should be a JSON file with the following structure. <code>vX.Y.Z</code>
 in the <code>$schema</code> must be replaced with the version of Node.js you are using or
@@ -1199,12 +1139,144 @@ variables, command-line options, or the <code>NODE_OPTIONS</code> env file parse
 <code>--env-file</code> flag.<p>Keys cannot be duplicated within the same or different namespaces.<p>The configuration parser will throw an error if the configuration file contains
 unknown keys or keys that cannot be used in a namespace.<p>Node.js will not sanitize or perform validation on the user-provided configuration,
 so <strong>NEVER</strong> use untrusted configuration files.</section>
-<section><h4><code>--experimental-default-config-file</code><span><a id=cli_experimental_default_config_file></a></span><span><a class=mark id=--experimental-default-config-file href=#--experimental-default-config-file>#</a></span></h4><div class=api_metadata><span>Added in: v23.10.0, v22.16.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.0 - Early development</div><p>This flag is an alias for <code>--experimental-config-file</code> without an argument.
-If present, Node.js will look for a
-<code>node.config.json</code> file in the current working directory and load it as a
-configuration file.</section>
+<section><h4><code>--cpu-prof</code><span><a id=cli_cpu_prof></a></span><span><a class=mark id=--cpu-prof href=#--cpu-prof>#</a></span></h4><div class=api_metadata><span>Added in: v12.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.4.0, v20.16.0<td><p>The <code>--cpu-prof</code> flags are now stable.</table></details></div><p>Starts the V8 CPU profiler on start up, and writes the CPU profile to disk
+before exit.<p>If <code>--cpu-prof-dir</code> is not specified, the generated profile is placed
+in the current working directory.<p>If <code>--cpu-prof-name</code> is not specified, the generated profile is
+named <code>CPU.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.cpuprofile</code>.<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --cpu-prof index.js</span></span>
+<span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> ls </span><span style=color:#179299;--shiki-dark:#94E2D5>*</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>.cpuprofile</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>CPU.20190409.202950.15293.0.0.cpuprofile</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre><p>If <code>--cpu-prof-name</code> is specified, the provided value is used as a template
+for the file name. The following placeholder is supported and will be
+substituted at runtime:<ul>
+<li><code>${pid}</code> — the current process ID</li>
+</ul><pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --cpu-prof --cpu-prof-name </span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'CPU.${pid}.cpuprofile'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> index.js</span></span>
+<span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> ls </span><span style=color:#179299;--shiki-dark:#94E2D5>*</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>.cpuprofile</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>CPU.15293.cpuprofile</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre></section>
+<section><h4><code>--cpu-prof-dir</code><span><a id=cli_cpu_prof_dir></a></span><span><a class=mark id=--cpu-prof-dir href=#--cpu-prof-dir>#</a></span></h4><div class=api_metadata><span>Added in: v12.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.4.0, v20.16.0<td><p>The <code>--cpu-prof</code> flags are now stable.</table></details></div><p>Specify the directory where the CPU profiles generated by <code>--cpu-prof</code> will
+be placed.<p>The default value is controlled by the
+<a href=#--diagnostic-dirdirectory><code>--diagnostic-dir</code></a> command-line option.</section>
+<section><h4><code>--cpu-prof-interval</code><span><a id=cli_cpu_prof_interval></a></span><span><a class=mark id=--cpu-prof-interval href=#--cpu-prof-interval>#</a></span></h4><div class=api_metadata><span>Added in: v12.2.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.4.0, v20.16.0<td><p>The <code>--cpu-prof</code> flags are now stable.</table></details></div><p>Specify the sampling interval in microseconds for the CPU profiles generated
+by <code>--cpu-prof</code>. The default is 1000 microseconds.</section>
+<section><h4><code>--cpu-prof-name</code><span><a id=cli_cpu_prof_name></a></span><span><a class=mark id=--cpu-prof-name href=#--cpu-prof-name>#</a></span></h4><div class=api_metadata><span>Added in: v12.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.4.0, v20.16.0<td><p>The <code>--cpu-prof</code> flags are now stable.</table></details></div><p>Specify the file name of the CPU profile generated by <code>--cpu-prof</code>.</section>
+<section><h4><code>--diagnostic-dir=directory</code><span><a id=cli_diagnostic_dir_directory></a></span><span><a class=mark id=--diagnostic-dirdirectory href=#--diagnostic-dirdirectory>#</a></span></h4><div class=api_metadata></div><p>Set the directory to which all diagnostic output files are written.
+Defaults to current working directory.<p>Affects the default output directory of:<ul>
+<li><a href=#--cpu-prof-dir><code>--cpu-prof-dir</code></a></li>
+<li><a href=#--heap-prof-dir><code>--heap-prof-dir</code></a></li>
+<li><a href=#--redirect-warningsfile><code>--redirect-warnings</code></a></li>
+</ul></section>
+<section><h4><code>--disable-proto=mode</code><span><a id=cli_disable_proto_mode></a></span><span><a class=mark id=--disable-protomode href=#--disable-protomode>#</a></span></h4><div class=api_metadata><span>Added in: v13.12.0, v12.17.0</span></div><p>Disable the <code>Object.prototype.__proto__</code> property. If <code>mode</code> is <code>delete</code>, the
+property is removed entirely. If <code>mode</code> is <code>throw</code>, accesses to the
+property throw an exception with the code <code>ERR_PROTO_ACCESS</code>.</section>
+<section><h4><code>--disable-sigusr1</code><span><a id=cli_disable_sigusr1></a></span><span><a class=mark id=--disable-sigusr1 href=#--disable-sigusr1>#</a></span></h4><div class=api_metadata><span>Added in: v23.7.0, v22.14.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.8.0, v22.20.0<td><p>The option is no longer experimental.</table></details></div><p>Disable the ability of starting a debugging session by sending a
+<code>SIGUSR1</code> signal to the process.</section>
+<section><h4><code>--disable-warning=code-or-type</code><span><a id=cli_disable_warning_code_or_type></a></span><span><a class=mark id=--disable-warningcode-or-type href=#--disable-warningcode-or-type>#</a></span></h4><div class=api_metadata><span>Added in: v21.3.0, v20.11.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.7.0<td><p>The <code>--disable-warning</code> flag is now stable.</table></details></div><div class="api_stability api_stability_2"><p>Stability: 2 - Stable</div><p>Disable specific process warnings by <code>code</code> or <code>type</code>.<p>Warnings emitted from <a href=process.html#processemitwarningwarning-options><code>process.emitWarning()</code></a> may contain a
+<code>code</code> and a <code>type</code>. This option will not-emit warnings that have a matching
+<code>code</code> or <code>type</code>.<p>List of <a href=deprecations.html#list-of-deprecated-apis>deprecation warnings</a>.<p>The Node.js core warning types are: <code>DeprecationWarning</code> and
+<code>ExperimentalWarning</code><p>For example, the following script will not emit
+<a href=deprecations.html#dep0025-requirenodesys>DEP0025 <code>require('node:sys')</code></a> when executed with
+<code>node --disable-warning=DEP0025</code>:<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox><code class="catppuccin-latte catppuccin-mocha language-mjs mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=mjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> sys </span><span style=color:#8839EF;--shiki-dark:#CBA6F7>from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:sys'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span></code><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> sys </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:sys'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre><p>For example, the following script will emit the
+<a href=deprecations.html#dep0025-requirenodesys>DEP0025 <code>require('node:sys')</code></a>, but not any Experimental
+Warnings (such as
+<a href=vm.html#vmmeasurememoryoptions>ExperimentalWarning: <code>vm.measureMemory</code> is an experimental feature</a>
+in &lt;=v21) when executed with <code>node --disable-warning=ExperimentalWarning</code>:<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox><code class="catppuccin-latte catppuccin-mocha language-mjs mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=mjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> sys </span><span style=color:#8839EF;--shiki-dark:#CBA6F7>from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:sys'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> vm </span><span style=color:#8839EF;--shiki-dark:#CBA6F7>from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:vm'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>vm</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>measureMemory</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span></code><code class="catppuccin-latte catppuccin-mocha cjs language-cjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=cjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> sys </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:sys'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> vm </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> require</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'node:vm'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>vm</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>measureMemory</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
+<section><h4><code>--disable-wasm-trap-handler</code><span><a id=cli_disable_wasm_trap_handler></a></span><span><a class=mark id=--disable-wasm-trap-handler href=#--disable-wasm-trap-handler>#</a></span></h4><div class=api_metadata><span>Added in: v22.2.0, v20.15.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.0.0<td><p>Node.js now automatically disables the trap handler when there is not enough virtual memory available at startup to allocate one cage.</table></details></div><p>Node.js enables V8's trap-handler-based WebAssembly bound checks on 64-bit platforms,
+which significantly improves WebAssembly performance by eliminating the need for
+inline bound checks. This optimization requires allocating a large virtual memory
+cage per WebAssembly memory instance (currently typically 8GB for 32-bit WebAssembly memory,
+16GB for 64-bit WebAssembly memory) to trap out-of-bound accesses. On most 64-bit
+platforms, the virtual memory address space is usually large enough (around 128TB)
+to accommodate typical WebAssembly usages, but if the machine has manual limits
+on virtual memory (e.g. through <code>ulimit -v</code>), WebAssembly memory allocation is
+more likely to fail with <code>WebAssembly.Memory(): could not allocate memory</code>.<p>At startup, Node.js automatically checks whether there is enough virtual memory
+available to allocate at least one cage, and if not, the trap-handler optimization
+is automatically disabled so that WebAssembly can still run using inline
+bound checks (with less optimal performance). But if the application needs to create
+many WebAssembly memory instances and the machine still configures a relatively high
+limit on virtual memory, allocation of WebAssembly memory instances may still fail
+more quickly than expected due to the raised virtual memory usage.<p><code>--disable-wasm-trap-handler</code> fully disables this optimization so that WebAssembly memory
+instances always use inline bound checks instead of reserving large virtual memory cages.
+This allows more instances to be created when the virtual memory address space available
+to the Node.js process is limited.</section>
+<section><h4><code>--disallow-code-generation-from-strings</code><span><a id=cli_disallow_code_generation_from_strings></a></span><span><a class=mark id=--disallow-code-generation-from-strings href=#--disallow-code-generation-from-strings>#</a></span></h4><div class=api_metadata><span>Added in: v9.8.0</span></div><p>Make built-in language features like <code>eval</code> and <code>new Function</code> that generate
+code from strings throw an exception instead. This does not affect the Node.js
+<code>node:vm</code> module.</section>
+<section><h4><code>--dns-result-order=order</code><span><a id=cli_dns_result_order_order></a></span><span><a class=mark id=--dns-result-orderorder href=#--dns-result-orderorder>#</a></span></h4><div class=api_metadata><span>Added in: v16.4.0, v14.18.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.1.0, v20.13.0<td><p>The <code>ipv6first</code> is supported now.<tr><td>v17.0.0<td><p>Changed default value to <code>verbatim</code>.</table></details></div><p>Set the default value of <code>order</code> in <a href=dns.html#dnslookuphostname-options-callback><code>dns.lookup()</code></a> and
+<a href=dns.html#dnspromiseslookuphostname-options><code>dnsPromises.lookup()</code></a>. The value could be:<ul>
+<li><code>ipv4first</code>: sets default <code>order</code> to <code>ipv4first</code>.</li>
+<li><code>ipv6first</code>: sets default <code>order</code> to <code>ipv6first</code>.</li>
+<li><code>verbatim</code>: sets default <code>order</code> to <code>verbatim</code>.</li>
+</ul><p>The default is <code>verbatim</code> and <a href=dns.html#dnssetdefaultresultorderorder><code>dns.setDefaultResultOrder()</code></a> have higher
+priority than <code>--dns-result-order</code>.</section>
+<section><h4><code>--enable-fips</code><span><a id=cli_enable_fips></a></span><span><a class=mark id=--enable-fips href=#--enable-fips>#</a></span></h4><div class=api_metadata><span>Added in: v6.0.0</span></div><p>Enable <a href=crypto.html#fips-mode>FIPS mode</a> at startup. With OpenSSL 3, a configured provider named
+<code>fips</code> must be available and initialize successfully. With OpenSSL 1.1.1,
+Node.js must be built against a FIPS-capable OpenSSL.</section>
+<section><h4><code>--enable-fips-indicator-events</code><span><a id=cli_enable_fips_indicator_events></a></span><span><a class=mark id=--enable-fips-indicator-events href=#--enable-fips-indicator-events>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><p>Publish OpenSSL FIPS indicator results to the
+<a href=diagnostics_channel.html#event-cryptofipsindicator><code>'crypto.fips.indicator'</code></a> diagnostics channel. This option requires OpenSSL
+3.4 or later. It does not enable <a href=crypto.html#fips-mode>FIPS mode</a> or change whether an operation
+is permitted.</section>
+<section><h4><code>--enable-source-maps</code><span><a id=cli_enable_source_maps></a></span><span><a class=mark id=--enable-source-maps href=#--enable-source-maps>#</a></span></h4><div class=api_metadata><span>Added in: v12.12.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v15.11.0, v14.18.0<td><p>This API is no longer experimental.</table></details></div><p>Enable <a href=https://tc39.es/ecma426/>Source Map</a> support for stack traces.<p>When using a transpiler, such as TypeScript, stack traces thrown by an
+application reference the transpiled code, not the original source position.
+<code>--enable-source-maps</code> enables caching of Source Maps and makes a best
+effort to report stack traces relative to the original source file.<p>Overriding <code>Error.prepareStackTrace</code> may prevent <code>--enable-source-maps</code> from
+modifying the stack trace. Call and return the results of the original
+<code>Error.prepareStackTrace</code> in the overriding function to modify the stack trace
+with source maps.<pre class="catppuccin-latte catppuccin-mocha language-js shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> originalPrepareStackTrace </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> Error</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>prepareStackTrace</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>Error</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>prepareStackTrace</span><span style=color:#179299;--shiki-dark:#94E2D5> =</span><span style=color:#7C7F93;--shiki-dark:#9399B2> (</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic>error</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#E64553;--shiki-light-font-style:italic;--shiki-dark:#EBA0AC;--shiki-dark-font-style:italic> trace</span><span style=color:#7C7F93;--shiki-dark:#9399B2>)</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> =></span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span></span>
+<span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>  // Modify error and trace and format stack trace with</span></span>
+<span class=line><span style=color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic>  // original Error.prepareStackTrace.</span></span>
+<span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>  return</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> originalPrepareStackTrace</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(error</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> trace)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+<span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>};</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre><p>Note, enabling source maps can introduce latency to your application
+when <code>Error.stack</code> is accessed. If you access <code>Error.stack</code> frequently
+in your application, take into account the performance implications
+of <code>--enable-source-maps</code>.</section>
+<section><h4><code>--entry-url</code><span><a id=cli_entry_url></a></span><span><a class=mark id=--entry-url href=#--entry-url>#</a></span></h4><div class=api_metadata><span>Added in: v23.0.0, v22.10.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>When present, Node.js will interpret the entry point as a URL, rather than a
+path.<p>Follows <a href=esm.html#modules-ecmascript-modules>ECMAScript module</a> resolution rules.<p>Any query parameter or hash in the URL will be accessible via <a href=esm.html#importmetaurl><code>import.meta.url</code></a>.<pre class="catppuccin-latte catppuccin-mocha language-bash shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --entry-url</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'file:///path/to/file.js?queryparams=work#and-hashes-too'</span></span>
+<span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --entry-url</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'file.ts?query#hash'</span></span>
+<span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --entry-url</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'data:text/javascript,console.log("Hello")'</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>bash</span><button class=copy-button>copy</button></div></pre></section>
+<section><h4><code>--env-file-if-exists=file</code><span><a id=cli_env_file_if_exists_file></a></span><span><a class=mark id=--env-file-if-existsfile href=#--env-file-if-existsfile>#</a></span></h4><div class=api_metadata><span>Added in: v22.9.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.10.0, v22.21.0<td><p>The <code>--env-file-if-exists</code> flag is no longer experimental.</table></details></div><p>Behavior is the same as <a href=#--env-filefile><code>--env-file</code></a>, but an error is not thrown if the file
+does not exist.</section>
+<section><h4><code>--env-file=file</code><span><a id=cli_env_file_file></a></span><span><a class=mark id=--env-filefile href=#--env-filefile>#</a></span></h4><div class=api_metadata><span>Added in: v20.6.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.10.0, v22.21.0<td><p>The <code>--env-file</code> flag is no longer experimental.<tr><td>v21.7.0, v20.12.0<td><p>Add support to multi-line values.</table></details></div><p>Loads environment variables from a file relative to the current directory,
+making them available to applications on <code>process.env</code>. The <a href=#environment-variables-1>environment
+variables which configure Node.js</a>, such as <code>NODE_OPTIONS</code>,
+are parsed and applied. If the same variable is defined in the environment and
+in the file, the value from the environment takes precedence.<p>You can pass multiple <code>--env-file</code> arguments. Subsequent files override
+pre-existing variables defined in previous files.<p>An error is thrown if the file does not exist.<pre class="catppuccin-latte catppuccin-mocha language-bash shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --env-file=.env</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --env-file=.development.env</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> index.js</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>bash</span><button class=copy-button>copy</button></div></pre><p>The format of the file should be one line per key-value pair of environment
+variable name and value separated by <code>=</code>:<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span>PORT=3000</span></span>
+<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>Any text after a <code>#</code> is treated as a comment:<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span># This is a comment</span></span>
+<span class=line><span>PORT=3000 # This is also a comment</span></span>
+<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>Values can start and end with the following quotes: <code>`</code>, <code>"</code> or <code>'</code>.
+They are omitted from the values.<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span>USERNAME="nodejs" # will result in `nodejs` as the value.</span></span>
+<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>Multi-line values are supported:<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span>MULTI_LINE="THIS IS</span></span>
+<span class=line><span>A MULTILINE"</span></span>
+<span class=line><span># will result in `THIS IS\nA MULTILINE` as the value.</span></span>
+<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>Export keyword before a key is ignored:<pre class="catppuccin-latte catppuccin-mocha language-text shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span>export USERNAME="nodejs" # will result in `nodejs` as the value.</span></span>
+<span class=line><span></span></span></code><div class=code-toolbar><span class=code-language>text</span><button class=copy-button>copy</button></div></pre><p>If you want to load environment variables from a file that may not exist, you
+can use the <a href=#--env-file-if-existsfile><code>--env-file-if-exists</code></a> flag instead.</section>
+<section><h4><code>-e</code>, <code>--eval "script"</code><span><a id=cli_e_eval_script></a></span><span><a class=mark id=-eval-script href=#-eval-script>#</a></span></h4><div class=api_metadata><span>Added in: v0.5.2</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.6.0<td><p>Eval now supports experimental type-stripping.<tr><td>v5.11.0<td><p>Built-in libraries are now available as predefined variables.</table></details></div><p>Evaluate the following argument as JavaScript. The modules which are
+predefined in the REPL can also be used in <code>script</code>.<p>If <code>script</code> starts with <code>-</code>, pass it using <code>=</code> (for example,
+<code>node --print --eval=-42</code>) so it is parsed as the value of <code>--eval</code>.<p>On Windows, using <code>cmd.exe</code> a single quote will not work correctly because it
+only recognizes double <code>"</code> for quoting. In Powershell or Git bash, both <code>'</code>
+and <code>"</code> are usable.<p>It is possible to run code containing inline types unless the
+<a href=#--no-strip-types><code>--no-strip-types</code></a> flag is provided.</section>
+<section><h4><code>--experimental-addon-modules</code><span><a id=cli_experimental_addon_modules></a></span><span><a class=mark id=--experimental-addon-modules href=#--experimental-addon-modules>#</a></span></h4><div class=api_metadata><span>Added in: v23.6.0, v22.20.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.5.0<td><p>This is enabled by default.</table></details></div><div class="api_stability api_stability_1"><p>Stability: 1.2 - Release candidate</div><p>Enable experimental import support for <code>.node</code> addons.</section>
+<section><h4><code>--experimental-bench</code><span><a id=cli_experimental_bench></a></span><span><a class=mark id=--experimental-bench href=#--experimental-bench>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Enable the experimental <code>node:bench</code> module and command-line benchmark runner.</section>
+<section><h4><code>--experimental-dtls</code><span><a id=cli_experimental_dtls></a></span><span><a class=mark id=--experimental-dtls href=#--experimental-dtls>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Enable experimental support for the DTLS protocol. See the
+<a href=dtls.html>dtls documentation</a> for details.</section>
 <section><h4><code>--experimental-eventsource</code><span><a id=cli_experimental_eventsource></a></span><span><a class=mark id=--experimental-eventsource href=#--experimental-eventsource>#</a></span></h4><div class=api_metadata><span>Added in: v22.3.0, v20.18.0</span></div><p>Enable exposition of <a href=https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events>EventSource Web API</a> on the global scope.</section>
-<section><h4><code>--experimental-ffi</code><span><a id=cli_experimental_ffi></a></span><span><a class=mark id=--experimental-ffi href=#--experimental-ffi>#</a></span></h4><div class=api_metadata><span>Added in: v26.1.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Enable the experimental <a href=ffi.html><code>node:ffi</code></a> module.<p>This flag is only available in builds with FFI support.</section>
 <section><h4><code>--experimental-import-meta-resolve</code><span><a id=cli_experimental_import_meta_resolve></a></span><span><a class=mark id=--experimental-import-meta-resolve href=#--experimental-import-meta-resolve>#</a></span></h4><div class=api_metadata><span>Added in: v13.9.0, v12.16.2</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v20.6.0, v18.19.0<td><p>synchronous import.meta.resolve made available by default, with the flag retained for enabling the experimental second argument as previously supported.</table></details></div><p>Enable experimental <code>import.meta.resolve()</code> parent URL support, which allows
 passing a second <code>parentURL</code> argument for contextual resolution.<p>Previously gated the entire <code>import.meta.resolve</code> feature.</section>
 <section><h4><code>--experimental-import-text</code><span><a id=cli_experimental_import_text></a></span><span><a class=mark id=--experimental-import-text href=#--experimental-import-text>#</a></span></h4><div class=api_metadata><span>Added in: v26.5.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.0 - Early development</div><p>Enable experimental support for importing modules with
@@ -1236,24 +1308,31 @@ generated as part of the test runner output. If no tests are run, a coverage
 report is not generated. See the documentation on
 <a href=test.html#collecting-code-coverage>collecting code coverage from tests</a> for more details.</section>
 <section><h4><code>--experimental-test-module-mocks</code><span><a id=cli_experimental_test_module_mocks></a></span><span><a class=mark id=--experimental-test-module-mocks href=#--experimental-test-module-mocks>#</a></span></h4><div class=api_metadata><span>Added in: v22.3.0, v20.18.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v23.6.1, v22.13.1, v20.18.2<td><p>Using this feature with the permission model enabled requires passing <code>--allow-worker</code>.</table></details></div><div class="api_stability api_stability_1"><p>Stability: 1.0 - Early development</div><p>Enable module mocking in the test runner.<p>This feature requires <code>--allow-worker</code> if used with the <a href=permissions.html#permission-model>Permission Model</a>.</section>
-<section><h4><code>--experimental-test-tag-filter=&lt;tag></code><span><a id=cli_experimental_test_tag_filter_tag></a></span><span><a class=mark id=--experimental-test-tag-filtertag href=#--experimental-test-tag-filtertag>#</a></span></h4><div class=api_metadata><span>Added in: v26.2.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.0 - Early development</div><p>Run only tests whose tag set contains <code>&lt;tag></code>. Tests declare tags via the
-<code>tags</code> option on <code>test()</code>, <code>it()</code>, <code>suite()</code>, or <code>describe()</code>; tags
-inherit from suites to nested tests by union. Filtering is
-case-insensitive.<p>The flag may be specified more than once; tests must contain <strong>every</strong>
-filter value to run. See <a href=test.html#test-tags>Test tags</a> for details on declaring and
-inheriting tags.</section>
+<section><h4><code>--experimental-test-tag-filter='&lt;expr>'</code><span><a id=cli_experimental_test_tag_filter_expr></a></span><span><a class=mark id=--experimental-test-tag-filterexpr href=#--experimental-test-tag-filterexpr>#</a></span></h4><div class=api_metadata><span>Added in: v26.2.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.0 - Early development</div><p>Run only tests that match the provided boolean tag-filter expression. Tests
+declare tags via the <code>tags</code> option on <code>test()</code>, <code>it()</code>, <code>suite()</code>, or
+<code>describe()</code>. Tags inherit from suites to nested tests by union.<p>The expression supports boolean operators (<code>and</code>/<code>&&</code>, <code>or</code>/<code>||</code>,
+<code>not</code>/<code>!</code>), parentheses for grouping, and <code>*</code> wildcards inside identifiers.
+Standard precedence applies: <code>not</code> binds tighter than <code>and</code>, which binds
+tighter than <code>or</code>. See <a href=test.html#test-tags>Test tags</a> for the full grammar and behavior.<p>The flag may be specified more than once; multiple expressions are combined
+with AND, so a test must satisfy every expression to run.<p>A malformed expression causes the test runner to exit with a non-zero status
+before running any tests.</section>
 <section><h4><code>--experimental-vfs</code><span><a id=cli_experimental_vfs></a></span><span><a class=mark id=--experimental-vfs href=#--experimental-vfs>#</a></span></h4><div class=api_metadata><span>Added in: v26.4.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Enable the experimental <a href=vfs.html><code>node:vfs</code></a> module.</section>
 <section><h4><code>--experimental-vm-modules</code><span><a id=cli_experimental_vm_modules></a></span><span><a class=mark id=--experimental-vm-modules href=#--experimental-vm-modules>#</a></span></h4><div class=api_metadata><span>Added in: v9.6.0</span></div><p>Enable experimental ES Module support in the <code>node:vm</code> module.</section>
 <section><h4><code>--experimental-wasi-unstable-preview1</code><span><a id=cli_experimental_wasi_unstable_preview1></a></span><span><a class=mark id=--experimental-wasi-unstable-preview1 href=#--experimental-wasi-unstable-preview1>#</a></span></h4><div class=api_metadata><span>Added in: v13.3.0, v12.16.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v20.0.0, v18.17.0<td><p>This option is no longer required as WASI is enabled by default, but can still be passed.<tr><td>v13.6.0<td><p>changed from <code>--experimental-wasi-unstable-preview0</code> to <code>--experimental-wasi-unstable-preview1</code>.</table></details></div><p>Enable experimental WebAssembly System Interface (WASI) support.</section>
+<section><h4><code>--experimental-web-worker</code><span><a id=cli_experimental_web_worker></a></span><span><a class=mark id=--experimental-web-worker href=#--experimental-web-worker>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><p>Enable experimental support for the Web Worker API.</section>
 <section><h4><code>--experimental-worker-inspection</code><span><a id=cli_experimental_worker_inspection></a></span><span><a class=mark id=--experimental-worker-inspection href=#--experimental-worker-inspection>#</a></span></h4><div class=api_metadata><span>Added in: v24.1.0, v22.17.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active Development</div><p>Enable experimental support for the worker inspection with Chrome DevTools.</section>
-<section><h4><code>--expose-gc</code><span><a id=cli_expose_gc></a></span><span><a class=mark id=--expose-gc href=#--expose-gc>#</a></span></h4><div class=api_metadata><span>Added in: v22.3.0, v20.18.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental. This flag is inherited from V8 and is subject to
-change upstream.</div><p>This flag will expose the gc extension from V8.<pre class="catppuccin-latte catppuccin-mocha language-js shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>if</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> (globalThis</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>gc) </span><span style=color:#7C7F93;--shiki-dark:#9399B2>{</span></span>
-<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>  globalThis</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>gc</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
-<span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span></span>
-<span class=line></span></code><div class=code-toolbar><span class=code-language>js</span><button class=copy-button>copy</button></div></pre></section>
 <section><h4><code>--force-context-aware</code><span><a id=cli_force_context_aware></a></span><span><a class=mark id=--force-context-aware href=#--force-context-aware>#</a></span></h4><div class=api_metadata><span>Added in: v12.12.0</span></div><p>Disable loading native addons that are not <a href=addons.html#context-aware-addons>context-aware</a>.</section>
-<section><h4><code>--force-fips</code><span><a id=cli_force_fips></a></span><span><a class=mark id=--force-fips href=#--force-fips>#</a></span></h4><div class=api_metadata><span>Added in: v6.0.0</span></div><p>Force FIPS-compliant crypto on startup. (Cannot be disabled from script code.)
-(Same requirements as <code>--enable-fips</code>.)</section>
+<section><h4><code>--force-fips[=mode]</code><span><a id=cli_force_fips_mode></a></span><span><a class=mark id=--force-fipsmode href=#--force-fipsmode>#</a></span></h4><div class=api_metadata><span>Added in: v6.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.9.0<td><p>Added the optional <code>provider</code> and <code>strict</code> modes.</table></details></div><p>Enable <a href=crypto.html#fips-mode>FIPS mode</a> at startup and prevent it from being disabled from script
+code. The same OpenSSL requirements as <a href=#--enable-fips><code>--enable-fips</code></a> apply.<p>An optional mode can be specified using <code>--force-fips=mode</code>:<ul>
+<li><code>provider</code>: Preserve the OpenSSL FIPS provider's configured handling of
+non-approved operations. This is the current default when the mode is
+omitted.</li>
+<li><code>strict</code>: Reject non-approved operations reported through the OpenSSL FIPS
+indicator callback. This mode requires OpenSSL 3.4 or later.</li>
+</ul><p>The <code>strict</code> mode only covers operations reported through the callback for
+OpenSSL's default library context. It does not cover native addons that use
+another <code>OSSL_LIB_CTX</code> or another copy of <code>libcrypto</code>, nor operation-specific
+indicators that do not invoke the callback.</section>
 <section><h4><code>--force-node-api-uncaught-exceptions-policy</code><span><a id=cli_force_node_api_uncaught_exceptions_policy></a></span><span><a class=mark id=--force-node-api-uncaught-exceptions-policy href=#--force-node-api-uncaught-exceptions-policy>#</a></span></h4><div class=api_metadata><span>Added in: v18.3.0, v16.17.0</span></div><p>Enforces <code>uncaughtException</code> event on Node-API asynchronous callbacks.<p>To prevent from an existing add-on from crashing the process, this flag is not
 enabled by default. In the future, this flag will be enabled by default to
 enforce the correct behavior.</section>
@@ -1380,12 +1459,18 @@ a <a href=https://www.owasp.org/index.php/Code_Injection>remote code execution</
 <li>The host is not accessible from public networks.</li>
 <li>A firewall disallows unwanted connections on the port.</li>
 </ul><p><strong>More specifically, <code>--inspect=0.0.0.0</code> is insecure if the port (<code>9229</code> by
-default) is not firewall-protected.</strong><p>See the <a href=https://nodejs.org/en/docs/guides/debugging-getting-started/#security-implications>debugging security implications</a> section for more information.</section>
+default) is not firewall-protected.</strong><p>See the <a href=https://nodejs.org/learn/getting-started/debugging#security-implications>debugging security implications</a> section for more information.</section>
 <section><h4><code>-i</code>, <code>--interactive</code><span><a id=cli_i_interactive></a></span><span><a class=mark id=-interactive href=#-interactive>#</a></span></h4><div class=api_metadata><span>Added in: v0.7.7</span></div><p>Opens the REPL even if stdin does not appear to be a terminal.</section>
 <section><h4><code>--jitless</code><span><a id=cli_jitless></a></span><span><a class=mark id=--jitless href=#--jitless>#</a></span></h4><div class=api_metadata><span>Added in: v12.0.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental. This flag is inherited from V8 and is subject to
 change upstream.</div><p>Disable <a href=https://v8.dev/blog/jitless>runtime allocation of executable memory</a>. This may be
 required on some platforms for security reasons. It can also reduce attack
-surface on other platforms, but the performance impact may be severe.</section>
+surface on other platforms, but the performance impact may be severe.<p>When WebAssembly is unavailable in this mode, TypeScript parsing and WebAssembly
+module imports throw <a href=errors.html#err_webassembly_not_supported><code>ERR_WEBASSEMBLY_NOT_SUPPORTED</code></a>. Node.js does not
+guarantee alternative implementations of features that require WebAssembly or
+runtime allocation of executable memory when those capabilities are unavailable.<p>This flag controls V8's runtime code generation. It does not impose an
+operating-system restriction on executable memory allocated by native addons or
+<a href=ffi.html><code>node:ffi</code></a>. FFI operations that require unavailable executable memory can
+throw <a href=errors.html#err_rx_memory_not_supported><code>ERR_RX_MEMORY_NOT_SUPPORTED</code></a>.</section>
 <section><h4><code>--localstorage-file=file</code><span><a id=cli_localstorage_file_file></a></span><span><a class=mark id=--localstorage-filefile href=#--localstorage-filefile>#</a></span></h4><div class=api_metadata><span>Added in: v22.4.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.2 - Release candidate.</div><p>The file used to store <code>localStorage</code> data. If the file does not exist, it is
 created the first time <code>localStorage</code> is accessed. The same file may be shared
 between multiple Node.js processes concurrently.</section>
@@ -1410,6 +1495,7 @@ is retained for compatibility with Electron and for cases where the context
 flow may differ. However, if a difference in flow is found please report it.</section>
 <section><h4><code>--no-deprecation</code><span><a id=cli_no_deprecation></a></span><span><a class=mark id=--no-deprecation href=#--no-deprecation>#</a></span></h4><div class=api_metadata><span>Added in: v0.8.0</span></div><p>Silence deprecation warnings.</section>
 <section><h4><code>--no-experimental-detect-module</code><span><a id=cli_no_experimental_detect_module></a></span><span><a class=mark id=--no-experimental-detect-module href=#--no-experimental-detect-module>#</a></span></h4><div class=api_metadata><span>Added in: v21.1.0, v20.10.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.7.0, v20.19.0<td><p>Syntax detection is enabled by default.</table></details></div><p>Disable using <a href=packages.html#syntax-detection>syntax detection</a> to determine module type.</section>
+<section><h4><code>--no-experimental-ffi</code><span><a id=cli_no_experimental_ffi></a></span><span><a class=mark id=--no-experimental-ffi href=#--no-experimental-ffi>#</a></span></h4><div class=api_metadata><span>Added in: v26.1.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Disable the experimental <a href=ffi.html><code>node:ffi</code></a> module.<p>This flag is only available in builds with FFI support.</section>
 <section><h4><code>--no-experimental-global-navigator</code><span><a id=cli_no_experimental_global_navigator></a></span><span><a class=mark id=--no-experimental-global-navigator href=#--no-experimental-global-navigator>#</a></span></h4><div class=api_metadata><span>Added in: v21.2.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Disable exposition of <a href=globals.html#navigator>Navigator API</a> on the global scope.</section>
 <section><h4><code>--no-experimental-repl-await</code><span><a id=cli_no_experimental_repl_await></a></span><span><a class=mark id=--no-experimental-repl-await href=#--no-experimental-repl-await>#</a></span></h4><div class=api_metadata><span>Added in: v16.6.0</span></div><p>Use this flag to disable top-level await in REPL.</section>
 <section><h4><code>--no-experimental-require-module</code><span><a id=cli_no_experimental_require_module></a></span><span><a class=mark id=--no-experimental-require-module href=#--no-experimental-require-module>#</a></span></h4><div class=api_metadata><span>Added in: v22.0.0, v20.17.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v25.4.0<td><p>The flag was renamed from <code>--no-experimental-require-module</code> to <code>--no-require-module</code>, with the former marked as legacy.<tr><td>v23.0.0, v22.12.0, v20.19.0<td><p>This is now false by default.</table></details></div><div class="api_stability api_stability_3"><p>Stability: 3 - Legacy: Use <a href=#--no-require-module><code>--no-require-module</code></a> instead.</div><p>Legacy alias for <a href=#--no-require-module><code>--no-require-module</code></a>.</section>
@@ -1427,11 +1513,13 @@ enables it.<p><a id=--experimental-require-module></a></section>
 <section><h4><code>--no-strip-types</code><span><a id=cli_no_strip_types></a></span><span><a class=mark id=--no-strip-types href=#--no-strip-types>#</a></span></h4><div class=api_metadata><span>Added in: v22.6.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v25.2.0, v24.12.0<td><p>Type stripping is now stable, the flag was renamed from <code>--no-experimental-strip-types</code> to <code>--no-strip-types</code>.<tr><td>v23.6.0, v22.18.0<td><p>Type stripping is enabled by default.</table></details></div><p>Disable type-stripping for TypeScript files.
 For more information, see the <a href=typescript.html#type-stripping>TypeScript type-stripping</a> documentation.</section>
 <section><h4><code>--no-warnings</code><span><a id=cli_no_warnings></a></span><span><a class=mark id=--no-warnings href=#--no-warnings>#</a></span></h4><div class=api_metadata><span>Added in: v6.0.0</span></div><p>Silence all process warnings (including deprecations).</section>
+<section><h4><code>--no-worker-snapshot</code><span><a id=cli_no_worker_snapshot></a></span><span><a class=mark id=--no-worker-snapshot href=#--no-worker-snapshot>#</a></span></h4><div class=api_metadata><span>Added in: v26.9.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1 - Experimental</div><p>Start worker threads by running the internal bootstrap from scratch instead of
+deserializing the bootstrapped context from the built-in startup snapshot.</section>
 <section><h4><code>--node-memory-debug</code><span><a id=cli_node_memory_debug></a></span><span><a class=mark id=--node-memory-debug href=#--node-memory-debug>#</a></span></h4><div class=api_metadata><span>Added in: v15.0.0, v14.18.0</span></div><p>Enable extra debug checks for memory leaks in Node.js internals. This is
 usually only useful for developers debugging Node.js itself.</section>
-<section><h4><code>--openssl-config=file</code><span><a id=cli_openssl_config_file></a></span><span><a class=mark id=--openssl-configfile href=#--openssl-configfile>#</a></span></h4><div class=api_metadata><span>Added in: v6.9.0</span></div><p>Load an OpenSSL configuration file on startup. Among other uses, this can be
-used to enable FIPS-compliant crypto if Node.js is built
-against FIPS-enabled OpenSSL.</section>
+<section><h4><code>--openssl-config=file</code><span><a id=cli_openssl_config_file></a></span><span><a class=mark id=--openssl-configfile href=#--openssl-configfile>#</a></span></h4><div class=api_metadata><span>Added in: v6.9.0</span></div><p>Load an OpenSSL configuration file on startup. The file can activate an
+OpenSSL 3 FIPS provider or configure a FIPS-capable OpenSSL 1.1.1 build. See
+<a href=crypto.html#fips-mode>FIPS mode</a>.<p>This option takes precedence over the <code>OPENSSL_CONF</code> environment variable.</section>
 <section><h4><code>--openssl-legacy-provider</code><span><a id=cli_openssl_legacy_provider></a></span><span><a class=mark id=--openssl-legacy-provider href=#--openssl-legacy-provider>#</a></span></h4><div class=api_metadata><span>Added in: v17.0.0, v16.17.0</span></div><p>Enable OpenSSL 3.0 legacy provider. For more information please see
 <a href=https://www.openssl.org/docs/man3.0/man7/OSSL_PROVIDER-legacy.html>OSSL_PROVIDER-legacy</a>.</section>
 <section><h4><code>--openssl-shared-config</code><span><a id=cli_openssl_shared_config></a></span><span><a class=mark id=--openssl-shared-config href=#--openssl-shared-config>#</a></span></h4><div class=api_metadata><span>Added in: v18.5.0, v16.17.0, v14.21.0</span></div><p>Enable OpenSSL default configuration section, <code>openssl_conf</code> to be read from
@@ -1508,6 +1596,35 @@ however, for backward compatibility with older Node.js versions.<p><code>--prese
 <code>--preserve-symlinks</code> when it is not desirable to follow symlinks before
 resolving relative paths.<p>See <a href=#--preserve-symlinks><code>--preserve-symlinks</code></a> for more information.</section>
 <section><h4><code>-p</code>, <code>--print "script"</code><span><a id=cli_p_print_script></a></span><span><a class=mark id=-print-script href=#-print-script>#</a></span></h4><div class=api_metadata><span>Added in: v0.6.4</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v5.11.0<td><p>Built-in libraries are now available as predefined variables.</table></details></div><p>Identical to <code>-e</code> but prints the result.</section>
+<section><h4><code>--process-timeout=duration</code><span><a id=cli_process_timeout_duration></a></span><span><a class=mark id=--process-timeoutduration href=#--process-timeoutduration>#</a></span></h4><div class=api_metadata><span>Added in: v26.11.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active development</div><p>Exits the process with code <code>124</code> if it is still running after <code>duration</code>,
+measured from the start of the process. <code>duration</code> is a positive integer
+followed by a unit: <code>ms</code>, <code>s</code>, <code>m</code>, or <code>h</code>, for example <code>500ms</code>, <code>30s</code>, <code>5m</code>, or
+<code>1h</code>. The exit code matches the one used by the <code>timeout(1)</code> command.<p>Before exiting, Node.js prints what the main thread was doing and which
+resources were keeping the event loop alive to stderr:<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --process-timeout</span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>5s</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> server.js</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(node:25418) Process timed out after 5s (--process-timeout). Exiting with code 124.</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>Main thread was not executing JavaScript.</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>Resources keeping the event loop alive:</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>    TCPServerWrap (listening on [::]:3000, fd 20)</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>    Timeout x2 (next due in 2931ms)</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre><p>If the main thread was executing JavaScript, its stack trace is printed instead.
+Use <a href=#--report-on-process-timeout><code>--report-on-process-timeout</code></a> to also generate a <a href=report.html>diagnostic report</a>.<p>The process exits without emitting the <code>'beforeExit'</code> and <code>'exit'</code> events, as
+the JavaScript code may be what keeps the process running. Code coverage and
+profiles, such as those enabled with <a href=#node_v8_coveragedir><code>NODE_V8_COVERAGE=dir</code></a> or
+<a href=#--cpu-prof><code>--cpu-prof</code></a>, are still written.<p>If the main thread does not respond within two seconds, for example because it
+is blocked in a synchronous operation such as <a href=child_process.html#child_processexecsynccommand-options><code>child_process.execSync()</code></a>,
+Node.js exits immediately without printing the stack trace and resources.<p>This option is not allowed in <a href=#node_optionsoptions><code>NODE_OPTIONS</code></a>, and it cannot be combined
+with the options that enable the inspector, such as <code>--inspect</code>,
+<code>--inspect-brk</code>, <code>--inspect-wait</code>, <code>--inspect-port</code>, and
+<code>--inspect-publish-uid</code>, nor with <code>node inspect</code>, <code>--run</code>, or
+<code>--build-snapshot</code>. While it is in effect, <a href=inspector.html#inspectoropenport-host-wait><code>inspector.open()</code></a> and
+<a href=inspector.html#sessionconnecttomainthread><code>session.connectToMainThread()</code></a> throw, and requests to activate the
+inspector with <code>SIGUSR1</code> are ignored.<p>Child processes that inherit <code>process.execArgv</code>, such as those created with
+<a href=child_process.html#child_processforkmodulepath-args-options><code>child_process.fork()</code></a>, apply the timeout from their own start. With
+<a href=#--watch><code>--watch</code></a>, the timeout applies to each run of the application rather than
+to the process that watches for changes. When
+<a href=test.html#running-tests-from-the-command-line>running tests from the command line</a>, the test runner process applies the
+timeout to the whole run, and each test file that runs in its own process
+applies it as well.</section>
 <section><h4><code>--prof</code><span><a id=cli_prof></a></span><span><a class=mark id=--prof href=#--prof>#</a></span></h4><div class=api_metadata><span>Added in: v2.0.0</span></div><p>Generate V8 profiler output.</section>
 <section><h4><code>--prof-process</code><span><a id=cli_prof_process></a></span><span><a class=mark id=--prof-process href=#--prof-process>#</a></span></h4><div class=api_metadata><span>Added in: v5.2.0</span></div><p>Process V8 profiler output generated using the V8 option <code>--prof</code>.</section>
 <section><h4><code>--redirect-warnings=file</code><span><a id=cli_redirect_warnings_file></a></span><span><a class=mark id=--redirect-warningsfile href=#--redirect-warningsfile>#</a></span></h4><div class=api_metadata><span>Added in: v8.0.0</span></div><p>Write process warnings to the given file instead of printing to stderr. The
@@ -1531,6 +1648,12 @@ the Node.js runtime such as out of memory) that lead to termination of the
 application. Useful to inspect various diagnostic data elements such as heap,
 stack, event loop state, resource consumption etc. to reason about the fatal
 error.</section>
+<section><h4><code>--report-on-process-timeout</code><span><a id=cli_report_on_process_timeout></a></span><span><a class=mark id=--report-on-process-timeout href=#--report-on-process-timeout>#</a></span></h4><div class=api_metadata><span>Added in: v26.11.0</span></div><div class="api_stability api_stability_1"><p>Stability: 1.1 - Active development</div><p>Enables the report to be generated when <a href=#--process-timeoutduration><code>--process-timeout</code></a> expires, in
+addition to the summary printed to stderr. Useful to inspect the JavaScript
+and native stacks, the event loop state, and resource consumption to reason
+about why the process did not exit. Requires <a href=#--process-timeoutduration><code>--process-timeout</code></a>.<p>Worker threads that do not provide their part of the report within two
+seconds, for example because they are blocked in a synchronous operation such
+as <a href=child_process.html#child_processexecsynccommand-options><code>child_process.execSync()</code></a>, are left out of it.</section>
 <section><h4><code>--report-on-signal</code><span><a id=cli_report_on_signal></a></span><span><a class=mark id=--report-on-signal href=#--report-on-signal>#</a></span></h4><div class=api_metadata><span>Added in: v11.8.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v13.12.0, v12.17.0<td><p>This option is no longer experimental.<tr><td>v12.0.0<td><p>changed from <code>--diagnostic-report-on-signal</code> to <code>--report-on-signal</code>.</table></details></div><p>Enables report to be generated upon receiving the specified (or predefined)
 signal to the running Node.js process. The signal to trigger the report is
 specified through <code>--report-signal</code>.</section>
@@ -1542,8 +1665,12 @@ native stack and other runtime environment data.</section>
 <section><h4><code>-r</code>, <code>--require module</code><span><a id=cli_r_require_module></a></span><span><a class=mark id=-require-module href=#-require-module>#</a></span></h4><div class=api_metadata><span>Added in: v1.6.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v23.0.0, v22.12.0, v20.19.0<td><p>This option also supports ECMAScript module.</table></details></div><p>Preload the specified module at startup.<p>Follows <code>require()</code>'s module resolution
 rules. <code>module</code> may be either a path to a file, or a node module name.<p>Modules preloaded with <code>--require</code> will run before modules preloaded with <code>--import</code>.<p>Modules are preloaded into the main thread as well as any worker threads,
 forked processes, or clustered processes.</section>
-<section><h4><code>--run</code><span><a id=cli_run></a></span><span><a class=mark id=--run href=#--run>#</a></span></h4><div class=api_metadata><span>Added in: v22.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.3.0<td><p>NODE_RUN_SCRIPT_NAME environment variable is added.<tr><td>v22.3.0<td><p>NODE_RUN_PACKAGE_JSON_PATH environment variable is added.<tr><td>v22.3.0<td><p>Traverses up to the root directory and finds a <code>package.json</code> file to run the command from, and updates <code>PATH</code> environment variable accordingly.</table></details></div><p>This runs a specified command from a package.json's <code>"scripts"</code> object.
-If a missing <code>"command"</code> is provided, it will list the available scripts.<p><code>--run</code> will traverse up to the root directory and finds a <code>package.json</code>
+<section><h4><code>--run</code><span><a id=cli_run></a></span><span><a class=mark id=--run href=#--run>#</a></span></h4><div class=api_metadata><span>Added in: v22.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.9.0<td><p>Passing <code>--run</code> without a command lists the available scripts.<tr><td>v22.3.0<td><p>NODE_RUN_SCRIPT_NAME environment variable is added.<tr><td>v22.3.0<td><p>NODE_RUN_PACKAGE_JSON_PATH environment variable is added.<tr><td>v22.3.0<td><p>Traverses up to the root directory and finds a <code>package.json</code> file to run the command from, and updates <code>PATH</code> environment variable accordingly.</table></details></div><p>This runs a specified command from a package.json's <code>"scripts"</code> object.
+If a missing <code>"command"</code> is provided, it will list the available scripts.<p>Passing <code>--run</code> without a command lists the available scripts and exits
+with a non-zero exit code:<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --run</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>Available scripts are:</span></span>
+<span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>  test: node --test</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre><p><code>--run</code> will traverse up to the root directory and finds a <code>package.json</code>
 file to run the command from.<p><code>--run</code> prepends <code>./node_modules/.bin</code> for each ancestor of
 the current directory, to the <code>PATH</code> in order to execute the binaries from
 different folders where multiple <code>node_modules</code> directories are present, if
@@ -1746,14 +1873,12 @@ Proxy support is intended for reaching external networks through authorized
 proxy servers, for example when a firewall requires one. It is not for hiding
 traffic or evading network policy. See <a href=http.html#built-in-proxy-support>Built-in Proxy Support</a>.<p>This is equivalent to setting the <a href=#node_use_env_proxy1><code>NODE_USE_ENV_PROXY=1</code></a> environment variable.
 When both are set, <code>--use-env-proxy</code> takes precedence.</section>
-<section><h4><code>--use-largepages=mode</code><span><a id=cli_use_largepages_mode></a></span><span><a class=mark id=--use-largepagesmode href=#--use-largepagesmode>#</a></span></h4><div class=api_metadata><span>Added in: v13.6.0, v12.17.0</span></div><p>Re-map the Node.js static code to large memory pages at startup. If supported on
-the target system, this will cause the Node.js static code to be moved onto 2
-MiB pages instead of 4 KiB pages.<p>The following values are valid for <code>mode</code>:<ul>
+<section><h4><code>--use-largepages=mode</code><span><a id=cli_use_largepages_mode></a></span><span><a class=mark id=--use-largepagesmode href=#--use-largepagesmode>#</a></span></h4><div class=api_metadata><span>Added in: v13.6.0, v12.17.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.9.0<td><p>This option is now a no-op.</table></details></div><p>This option is no longer supported and a no-op. It used to re-map the Node.js
+static code to large memory pages at startup.<p>It still accepts the following values for compatibility:<ul>
 <li><code>off</code>: No mapping will be attempted. This is the default.</li>
-<li><code>on</code>: If supported by the OS, mapping will be attempted. Failure to map will
-be ignored and a message will be printed to standard error.</li>
-<li><code>silent</code>: If supported by the OS, mapping will be attempted. Failure to map
-will be ignored and will not be reported.</li>
+<li><code>on</code>: No mapping will be attempted and a message will be printed to
+standard error stating it's no longer supported.</li>
+<li><code>silent</code>: Same as <code>off</code>.</li>
 </ul></section>
 <section><h4><code>--use-system-ca</code><span><a id=cli_use_system_ca></a></span><span><a class=mark id=--use-system-ca href=#--use-system-ca>#</a></span></h4><div class=api_metadata><span>Added in: v23.8.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v23.9.0<td><p>Added support on non-Windows and non-macOS.</table></details></div><p>Node.js uses the trusted CA certificates present in the system store along with
 the <code>--use-bundled-ca</code> option and the <code>NODE_EXTRA_CA_CERTS</code> environment variable.
@@ -1815,6 +1940,37 @@ based on an estimate of the amount of parallelism.<p>The amount of parallelism r
 carried out simultaneously in a given machine. In general, it's the same as the
 amount of CPUs, but it may diverge in environments such as VMs or containers.</section>
 <section><h4><code>-v</code>, <code>--version</code><span><a id=cli_v_version></a></span><span><a class=mark id=-version href=#-version>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.3</span></div><p>Print node's version.</section>
+<section><h4><code>--vfs-load=source</code><span><a id=cli_vfs_load_source></a></span><span><a class=mark id=--vfs-loadsource href=#--vfs-loadsource>#</a></span></h4><div class=api_metadata><span>Added in: v26.10.0</span></div><ul>
+<li><code>source</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> A directory or an archive file to mount and run.</li>
+</ul><p>Requires <a href=#--experimental-vfs><code>--experimental-vfs</code></a>. May be given at most once.<p>Mounts <code>source</code> as a virtual file system (<a href=vfs.html><code>node:vfs</code></a>), and runs the entry
+point and all subsequent <code>require()</code>/<code>import</code> resolution against that mount
+rather than the real file system. The mount is placed at a reserved mount point
+assigned by Node.js, so it never shadows real paths and no target can be
+chosen. The entry point is taken from the mount the same way <code>node &lt;directory></code>
+takes one: the mount's own <code>package.json</code> <code>"main"</code>, or <code>index.js</code>. Any
+positional command-line argument is the program's own (available from
+<code>process.argv[2]</code> onward), never an entry-point override.<p><code>process.argv[1]</code> reports <code>source</code> rather than the reserved mount point, since
+the mount point is an opaque implementation detail.<p>The provider backing a source is chosen from the source itself rather than from
+its file name:<ul>
+<li>A directory is mounted with a <a href=vfs.html#class-realfsprovider><code>RealFSProvider</code></a> rooted there.</li>
+<li>A file whose bytes are a ZIP archive is mounted with a <a href=vfs.html#class-zipprovider><code>ZipProvider</code></a>, so
+an archive can carry any name.</li>
+</ul><p>Providers registered with <code>vfs.registerProvider()</code> (typically from a module
+preloaded with <a href=#-r---require-module><code>--require</code></a> or <a href=#--importmodule><code>--import</code></a>) are consulted first, in
+reverse registration order, and may claim directories as well as files. If no
+provider claims the source, Node.js exits with an error.<p>In worker threads <code>--vfs-load</code> mounts but does not load: a worker inherits the
+mount and runs its own entry point, which may itself live in the mount.<p>The source is mounted at the same reserved mount point in every thread that
+mounts it, whatever else that thread mounts, so a path into the mount means the
+same thing in all of them.<p>A worker created with its own <code>execArgv</code> inherits none of the parent's options,
+and so does not mount the source at all. To run a script from the mount, such a
+worker must be given the same options again, <code>--experimental-vfs</code> and
+<code>--vfs-load</code>; without them, that thread has no mount for the script to come
+from, and the worker fails to load it. <code>--experimental-vfs</code> is also what makes
+<a href=vfs.html><code>node:vfs</code></a> available to the worker's own code. A worker whose script comes
+from anywhere else, such as the real file system, needs nothing added.<p><code>--vfs-load</code> is not permitted in <a href=#node_optionsoptions><code>NODE_OPTIONS</code></a>: which entry point runs is
+the command line's decision, and the environment must not be able to redirect
+it.<pre class="catppuccin-latte catppuccin-mocha language-console shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>$</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> node --experimental-vfs --vfs-load</span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>app.zip</span></span>
+<span class=line></span></code><div class=code-toolbar><span class=code-language>console</span><button class=copy-button>copy</button></div></pre></section>
 <section><h4><code>--watch</code><span><a id=cli_watch></a></span><span><a class=mark id=--watch href=#--watch>#</a></span></h4><div class=api_metadata><span>Added in: v18.11.0, v16.19.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.0.0, v20.13.0<td><p>Watch mode is now stable.<tr><td>v19.2.0, v18.13.0<td><p>Test runner now supports running in watch mode.</table></details></div><p>Starts Node.js in watch mode.
 When in watch mode, changes in the watched files cause the Node.js process to
 restart.
@@ -1850,8 +2006,11 @@ enable ANSI colorized output. The value may be:<ul>
 and <code>NODE_DISABLE_COLORS</code> environment variables are ignored.<p>Any other value will result in colorized output being disabled.</section>
 <section><h4><code>NODE_COMPILE_CACHE=dir</code><span><a id=cli_node_compile_cache_dir></a></span><span><a class=mark id=node_compile_cachedir href=#node_compile_cachedir>#</a></span></h4><div class=api_metadata><span>Added in: v22.1.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v25.4.0<td><p>This feature is no longer experimental.</table></details></div><p>Enable the <a href=module.html#module-compile-cache>module compile cache</a> for the Node.js instance. See the documentation of
 <a href=module.html#module-compile-cache>module compile cache</a> for details.</section>
-<section><h4><code>NODE_COMPILE_CACHE_PORTABLE=1</code><span><a id=cli_node_compile_cache_portable_1></a></span><span><a class=mark id=node_compile_cache_portable1 href=#node_compile_cache_portable1>#</a></span></h4><div class=api_metadata></div><p>When set to 1, the <a href=module.html#module-compile-cache>module compile cache</a>  can be reused across different directory
-locations as long as the module layout relative to the cache directory remains the same.</section>
+<section><h4><code>NODE_COMPILE_CACHE_PORTABLE=1</code><span><a id=cli_node_compile_cache_portable_1></a></span><span><a class=mark id=node_compile_cache_portable1 href=#node_compile_cache_portable1>#</a></span></h4><div class=api_metadata></div><p>When set to 1, the <a href=module.html#module-compile-cache>module compile cache</a> can be reused across different directory
+locations as long as the module layout relative to the cache directory remains the same,
+and by any user (the cache subdirectory is not suffixed with the creating user's uid).</section>
+<section><h4><code>NODE_COMPILE_CACHE_READONLY=1</code><span><a id=cli_node_compile_cache_readonly_1></a></span><span><a class=mark id=node_compile_cache_readonly1 href=#node_compile_cache_readonly1>#</a></span></h4><div class=api_metadata><span>Added in: v26.8.0</span></div><p>When set to 1, the <a href=module.html#module-compile-cache>module compile cache</a> only reads existing entries from
+its directory: nothing is written to it and it is not created if missing.</section>
 <section><h4><code>NODE_DEBUG=module[,…]</code><span><a id=cli_node_debug_module></a></span><span><a class=mark id=node_debugmodule href=#node_debugmodule>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.32</span></div><p><code>','</code>-separated list of core modules that should print debug information.</section>
 <section><h4><code>NODE_DEBUG_NATIVE=module[,…]</code><span><a id=cli_node_debug_native_module></a></span><span><a class=mark id=node_debug_nativemodule href=#node_debug_nativemodule>#</a></span></h4><div class=api_metadata></div><p><code>','</code>-separated list of core C++ modules that should print debug information.</section>
 <section><h4><code>NODE_DISABLE_COLORS=1</code><span><a id=cli_node_disable_colors_1></a></span><span><a class=mark id=node_disable_colors1 href=#node_disable_colors1>#</a></span></h4><div class=api_metadata><span>Added in: v0.3.0</span></div><p>When set, colors will not be used in the REPL.</section>
@@ -1889,12 +2048,19 @@ one is included in the list below.<ul>
 <li><code>--allow-child-process</code></li>
 <li><code>--allow-ffi</code></li>
 <li><code>--allow-fs-read</code></li>
+<li><code>--allow-fs-vfs</code></li>
 <li><code>--allow-fs-write</code></li>
 <li><code>--allow-inspector</code></li>
 <li><code>--allow-net</code></li>
 <li><code>--allow-openssl-store</code></li>
 <li><code>--allow-wasi</code></li>
 <li><code>--allow-worker</code></li>
+<li><code>--bench-isolation</code></li>
+<li><code>--bench-name-pattern</code></li>
+<li><code>--bench-reporter-destination</code></li>
+<li><code>--bench-reporter</code></li>
+<li><code>--bench-samples</code></li>
+<li><code>--bench-warmup</code></li>
 <li><code>--conditions</code>, <code>-C</code></li>
 <li><code>--cpu-prof-dir</code></li>
 <li><code>--cpu-prof-interval</code></li>
@@ -1906,15 +2072,17 @@ one is included in the list below.<ul>
 <li><code>--disable-warning</code></li>
 <li><code>--disable-wasm-trap-handler</code></li>
 <li><code>--dns-result-order</code></li>
+<li><code>--enable-fips-indicator-events</code></li>
 <li><code>--enable-fips</code></li>
 <li><code>--enable-network-family-autoselection</code></li>
 <li><code>--enable-source-maps</code></li>
 <li><code>--entry-url</code></li>
 <li><code>--experimental-abortcontroller</code></li>
 <li><code>--experimental-addon-modules</code></li>
+<li><code>--experimental-bench</code></li>
 <li><code>--experimental-detect-module</code></li>
+<li><code>--experimental-dtls</code></li>
 <li><code>--experimental-eventsource</code></li>
-<li><code>--experimental-ffi</code></li>
 <li><code>--experimental-import-meta-resolve</code></li>
 <li><code>--experimental-import-text</code></li>
 <li><code>--experimental-json-modules</code></li>
@@ -1932,6 +2100,7 @@ one is included in the list below.<ul>
 <li><code>--experimental-vfs</code></li>
 <li><code>--experimental-vm-modules</code></li>
 <li><code>--experimental-wasi-unstable-preview1</code></li>
+<li><code>--experimental-web-worker</code></li>
 <li><code>--force-context-aware</code></li>
 <li><code>--force-fips</code></li>
 <li><code>--force-node-api-uncaught-exceptions-policy</code></li>
@@ -1959,6 +2128,7 @@ one is included in the list below.<ul>
 <li><code>--no-addons</code></li>
 <li><code>--no-async-context-frame</code></li>
 <li><code>--no-deprecation</code></li>
+<li><code>--no-experimental-ffi</code></li>
 <li><code>--no-experimental-global-navigator</code></li>
 <li><code>--no-experimental-repl-await</code></li>
 <li><code>--no-experimental-sqlite</code></li>
@@ -1972,6 +2142,7 @@ one is included in the list below.<ul>
 <li><code>--no-strip-types</code></li>
 <li><code>--no-warnings</code></li>
 <li><code>--no-webstorage</code></li>
+<li><code>--no-worker-snapshot</code></li>
 <li><code>--node-memory-debug</code></li>
 <li><code>--openssl-config</code></li>
 <li><code>--openssl-legacy-provider</code></li>
@@ -2165,10 +2336,14 @@ and the line lengths of the source file (in the key <code>lineLengths</code>).<p
 <span class=line></span></code><div class=code-toolbar><span class=code-language>json</span><button class=copy-button>copy</button></div></pre></section>
 <section><h4><code>NO_COLOR=&lt;any></code><span><a id=cli_no_color_any></a></span><span><a class=mark id=no_colorany href=#no_colorany>#</a></span></h4><div class=api_metadata></div><p><a href=https://no-color.org><code>NO_COLOR</code></a>  is an alias for <code>NODE_DISABLE_COLORS</code>. The value of the
 environment variable is arbitrary.</section>
-<section><h4><code>OPENSSL_CONF=file</code><span><a id=cli_openssl_conf_file></a></span><span><a class=mark id=openssl_conffile href=#openssl_conffile>#</a></span></h4><div class=api_metadata><span>Added in: v6.11.0</span></div><p>Load an OpenSSL configuration file on startup. Among other uses, this can be
-used to enable FIPS-compliant crypto if Node.js is built with
-<code>./configure --openssl-fips</code>.<p>If the <a href=#--openssl-configfile><code>--openssl-config</code></a> command-line option is used, the environment
-variable is ignored.</section>
+<section><h4><code>OPENSSL_CONF=file</code><span><a id=cli_openssl_conf_file></a></span><span><a class=mark id=openssl_conffile href=#openssl_conffile>#</a></span></h4><div class=api_metadata><span>Added in: v6.11.0</span></div><p>Load an OpenSSL configuration file on startup. The file can be used as part of
+a <a href=crypto.html#fips-mode>FIPS mode</a> configuration.<p>If the variable is set to an empty value, Node.js starts without loading any
+OpenSSL configuration file. This is a way past a default configuration file
+that exists but cannot be read, for example when <code>/etc/ssl</code> is not accessible
+to the user Node.js runs as, which is otherwise fatal at startup. No
+configuration is applied in that case, including any <a href=crypto.html#fips-mode>FIPS mode</a> setup the
+file would have performed.<p>If the <a href=#--openssl-configfile><code>--openssl-config</code></a> command-line option is used, the environment
+variable is ignored, and an empty value has no effect.</section>
 <section><h4><code>SSL_CERT_DIR=dir</code><span><a id=cli_ssl_cert_dir_dir></a></span><span><a class=mark id=ssl_cert_dirdir href=#ssl_cert_dirdir>#</a></span></h4><div class=api_metadata><span>Added in: v7.7.0</span></div><p>If <code>--use-openssl-ca</code> is enabled, or if <code>--use-system-ca</code> is enabled on
 platforms other than macOS and Windows, this overrides and sets OpenSSL's directory
 containing trusted certificates.<p>Be aware that unless the child environment is explicitly set, this environment
@@ -2215,7 +2390,7 @@ documented here:</section>
 <section><h4><code>--abort-on-uncaught-exception</code><span><a id=cli_abort_on_uncaught_exception_1></a></span><span><a class=mark id=--abort-on-uncaught-exception-1 href=#--abort-on-uncaught-exception-1>#</a></span></h4><div class=api_metadata></div></section>
 <section><h4><code>--disallow-code-generation-from-strings</code><span><a id=cli_disallow_code_generation_from_strings_1></a></span><span><a class=mark id=--disallow-code-generation-from-strings-1 href=#--disallow-code-generation-from-strings-1>#</a></span></h4><div class=api_metadata></div></section>
 <section><h4><code>--enable-etw-stack-walking</code><span><a id=cli_enable_etw_stack_walking></a></span><span><a class=mark id=--enable-etw-stack-walking href=#--enable-etw-stack-walking>#</a></span></h4><div class=api_metadata></div></section>
-<section><h4><code>--expose-gc</code><span><a id=cli_expose_gc_1></a></span><span><a class=mark id=--expose-gc-1 href=#--expose-gc-1>#</a></span></h4><div class=api_metadata></div></section>
+<section><h4><code>--expose-gc</code><span><a id=cli_expose_gc></a></span><span><a class=mark id=--expose-gc href=#--expose-gc>#</a></span></h4><div class=api_metadata></div></section>
 <section><h4><code>--harmony-shadow-realm</code><span><a id=cli_harmony_shadow_realm></a></span><span><a class=mark id=--harmony-shadow-realm href=#--harmony-shadow-realm>#</a></span></h4><div class=api_metadata></div></section>
 <section><h4><code>--heap-snapshot-on-oom</code><span><a id=cli_heap_snapshot_on_oom></a></span><span><a class=mark id=--heap-snapshot-on-oom href=#--heap-snapshot-on-oom>#</a></span></h4><div class=api_metadata></div></section>
 <section><h4><code>--interpreted-frames-native-stack</code><span><a id=cli_interpreted_frames_native_stack></a></span><span><a class=mark id=--interpreted-frames-native-stack href=#--interpreted-frames-native-stack>#</a></span></h4><div class=api_metadata></div></section>
@@ -2226,7 +2401,7 @@ consumption approaches the limit, V8 will spend more time on
 garbage collection in an effort to free unused memory.<p>On a machine with 2 GiB of memory, consider setting this to
 1536 (1.5 GiB) to leave some memory for other uses and avoid swapping.<pre class="catppuccin-latte catppuccin-mocha language-bash shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>node</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> --max-old-space-size=1536</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> index.js</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>bash</span><button class=copy-button>copy</button></div></pre><p><a id=--max-semi-space-sizesize-in-megabytes></a></section>
-<section><h4><code>--max-semi-space-size=SIZE</code> (in MiB)<span><a id=cli_max_semi_space_size_size_in_mib></a></span><span><a class=mark id=--max-semi-space-sizesize-in-mib href=#--max-semi-space-sizesize-in-mib>#</a></span></h4><div class=api_metadata></div><p>Sets the maximum <a href=https://www.memorymanagement.org/glossary/s.html#semi.space>semi-space</a> size for V8's <a href=https://v8.dev/blog/orinoco-parallel-scavenger>scavenge garbage collector</a> in
+<section><h4><code>--max-semi-space-size=SIZE</code> (in MiB)<span><a id=cli_max_semi_space_size_size_in_mib></a></span><span><a class=mark id=--max-semi-space-sizesize-in-mib href=#--max-semi-space-sizesize-in-mib>#</a></span></h4><div class=api_metadata></div><p>Sets the maximum <a href=https://v8.dev/blog/trash-talk#minor-gc>semi-space</a> size for V8's <a href=https://v8.dev/blog/orinoco-parallel-scavenger>scavenge garbage collector</a> in
 MiB (mebibytes).
 Increasing the max size of a semi-space may improve throughput for Node.js at
 the cost of more memory consumption.<p>Since the young generation size of the V8 heap is three times (see

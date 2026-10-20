@@ -191,10 +191,16 @@
                       "v19.9.0",
                       "v18.19.0"
                     ],
-                    "changes": []
+                    "changes": [
+                      {
+                        "version": "v26.8.0",
+                        "pr-url": "https://github.com/nodejs/node/pull/64525",
+                        "description": "Marked as stable."
+                      }
+                    ]
                   },
-                  "stability": 1,
-                  "stabilityText": "Experimental",
+                  "stability": 2,
+                  "stabilityText": "Stable",
                   "signatures": [
                     {
                       "params": [
@@ -425,6 +431,60 @@
                     }
                   ],
                   "displayName": "Console"
+                },
+                {
+                  "textRaw": "Crypto",
+                  "name": "crypto",
+                  "type": "module",
+                  "meta": {
+                    "added": [
+                      "v26.9.0"
+                    ],
+                    "changes": []
+                  },
+                  "stability": 1,
+                  "stabilityText": "Experimental",
+                  "events": [
+                    {
+                      "textRaw": "Event: `'crypto.fips.indicator'`",
+                      "name": "crypto.fips.indicator",
+                      "type": "event",
+                      "params": [
+                        {
+                          "textRaw": "`operation` {string} The provider-defined operation type.",
+                          "name": "operation",
+                          "type": "string",
+                          "desc": "The provider-defined operation type."
+                        },
+                        {
+                          "textRaw": "`reason` {string} The provider-defined description of why the operation is not approved.",
+                          "name": "reason",
+                          "type": "string",
+                          "desc": "The provider-defined description of why the operation is not approved."
+                        },
+                        {
+                          "textRaw": "`blocked` {boolean} Whether an indicator callback blocked the operation.",
+                          "name": "blocked",
+                          "type": "boolean",
+                          "desc": "Whether an indicator callback blocked the operation."
+                        },
+                        {
+                          "textRaw": "`count` {number} The number of matching pending indicator invocations represented by this message.",
+                          "name": "count",
+                          "type": "number",
+                          "desc": "The number of matching pending indicator invocations represented by this message."
+                        },
+                        {
+                          "textRaw": "`dropped` {number} The number of additional indicator invocations dropped before this message was delivered.",
+                          "name": "dropped",
+                          "type": "number",
+                          "desc": "The number of additional indicator invocations dropped before this message was delivered."
+                        }
+                      ],
+                      "desc": "<p>Emitted when the OpenSSL FIPS provider used by Node.js detects an operation that\nis not FIPS approved after the corresponding provider check was relaxed. Such\noperations are possible when the provider is configured for backwards\ncompatibility. The <code>operation</code> and <code>reason</code> values come from the provider and\nshould be treated as opaque strings rather than stable enumerations.</p>\n<p>Start Node.js with <a href=\"cli.html#--enable-fips-indicator-events\"><code>--enable-fips-indicator-events</code></a> to enable this channel.\nWithout the option, subscribing does not install the OpenSSL callback and no\nmessages are published.</p>\n<p>Subscribing to the channel is observation-only and never changes the result of\nan operation. Node.js preserves the result from any native indicator callback\ninstalled before Node.js initializes its crypto support. When\n<a href=\"cli.html#--force-fips\"><code>--force-fips=strict</code></a> is used, Node.js rejects callback-indicated\nnon-approved operations whether or not indicator events are enabled or the\nchannel has subscribers.</p>\n<p>Messages are published asynchronously on the main thread because OpenSSL\nindicators can originate from Workers or other threads. Only subscriptions on\nthe main thread receive messages. Delivery order relative to the originating\noperation is not defined, and a message cannot be correlated with a particular\ncall or Worker.</p>\n<p>One cryptographic operation can invoke the OpenSSL indicator more than once.\nMatching pending invocations are coalesced and reflected in <code>count</code>, which does\nnot necessarily represent a number of cryptographic operations. At most 256\ndistinct messages are queued. Additional invocations are reported in <code>dropped</code>\non the first queued message. Queued messages do not keep the event loop active,\nso this channel is best-effort diagnostics rather than an authoritative audit\nlog.</p>\n<p>This channel observes the default OpenSSL library context used by Node.js. It\ndoes not observe native addons or other code that uses another <code>OSSL_LIB_CTX</code>\nor another copy of <code>libcrypto</code>. It is active with OpenSSL 3.4 and later and is\nnot available with BoringSSL. A provider configured to reject a check directly,\nincluding a pedantic OpenSSL FIPS provider, can reject an operation without\nemitting an indicator. Receiving or not receiving a message does not establish\nthat Node.js or a cryptographic operation is FIPS validated.</p>\n<pre><code class=\"language-mjs\">import diagnosticsChannel from 'node:diagnostics_channel';\n\ndiagnosticsChannel.subscribe('crypto.fips.indicator', (message) => {\n  console.error('Non-approved cryptographic operation', message);\n});\n</code></pre>"
+                    }
+                  ],
+                  "displayName": "Crypto"
                 },
                 {
                   "textRaw": "HTTP",
@@ -1155,6 +1215,20 @@
                   "displayName": "Process"
                 },
                 {
+                  "textRaw": "Test Runner",
+                  "name": "test_runner",
+                  "type": "module",
+                  "meta": {
+                    "added": [
+                      "v26.1.0",
+                      "v24.16.0"
+                    ],
+                    "changes": []
+                  },
+                  "desc": "<p>See <a href=\"test.html#test-instrumentation-and-opentelemetry\">Test instrumentation and OpenTelemetry</a> for details.</p>",
+                  "displayName": "Test Runner"
+                },
+                {
                   "textRaw": "Web Locks",
                   "name": "web_locks",
                   "type": "module",
@@ -1297,6 +1371,48 @@
                     }
                   ],
                   "displayName": "Worker Thread"
+                },
+                {
+                  "textRaw": "SQLite",
+                  "name": "sqlite",
+                  "type": "module",
+                  "meta": {
+                    "added": [
+                      "v26.8.0"
+                    ],
+                    "changes": []
+                  },
+                  "stability": 1,
+                  "stabilityText": "Experimental",
+                  "events": [
+                    {
+                      "textRaw": "Event: `'sqlite.db.query'`",
+                      "name": "sqlite.db.query",
+                      "type": "event",
+                      "params": [
+                        {
+                          "textRaw": "`sql` {string} The expanded SQL with bound parameter values substituted. If expansion fails, the source SQL with unsubstituted placeholders is used instead.",
+                          "name": "sql",
+                          "type": "string",
+                          "desc": "The expanded SQL with bound parameter values substituted. If expansion fails, the source SQL with unsubstituted placeholders is used instead."
+                        },
+                        {
+                          "textRaw": "`database` {Database} The `Database` instance that executed the statement.",
+                          "name": "database",
+                          "type": "Database",
+                          "desc": "The `Database` instance that executed the statement."
+                        },
+                        {
+                          "textRaw": "`duration` {number} SQLite's internal estimate of the statement run time in nanoseconds. This reflects C-layer execution time only and does not include JavaScript binding overhead such as argument marshaling or result-row construction.",
+                          "name": "duration",
+                          "type": "number",
+                          "desc": "SQLite's internal estimate of the statement run time in nanoseconds. This reflects C-layer execution time only and does not include JavaScript binding overhead such as argument marshaling or result-row construction."
+                        }
+                      ],
+                      "desc": "<p>Emitted after a SQL statement finishes executing against a <a href=\"sqlite.html#class-database\"><code>Database</code></a>\ninstance. This is a <strong>profiling</strong> event: it fires once per statement upon\ncompletion and reports an estimated duration from SQLite's internal profiler.\nIt is not a distributed-tracing span. There is no corresponding start event,\nno async context propagation, and no parent-span linkage. If you need\nOpenTelemetry-compatible spans or async context propagation, wrap your SQLite\ncalls with a <a href=\"#class-tracingchannel\"><code>TracingChannel</code></a> at the JavaScript layer instead.</p>\n<p>Publishing is zero-overhead when there are no subscribers.</p>\n<p>No event is emitted for a statement that is abandoned mid-iteration and later\nfinalized, either explicitly through <a href=\"sqlite.html#statementclose\"><code>statement.close()</code></a> or when the\nstatement is garbage collected. Subscribers must not close the database or the\nstatement, since both are still in use while the event is being delivered; see\n<a href=\"sqlite.html#databaseclose\"><code>database.close()</code></a> and <a href=\"sqlite.html#statementclose\"><code>statement.close()</code></a>.</p>"
+                    }
+                  ],
+                  "displayName": "SQLite"
                 }
               ],
               "displayName": "Built-in Channels"
@@ -1641,10 +1757,16 @@
                   "v19.9.0",
                   "v18.19.0"
                 ],
-                "changes": []
+                "changes": [
+                  {
+                    "version": "v26.8.0",
+                    "pr-url": "https://github.com/nodejs/node/pull/64525",
+                    "description": "Marked as stable."
+                  }
+                ]
               },
-              "stability": 1,
-              "stabilityText": "Experimental",
+              "stability": 2,
+              "stabilityText": "Stable",
               "desc": "<p>The class <code>TracingChannel</code> is a collection of <a href=\"#tracingchannel-channels\">TracingChannel Channels</a> which\ntogether express a single traceable action. It is used to formalize and\nsimplify the process of producing events for tracing application flow.\n<a href=\"#diagnostics_channeltracingchannelnameorchannels\"><code>diagnostics_channel.tracingChannel()</code></a> is used to construct a\n<code>TracingChannel</code>. As with <code>Channel</code> it is recommended to create and reuse a\nsingle <code>TracingChannel</code> at the top-level of the file rather than creating them\ndynamically.</p>",
               "methods": [
                 {

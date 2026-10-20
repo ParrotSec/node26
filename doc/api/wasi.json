@@ -158,7 +158,7 @@
                   "params": []
                 }
               ],
-              "desc": "<p>Return an import object that can be passed to <code>WebAssembly.instantiate()</code> if\nno other WASM imports are needed beyond those provided by WASI.</p>\n<p>If version <code>unstable</code> was passed into the constructor it will return:</p>\n<pre><code class=\"language-json\">{ wasi_unstable: wasi.wasiImport }\n</code></pre>\n<p>If version <code>preview1</code> was passed into the constructor or no version was\nspecified it will return:</p>\n<pre><code class=\"language-json\">{ wasi_snapshot_preview1: wasi.wasiImport }\n</code></pre>"
+              "desc": "<p>Return an import object that can be passed to <code>WebAssembly.instantiate()</code> if\nno other WASM imports are needed beyond those provided by WASI.</p>\n<p>If version <code>unstable</code> was passed into the constructor it will return:</p>\n<pre><code class=\"language-json\">{ wasi_unstable: wasi.wasiImport }\n</code></pre>\n<p>If version <code>preview1</code> was passed into the constructor it will return:</p>\n<pre><code class=\"language-json\">{ wasi_snapshot_preview1: wasi.wasiImport }\n</code></pre>"
             },
             {
               "textRaw": "`wasi.start(instance)`",

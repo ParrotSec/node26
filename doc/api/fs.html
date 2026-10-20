@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>File system | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/fs.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-fs><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>File system | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/fs.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-fs><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=fs class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><span class=stability_2><a href=fs.html#file-system>File system</a></span>
 <ul>
@@ -283,6 +284,7 @@
 <li><a href=fs.html#fsmkdirsyncpath-options><code>fs.mkdirSync(path[, options])</code></a></li>
 <li><a href=fs.html#fsmkdtempsyncprefix-options><code>fs.mkdtempSync(prefix[, options])</code></a></li>
 <li><a href=fs.html#fsmkdtempdisposablesyncprefix-options><code>fs.mkdtempDisposableSync(prefix[, options])</code></a></li>
+<li><a href=fs.html#fsopenasblobsyncpath-options><code>fs.openAsBlobSync(path[, options])</code></a></li>
 <li><a href=fs.html#fsopendirsyncpath-options><code>fs.opendirSync(path[, options])</code></a></li>
 <li><a href=fs.html#fsopensyncpath-flags-mode><code>fs.openSync(path[, flags[, mode]])</code></a></li>
 <li><a href=fs.html#fsreaddirsyncpath-options><code>fs.readdirSync(path[, options])</code></a></li>
@@ -495,6 +497,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -762,6 +765,7 @@
 <li><a href=fs.html#fsmkdirsyncpath-options><code>fs.mkdirSync(path[, options])</code></a></li>
 <li><a href=fs.html#fsmkdtempsyncprefix-options><code>fs.mkdtempSync(prefix[, options])</code></a></li>
 <li><a href=fs.html#fsmkdtempdisposablesyncprefix-options><code>fs.mkdtempDisposableSync(prefix[, options])</code></a></li>
+<li><a href=fs.html#fsopenasblobsyncpath-options><code>fs.openAsBlobSync(path[, options])</code></a></li>
 <li><a href=fs.html#fsopendirsyncpath-options><code>fs.opendirSync(path[, options])</code></a></li>
 <li><a href=fs.html#fsopensyncpath-flags-mode><code>fs.openSync(path[, flags[, mode]])</code></a></li>
 <li><a href=fs.html#fsreaddirsyncpath-options><code>fs.readdirSync(path[, options])</code></a></li>
@@ -1128,14 +1132,15 @@ automatically.<p>An example to read the last 10 bytes of a file which is 100 byt
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>const</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> fd </span><span style=color:#179299;--shiki-dark:#94E2D5>=</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> await</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic> open</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'sample.txt'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>fd</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>createReadStream</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#7C7F93;--shiki-dark:#9399B2>{</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> start</span><span style=color:#179299;--shiki-dark:#94E2D5>:</span><span style=color:#FE640B;--shiki-dark:#FAB387> 90</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> end</span><span style=color:#179299;--shiki-dark:#94E2D5>:</span><span style=color:#FE640B;--shiki-dark:#FAB387> 99</span><span style=color:#7C7F93;--shiki-dark:#9399B2> }</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>mjs</span><button class=copy-button>copy</button></div></pre></section>
-<section><h5><code>filehandle.createWriteStream([options])</code><span><a id=fs_filehandle_createwritestream_options></a></span><span><a class=mark id=filehandlecreatewritestreamoptions href=#filehandlecreatewritestreamoptions>#</a></span></h5><div class=api_metadata><span>Added in: v16.11.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v21.0.0, v20.10.0<td><p>The <code>flush</code> option is now supported.</table></details></div><ul>
+<section><h5><code>filehandle.createWriteStream([options])</code><span><a id=fs_filehandle_createwritestream_options></a></span><span><a class=mark id=filehandlecreatewritestreamoptions href=#filehandlecreatewritestreamoptions>#</a></span></h5><div class=api_metadata><span>Added in: v16.11.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v22.0.0<td><p>bump default highWaterMark.<tr><td>v21.0.0, v20.10.0<td><p>The <code>flush</code> option is now supported.</table></details></div><ul>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
 <ul>
 <li><code>encoding</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> <strong>Default:</strong> <code>'utf8'</code></li>
 <li><code>autoClose</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> <strong>Default:</strong> <code>true</code></li>
 <li><code>emitClose</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> <strong>Default:</strong> <code>true</code></li>
 <li><code>start</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a></li>
-<li><code>highWaterMark</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> <strong>Default:</strong> <code>16384</code></li>
+<li><code>highWaterMark</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> <strong>Default:</strong> See
+<a href=stream.html#streamgetdefaulthighwatermarkobjectmode><code>stream.getDefaultHighWaterMark()</code></a>.</li>
 <li><code>flush</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> If <code>true</code>, the underlying file descriptor is flushed
 prior to closing it. <strong>Default:</strong> <code>false</code>.</li>
 </ul>
@@ -1179,8 +1184,9 @@ read operation. <strong>Default:</strong> <code>131072</code> (128 KB).</li>
 </ul><p>Return the file contents as an async iterable using the
 <a href=stream_iter.html><code>node:stream/iter</code></a> pull model. Reads are performed in <code>chunkSize</code>-byte
 chunks (default 128 KB). If transforms are provided, they are applied
-via <a href=stream_iter.html#pullsource-transforms-options><code>stream/iter pull()</code></a>.<p>The file handle is locked while the iterable is being consumed and unlocked
-when iteration completes, an error occurs, or the consumer breaks.<p>This function is only available when the <code>--experimental-stream-iter</code> flag is
+via <a href=stream_iter.html#pullsource-transforms-options><code>stream/iter pull()</code></a>.<p>The file handle is locked from the first read of the iterable, and unlocked
+when iteration completes, an error occurs, or the consumer breaks. An iterable
+that is never read does not lock the file handle.<p>This function is only available when the <code>--experimental-stream-iter</code> flag is
 enabled.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox><code class="catppuccin-latte catppuccin-mocha language-mjs mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=mjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> open </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:fs/promises'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> text </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:stream/iter'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> compressGzip </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:zlib/iter'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
@@ -1234,8 +1240,8 @@ read operation. <strong>Default:</strong> <code>131072</code> (128 KB).</li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol><code>&lt;Iterable></code></a> whose chunks return <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array><code>&lt;Uint8Array></code></a>[]</li>
 </ul><p>Synchronous counterpart of <a href=#filehandlepulltransforms-options><code>filehandle.pull()</code></a>. Returns a sync iterable
 that reads the file using synchronous I/O on the main thread. Reads are
-performed in <code>chunkSize</code>-byte chunks (default 128 KB).<p>The file handle is locked while the iterable is being consumed. Unlike the
-async <code>pull()</code>, this method does not support <code>AbortSignal</code> since all
+performed in <code>chunkSize</code>-byte chunks (default 128 KB).<p>The file handle is locked from the first read of the iterable until iteration
+ends, as with <a href=#filehandlepulltransforms-options><code>filehandle.pull()</code></a>. Unlike the async <code>pull()</code>, this method does not support <code>AbortSignal</code> since all
 operations are synchronous.<p>This function is only available when the <code>--experimental-stream-iter</code> flag is
 enabled.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 class=shiki><input class=js-flavor-toggle type=checkbox><code class="catppuccin-latte catppuccin-mocha language-mjs mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=mjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> open </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:fs/promises'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> textSync</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> pipeToSync </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:stream/iter'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
@@ -1659,7 +1665,10 @@ no-op. If <code>autoClose</code> is true, closes the file handle synchronously.
 called), <code>asyncDispose</code> calls <code>fail()</code>. If <code>end()</code> is pending, it waits
 for it to complete.</li>
 <li><code>using w = fh.writer()</code> — calls <code>fail()</code> unconditionally.</li>
-</ul><p>The <code>writeSync()</code> and <code>writevSync()</code> methods enable the try-sync fast path
+</ul><p>Async writes (<code>write()</code> and <code>writev()</code>) that are started without awaiting the
+previous one are performed one at a time, in the order they were called, so
+they never overlap in the file. A queued write is not performed if the writer
+fails, or its <code>signal</code> aborts, before its turn.<p>The <code>writeSync()</code> and <code>writevSync()</code> methods enable the try-sync fast path
 used by <a href=stream_iter.html#pipetosource-transforms-writer-options><code>stream/iter pipeTo()</code></a>. When the reader's chunk size matches the
 writer's <code>chunkSize</code>, all writes in a <code>pipeTo()</code> pipeline complete
 synchronously with zero promise overhead.<p>This function is only available when the <code>--experimental-stream-iter</code> flag is
@@ -1698,7 +1707,9 @@ enabled.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f6
 <span class=line></span>
 <span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>run</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>()</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>catch</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(console</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>error)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
-<section><h5><code>filehandle[Symbol.asyncDispose]()</code><span><a id=fs_filehandle_symbol_asyncdispose></a></span><span><a class=mark id=filehandlesymbolasyncdispose href=#filehandlesymbolasyncdispose>#</a></span></h5><div class=api_metadata><span>Added in: v20.4.0, v18.18.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.2.0<td><p>No longer experimental.</table></details></div><p>Calls <code>filehandle.close()</code> and returns a promise that fulfills when the
+<section><h5><code>filehandle[Symbol.asyncDispose]()</code><span><a id=fs_filehandle_symbol_asyncdispose></a></span><span><a class=mark id=filehandlesymbolasyncdispose href=#filehandlesymbolasyncdispose>#</a></span></h5><div class=api_metadata><span>Added in: v20.4.0, v18.18.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.2.0<td><p>No longer experimental.</table></details></div><ul>
+<li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a></li>
+</ul><p>Calls <code>filehandle.close()</code> and returns a promise that fulfills when the
 filehandle is closed.<p>This method enables the filehandle to be used with <a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/await_using><code>await using</code></a>, which
 will automatically close the file when the scope exits. For more information,
 see the <a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/using>MDN documentation on <code>using</code> statements</a>.</section>
@@ -1775,7 +1786,9 @@ copy-on-write, then the operation will fail.</li>
 </li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a> Fulfills with <code>undefined</code> upon success.</li>
 </ul><p>Asynchronously copies <code>src</code> to <code>dest</code>. By default, <code>dest</code> is overwritten if it
-already exists.<p>No guarantees are made about the atomicity of the copy operation. If an
+already exists.<p>Symbolic links are followed. If <code>src</code> is a symbolic link, the target file is
+copied. If <code>dest</code> is a symbolic link, the target file is overwritten unless
+<code>mode</code> contains <code>fs.constants.COPYFILE_EXCL</code>.<p>No guarantees are made about the atomicity of the copy operation. If an
 error occurs after the destination file has been opened for writing, an attempt
 will be made to remove the destination.<pre class="catppuccin-latte catppuccin-mocha language-mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code class="catppuccin-latte catppuccin-mocha language-mjs mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=mjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> copyFile</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> constants </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:fs/promises'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span>
@@ -1829,7 +1842,7 @@ be skipped. <strong>Default:</strong> <code>false</code></li>
 </ul><p>Asynchronously copies the entire directory structure from <code>src</code> to <code>dest</code>,
 including subdirectories and files.<p>When copying a directory to another directory, globs are not supported and
 behavior is similar to <code>cp dir1/ dir2/</code>.</section>
-<section><h4><code>fsPromises.glob(pattern[, options])</code><span><a id=fs_fspromises_glob_pattern_options></a></span><span><a class=mark id=fspromisesglobpattern-options href=#fspromisesglobpattern-options>#</a></span></h4><div class=api_metadata><span>Added in: v22.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.1.0<td><p>Add support for the <code>followSymlinks</code> option.<tr><td>v24.1.0, v22.17.0<td><p>Add support for <code>URL</code> instances for <code>cwd</code> option.<tr><td>v24.0.0, v22.17.0<td><p>Marking the API stable.<tr><td>v23.7.0, v22.14.0<td><p>Add support for <code>exclude</code> option to accept glob patterns.<tr><td>v22.2.0<td><p>Add support for <code>withFileTypes</code> as an option.</table></details></div><ul>
+<section><h4><code>fsPromises.glob(pattern[, options])</code><span><a id=fs_fspromises_glob_pattern_options></a></span><span><a class=mark id=fspromisesglobpattern-options href=#fspromisesglobpattern-options>#</a></span></h4><div class=api_metadata><span>Added in: v22.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.9.0<td><p>Add support for the <code>maxDepth</code> option.<tr><td>v26.1.0<td><p>Add support for the <code>followSymlinks</code> option.<tr><td>v24.1.0, v22.17.0<td><p>Add support for <code>URL</code> instances for <code>cwd</code> option.<tr><td>v24.0.0, v22.17.0<td><p>Marking the API stable.<tr><td>v23.7.0, v22.14.0<td><p>Add support for <code>exclude</code> option to accept glob patterns.<tr><td>v22.2.0<td><p>Add support for <code>withFileTypes</code> as an option.</table></details></div><ul>
 <li><code>pattern</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a>[]</li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
 <ul>
@@ -1841,6 +1854,8 @@ specifies paths to exclude. Note: Negation patterns (e.g., '!foo.js') are
 not supported.</li>
 <li><code>followSymlinks</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> When <code>true</code>, symbolic links to directories are
 followed while expanding <code>**</code> patterns. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>maxDepth</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a> Maximum number of directory levels to traverse.
+The <code>cwd</code> directory has a depth of <code>0</code>. <strong>Default:</strong> <code>Infinity</code>.</li>
 <li><code>withFileTypes</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> <code>true</code> if the glob should return paths as Dirents,
 <code>false</code> otherwise. <strong>Default:</strong> <code>false</code>.</li>
 </ul>
@@ -1859,7 +1874,7 @@ traversed recursively.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>    console</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>log</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(entry)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)()</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
-<section><h4><code>fsPromises.lchmod(path, mode)</code><span><a id=fs_fspromises_lchmod_path_mode></a></span><span><a class=mark id=fspromiseslchmodpath-mode href=#fspromiseslchmodpath-mode>#</a></span></h4><div class=api_metadata><span>Deprecated in: v10.0.0</span></div><div class="api_stability api_stability_0"><p>Stability: 0 - Deprecated</div><ul>
+<section><h4><code>fsPromises.lchmod(path, mode)</code><span><a id=fs_fspromises_lchmod_path_mode></a></span><span><a class=mark id=fspromiseslchmodpath-mode href=#fspromiseslchmodpath-mode>#</a></span></h4><div class=api_metadata><span>Added in: v10.0.0</span><span>Deprecated in: v10.0.0</span></div><div class="api_stability api_stability_0"><p>Stability: 0 - Deprecated</div><ul>
 <li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
 <li><code>mode</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a></li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a> Fulfills with <code>undefined</code> upon success.</li>
@@ -1885,12 +1900,13 @@ the symbolic link itself are changed.</section>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a>  Fulfills with <code>undefined</code> upon success.</li>
 </ul><p>Creates a new link from the <code>existingPath</code> to the <code>newPath</code>. See the POSIX
 <a href=http://man7.org/linux/man-pages/man2/link.2.html><code>link(2)</code></a> documentation for more detail.</section>
-<section><h4><code>fsPromises.lstat(path[, options])</code><span><a id=fs_fspromises_lstat_path_options></a></span><span><a class=mark id=fspromiseslstatpath-options href=#fspromiseslstatpath-options>#</a></span></h4><div class=api_metadata><span>Added in: v10.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v10.5.0<td><p>Accepts an additional <code>options</code> object to specify whether the numeric values returned should be bigint.</table></details></div><ul>
+<section><h4><code>fsPromises.lstat(path[, options])</code><span><a id=fs_fspromises_lstat_path_options></a></span><span><a class=mark id=fspromiseslstatpath-options href=#fspromiseslstatpath-options>#</a></span></h4><div class=api_metadata><span>Added in: v10.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.8.0<td><p>Accepts an additional <code>signal</code> option to allow aborting the operation.<tr><td>v10.5.0<td><p>Accepts an additional <code>options</code> object to specify whether the numeric values returned should be bigint.</table></details></div><ul>
 <li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
 <ul>
 <li><code>bigint</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> Whether the numeric values in the returned
 <a href=fs.html#class-fsstats><code>&lt;fs.Stats></code></a> object should be <code>bigint</code>. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>signal</code> <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a> An AbortSignal to cancel the operation. <strong>Default:</strong> <code>undefined</code>.</li>
 </ul>
 </li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a>  Fulfills with the <a href=fs.html#class-fsstats><code>&lt;fs.Stats></code></a> object for the given
@@ -1943,8 +1959,10 @@ rejection only when <code>recursive</code> is false.<pre style=background-color:
 <li><code>encoding</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> <strong>Default:</strong> <code>'utf8'</code></li>
 </ul>
 </li>
-<li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a>  Fulfills with a string containing the file system path
-of the newly created temporary directory.</li>
+<li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a> Fulfills with the created directory path.
+If <code>encoding</code> is <code>'buffer'</code>, then the resulting directory
+path is returned as a <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a>. Otherwise, the path is returned as a
+<a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> using the specified encoding.</li>
 </ul><p>Creates a unique temporary directory. A unique directory name is generated by
 appending six random characters to the end of the provided <code>prefix</code>. Due to
 platform inconsistencies, avoid trailing <code>X</code> characters in <code>prefix</code>. Some
@@ -1973,16 +1991,17 @@ characters directly to the <code>prefix</code> string. For instance, given a dir
 </li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a> Fulfills with a Promise for an async-disposable Object:
 <ul>
-<li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> The path of the created directory.</li>
+<li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> The path of the created directory.</li>
 <li><code>remove</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction><code>&lt;AsyncFunction></code></a> A function which removes the created directory.</li>
 <li><code>[Symbol.asyncDispose]</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction><code>&lt;AsyncFunction></code></a> The same as <code>remove</code>.</li>
 </ul>
 </li>
 </ul><p>The resulting Promise holds an async-disposable object whose <code>path</code> property
-holds the created directory path. When the object is disposed, the directory
-and its contents will be removed asynchronously if it still exists. If the
-directory cannot be deleted, disposal will throw an error. The object has an
-async <code>remove()</code> method which will perform the same task.<p>Both this function and the disposal function on the resulting object are
+holds the created directory path. If <code>encoding</code> is <code>'buffer'</code>, the <code>path</code> will
+also be a <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a>, otherwise a <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a>. When the object is disposed, the
+directory and its contents will be removed asynchronously if it still exists. If
+the directory cannot be deleted, disposal will throw an error. The object has an
+async <code>remove()</code> method which will perform the same task.<p>Both this function and the disposal function on the resulting object are
 async, so it should be used with <code>await</code> + <a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/await_using><code>await using</code></a> as in
 <code>await using dir = await fsPromises.mkdtempDisposable('prefix')</code>.<p>See the <a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/using>MDN documentation on <code>using</code> statements</a> for more information about
 explicit resource management.<p>For detailed information, see the documentation of <a href=#fspromisesmkdtempprefix-options><code>fsPromises.mkdtemp()</code></a>.<p>The optional <code>options</code> argument can be a string specifying an encoding, or an
@@ -2188,7 +2207,7 @@ retries. This option is ignored if the <code>recursive</code> option is not <co
 </li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a> Fulfills with <code>undefined</code> upon success.</li>
 </ul><p>Removes files and directories (modeled on the standard POSIX <code>rm</code> utility).</section>
-<section><h4><code>fsPromises.stat(path[, options])</code><span><a id=fs_fspromises_stat_path_options></a></span><span><a class=mark id=fspromisesstatpath-options href=#fspromisesstatpath-options>#</a></span></h4><div class=api_metadata><span>Added in: v10.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v25.7.0<td><p>Accepts a <code>throwIfNoEntry</code> option to specify whether an exception should be thrown if the entry does not exist.<tr><td>v10.5.0<td><p>Accepts an additional <code>options</code> object to specify whether the numeric values returned should be bigint.</table></details></div><ul>
+<section><h4><code>fsPromises.stat(path[, options])</code><span><a id=fs_fspromises_stat_path_options></a></span><span><a class=mark id=fspromisesstatpath-options href=#fspromisesstatpath-options>#</a></span></h4><div class=api_metadata><span>Added in: v10.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.8.0<td><p>Accepts an additional <code>signal</code> option to allow aborting the operation.<tr><td>v25.7.0<td><p>Accepts a <code>throwIfNoEntry</code> option to specify whether an exception should be thrown if the entry does not exist.<tr><td>v10.5.0<td><p>Accepts an additional <code>options</code> object to specify whether the numeric values returned should be bigint.</table></details></div><ul>
 <li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
 <ul>
@@ -2197,6 +2216,7 @@ retries. This option is ignored if the <code>recursive</code> option is not <co
 <li><code>throwIfNoEntry</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> Whether an exception will be thrown
 if no file system entry exists, rather than returning <code>undefined</code>.
 <strong>Default:</strong> <code>true</code>.</li>
+<li><code>signal</code> <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a> An AbortSignal to cancel the operation. <strong>Default:</strong> <code>undefined</code>.</li>
 </ul>
 </li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a>  Fulfills with the <a href=fs.html#class-fsstats><code>&lt;fs.Stats></code></a> object for the
@@ -2265,9 +2285,9 @@ filename passed to the listener. <strong>Default:</strong> <code>'utf8'</code>.
 should stop.</li>
 <li><code>maxQueue</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> Specifies the number of events to queue between iterations
 of the <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator><code>&lt;AsyncIterator></code></a> returned. <strong>Default:</strong> <code>2048</code>.</li>
-<li><code>overflow</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> Either <code>'ignore'</code> or <code>'throw'</code> when there are more events to be
+<li><code>overflow</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> Either <code>'ignore'</code> or <code>'error'</code> when there are more events to be
 queued than <code>maxQueue</code> allows. <code>'ignore'</code> means overflow events are dropped and a
-warning is emitted, while <code>'throw'</code> means to throw an exception. <strong>Default:</strong> <code>'ignore'</code>.</li>
+warning is emitted, while <code>'error'</code> means to throw an exception. <strong>Default:</strong> <code>'ignore'</code>.</li>
 <li><code>ignore</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp><code>&lt;RegExp></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array><code>&lt;Array></code></a> Pattern(s) to ignore. Strings are
 glob patterns (using <a href=https://github.com/isaacs/minimatch><code>minimatch</code></a>), RegExp patterns are tested against
 the filename, and functions receive the filename and return <code>true</code> to
@@ -2700,7 +2720,9 @@ through any other <code>fs</code> operation may lead to undefined behavior.<p>Se
 already exists. No arguments other than a possible exception are given to the
 callback function. Node.js makes no guarantees about the atomicity of the copy
 operation. If an error occurs after the destination file has been opened for
-writing, Node.js will attempt to remove the destination.<p><code>mode</code> is an optional integer that specifies the behavior
+writing, Node.js will attempt to remove the destination.<p>Symbolic links are followed. If <code>src</code> is a symbolic link, the target file is
+copied. If <code>dest</code> is a symbolic link, the target file is overwritten unless
+<code>mode</code> contains <code>fs.constants.COPYFILE_EXCL</code>.<p><code>mode</code> is an optional integer that specifies the behavior
 of the copy operation. It is possible to create a mask consisting of the bitwise
 OR of two or more values (e.g.
 <code>fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE</code>).<ul>
@@ -2764,7 +2786,7 @@ be skipped. <strong>Default:</strong> <code>false</code></li>
 </ul><p>Asynchronously copies the entire directory structure from <code>src</code> to <code>dest</code>,
 including subdirectories and files.<p>When copying a directory to another directory, globs are not supported and
 behavior is similar to <code>cp dir1/ dir2/</code>.</section>
-<section><h4><code>fs.createReadStream(path[, options])</code><span><a id=fs_fs_createreadstream_path_options></a></span><span><a class=mark id=fscreatereadstreampath-options href=#fscreatereadstreampath-options>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.31</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v16.10.0<td><p>The <code>fs</code> option does not need <code>open</code> method if an <code>fd</code> was provided.<tr><td>v16.10.0<td><p>The <code>fs</code> option does not need <code>close</code> method if <code>autoClose</code> is <code>false</code>.<tr><td>v15.5.0<td><p>Add support for <code>AbortSignal</code>.<tr><td>v15.4.0<td><p>The <code>fd</code> option accepts FileHandle arguments.<tr><td>v14.0.0<td><p>Change <code>emitClose</code> default to <code>true</code>.<tr><td>v13.6.0, v12.17.0<td><p>The <code>fs</code> options allow overriding the used <code>fs</code> implementation.<tr><td>v12.10.0<td><p>Enable <code>emitClose</code> option.<tr><td>v11.0.0<td><p>Impose new restrictions on <code>start</code> and <code>end</code>, throwing more appropriate errors in cases when we cannot reasonably handle the input values.<tr><td>v7.6.0<td><p>The <code>path</code> parameter can be a WHATWG <code>URL</code> object using <code>file:</code> protocol.<tr><td>v7.0.0<td><p>The passed <code>options</code> object will never be modified.<tr><td>v2.3.0<td><p>The passed <code>options</code> object can be a string now.</table></details></div><ul>
+<section><h4><code>fs.createReadStream(path[, options])</code><span><a id=fs_fs_createreadstream_path_options></a></span><span><a class=mark id=fscreatereadstreampath-options href=#fscreatereadstreampath-options>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.31</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.8.0<td><p>Add the <code>windowsHandle</code> option.<tr><td>v16.10.0<td><p>The <code>fs</code> option does not need <code>open</code> method if an <code>fd</code> was provided.<tr><td>v16.10.0<td><p>The <code>fs</code> option does not need <code>close</code> method if <code>autoClose</code> is <code>false</code>.<tr><td>v15.5.0<td><p>Add support for <code>AbortSignal</code>.<tr><td>v15.4.0<td><p>The <code>fd</code> option accepts FileHandle arguments.<tr><td>v14.0.0<td><p>Change <code>emitClose</code> default to <code>true</code>.<tr><td>v13.6.0, v12.17.0<td><p>The <code>fs</code> options allow overriding the used <code>fs</code> implementation.<tr><td>v12.10.0<td><p>Enable <code>emitClose</code> option.<tr><td>v11.0.0<td><p>Impose new restrictions on <code>start</code> and <code>end</code>, throwing more appropriate errors in cases when we cannot reasonably handle the input values.<tr><td>v7.6.0<td><p>The <code>path</code> parameter can be a WHATWG <code>URL</code> object using <code>file:</code> protocol.<tr><td>v7.0.0<td><p>The passed <code>options</code> object will never be modified.<tr><td>v2.3.0<td><p>The passed <code>options</code> object can be a string now.</table></details></div><ul>
 <li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
 <ul>
@@ -2780,6 +2802,8 @@ behavior is similar to <code>cp dir1/ dir2/</code>.</section>
 <li><code>highWaterMark</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a> <strong>Default:</strong> <code>64 * 1024</code></li>
 <li><code>fs</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> <strong>Default:</strong> <code>null</code></li>
 <li><code>signal</code> <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> <strong>Default:</strong> <code>null</code></li>
+<li><code>windowsHandle</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#bigint_type><code>&lt;bigint></code></a> A raw Win32 <code>HANDLE</code> value to read from, in place
+of <code>fd</code>. Windows only. <strong>Default:</strong> <code>null</code></li>
 </ul>
 </li>
 <li>Returns: <a href=fs.html#class-fsreadstream><code>&lt;fs.ReadStream></code></a></li>
@@ -2795,7 +2819,11 @@ emitted. <code>fd</code> should be blocking; non-blocking <code>fd</code>s shoul
 <a href=net.html#class-netsocket><code>&lt;net.Socket></code></a>.<p>If <code>fd</code> points to a character device that only supports blocking reads
 (such as keyboard or sound card), read operations do not finish until data is
 available. This can prevent the process from exiting and the stream from
-closing naturally.<p>By default, the stream will emit a <code>'close'</code> event after it has been
+closing naturally.<p>On Windows, a value passed in <code>fd</code> is interpreted as a CRT file descriptor. To
+use a raw Win32 <code>HANDLE</code> instead, such as an inherited anonymous pipe handle
+obtained from another process, pass it as <code>windowsHandle</code>. The handle is wrapped
+in a file descriptor that the stream owns and closes. The <code>windowsHandle</code> option
+throws on non-Windows platforms and cannot be combined with the <code>fs</code> option.<p>By default, the stream will emit a <code>'close'</code> event after it has been
 destroyed.  Set the <code>emitClose</code> option to <code>false</code> to change this behavior.<p>By providing the <code>fs</code> option, it is possible to override the corresponding <code>fs</code>
 implementations for <code>open</code>, <code>read</code>, and <code>close</code>. When providing the <code>fs</code> option,
 an override for <code>read</code> is required. If no <code>fd</code> is provided, an override for
@@ -2823,7 +2851,7 @@ file was created.<p>An example to read the last 10 bytes of a file which is 100 
 <span class=line></span>
 <span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>createReadStream</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'sample.txt'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> start</span><span style=color:#179299;--shiki-dark:#94E2D5>:</span><span style=color:#FE640B;--shiki-dark:#FAB387> 90</span><span style=color:#7C7F93;--shiki-dark:#9399B2>,</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> end</span><span style=color:#179299;--shiki-dark:#94E2D5>:</span><span style=color:#FE640B;--shiki-dark:#FAB387> 99</span><span style=color:#7C7F93;--shiki-dark:#9399B2> }</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>mjs</span><button class=copy-button>copy</button></div></pre><p>If <code>options</code> is a string, then it specifies the encoding.</section>
-<section><h4><code>fs.createWriteStream(path[, options])</code><span><a id=fs_fs_createwritestream_path_options></a></span><span><a class=mark id=fscreatewritestreampath-options href=#fscreatewritestreampath-options>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.31</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v21.0.0, v20.10.0<td><p>The <code>flush</code> option is now supported.<tr><td>v16.10.0<td><p>The <code>fs</code> option does not need <code>open</code> method if an <code>fd</code> was provided.<tr><td>v16.10.0<td><p>The <code>fs</code> option does not need <code>close</code> method if <code>autoClose</code> is <code>false</code>.<tr><td>v15.5.0<td><p>Add support for <code>AbortSignal</code>.<tr><td>v15.4.0<td><p>The <code>fd</code> option accepts FileHandle arguments.<tr><td>v14.0.0<td><p>Change <code>emitClose</code> default to <code>true</code>.<tr><td>v13.6.0, v12.17.0<td><p>The <code>fs</code> options allow overriding the used <code>fs</code> implementation.<tr><td>v12.10.0<td><p>Enable <code>emitClose</code> option.<tr><td>v7.6.0<td><p>The <code>path</code> parameter can be a WHATWG <code>URL</code> object using <code>file:</code> protocol.<tr><td>v7.0.0<td><p>The passed <code>options</code> object will never be modified.<tr><td>v5.5.0<td><p>The <code>autoClose</code> option is supported now.<tr><td>v2.3.0<td><p>The passed <code>options</code> object can be a string now.</table></details></div><ul>
+<section><h4><code>fs.createWriteStream(path[, options])</code><span><a id=fs_fs_createwritestream_path_options></a></span><span><a class=mark id=fscreatewritestreampath-options href=#fscreatewritestreampath-options>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.31</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.8.0<td><p>Add the <code>windowsHandle</code> option.<tr><td>v22.0.0<td><p>bump default highWaterMark.<tr><td>v21.0.0, v20.10.0<td><p>The <code>flush</code> option is now supported.<tr><td>v16.10.0<td><p>The <code>fs</code> option does not need <code>open</code> method if an <code>fd</code> was provided.<tr><td>v16.10.0<td><p>The <code>fs</code> option does not need <code>close</code> method if <code>autoClose</code> is <code>false</code>.<tr><td>v15.5.0<td><p>Add support for <code>AbortSignal</code>.<tr><td>v15.4.0<td><p>The <code>fd</code> option accepts FileHandle arguments.<tr><td>v14.0.0<td><p>Change <code>emitClose</code> default to <code>true</code>.<tr><td>v13.6.0, v12.17.0<td><p>The <code>fs</code> options allow overriding the used <code>fs</code> implementation.<tr><td>v12.10.0<td><p>Enable <code>emitClose</code> option.<tr><td>v7.6.0<td><p>The <code>path</code> parameter can be a WHATWG <code>URL</code> object using <code>file:</code> protocol.<tr><td>v7.0.0<td><p>The passed <code>options</code> object will never be modified.<tr><td>v5.5.0<td><p>The <code>autoClose</code> option is supported now.<tr><td>v2.3.0<td><p>The passed <code>options</code> object can be a string now.</table></details></div><ul>
 <li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
 <ul>
@@ -2837,9 +2865,12 @@ file was created.<p>An example to read the last 10 bytes of a file which is 100 
 <li><code>start</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a></li>
 <li><code>fs</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> <strong>Default:</strong> <code>null</code></li>
 <li><code>signal</code> <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> <strong>Default:</strong> <code>null</code></li>
-<li><code>highWaterMark</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> <strong>Default:</strong> <code>16384</code></li>
+<li><code>highWaterMark</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> <strong>Default:</strong> See
+<a href=stream.html#streamgetdefaulthighwatermarkobjectmode><code>stream.getDefaultHighWaterMark()</code></a>.</li>
 <li><code>flush</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> If <code>true</code>, the underlying file descriptor is flushed
 prior to closing it. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>windowsHandle</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#bigint_type><code>&lt;bigint></code></a> A raw Win32 <code>HANDLE</code> value to write to, in place
+of <code>fd</code>. Windows only. <strong>Default:</strong> <code>null</code></li>
 </ul>
 </li>
 <li>Returns: <a href=fs.html#class-fswritestream><code>&lt;fs.WriteStream></code></a></li>
@@ -2851,7 +2882,11 @@ default <code>w</code>. The <code>encoding</code> can be any one of those accep
 the file descriptor will be closed automatically. If <code>autoClose</code> is false,
 then the file descriptor won't be closed, even if there's an error.
 It is the application's responsibility to close it and make sure there's no
-file descriptor leak.<p>By default, the stream will emit a <code>'close'</code> event after it has been
+file descriptor leak.<p>On Windows, a value passed in <code>fd</code> is interpreted as a CRT file descriptor. To
+use a raw Win32 <code>HANDLE</code> instead, such as an inherited anonymous pipe handle
+obtained from another process, pass it as <code>windowsHandle</code>. The handle is wrapped
+in a file descriptor that the stream owns and closes. The <code>windowsHandle</code> option
+throws on non-Windows platforms and cannot be combined with the <code>fs</code> option.<p>By default, the stream will emit a <code>'close'</code> event after it has been
 destroyed.  Set the <code>emitClose</code> option to <code>false</code> to change this behavior.<p>By providing the <code>fs</code> option it is possible to override the corresponding <code>fs</code>
 implementations for <code>open</code>, <code>write</code>, <code>writev</code>, and <code>close</code>. Overriding <code>write()</code>
 without <code>writev()</code> can reduce performance as some optimizations (<code>_writev()</code>)
@@ -2997,12 +3032,13 @@ given to the completion callback.<p>See the POSIX <a href=http://man7.org/linux/
 operating system's synchronized I/O completion state. Refer to the POSIX
 <a href=http://man7.org/linux/man-pages/man2/fdatasync.2.html><code>fdatasync(2)</code></a> documentation for details. No arguments other than a possible
 exception are given to the completion callback.</section>
-<section><h4><code>fs.fstat(fd[, options], callback)</code><span><a id=fs_fs_fstat_fd_options_callback></a></span><span><a class=mark id=fsfstatfd-options-callback href=#fsfstatfd-options-callback>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.95</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v18.0.0<td><p>Passing an invalid callback to the <code>callback</code> argument now throws <code>ERR_INVALID_ARG_TYPE</code> instead of <code>ERR_INVALID_CALLBACK</code>.<tr><td>v10.5.0<td><p>Accepts an additional <code>options</code> object to specify whether the numeric values returned should be bigint.<tr><td>v10.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will throw a <code>TypeError</code> at runtime.<tr><td>v7.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will emit a deprecation warning with id DEP0013.</table></details></div><ul>
+<section><h4><code>fs.fstat(fd[, options], callback)</code><span><a id=fs_fs_fstat_fd_options_callback></a></span><span><a class=mark id=fsfstatfd-options-callback href=#fsfstatfd-options-callback>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.95</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.8.0<td><p>Accepts an additional <code>signal</code> option to allow aborting the operation.<tr><td>v18.0.0<td><p>Passing an invalid callback to the <code>callback</code> argument now throws <code>ERR_INVALID_ARG_TYPE</code> instead of <code>ERR_INVALID_CALLBACK</code>.<tr><td>v10.5.0<td><p>Accepts an additional <code>options</code> object to specify whether the numeric values returned should be bigint.<tr><td>v10.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will throw a <code>TypeError</code> at runtime.<tr><td>v7.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will emit a deprecation warning with id DEP0013.</table></details></div><ul>
 <li><code>fd</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a></li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
 <ul>
 <li><code>bigint</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> Whether the numeric values in the returned
 <a href=fs.html#class-fsstats><code>&lt;fs.Stats></code></a> object should be <code>bigint</code>. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>signal</code> <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a> An AbortSignal to cancel the operation. <strong>Default:</strong> <code>undefined</code>.</li>
 </ul>
 </li>
 <li><code>callback</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a>
@@ -3068,7 +3104,7 @@ extended part is filled with null bytes (<code>'\0'</code>):<p>If <code>len</cod
 </li>
 </ul><p>Change the file system timestamps of the object referenced by the supplied file
 descriptor. See <a href=#fsutimespath-atime-mtime-callback><code>fs.utimes()</code></a>.</section>
-<section><h4><code>fs.glob(pattern[, options], callback)</code><span><a id=fs_fs_glob_pattern_options_callback></a></span><span><a class=mark id=fsglobpattern-options-callback href=#fsglobpattern-options-callback>#</a></span></h4><div class=api_metadata><span>Added in: v22.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.1.0<td><p>Add support for the <code>followSymlinks</code> option.<tr><td>v24.1.0, v22.17.0<td><p>Add support for <code>URL</code> instances for <code>cwd</code> option.<tr><td>v24.0.0, v22.17.0<td><p>Marking the API stable.<tr><td>v23.7.0, v22.14.0<td><p>Add support for <code>exclude</code> option to accept glob patterns.<tr><td>v22.2.0<td><p>Add support for <code>withFileTypes</code> as an option.</table></details></div><ul>
+<section><h4><code>fs.glob(pattern[, options], callback)</code><span><a id=fs_fs_glob_pattern_options_callback></a></span><span><a class=mark id=fsglobpattern-options-callback href=#fsglobpattern-options-callback>#</a></span></h4><div class=api_metadata><span>Added in: v22.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.9.0<td><p>Add support for the <code>maxDepth</code> option.<tr><td>v26.1.0<td><p>Add support for the <code>followSymlinks</code> option.<tr><td>v24.1.0, v22.17.0<td><p>Add support for <code>URL</code> instances for <code>cwd</code> option.<tr><td>v24.0.0, v22.17.0<td><p>Marking the API stable.<tr><td>v23.7.0, v22.14.0<td><p>Add support for <code>exclude</code> option to accept glob patterns.<tr><td>v22.2.0<td><p>Add support for <code>withFileTypes</code> as an option.</table></details></div><ul>
 <li>
 <p><code>pattern</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a>[]</p>
 </li>
@@ -3080,6 +3116,8 @@ descriptor. See <a href=#fsutimespath-atime-mtime-callback><code>fs.utimes()</co
 list of glob patterns to be excluded. If a function is provided, return <code>true</code> to exclude the item, <code>false</code> to include it. <strong>Default:</strong> <code>undefined</code>.</li>
 <li><code>followSymlinks</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> When <code>true</code>, symbolic links to directories are
 followed while expanding <code>**</code> patterns. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>maxDepth</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a> Maximum number of directory levels to traverse.
+The <code>cwd</code> directory has a depth of <code>0</code>. <strong>Default:</strong> <code>Infinity</code>.</li>
 <li><code>withFileTypes</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> <code>true</code> if the glob should return paths as Dirents,
 <code>false</code> otherwise. <strong>Default:</strong> <code>false</code>.</li>
 </ul>
@@ -3107,7 +3145,7 @@ traversed recursively.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>  console</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>log</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(matches)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>)</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
-<section><h4><code>fs.lchmod(path, mode, callback)</code><span><a id=fs_fs_lchmod_path_mode_callback></a></span><span><a class=mark id=fslchmodpath-mode-callback href=#fslchmodpath-mode-callback>#</a></span></h4><div class=api_metadata><span>Deprecated in: v0.4.7</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v18.0.0<td><p>Passing an invalid callback to the <code>callback</code> argument now throws <code>ERR_INVALID_ARG_TYPE</code> instead of <code>ERR_INVALID_CALLBACK</code>.<tr><td>v16.0.0<td><p>The error returned may be an <code>AggregateError</code> if more than one error is returned.<tr><td>v10.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will throw a <code>TypeError</code> at runtime.<tr><td>v7.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will emit a deprecation warning with id DEP0013.</table></details></div><div class="api_stability api_stability_0"><p>Stability: 0 - Deprecated</div><ul>
+<section><h4><code>fs.lchmod(path, mode, callback)</code><span><a id=fs_fs_lchmod_path_mode_callback></a></span><span><a class=mark id=fslchmodpath-mode-callback href=#fslchmodpath-mode-callback>#</a></span></h4><div class=api_metadata><span>Added in: v0.5.0</span><span>Deprecated in: v0.5.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v18.0.0<td><p>Passing an invalid callback to the <code>callback</code> argument now throws <code>ERR_INVALID_ARG_TYPE</code> instead of <code>ERR_INVALID_CALLBACK</code>.<tr><td>v16.0.0<td><p>The error returned may be an <code>AggregateError</code> if more than one error is returned.<tr><td>v10.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will throw a <code>TypeError</code> at runtime.<tr><td>v7.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will emit a deprecation warning with id DEP0013.</table></details></div><div class="api_stability api_stability_0"><p>Stability: 0 - Deprecated</div><ul>
 <li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
 <li><code>mode</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a></li>
 <li><code>callback</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a>
@@ -3153,12 +3191,13 @@ callback.</section>
 </ul><p>Creates a new link from the <code>existingPath</code> to the <code>newPath</code>. See the POSIX
 <a href=http://man7.org/linux/man-pages/man2/link.2.html><code>link(2)</code></a> documentation for more detail. No arguments other than a possible
 exception are given to the completion callback.</section>
-<section><h4><code>fs.lstat(path[, options], callback)</code><span><a id=fs_fs_lstat_path_options_callback></a></span><span><a class=mark id=fslstatpath-options-callback href=#fslstatpath-options-callback>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.30</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v18.0.0<td><p>Passing an invalid callback to the <code>callback</code> argument now throws <code>ERR_INVALID_ARG_TYPE</code> instead of <code>ERR_INVALID_CALLBACK</code>.<tr><td>v10.5.0<td><p>Accepts an additional <code>options</code> object to specify whether the numeric values returned should be bigint.<tr><td>v10.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will throw a <code>TypeError</code> at runtime.<tr><td>v7.6.0<td><p>The <code>path</code> parameter can be a WHATWG <code>URL</code> object using <code>file:</code> protocol.<tr><td>v7.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will emit a deprecation warning with id DEP0013.</table></details></div><ul>
+<section><h4><code>fs.lstat(path[, options], callback)</code><span><a id=fs_fs_lstat_path_options_callback></a></span><span><a class=mark id=fslstatpath-options-callback href=#fslstatpath-options-callback>#</a></span></h4><div class=api_metadata><span>Added in: v0.1.30</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.8.0<td><p>Accepts an additional <code>signal</code> option to allow aborting the operation.<tr><td>v18.0.0<td><p>Passing an invalid callback to the <code>callback</code> argument now throws <code>ERR_INVALID_ARG_TYPE</code> instead of <code>ERR_INVALID_CALLBACK</code>.<tr><td>v10.5.0<td><p>Accepts an additional <code>options</code> object to specify whether the numeric values returned should be bigint.<tr><td>v10.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will throw a <code>TypeError</code> at runtime.<tr><td>v7.6.0<td><p>The <code>path</code> parameter can be a WHATWG <code>URL</code> object using <code>file:</code> protocol.<tr><td>v7.0.0<td><p>The <code>callback</code> parameter is no longer optional. Not passing it will emit a deprecation warning with id DEP0013.</table></details></div><ul>
 <li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
 <ul>
 <li><code>bigint</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> Whether the numeric values in the returned
 <a href=fs.html#class-fsstats><code>&lt;fs.Stats></code></a> object should be <code>bigint</code>. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>signal</code> <a href=globals.html#class-abortsignal><code>&lt;AbortSignal></code></a> An AbortSignal to cancel the operation. <strong>Default:</strong> <code>undefined</code>.</li>
 </ul>
 </li>
 <li><code>callback</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a>
@@ -3217,16 +3256,18 @@ result in an error:<pre class="catppuccin-latte catppuccin-mocha language-mjs sh
 <li><code>callback</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a>
 <ul>
 <li><code>err</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error><code>&lt;Error></code></a></li>
-<li><code>directory</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a></li>
+<li><code>directory</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a></li>
 </ul>
 </li>
 </ul><p>Creates a unique temporary directory.<p>Generates six random characters to be appended behind a required
 <code>prefix</code> to create a unique temporary directory. Due to platform
 inconsistencies, avoid trailing <code>X</code> characters in <code>prefix</code>. Some platforms,
 notably the BSDs, can return more than six random characters, and replace
-trailing <code>X</code> characters in <code>prefix</code> with random characters.<p>The created directory path is passed as a string to the callback's second
-parameter.<p>The optional <code>options</code> argument can be a string specifying an encoding, or an
-object with an <code>encoding</code> property specifying the character encoding to use.<pre class="catppuccin-latte catppuccin-mocha language-mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code class="catppuccin-latte catppuccin-mocha language-mjs mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=mjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> mkdtemp </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:fs'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
+trailing <code>X</code> characters in <code>prefix</code> with random characters.<p>The optional <code>options</code> argument can be a string specifying an encoding, or an
+object with an <code>encoding</code> property specifying the character encoding to use.<p>The created directory path is passed to the callback's second parameter. If
+<code>encoding</code> is <code>'buffer'</code>, then the resulting directory path is passed as a
+<a href=buffer.html#class-buffer><code>&lt;Buffer></code></a>. Otherwise, the path is passed as a <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> using the specified
+encoding.<pre class="catppuccin-latte catppuccin-mocha language-mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code class="catppuccin-latte catppuccin-mocha language-mjs mjs shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 language=mjs><span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> mkdtemp </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:fs'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> join </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:path'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line><span style=color:#8839EF;--shiki-dark:#CBA6F7>import</span><span style=color:#7C7F93;--shiki-dark:#9399B2> {</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4> tmpdir </span><span style=color:#7C7F93;--shiki-dark:#9399B2>}</span><span style=color:#8839EF;--shiki-dark:#CBA6F7> from</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> 'node:os'</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span>
@@ -3919,7 +3960,7 @@ to be notified of file system changes.<ul>
 directories.</li>
 <li>On SunOS systems (including Solaris and SmartOS), this uses <a href=https://illumos.org/man/port_create><code>event ports</code></a>.</li>
 <li>On Windows systems, this feature depends on <a href=https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readdirectorychangesw><code>ReadDirectoryChangesW</code></a>.</li>
-<li>On AIX systems, this feature depends on <a href=https://developer.ibm.com/articles/au-aix_event_infrastructure/><code>AHAFS</code></a>, which must be enabled.</li>
+<li>On AIX systems, this feature depends on <a href="https://www.ibm.com/docs/en/aix/7.3.0?topic=management-aix-event-infrastructure-aix-aix-clusters-ahafs"><code>AHAFS</code></a>, which must be enabled.</li>
 <li>On IBM i systems, this feature is not supported.</li>
 </ul><p>If the underlying functionality is not available for some reason, then
 <code>fs.watch()</code> will not be able to function and may throw an exception.
@@ -4234,7 +4275,9 @@ through any other <code>fs</code> operation may lead to undefined behavior.<p>Se
 </ul><p>Synchronously copies <code>src</code> to <code>dest</code>. By default, <code>dest</code> is overwritten if it
 already exists. Returns <code>undefined</code>. Node.js makes no guarantees about the
 atomicity of the copy operation. If an error occurs after the destination file
-has been opened for writing, Node.js will attempt to remove the destination.<p><code>mode</code> is an optional integer that specifies the behavior
+has been opened for writing, Node.js will attempt to remove the destination.<p>Symbolic links are followed. If <code>src</code> is a symbolic link, the target file is
+copied. If <code>dest</code> is a symbolic link, the target file is overwritten unless
+<code>mode</code> contains <code>fs.constants.COPYFILE_EXCL</code>.<p><code>mode</code> is an optional integer that specifies the behavior
 of the copy operation. It is possible to create a mask consisting of the bitwise
 OR of two or more values (e.g.
 <code>fs.constants.COPYFILE_EXCL | fs.constants.COPYFILE_FICLONE</code>).<ul>
@@ -4338,7 +4381,7 @@ this API: <a href=#fsftruncatefd-len-callback><code>fs.ftruncate()</code></a>.</
 <li><code>atime</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date><code>&lt;Date></code></a></li>
 <li><code>mtime</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;number></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date><code>&lt;Date></code></a></li>
 </ul><p>Synchronous version of <a href=#fsfutimesfd-atime-mtime-callback><code>fs.futimes()</code></a>. Returns <code>undefined</code>.</section>
-<section><h4><code>fs.globSync(pattern[, options])</code><span><a id=fs_fs_globsync_pattern_options></a></span><span><a class=mark id=fsglobsyncpattern-options href=#fsglobsyncpattern-options>#</a></span></h4><div class=api_metadata><span>Added in: v22.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.1.0<td><p>Add support for the <code>followSymlinks</code> option.<tr><td>v24.1.0, v22.17.0<td><p>Add support for <code>URL</code> instances for <code>cwd</code> option.<tr><td>v24.0.0, v22.17.0<td><p>Marking the API stable.<tr><td>v23.7.0, v22.14.0<td><p>Add support for <code>exclude</code> option to accept glob patterns.<tr><td>v22.2.0<td><p>Add support for <code>withFileTypes</code> as an option.</table></details></div><ul>
+<section><h4><code>fs.globSync(pattern[, options])</code><span><a id=fs_fs_globsync_pattern_options></a></span><span><a class=mark id=fsglobsyncpattern-options href=#fsglobsyncpattern-options>#</a></span></h4><div class=api_metadata><span>Added in: v22.0.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v26.9.0<td><p>Add support for the <code>maxDepth</code> option.<tr><td>v26.1.0<td><p>Add support for the <code>followSymlinks</code> option.<tr><td>v24.1.0, v22.17.0<td><p>Add support for <code>URL</code> instances for <code>cwd</code> option.<tr><td>v24.0.0, v22.17.0<td><p>Marking the API stable.<tr><td>v23.7.0, v22.14.0<td><p>Add support for <code>exclude</code> option to accept glob patterns.<tr><td>v22.2.0<td><p>Add support for <code>withFileTypes</code> as an option.</table></details></div><ul>
 <li><code>pattern</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a>[]</li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
 <ul>
@@ -4347,6 +4390,8 @@ this API: <a href=#fsftruncatefd-len-callback><code>fs.ftruncate()</code></a>.</
 list of glob patterns to be excluded. If a function is provided, return <code>true</code> to exclude the item, <code>false</code> to include it. <strong>Default:</strong> <code>undefined</code>.</li>
 <li><code>followSymlinks</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> When <code>true</code>, symbolic links to directories are
 followed while expanding <code>**</code> patterns. <strong>Default:</strong> <code>false</code>.</li>
+<li><code>maxDepth</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a> Maximum number of directory levels to traverse.
+The <code>cwd</code> directory has a depth of <code>0</code>. <strong>Default:</strong> <code>Infinity</code>.</li>
 <li><code>withFileTypes</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> <code>true</code> if the glob should return paths as Dirents,
 <code>false</code> otherwise. <strong>Default:</strong> <code>false</code>.</li>
 </ul>
@@ -4360,7 +4405,7 @@ traversed recursively.<pre style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2
 <span class=line></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>console</span><span style=color:#179299;--shiki-dark:#94E2D5>.</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>log</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>globSync</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>(</span><span style=color:#40A02B;--shiki-dark:#A6E3A1>'**/*.js'</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>))</span><span style=color:#7C7F93;--shiki-dark:#9399B2>;</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>javascript</span><button class=copy-button>copy</button></div></pre></section>
-<section><h4><code>fs.lchmodSync(path, mode)</code><span><a id=fs_fs_lchmodsync_path_mode></a></span><span><a class=mark id=fslchmodsyncpath-mode href=#fslchmodsyncpath-mode>#</a></span></h4><div class=api_metadata><span>Deprecated in: v0.4.7</span></div><div class="api_stability api_stability_0"><p>Stability: 0 - Deprecated</div><ul>
+<section><h4><code>fs.lchmodSync(path, mode)</code><span><a id=fs_fs_lchmodsync_path_mode></a></span><span><a class=mark id=fslchmodsyncpath-mode href=#fslchmodsyncpath-mode>#</a></span></h4><div class=api_metadata><span>Added in: v0.5.0</span><span>Deprecated in: v0.5.0</span></div><div class="api_stability api_stability_0"><p>Stability: 0 - Deprecated</div><ul>
 <li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
 <li><code>mode</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#number_type><code>&lt;integer></code></a></li>
 </ul><p>Changes the permissions on a symbolic link. Returns <code>undefined</code>.<p>This method is only implemented on macOS.<p>See the POSIX <a href=http://man7.org/linux/man-pages/man2/lchmod.2.html><code>lchmod(2)</code></a> documentation for more detail.</section>
@@ -4413,8 +4458,10 @@ This is the synchronous version of <a href=#fsmkdirpath-options-callback><code>f
 <li><code>encoding</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> <strong>Default:</strong> <code>'utf8'</code></li>
 </ul>
 </li>
-<li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a></li>
-</ul><p>Returns the created directory path.<p>For detailed information, see the documentation of the asynchronous version of
+<li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a></li>
+</ul><p>Returns the created directory path. If <code>encoding</code> is <code>'buffer'</code>, then the
+resulting directory path is returned as a <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a>. Otherwise, the path
+is returned as a <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> using the specified encoding.<p>For detailed information, see the documentation of the asynchronous version of
 this API: <a href=#fsmkdtempprefix-options-callback><code>fs.mkdtemp()</code></a>.<p>The optional <code>options</code> argument can be a string specifying an encoding, or an
 object with an <code>encoding</code> property specifying the character encoding to use.</section>
 <section><h4><code>fs.mkdtempDisposableSync(prefix[, options])</code><span><a id=fs_fs_mkdtempdisposablesync_prefix_options></a></span><span><a class=mark id=fsmkdtempdisposablesyncprefix-options href=#fsmkdtempdisposablesyncprefix-options>#</a></span></h4><div class=api_metadata><span>Added in: v24.4.0</span></div><ul>
@@ -4426,19 +4473,29 @@ object with an <code>encoding</code> property specifying the character encoding 
 </li>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a> A disposable object:
 <ul>
-<li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> The path of the created directory.</li>
+<li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> The path of the created directory.</li>
 <li><code>remove</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a> A function which removes the created directory.</li>
 <li><code>[Symbol.dispose]</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function><code>&lt;Function></code></a> The same as <code>remove</code>.</li>
 </ul>
 </li>
 </ul><p>Returns a disposable object whose <code>path</code> property holds the created directory
-path. When the object is disposed, the directory and its contents will be
-removed if it still exists. If the directory cannot be deleted, disposal will
-throw an error. The object has a <code>remove()</code> method which will perform the same
-task.<p>See the <a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/using>MDN documentation on <code>using</code> statements</a> for more information about
+path. If <code>encoding</code> is <code>'buffer'</code>, the <code>path</code> will be a <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a>. When the
+object is disposed, the directory and its contents will be removed if it still
+exists. If the directory cannot be deleted, disposal will throw an error. The
+object has a <code>remove()</code> method which will perform the same task.<p>See the <a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/using>MDN documentation on <code>using</code> statements</a> for more information about
 explicit resource management.<p>For detailed information, see the documentation of <a href=#fsmkdtempprefix-options-callback><code>fs.mkdtemp()</code></a>.<p>There is no callback-based version of this API because it is designed for use
 with the <a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/using><code>using</code></a> syntax.<p>The optional <code>options</code> argument can be a string specifying an encoding, or an
 object with an <code>encoding</code> property specifying the character encoding to use.</section>
+<section><h4><code>fs.openAsBlobSync(path[, options])</code><span><a id=fs_fs_openasblobsync_path_options></a></span><span><a class=mark id=fsopenasblobsyncpath-options href=#fsopenasblobsyncpath-options>#</a></span></h4><div class=api_metadata><span>Added in: v26.10.0</span></div><ul>
+<li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
+<li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
+<ul>
+<li><code>type</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> An optional mime type for the blob.</li>
+</ul>
+</li>
+<li>Returns: <a href=buffer.html#class-blob><code>&lt;Blob></code></a></li>
+</ul><p>For detailed information, see the documentation of the Promise-returning
+version of this API: <a href=#fsopenasblobpath-options><code>fs.openAsBlob()</code></a>.</section>
 <section><h4><code>fs.opendirSync(path[, options])</code><span><a id=fs_fs_opendirsync_path_options></a></span><span><a class=mark id=fsopendirsyncpath-options href=#fsopendirsyncpath-options>#</a></span></h4><div class=api_metadata><span>Added in: v12.12.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v20.1.0, v18.17.0<td><p>Added <code>recursive</code> option.<tr><td>v13.1.0, v12.16.0<td><p>The <code>bufferSize</code> option was introduced.</table></details></div><ul>
 <li><code>path</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=url.html#the-whatwg-url-api><code>&lt;URL></code></a></li>
 <li><code>options</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object><code>&lt;Object></code></a>
@@ -4739,8 +4796,9 @@ Subsequent reads will result in errors.</section>
 <section><h5><code>dir.read()</code><span><a id=fs_dir_read></a></span><span><a class=mark id=dirread href=#dirread>#</a></span></h5><div class=api_metadata><span>Added in: v12.12.0</span></div><ul>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a> Fulfills with a <a href=fs.html#class-fsdirent><code>&lt;fs.Dirent></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a></li>
 </ul><p>Asynchronously read the next directory entry via <a href=http://man7.org/linux/man-pages/man3/readdir.3.html><code>readdir(3)</code></a> as an <a href=fs.html#class-fsdirent><code>&lt;fs.Dirent></code></a>.<p>A promise is returned that will be fulfilled with an <a href=fs.html#class-fsdirent><code>&lt;fs.Dirent></code></a>, or <code>null</code>
-if there are no more directory entries to read.<p>Directory entries returned by this function are in no particular order as
-provided by the operating system's underlying directory mechanisms.
+if there are no more directory entries to read.<p>For directory reads handled by the native file system, directory entries
+returned by this function are in no particular order as provided by the
+operating system's underlying directory mechanisms.
 Entries added or removed while iterating over the directory might not be
 included in the iteration results.</section>
 <section><h5><code>dir.read(callback)</code><span><a id=fs_dir_read_callback></a></span><span><a class=mark id=dirreadcallback href=#dirreadcallback>#</a></span></h5><div class=api_metadata><span>Added in: v12.12.0</span></div><ul>
@@ -4770,7 +4828,9 @@ The <code>null</code> case from <code>dir.read()</code> is handled internally.<
 provided by the operating system's underlying directory mechanisms.
 Entries added or removed while iterating over the directory might not be
 included in the iteration results.</section>
-<section><h5><code>dir[Symbol.asyncDispose]()</code><span><a id=fs_dir_symbol_asyncdispose></a></span><span><a class=mark id=dirsymbolasyncdispose href=#dirsymbolasyncdispose>#</a></span></h5><div class=api_metadata><span>Added in: v24.1.0, v22.1.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.2.0<td><p>No longer experimental.</table></details></div><p>Calls <code>dir.close()</code> if the directory handle is open, and returns a promise that
+<section><h5><code>dir[Symbol.asyncDispose]()</code><span><a id=fs_dir_symbol_asyncdispose></a></span><span><a class=mark id=dirsymbolasyncdispose href=#dirsymbolasyncdispose>#</a></span></h5><div class=api_metadata><span>Added in: v24.1.0, v22.1.0</span><details class=changelog><summary>History</summary><table><thead><tr><th>Version<th>Changes<tbody><tr><td>v24.2.0<td><p>No longer experimental.</table></details></div><ul>
+<li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise><code>&lt;Promise></code></a></li>
+</ul><p>Calls <code>dir.close()</code> if the directory handle is open, and returns a promise that
 fulfills when disposal is complete.<p>This method enables the directory to be used with <a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/await_using><code>await using</code></a>, which
 will automatically close the directory when the scope exits. For more
 information, see the <a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/using>MDN documentation on <code>using</code> statements</a>.</section>
@@ -4782,7 +4842,12 @@ information, see the <a href=https://developer.mozilla.org/en-US/docs/Web/JavaSc
 within the directory, as returned by reading from an <a href=fs.html#class-fsdir><code>&lt;fs.Dir></code></a>. The
 directory entry is a combination of the file name and file type pairs.<p>Additionally, when <a href=#fsreaddirpath-options-callback><code>fs.readdir()</code></a> or <a href=#fsreaddirsyncpath-options><code>fs.readdirSync()</code></a> is called with
 the <code>withFileTypes</code> option set to <code>true</code>, the resulting array is filled with
-<a href=fs.html#class-fsdirent><code>&lt;fs.Dirent></code></a> objects, rather than strings or <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a>s.</section>
+<a href=fs.html#class-fsdirent><code>&lt;fs.Dirent></code></a> objects, rather than strings or <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a>s.<p>When a directory is read, such as with <a href=#fsreaddirpath-options-callback><code>fs.readdir()</code></a> or
+<a href=#fsopendirpath-options-callback><code>fs.opendir()</code></a>, the file type of each entry is the type reported by the
+operating system and may depend on the file system; for example, some file
+systems may report a type that differs from what <a href=#fslstatpath-options-callback><code>fs.lstat()</code></a> returns.
+Node.js calls <a href=#fslstatpath-options-callback><code>fs.lstat()</code></a> on such an entry only when the reported type
+is unknown. Use <a href=#fslstatpath-options-callback><code>fs.lstat()</code></a> when an accurate file type is required.</section>
 <section><h5><code>dirent.isBlockDevice()</code><span><a id=fs_dirent_isblockdevice></a></span><span><a class=mark id=direntisblockdevice href=#direntisblockdevice>#</a></span></h5><div class=api_metadata><span>Added in: v10.10.0</span></div><ul>
 <li>Returns: <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a></li>
 </ul><p>Returns <code>true</code> if the <a href=fs.html#class-fsdirent><code>&lt;fs.Dirent></code></a> object describes a block device.</section>
@@ -5267,9 +5332,14 @@ values are <code>'utf8'</code> or <code>'buffer'</code>. <strong>Default</stron
 <li><code>err</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error><code>&lt;Error></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#null_type><code>&lt;null></code></a> An error if the flush failed, otherwise <code>null</code>.</li>
 </ul>
 </li>
-</ul><p>Writes the current buffer to the file if a write was not in progress. Do
-nothing if <code>minLength</code> is zero or if it is already writing.</section>
-<section><h5><code>utf8Stream.flushSync()</code><span><a id=fs_utf8stream_flushsync></a></span><span><a class=mark id=utf8streamflushsync href=#utf8streamflushsync>#</a></span></h5><div class=api_metadata></div><p>Flushes the buffered data synchronously. This is a costly operation.</section>
+</ul><p>Writes the current buffer to the file. The callback is invoked after pending
+writes complete and, unless the <code>fsync</code> option is enabled, after the data has
+been synchronized with <code>fs.fsync()</code>. <code>fsync</code> errors indicating that the file
+descriptor does not support synchronization (for example, a pipe or a TTY)
+are ignored.</section>
+<section><h5><code>utf8Stream.flushSync()</code><span><a id=fs_utf8stream_flushsync></a></span><span><a class=mark id=utf8streamflushsync href=#utf8streamflushsync>#</a></span></h5><div class=api_metadata></div><p>Flushes the buffered data synchronously. This is a costly operation.<p>If an asynchronous write is in flight when <code>flushSync()</code> is called, only the
+data queued after it is written, and it may reach the file before the data
+of the in-flight write.</section>
 <section><h5><code>utf8Stream.fsync</code><span><a id=fs_utf8stream_fsync></a></span><span><a class=mark id=utf8streamfsync href=#utf8streamfsync>#</a></span></h5><div class=api_metadata></div><ul>
 <li><a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> Whether the stream is performing a <code>fs.fsyncSync()</code> after every
 write operation.</li>
@@ -5302,11 +5372,11 @@ controlled by the append option).</li>
 <li><a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> Whether the stream is writing synchronously or asynchronously.</li>
 </ul></section>
 <section><h5><code>utf8Stream.write(data)</code><span><a id=fs_utf8stream_write_data></a></span><span><a class=mark id=utf8streamwritedata href=#utf8streamwritedata>#</a></span></h5><div class=api_metadata></div><ul>
-<li><code>data</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> The data to write.</li>
+<li><code>data</code> <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#string_type><code>&lt;string></code></a> | <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray><code>&lt;TypedArray></code></a> | <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView><code>&lt;DataView></code></a> The data to write.</li>
 <li>Returns <a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a></li>
 </ul><p>When the <code>options.contentMode</code> is set to <code>'utf8'</code> when the stream is created,
 the <code>data</code> argument must be a string. If the <code>contentMode</code> is set to <code>'buffer'</code>,
-the <code>data</code> argument must be a <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a>.</section>
+the <code>data</code> argument must be a <a href=buffer.html#class-buffer><code>&lt;Buffer></code></a>, <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/TypedArray><code>&lt;TypedArray></code></a>, or <a href=https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView><code>&lt;DataView></code></a>.</section>
 <section><h5><code>utf8Stream.writing</code><span><a id=fs_utf8stream_writing></a></span><span><a class=mark id=utf8streamwriting href=#utf8streamwriting>#</a></span></h5><div class=api_metadata></div><ul>
 <li><a href=https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#boolean_type><code>&lt;boolean></code></a> Whether the stream is currently writing data to the file.</li>
 </ul></section>
@@ -5472,12 +5542,14 @@ before use.<p>To use more than one constant, use the bitwise OR <code>|</code> o
   <tr>
     <td><code>O_SYNC</code></td>
     <td>Flag indicating that the file is opened for synchronized I/O with write
-    operations waiting for file integrity.</td>
+    operations waiting for file integrity. On Windows, this maps to
+    <code>FILE_FLAG_WRITE_THROUGH</code>.</td>
   </tr>
   <tr>
     <td><code>O_DSYNC</code></td>
     <td>Flag indicating that the file is opened for synchronized I/O with write
-    operations waiting for data integrity.</td>
+    operations waiting for data integrity. On Windows, this maps to
+    <code>FILE_FLAG_WRITE_THROUGH</code>.</td>
   </tr>
   <tr>
     <td><code>O_SYMLINK</code></td>
@@ -5487,7 +5559,7 @@ before use.<p>To use more than one constant, use the bitwise OR <code>|</code> o
   <tr>
     <td><code>O_DIRECT</code></td>
     <td>When set, an attempt will be made to minimize caching effects of file
-    I/O.</td>
+    I/O. On Windows, this maps to <code>FILE_FLAG_NO_BUFFERING</code>.</td>
   </tr>
   <tr>
     <td><code>O_NONBLOCK</code></td>
@@ -5499,8 +5571,34 @@ before use.<p>To use more than one constant, use the bitwise OR <code>|</code> o
     is available on Windows operating systems only. On other operating systems,
     this flag is ignored.</td>
   </tr>
+  <tr>
+    <td><code>UV_FS_O_TEMPORARY</code></td>
+    <td>When set, the file is deleted automatically when the last handle to it
+    is closed. This flag is available on Windows operating systems only. On
+    other operating systems, this flag is ignored.</td>
+  </tr>
+  <tr>
+    <td><code>UV_FS_O_SHORT_LIVED</code></td>
+    <td>Hint that the file is short-lived, so the system avoids flushing it to
+    disk when possible. This flag is available on Windows operating systems
+    only. On other operating systems, this flag is ignored.</td>
+  </tr>
+  <tr>
+    <td><code>UV_FS_O_SEQUENTIAL</code></td>
+    <td>Hint that the file is accessed sequentially from beginning to end, to
+    optimize caching. This flag is available on Windows operating systems only.
+    On other operating systems, this flag is ignored.</td>
+  </tr>
+  <tr>
+    <td><code>UV_FS_O_RANDOM</code></td>
+    <td>Hint that the file is accessed randomly, to optimize caching. This flag
+    is available on Windows operating systems only. On other operating systems,
+    this flag is ignored.</td>
+  </tr>
 </table><p>On Windows, only <code>O_APPEND</code>, <code>O_CREAT</code>, <code>O_EXCL</code>, <code>O_RDONLY</code>, <code>O_RDWR</code>,
-<code>O_TRUNC</code>, <code>O_WRONLY</code>, and <code>UV_FS_O_FILEMAP</code> are available.</section>
+<code>O_TRUNC</code>, <code>O_WRONLY</code>, <code>UV_FS_O_FILEMAP</code>, <code>UV_FS_O_TEMPORARY</code>,
+<code>UV_FS_O_SHORT_LIVED</code>, <code>UV_FS_O_SEQUENTIAL</code>, and <code>UV_FS_O_RANDOM</code> are
+available.</section>
 <section><h6>File type constants<span><a id=fs_file_type_constants></a></span><span><a class=mark id=file-type-constants href=#file-type-constants>#</a></span></h6><div class=api_metadata></div><p>The following constants are meant for use with the <a href=fs.html#class-fsstats><code>&lt;fs.Stats></code></a> object's <code>mode</code> property for determining a file's type.<table>
   <tr>
     <th>Constant</th>

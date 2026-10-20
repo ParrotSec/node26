@@ -119,7 +119,7 @@
                       "params": []
                     }
                   ],
-                  "desc": "<p>Connects a session to the main thread inspector back-end. An exception will\nbe thrown if this API was not called on a Worker thread.</p>"
+                  "desc": "<p>Connects a session to the main thread inspector back-end. An exception will\nbe thrown if this API was not called on a Worker thread, or if\n<a href=\"cli.html#--process-timeoutduration\"><code>--process-timeout</code></a> is used, as the session could pause the main thread.</p>"
                 },
                 {
                   "textRaw": "`session.disconnect()`",
@@ -320,7 +320,7 @@
                       "params": []
                     }
                   ],
-                  "desc": "<p>Connects a session to the main thread inspector back-end. An exception will\nbe thrown if this API was not called on a Worker thread.</p>"
+                  "desc": "<p>Connects a session to the main thread inspector back-end. An exception will\nbe thrown if this API was not called on a Worker thread, or if\n<a href=\"cli.html#--process-timeoutduration\"><code>--process-timeout</code></a> is used, as the session could pause the main thread.</p>"
                 },
                 {
                   "textRaw": "`session.disconnect()`",
@@ -462,7 +462,7 @@
                   }
                 }
               ],
-              "desc": "<p>Activate inspector on host and port. Equivalent to\n<code>node --inspect=[[host:]port]</code>, but can be done programmatically after node has\nstarted.</p>\n<p>If wait is <code>true</code>, will block until a client has connected to the inspect port\nand flow control has been passed to the debugger client.</p>\n<p>See the <a href=\"cli.html#warning-binding-inspector-to-a-public-ipport-combination-is-insecure\">security warning</a> regarding the <code>host</code>\nparameter usage.</p>"
+              "desc": "<p>Activate inspector on host and port. Equivalent to\n<code>node --inspect=[[host:]port]</code>, but can be done programmatically after node has\nstarted.</p>\n<p>If wait is <code>true</code>, will block until a client has connected to the inspect port\nand flow control has been passed to the debugger client.</p>\n<p>See the <a href=\"cli.html#warning-binding-inspector-to-a-public-ipport-combination-is-insecure\">security warning</a> regarding the <code>host</code>\nparameter usage.</p>\n<p>Throws an <a href=\"errors.html#err_inspector_not_available\"><code>ERR_INSPECTOR_NOT_AVAILABLE</code></a> error if <a href=\"cli.html#--process-timeoutduration\"><code>--process-timeout</code></a> is\nused.</p>"
             },
             {
               "textRaw": "`inspector.url()`",

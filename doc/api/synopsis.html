@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.7.0><title>Usage and example | Node.js v26.7.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/synopsis.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-synopsis><a href=#apicontent class=skip-to-content>Skip to content</a>
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon href=https://nodejs.org/favicon.ico><meta name=nodejs.org:node-version content=v26.12.0><title>Usage and example | Node.js v26.12.0 Documentation</title><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=fallback"><link rel=stylesheet href=assets/style.css><link rel=canonical href=https://nodejs.org/api/synopsis.html><script async defer src=assets/api.js></script><script>("dark"===localStorage.getItem("theme")||null===localStorage.getItem("theme")&&window.matchMedia?.("(prefers-color-scheme: dark)").matches)&&document.documentElement.classList.add("dark-mode")</script><body class="alt apidoc" id=api-section-synopsis><a href=#apicontent class=skip-to-content>Skip to content</a>
     <div id=content class=clearfix>
       <div role=navigation id=column2 class=interior>
         <div id=intro class=interior>
@@ -11,6 +11,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -84,7 +85,7 @@
       <div id=column1 data-id=synopsis class=interior>
         <header class=header>
           <div class=header-container>
-            <h1>Node.js v26.7.0 documentation</h1>
+            <h1>Node.js v26.12.0 documentation</h1>
             <button class=theme-toggle-btn id=theme-toggle-btn title="Toggle dark mode/light mode" aria-label="Toggle dark mode/light mode" hidden>
               <svg class="dark-icon icon" height=24 width=24>
                 <path fill=none d="M0 0h24v24H0z"/>
@@ -99,7 +100,7 @@
           </div>
           <div id=gtoc>
             <ul>
-              <li class=pinned-header>Node.js v26.7.0</li>
+              <li class=pinned-header>Node.js v26.12.0</li>
               <li class=picker-header><a href=#toc-picker aria-controls=toc-picker><span class=picker-arrow></span>Table of contents</a><div class=picker><div class=toc tabindex=-1><ul id=toc-picker>
 <li><a href=synopsis.html#usage-and-example>Usage and example</a>
 <ul>
@@ -113,6 +114,7 @@
 <li><a class=nav-assert href=assert.html>Assertion testing</a></li>
 <li><a class=nav-async_context href=async_context.html>Asynchronous context tracking</a></li>
 <li><a class=nav-async_hooks href=async_hooks.html>Async hooks</a></li>
+<li><a class=nav-bench href=bench.html>Benchmark runner</a></li>
 <li><a class=nav-buffer href=buffer.html>Buffer</a></li>
 <li><a class=nav-addons href=addons.html>C++ addons</a></li>
 <li><a class=nav-n-api href=n-api.html>C/C++ addons with Node-API</a></li>
@@ -209,11 +211,8 @@
           <section><h2>Usage and example<span><a id=synopsis_usage_and_example></a></span><span><a class=mark id=usage-and-example href=#usage-and-example>#</a></span></h2><div class=api_metadata></div></section>
 <section><h3>Usage<span><a id=synopsis_usage></a></span><span><a class=mark id=usage href=#usage>#</a></span></h3><div class=api_metadata></div><p><code>node [options] [V8 options] [script.js | -e "script" | - ] [arguments]</code><p>Please see the <a href=cli.html#options>Command-line options</a> document for more information.</section>
 <section><h3>Example<span><a id=synopsis_example></a></span><span><a class=mark id=example href=#example>#</a></span></h3><div class=api_metadata></div><p>An example of a <a href=http.html>web server</a> written with Node.js which responds with
-<code>'Hello, World!'</code>:<p>Commands in this document start with <code>$</code> or <code>></code> to replicate how they would
-appear in a user's terminal. Do not include the <code>$</code> and <code>></code> characters. They are
-there to show the start of each command.<p>Lines that don't start with <code>$</code> or <code>></code> character show the output of the previous
-command.<p>First, make sure to have downloaded and installed Node.js. See
-<a href=https://nodejs.org/en/download/package-manager/>Installing Node.js via package manager</a> for further install information.<p>Now, create an empty project folder called <code>projects</code>, then navigate into it.<p>Linux and Mac:<pre class="catppuccin-latte catppuccin-mocha language-bash shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>mkdir</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> ~/projects</span></span>
+<code>'Hello, World!'</code>:<p>First, make sure to have downloaded and installed Node.js. See
+<a href=https://nodejs.org/en/download>Installing Node.js</a> for further install information.<p>Now, create an empty project folder called <code>projects</code>, then navigate into it.<p>Linux and Mac:<pre class="catppuccin-latte catppuccin-mocha language-bash shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic>mkdir</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> ~/projects</span></span>
 <span class=line><span style=color:#D20F39;--shiki-light-font-style:italic;--shiki-dark:#F38BA8;--shiki-dark-font-style:italic>cd</span><span style=color:#40A02B;--shiki-dark:#A6E3A1> ~/projects</span></span>
 <span class=line></span></code><div class=code-toolbar><span class=code-language>bash</span><button class=copy-button>copy</button></div></pre><p>Windows CMD:<pre class="catppuccin-latte catppuccin-mocha language-powershell shiki shiki-themes" style=background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4 tabindex=0><code><span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>mkdir </span><span style=color:#179299;--shiki-dark:#94E2D5>%</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>USERPROFILE</span><span style=color:#179299;--shiki-dark:#94E2D5>%</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>\projects</span></span>
 <span class=line><span style=color:#4C4F69;--shiki-dark:#CDD6F4>cd </span><span style=color:#179299;--shiki-dark:#94E2D5>%</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>USERPROFILE</span><span style=color:#179299;--shiki-dark:#94E2D5>%</span><span style=color:#4C4F69;--shiki-dark:#CDD6F4>\projects</span></span>
