@@ -27,6 +27,12 @@ X509_STORE* NewRootCertStore(Environment* env);
 
 X509_STORE* GetOrCreateRootCertStore(Environment* env);
 
+// Installs the certificate verification callback that applies the SPKI
+// blocklist (and, on OpenSSL 4.1+, the CN name-constraint handling) to every
+// chain verified through `ctx`. Must be called for every SSL_CTX Node.js
+// creates, since SSL_CTX_set_cert_verify_callback replaces any earlier hook.
+void InstallCertVerifyCallback(SSL_CTX* ctx);
+
 ncrypto::BIOPointer LoadBIO(Environment* env, v8::Local<v8::Value> v);
 
 class SecureContext final : public BaseObject {
@@ -46,6 +52,10 @@ class SecureContext final : public BaseObject {
   static SecureContext* Create(Environment* env);
 
   const ncrypto::SSLCtxPointer& ctx() const { return ctx_; }
+  // True if CA certificates were added with addCACert(), as opposed to the
+  // context relying on the default root store.
+  bool has_own_ca() const { return has_own_ca_; }
+  const std::string& session_id_context() const { return session_id_context_; }
 
   // Non-const ctx() that allows for non-default initialization of
   // the SecureContext.
@@ -154,6 +164,15 @@ class SecureContext final : public BaseObject {
   template <bool primary>
   static void GetCertificate(const v8::FunctionCallbackInfo<v8::Value>& args);
 
+  // Test-only hooks for the SPKI blocklist that every SSL_CTX applies
+  // during certificate verification. Reachable through
+  // internalBinding('crypto') with --expose-internals. The argument is the
+  // SHA-256 of a DER-encoded SubjectPublicKeyInfo.
+  static void AddBlockedSPKIForTesting(
+      const v8::FunctionCallbackInfo<v8::Value>& args);
+  static void ClearBlockedSPKIsForTesting(
+      const v8::FunctionCallbackInfo<v8::Value>& args);
+
   static int TicketKeyCallback(SSL* ssl,
                                unsigned char* name,
                                unsigned char* iv,
@@ -189,6 +208,8 @@ class SecureContext final : public BaseObject {
   bool client_cert_engine_provided_ = false;
   ncrypto::EnginePointer private_key_engine_;
 #endif  // !OPENSSL_NO_ENGINE
+  bool has_own_ca_ = false;
+  std::string session_id_context_;
 
   unsigned char ticket_key_name_[16];
   unsigned char ticket_key_aes_[16];
