@@ -39,7 +39,6 @@ const streamRegistry = new FinalizationRegistry((weakRef) => {
 function extractBody (object, keepalive = false) {
   // 1. Let stream be null.
   let stream = null
-  let controller = null
 
   // 2. If object is a ReadableStream object, then set stream to object.
   if (webidl.is.ReadableStream(object)) {
@@ -52,11 +51,44 @@ function extractBody (object, keepalive = false) {
     // 4. Otherwise, set stream to a new ReadableStream object, and set
     //    up stream with byte reading support.
     stream = new ReadableStream({
-      pull () {},
-      start (c) {
-        controller = c
+      start () {},
+      async pull (controller) {
+        // 19.1. Run action.
+        const result = action()
+
+        const iterator = result?.[Symbol.asyncIterator]?.()
+        if (iterator == null) {
+          // 19.2. Whenever one or more bytes are available and stream is not errored,
+          // enqueue the result of creating a Uint8Array from the available bytes into stream.
+          if (result?.length && !isErrored(stream)) {
+            controller.enqueue(typeof result === 'string' ? textEncoder.encode(result) : new Uint8Array(result))
+          }
+
+          // 19.3. When running action is done, close stream.
+          queueMicrotask(() => readableStreamClose(controller))
+          return
+        }
+
+        while (true) {
+          const { value, done } = await iterator.next()
+
+          // 19.3. When running action is done, close stream.
+          if (done) {
+            queueMicrotask(() => readableStreamClose(controller))
+            return
+          }
+
+          // 19.2. Whenever one or more bytes are available and stream is not errored,
+          // enqueue the result of creating a Uint8Array from the available bytes into stream.
+          if (value.length && !isErrored(stream)) {
+            controller.enqueue(new Uint8Array(value))
+            return
+          }
+        }
       },
-      cancel () {},
+      cancel (reason) {
+        return action()[Symbol.asyncIterator]?.().return(reason)
+      },
       type: 'bytes'
     })
   }
@@ -155,7 +187,7 @@ function extractBody (object, keepalive = false) {
     // Set source to object.
     source = object
 
-    action = async function * () {
+    const parts = (async function * () {
       for (const part of blobParts) {
         if (part.stream) {
           yield * part.stream()
@@ -163,7 +195,8 @@ function extractBody (object, keepalive = false) {
           yield part
         }
       }
-    }
+    })()
+    action = () => parts
 
     // Set type to `multipart/form-data; boundary=`,
     // followed by the multipart/form-data boundary string generated
@@ -196,57 +229,53 @@ function extractBody (object, keepalive = false) {
       )
     }
 
-    stream = webidl.is.ReadableStream(object)
-      ? object
-      : ReadableStream.from(object).pipeThrough(new TransformStream({
-        transform (chunk, controller) {
-          const bytes = isUint8Array(chunk) ? chunk : Buffer.from(chunk)
-          if (bytes.byteLength) {
-            controller.enqueue(bytes)
+    if (webidl.is.ReadableStream(object)) {
+      stream = object
+    } else {
+      const reader = ReadableStream.from(object).getReader()
+      let cancelled = false
+      // Do not pull from the iterable until the body is read.
+      stream = new ReadableStream({
+        async pull (controller) {
+          while (true) {
+            const { done, value } = await reader.read()
+            if (cancelled) {
+              return
+            }
+            if (done) {
+              controller.close()
+              return
+            }
+            const bytes = isUint8Array(value) ? value : Buffer.from(value)
+            if (bytes.byteLength) {
+              controller.enqueue(bytes)
+              return
+            }
           }
+        },
+        cancel (reason) {
+          cancelled = true
+          return reader.cancel(reason)
         }
-      }))
-  }
-
-  // 11. If source is a byte sequence, then set action to a
-  // step that returns source and length to source’s length.
-  if (typeof source === 'string' || isUint8Array(source)) {
-    action = () => {
-      length = typeof source === 'string' ? Buffer.byteLength(source) : source.length
-      return source
+      }, { highWaterMark: 0 })
     }
   }
 
-  // 12. If action is non-null, then run these steps in parallel:
-  if (action != null) {
-    ;(async () => {
-      // 1. Run action.
-      const result = action()
-
-      // 2. Whenever one or more bytes are available and stream is not errored,
-      //    enqueue the result of creating a Uint8Array from the available bytes into stream.
-      const iterator = result?.[Symbol.asyncIterator]?.()
-      if (iterator) {
-        for await (const bytes of iterator) {
-          if (isErrored(stream)) break
-          if (bytes.length) {
-            controller.enqueue(new Uint8Array(bytes))
-          }
-        }
-      } else if (result?.length && !isErrored(stream)) {
-        controller.enqueue(typeof result === 'string' ? textEncoder.encode(result) : new Uint8Array(result))
-      }
-
-      // 3. When running action is done, close stream.
-      queueMicrotask(() => readableStreamClose(controller))
-    })()
+  // 18. If source is a byte sequence, then set action to a
+  // step that returns source and length to source’s length.
+  if (typeof source === 'string' || isUint8Array(source)) {
+    action = () => source
+    length = typeof source === 'string' ? Buffer.byteLength(source) : source.length
   }
 
-  // 13. Let body be a body whose stream is stream, source is source,
+  // 19. If action is non-null, then run these steps in parallel:
+  // Note: this is done in the pull method of the stream created above
+
+  // 20. Let body be a body whose stream is stream, source is source,
   // and length is length.
   const body = { stream, source, length }
 
-  // 14. Return (body, type).
+  // 21. Return (body, type).
   return [body, type]
 }
 
